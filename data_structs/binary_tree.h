@@ -318,7 +318,7 @@ void binary_tree<T>::_levelorder_trav( const node_ptr& nd ) const
         log_element( *nd->data );
     }
 
-    for()
+    //for()
 }
 
 

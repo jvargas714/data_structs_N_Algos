@@ -75,6 +75,7 @@ void min_heap::bubble_down( )
 	int parent = 0;
 	int tmp;
 	int max_ind = data.size()-1;
+	// std::cout <<"max_ind: " << max_ind << std::endl; 
 
 	// check for edge cases with 0 1 or 2 elements in heap
 	switch( max_ind + 1 )
@@ -98,20 +99,22 @@ void min_heap::bubble_down( )
 		int left_child 	= left( parent ); 	// left index  
 		int right_child = right( parent );	// right index
 		int to_be_swapped;
+		// std::cout << "left_child: " << left_child << ", right_child: " << right_child << std::endl;
 
 		// need to ensure that we do not go out of bounds here 
 		if( left_child == max_ind ) // left is at max index then right child is def out of bounds 
 		{
-			std::cout << "here we reach case where left child is max_ind" << std::endl; 
+			// std::cout << "left child is max index.." << std::endl; 
 			// we check to see left is larger than parent
-			if( data[ left_child ] > data[ parent ] )
+			if( data[ left_child ] <= data[ parent ] )
 			{
+				// std::cout << "then swap" << std::endl;
 				// swap them if so
 				tmp = data[ left_child ];
 				data[ left_child ] = data[ parent ];
 				data[ parent ] = tmp;
-				break;
 			}
+			break;
 		}
 		else if( left_child > max_ind )	// case where left is out of bounds
 		{
@@ -120,16 +123,18 @@ void min_heap::bubble_down( )
 		}
 		else
 		{
-			( data[ left_child ] < data[ right_child ] ) ?
+			// select smallest child element, set to be swapped 
+			( data[ left_child ] <= data[ right_child ] ) ?
 			to_be_swapped = left_child : 
 			to_be_swapped = right_child;
 
-			if( data[ parent ] < data[ to_be_swapped ] )
+			if( data[ parent ] <= data[ to_be_swapped ] )
 			{
 				// great we are done
 				break;
 			}
-			// the switcharoo 
+			// the switcharoo
+			// std::cout << "switching !! P: " << data[parent] << " with to_be_swapped: " << data[to_be_swapped] << std::endl;
 			tmp = data[ to_be_swapped ];
 			data[ to_be_swapped ] = data[ parent ];
 			data[ parent ] = tmp;
@@ -176,11 +181,23 @@ int min_heap::get_index( int el ) const
 	throw std::string( ss.str() );
 }
 
-// sorts underlying data and returns a sorted vector 
-std::vector<int> min_heap::sort() const 
+// sorts underlying data and returns a sorted vector, heap gets emptied out
+std::vector<int> min_heap::sort( bool cpy )
 {
-	std::vector<int> sorted_data;
-	// TODO
+	std::vector<int> sorted_data, tmp;
+	if( cpy )
+	{
+		tmp.swap( data );
+	}
+	size_t sz = data.size();
+	for(size_t i = 0; i < sz; i++)
+	{
+		sorted_data.push_back( extract_min() );
+	}
+	if( cpy )
+	{
+		data.swap( tmp );
+	}
 	return sorted_data;
 }
 
@@ -193,5 +210,8 @@ int min_heap::get_max() const
 // return min element, does not delete element
 int min_heap::get_min() const 
 {
-	return 0; 	// TODO 
+	if( data.size() > 0 )
+		return data[0];
+	else
+		throw std::string("Error: get_min(): size of heap <= 0, exiting...");
 }

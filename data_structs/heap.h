@@ -132,6 +132,10 @@ public:
 
     inline size_t size() const { return data.size(); };
 
-    // a heap sort! returns a sorted vector O(nlog n)
-    std::vector<int> sort() const;
+    /* 
+        a heap sort! returns a sorted vector O(nlog n)
+        - bool arg specifies if we want to retain original data vector when extracting elements
+        - if so a copy is made and at end of sort the original heap is retained
+    */
+    std::vector<int> sort( bool cpy=false );
 };

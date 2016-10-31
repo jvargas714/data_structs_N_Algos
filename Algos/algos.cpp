@@ -3,6 +3,7 @@
 #include <vector>           // vector, size_t
 #include <chrono>
 #include "time.h"           // time(NULL)
+#include "../data_structs/master_structs.h"  // min:heap
 
 // typedefs and namespaces 
 using namespace std;
@@ -31,34 +32,52 @@ void partition_vect( vector<int>&, int, int );
 int main()
 {
     const uint SIZE = 10000;
-    vector<int> vect_1 = fill_vector( SIZE );
-    vector<int> vect_2( vect_1 );
-
-    //--------------------------------------Bubble sort---------------------------------------------
-    t_point t1_bub = hrc::now();
-    bubble_sort( vect_1 );
-    t_point t2_bub = hrc::now();
-    //display( vect_1 );
+    vector<int> vect_1 = fill_vector( SIZE );       // used by bubble sort 
+    vector<int> vect_2( vect_1 );                   // used by Insertion sort
+    vector<int> vect_3( vect_1 );                   // used by heap sort 
+    t_point t1_bub, t2_bub;
     auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
     auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    
+    //--------------------------------------Bubble Sort---------------------------------------------
+    t1_bub = hrc::now();
+    bubble_sort( vect_1 );
+    t2_bub = hrc::now();
+    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
     cout << "Bubble Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
         "usec\n" << endl;
     // end bubble sort
 
-    //-----------------------------------Insertion sort---------------------------------------------
+    //-----------------------------------Insertion Sort---------------------------------------------
     t1_bub = hrc::now();
     insertion_sort( vect_2 );
     t2_bub = hrc::now();
-    //display( vect_2 );
     milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
     micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
     cout << "Insertion Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
-        "usec" << endl;
+        "usec\n" << endl;
     // end insertion sort 
+
+    //-----------------------------------Heap Sort--------------------------------------------------
+    min_heap hp;
+    for( auto& el : vect_3 )    // fill heap first before sort
+    {
+        hp.insert(el);
+    }
+
+    t1_bub = hrc::now();
+    vector<int> sorted_vect = hp.sort();
+    t2_bub = hrc::now();
+    display(sorted_vect);
+    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    cout << "Heap Sort (from min_heap) time of execution-->\n" << milli_sec <<"msec\n" 
+    << micro_sec << "usec" << endl;
+    // end heap sort 
 
     return 0;
 }
-
 
 //-----------------------------------------implementations------------------------------------------
 
@@ -177,9 +196,17 @@ int* fill_array( size_t num_els )
 // display contents of vector 
 void display( vector<int>& vect )
 {
+    int cnt = 0;
     for( auto& el : vect )
     {
+        if(cnt == LINE_LIMIT)
+        {
+            cout << el << endl;
+            cnt = 1;
+            continue;
+        }
         cout << el << " ";
+        cnt++;
     }
     cout << endl;
 }
