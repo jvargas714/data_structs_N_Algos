@@ -19,14 +19,14 @@ void insertion_sort( vector<int>& );
 void insertion_sort( int* );
 void heap_sort( vector<int>& );
 void merge_sort( vector<int>& );
-void quick_sort( vector<int>& );
+void quick_sort( vector<int>&, int, int );
 
 // helper functions
 vector<int> fill_vector( size_t );
 int* fill_array( size_t );
 void display( vector<int>& );
 void display( int*, size_t );
-void partition_vect( vector<int>&, int, int );
+int partition_vect( vector<int>&, int, int );
 
 int main()
 {
@@ -78,10 +78,15 @@ int main()
     // // end heap sort 
 
     //-----------------------------------Quick Sort-------------------------------------------------
-    vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6 };
-    quick_sort( data );
-
-
+    vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6, 77, 1, 2, 5, 6, 7, 8, 00, 9, 8, 6 };
+    // vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6 };
+    // vector<int> data = { 1, 5, 4, 3, 2, 9, 8, 7, 6 };
+    display( data );
+    quick_sort( data, 0, data.size()-1 );
+    cout << "at end of sort: " << endl; 
+    // cout << " div: " << partition_vect(data, 0, data.size()-1) << "\n";
+    display( data );
+    // partition_vect(data, 0, 4);
 
     return 0;
 }
@@ -199,49 +204,24 @@ void insertion_sort( vector<int>& vect )
     Best case: 0(nlog n) (simple partition) or 0(n) (3 way partition)
     Average case: 0(nlog n)
 */
-void quick_sort( vector<int>& data )
+void quick_sort( vector<int>& data, int left_ind, int right_ind )
 {   
-    // when size of sequence is 1 it is considered fully sorted
-    if( data.size() == 1 )
-        return;
-
-    // randomly set a pivot
-    srand( time(NULL) );
-    size_t len      = data.size();
-    int pivot       = rand() % len;
-    int left_marker = 0;
-    int right_marker;
-
-    // set right marker ensure it different to the left marker
-    ( len-1 == pivot ) ? 
-            right_marker = len-2 : 
-            right_marker = len-1;
-
-    // walk left marker to the right
-    int left_stopped = data[ left_marker ];
-    while( left_marker < len-1 && left_stopped < data[ pivot ] )
-        left_stopped = data[ ++left_marker ];
-
-    // walk right marker to the left
-    int right_stopped = data[ right_marker ];
-    while( right_marker > 0 && right_stopped >= data[ pivot ] )
-        right_stopped = data[ --right_marker ];
-
-    // debug point
-    display(data);
-    cout << "pivot: " << pivot << ", data[pivot]: " <<  data[pivot] << endl;
-    cout << "left and right values: " << "L: " << left_stopped << " R: " 
-        << right_stopped << "\n\n" << endl;
-
-    // swap left and right values 
-    data[ left_marker ]     = right_stopped;
-    data[ right_marker ]    = left_stopped;
-
-    // debug point 
-    display( data );
-
-    // TODO: resume from here 
-    // group data into its two groups and recursively call this on both on both of the 
+    static int cnt = 0;   
+    cnt++;
+    cout << cnt << endl; 
+    // if( cnt > 20)
+    //     return;
+    cout << "quick_sort(): L: " << left_ind << " R: " <<  right_ind << endl; 
+    // recurs calls on the subsections of the vector
+    if( (right_ind-1) > 0 && right_ind > left_ind )
+    {
+        // divPt is index at which the section of the vector that is higher than the pivot val begins
+        int divPt = partition_vect( data, left_ind, right_ind );
+        cout << "divPt: " << divPt << endl;
+        quick_sort( data, left_ind, divPt-1 );    // low side of sub vect 
+        quick_sort( data, divPt, right_ind );   // high side 
+    }
+    cout << "GOT OUT" << endl; 
 }
 
 //______________________________________________Helpers_____________________________________________
@@ -308,29 +288,47 @@ void display( int* ar, size_t num_els )
             * if it is equal to the pivot val we can skip it 
         3. call this recursively 
 */
-void partition_vect( vector<int>& vect, int left, int right )
+int partition_vect( vector<int>& vect, int left, int right )
 {
-    int i       = left;
-    int j       = right;
     int tmp;
-    int pivot   = vect[ (left+right) / 2 ]; 
+    int i               = left;
+    int j               = right;
+    const int pivot     = vect[ right ];
+    display( vect );
+    cout << "left: " << left << " right: " << right << endl;
+    cout <<"pivot: " << pivot << endl; 
 
     while( i <= j )
     {
         while( vect[i] < pivot )
             i++;
 
-        while( vect[j] > pivot )
-            j--;
-
-        if( i <= j )
+        while( vect[j] >= pivot )
         {
+            if( j == i )
+                break;
+            j--;
+        }
+
+        if( i < j )
+        {
+            cout << "swapping: " << vect[i] << " with " << vect[j] << endl; 
             tmp = vect[i];
             vect[i] = vect[j];
             vect[j] = tmp;
             i++;
             j--;
         }
+        else if( i == j )
+        {
+            cout << "swapping " << vect[i] << " with pivot " << pivot << endl;
+            vect[right] = vect[i];
+            vect[i] = pivot;
+            break;
+        }
     }
     display( vect );
+    cout << "divpt: " << i << endl; 
+    cout << "\n" << endl; 
+    return i;
 }
