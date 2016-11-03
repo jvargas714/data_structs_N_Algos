@@ -165,7 +165,7 @@ void min_heap::bubble_up()
 	}
 }
 
-
+// Worst Case: O(n)
 int min_heap::get_index( int el ) const
 {
 	int ind = 0;
@@ -199,12 +199,6 @@ std::vector<int> min_heap::sort( bool cpy )
 		data.swap( tmp );
 	}
 	return sorted_data;
-}
-
-// returns max element, does not delete element
-int min_heap::get_max() const 
-{
-	return 0;	// TODO 
 }
 
 // return min element, does not delete element

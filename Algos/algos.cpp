@@ -12,7 +12,6 @@ typedef unsigned int uint;
 typedef high_resolution_clock hrc;
 typedef hrc::time_point t_point;
 
-
 // sorting algos
 void bubble_sort( vector<int>& );
 void bubble_sort( int*, size_t );
@@ -31,50 +30,58 @@ void partition_vect( vector<int>&, int, int );
 
 int main()
 {
-    const uint SIZE = 10000;
-    vector<int> vect_1 = fill_vector( SIZE );       // used by bubble sort 
-    vector<int> vect_2( vect_1 );                   // used by Insertion sort
-    vector<int> vect_3( vect_1 );                   // used by heap sort 
-    t_point t1_bub, t2_bub;
-    auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    // const uint SIZE = 10000;
+    // vector<int> vect_1 = fill_vector( SIZE );       // used by bubble sort 
+    // vector<int> vect_2( vect_1 );                   // used by Insertion sort
+    // vector<int> vect_3( vect_1 );                   // used by heap sort 
+    // t_point t1_bub, t2_bub;
+    // auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    // auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
     
-    //--------------------------------------Bubble Sort---------------------------------------------
-    t1_bub = hrc::now();
-    bubble_sort( vect_1 );
-    t2_bub = hrc::now();
-    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-    cout << "Bubble Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
-        "usec\n" << endl;
-    // end bubble sort
+    // cout << "Sorting an vector of length: " << vect_1.size()  << "\n" << endl;
+    // //--------------------------------------Bubble Sort---------------------------------------------
+    // t1_bub = hrc::now();
+    // bubble_sort( vect_1 );
+    // t2_bub = hrc::now();
+    // milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    // micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    // cout << "Bubble Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
+    //     "usec\n" << endl;
+    // // end bubble sort
 
-    //-----------------------------------Insertion Sort---------------------------------------------
-    t1_bub = hrc::now();
-    insertion_sort( vect_2 );
-    t2_bub = hrc::now();
-    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-    cout << "Insertion Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
-        "usec\n" << endl;
-    // end insertion sort 
+    // //-----------------------------------Insertion Sort---------------------------------------------
+    // t1_bub = hrc::now();
+    // insertion_sort( vect_2 );
+    // t2_bub = hrc::now();
+    // milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    // micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    // cout << "Insertion Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
+    //     "usec\n" << endl;
+    // // end insertion sort 
 
-    //-----------------------------------Heap Sort--------------------------------------------------
-    min_heap hp;
-    for( auto& el : vect_3 )    // fill heap first before sort
-    {
-        hp.insert(el);
-    }
+    // //-----------------------------------Heap Sort--------------------------------------------------
+    // min_heap hp;
+    // t1_bub = hrc::now();
+    // // O(n)
+    // for( auto& el : vect_3 )    // fill heap first before sort
+    // {
+    //     hp.insert(el);
+    // }
+    // // O(log n)
+    // vector<int> sorted_vect = hp.sort();
+    // t2_bub = hrc::now();
+    // //display(sorted_vect);
+    // milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    // micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    // cout << "Heap Sort (from min_heap) time of execution-->\n" << milli_sec <<"msec\n" 
+    // << micro_sec << "usec" << endl;
+    // // end heap sort 
 
-    t1_bub = hrc::now();
-    vector<int> sorted_vect = hp.sort();
-    t2_bub = hrc::now();
-    display(sorted_vect);
-    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-    cout << "Heap Sort (from min_heap) time of execution-->\n" << milli_sec <<"msec\n" 
-    << micro_sec << "usec" << endl;
-    // end heap sort 
+    //-----------------------------------Quick Sort-------------------------------------------------
+    vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6 };
+    quick_sort( data );
+
+
 
     return 0;
 }
@@ -155,15 +162,86 @@ void insertion_sort( vector<int>& vect )
 }
 
 /*
-    Descr: uses a divide and conquer technique
+    Descr: uses a divide and conquer technique. By swapping the numbers, you can gather numbers that
+        are less than the pivot on the left side of the sequence, and numbers that are greater than
+        or equal to the pivot on the right side.
+    Algo:
+        1. randomly set a pivot value
+        2. a left marker is placed on the most left value
+        3. a right marker is placed on the most right value
+        4. left marker will move to the right
+        5. when the left marker reaches a value greater or equal to the pivot value it stops
+        6. now the right marker moves to the left 
+        7. when the right marker hits a value that is less than the pivot it stops
+        8. swap both values of the left and right markers
+        9. after the swap the left marker continues to moving to the right 
+        10. left continues to move until it finds a value >= pivot it stops moving 
+        11. Again move the right marke left until it finds a value < pivot
+        12. movement of the right marker also stops when it hits the same value as the left marker
+        13. when the left and right marker stops and they are on the same value the pivot is swapped
+        14. the number occupied by both the left and right markers is considered fully sorted
+        15. first round is finished, now another round of operations will be performed recursively
+            on both sequences created by the division
+        16. This is repeated unitl fully sorted 
+
+        Notes on flow control: 
+            - when moving with the left marker and it runs into the right marker, it doesnt stop
+                * this is different from the right marker 
+                * When the left marker reaches the rightmost edge of the target sequence, it stops
+                    ** this means the pivot number is the largest number in the target sequence
+            - When the rightmost marker is passed by the left marker it finishes without moving 
+            - When the left marker has reached the rightmost edge of the target sequence, the pivot
+                number is considered fully sorted, and the round of operations ends, the remaining 
+                elements are considered to be another sequence
+            - when the target sequence only has one number it is considered fully sorted
+    
     Worst case: 0(n^2)
     Best case: 0(nlog n) (simple partition) or 0(n) (3 way partition)
     Average case: 0(nlog n)
-
 */
-void quick_sort( vector<int>& vect )
-{
+void quick_sort( vector<int>& data )
+{   
+    // when size of sequence is 1 it is considered fully sorted
+    if( data.size() == 1 )
+        return;
 
+    // randomly set a pivot
+    srand( time(NULL) );
+    size_t len      = data.size();
+    int pivot       = rand() % len;
+    int left_marker = 0;
+    int right_marker;
+
+    // set right marker ensure it different to the left marker
+    ( len-1 == pivot ) ? 
+            right_marker = len-2 : 
+            right_marker = len-1;
+
+    // walk left marker to the right
+    int left_stopped = data[ left_marker ];
+    while( left_marker < len-1 && left_stopped < data[ pivot ] )
+        left_stopped = data[ ++left_marker ];
+
+    // walk right marker to the left
+    int right_stopped = data[ right_marker ];
+    while( right_marker > 0 && right_stopped >= data[ pivot ] )
+        right_stopped = data[ --right_marker ];
+
+    // debug point
+    display(data);
+    cout << "pivot: " << pivot << ", data[pivot]: " <<  data[pivot] << endl;
+    cout << "left and right values: " << "L: " << left_stopped << " R: " 
+        << right_stopped << "\n\n" << endl;
+
+    // swap left and right values 
+    data[ left_marker ]     = right_stopped;
+    data[ right_marker ]    = left_stopped;
+
+    // debug point 
+    display( data );
+
+    // TODO: resume from here 
+    // group data into its two groups and recursively call this on both on both of the 
 }
 
 //______________________________________________Helpers_____________________________________________

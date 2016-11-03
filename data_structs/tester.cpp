@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include "time.h"
+#include <cstdlib>
 using namespace std;
 typedef vector< vector<char> > matrix; 
 
@@ -19,24 +21,10 @@ public:
 
 int main(void) 
 {
-	node* nd1 = new node( 15 );
-	node* nd2 = new node( 20 );
-	node* nd3 = new node( 20 );
+	srand(time(NULL));
 
-	if( *nd2 > *nd1 ){
-		cout << "this is true " << endl; 
-	}
-	else
-	{
-		cout << "that shit aint true kiiiid!!!!" << endl; 
-	}
-
-	if( *nd2 == *nd3 ) {
-		cout << "they are equal" << endl;
-	}
-	else{
-		cout << "they are not equal..." << endl; 
-	}
+	for(int i = 0; i < 50; i++)
+		cout << rand() % 10 << endl;
 
     return 0;
 }

@@ -87,7 +87,6 @@ static const int LINE_LIMIT = 30;
 
 class min_heap 
 {
-
 private:
     std::vector<int> data;
 
@@ -119,7 +118,7 @@ public:
     int get_min() const;
 
     // returns max element without removing it
-    int get_max() const;
+    inline int get_max() const { return 0; } /*TODO:: needs implementation*/
     
     // returns and removes the minimum element then restore min heap properties
     int extract_min();

@@ -1,5 +1,5 @@
-CC = g++ -std=c++0x
-#CC = $(CC)
+#CC = g++ -std=c++0x
+CC = g++ -std=c++11
 
 tester:
 	$(CC) -c -Wall logger.cpp
