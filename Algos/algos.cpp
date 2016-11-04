@@ -27,6 +27,9 @@ int* fill_array( size_t );
 void display( vector<int>& );
 void display( int*, size_t );
 int partition_vect( vector<int>&, int, int );
+int partition( vector<int> data, int, int );
+void swap_el( int*, int* );
+
 
 int main()
 {
@@ -78,15 +81,16 @@ int main()
     // // end heap sort 
 
     //-----------------------------------Quick Sort-------------------------------------------------
-    vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6, 77, 1, 2, 5, 6, 7, 8, 00, 9, 8, 6 };
+    // vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6, 77, 1, 2, 5, 6, 7, 8, 00, 9, 8, 6 };
+    vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6, 77, 1, 2 };
     // vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6 };
     // vector<int> data = { 1, 5, 4, 3, 2, 9, 8, 7, 6 };
     display( data );
-    quick_sort( data, 0, data.size()-1 );
-    cout << "at end of sort: " << endl; 
+    // quick_sort( data, 0, data.size()-1 );
+    // cout << "at end of sort: " << endl; 
     // cout << " div: " << partition_vect(data, 0, data.size()-1) << "\n";
-    display( data );
-    // partition_vect(data, 0, 4);
+    // display( data );
+    partition_vect(data, 0, data.size()-1);
 
     return 0;
 }
@@ -209,15 +213,16 @@ void quick_sort( vector<int>& data, int left_ind, int right_ind )
     static int cnt = 0;   
     cnt++;
     cout << cnt << endl; 
-    // if( cnt > 20)
-    //     return;
-    cout << "quick_sort(): L: " << left_ind << " R: " <<  right_ind << endl; 
+    if( cnt > 20)
+        return;
+    cout << "new quick_sort call" << endl;
+    // cout << "quick_sort(): L: " << left_ind << " R: " <<  right_ind << endl; 
     // recurs calls on the subsections of the vector
     if( (right_ind-1) > 0 && right_ind > left_ind )
     {
         // divPt is index at which the section of the vector that is higher than the pivot val begins
         int divPt = partition_vect( data, left_ind, right_ind );
-        cout << "divPt: " << divPt << endl;
+        // cout << "divPt: " << divPt << endl;
         quick_sort( data, left_ind, divPt-1 );    // low side of sub vect 
         quick_sort( data, divPt, right_ind );   // high side 
     }
@@ -291,24 +296,25 @@ void display( int* ar, size_t num_els )
 int partition_vect( vector<int>& vect, int left, int right )
 {
     int tmp;
-    int i               = left;
-    int j               = right;
-    const int pivot     = vect[ right ];
+    int i               = left;         // left marker
+    int j               = right;        // right marker 
+    const int pivot     = vect[ right ]; // pivot value 
+    
+    // vector before partition
     display( vect );
+
+    // left and right pivot display              
     cout << "left: " << left << " right: " << right << endl;
     cout <<"pivot: " << pivot << endl; 
+
 
     while( i <= j )
     {
         while( vect[i] < pivot )
             i++;
 
-        while( vect[j] >= pivot )
-        {
-            if( j == i )
-                break;
+        while( vect[j] >= pivot && j != i )
             j--;
-        }
 
         if( i < j )
         {
@@ -319,16 +325,48 @@ int partition_vect( vector<int>& vect, int left, int right )
             i++;
             j--;
         }
-        else if( i == j )
+        else if( i == j )   // when left and right stop and they are on the same value pivot is swapped
         {
             cout << "swapping " << vect[i] << " with pivot " << pivot << endl;
             vect[right] = vect[i];
             vect[i] = pivot;
-            break;
+            i++;
+            j--;
         }
     }
     display( vect );
     cout << "divpt: " << i << endl; 
     cout << "\n" << endl; 
     return i;
+}
+
+/*
+    The idea behind this partitioning algorithm is to place all elements smallers than the pivot 
+    to the left and all the greater elements to the right.
+    Worst Case: O(n)
+*/
+int partition( vector<int> data, int low, int high )
+{
+    int pivot   = data[high];
+    int i       = (low - 1);    // index of smaller element
+
+    for( int j = low; j <= high-1; j++ )
+    {
+        // if current element is smaller or equal to the pivot 
+        if( data[j] <= pivot )
+        {
+            i++;    // increment smaller element
+            cout << "swapping: " << data[i] << " with " << data[j] << endl;
+            swap_el( &data[i], &data[j] );
+        }
+    }
+
+}
+
+
+void swap_el( int* a, int* b )
+{
+    int tmp = a*;
+    a*      = *b;
+    *b      = tmp;
 }
