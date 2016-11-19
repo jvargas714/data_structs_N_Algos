@@ -83,18 +83,6 @@ int main()
     // end heap sort 
 
     //-----------------------------------Quick Sort-------------------------------------------------
-<<<<<<< HEAD
-    // vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6, 77, 1, 2, 5, 6, 7, 8, 00, 9, 8, 6 };
-    vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6, 77 };
-    // vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6 };
-    // vector<int> data = { 1, 5, 4, 3, 2, 9, 8, 7, 6 };
-    display( data );
-    quick_sort( data, 0, data.size()-1 );
-    cout << "at end of sort: " << endl; 
-    // cout << " div: " << partition_vect(data, 0, data.size()-1) << "\n";
-    display( data );
-    // partition_vect(data, 0, 4);
-=======
     t1_bub = hrc::now();
     quick_sort( vect_4, 0, vect_1.size()-1 );
     t2_bub = hrc::now();
@@ -102,8 +90,6 @@ int main()
     micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
     cout << "QuickSort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
         "usec\n" << endl;
->>>>>>> c48b724cefb3eb8972c84f103a4fa2aad636d5a8
-
     return 0;
 }
 
@@ -222,27 +208,11 @@ void insertion_sort( vector<int>& vect )
 */
 void quick_sort( vector<int>& data, int left_ind, int right_ind )
 {   
-<<<<<<< HEAD
-    static int cnt = 0;   
-    cnt++;
-    cout << "cnt: " << cnt << endl; 
-    if( cnt > 20)
-        return;
-
-    // recurs calls on the subsections of the vector
-    if( (right_ind-1) > 0 && right_ind > left_ind )
-    {
-        // divPt is index at which the section of the vector that is higher than the pivot val begins
-        int divPt = partition_vect( data, left_ind, right_ind );
-        quick_sort( data, left_ind, divPt-1 );      // low side of sub vect 
-        quick_sort( data, divPt, right_ind );       // high side 
-=======
     if( right_ind > left_ind )
     {
         int div_pt = partition( data, left_ind, right_ind );
-        quick_sort( data, left_ind, div_pt-1 );      // low side sub vect
-        quick_sort( data, div_pt+1, right_ind );   // high side sub vect 
->>>>>>> c48b724cefb3eb8972c84f103a4fa2aad636d5a8
+        quick_sort( data, left_ind, div_pt-1 );         // low side sub vect
+        quick_sort( data, div_pt+1, right_ind );        // high side sub vect 
     }
 }
 
@@ -315,23 +285,6 @@ void display( int* ar, size_t num_els )
 */
 int partition( vector<int>& data, int low, int high )
 {
-<<<<<<< HEAD
-    int tmp;
-    int i               = left;     // left marker
-    int j               = right;    // right marker
-    const int pivot     = vect[ right ];       // pivot value 
-    display( vect );
-    cout << "left: " << left << " right: " << right << endl;
-    cout <<"pivot: " << pivot << endl; 
-
-    while( i <= j )
-    {
-        while( vect[i] < pivot )
-            i++;
-
-        while( vect[j] >= pivot )
-            j--;
-=======
     int pivot   = data[high];   // typically pivot point is at end of vector
     int i       = (low - 1);    // index where smaller element exists
     for( int j = low; j <= high-1; j++ )
@@ -345,8 +298,6 @@ int partition( vector<int>& data, int low, int high )
     swap( data[i+1], data[high] );
     return ( i + 1 );
 }
->>>>>>> c48b724cefb3eb8972c84f103a4fa2aad636d5a8
-
 
 // display vector in its respective partitioned sections according to the partition point 
 void show_partition( vector<int>& data, int part_pt )
