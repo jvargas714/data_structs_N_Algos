@@ -78,7 +78,8 @@ int main()
     // // end heap sort 
 
     //-----------------------------------Quick Sort-------------------------------------------------
-    vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6, 77, 1, 2, 5, 6, 7, 8, 00, 9, 8, 6 };
+    // vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6, 77, 1, 2, 5, 6, 7, 8, 00, 9, 8, 6 };
+    vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6, 77 };
     // vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6 };
     // vector<int> data = { 1, 5, 4, 3, 2, 9, 8, 7, 6 };
     display( data );
@@ -208,18 +209,17 @@ void quick_sort( vector<int>& data, int left_ind, int right_ind )
 {   
     static int cnt = 0;   
     cnt++;
-    cout << cnt << endl; 
-    // if( cnt > 20)
-    //     return;
-    cout << "quick_sort(): L: " << left_ind << " R: " <<  right_ind << endl; 
+    cout << "cnt: " << cnt << endl; 
+    if( cnt > 20)
+        return;
+
     // recurs calls on the subsections of the vector
     if( (right_ind-1) > 0 && right_ind > left_ind )
     {
         // divPt is index at which the section of the vector that is higher than the pivot val begins
         int divPt = partition_vect( data, left_ind, right_ind );
-        cout << "divPt: " << divPt << endl;
-        quick_sort( data, left_ind, divPt-1 );    // low side of sub vect 
-        quick_sort( data, divPt, right_ind );   // high side 
+        quick_sort( data, left_ind, divPt-1 );      // low side of sub vect 
+        quick_sort( data, divPt, right_ind );       // high side 
     }
     cout << "GOT OUT" << endl; 
 }
@@ -291,9 +291,9 @@ void display( int* ar, size_t num_els )
 int partition_vect( vector<int>& vect, int left, int right )
 {
     int tmp;
-    int i               = left;
-    int j               = right;
-    const int pivot     = vect[ right ];
+    int i               = left;     // left marker
+    int j               = right;    // right marker
+    const int pivot     = vect[ right ];       // pivot value 
     display( vect );
     cout << "left: " << left << " right: " << right << endl;
     cout <<"pivot: " << pivot << endl; 
@@ -304,11 +304,7 @@ int partition_vect( vector<int>& vect, int left, int right )
             i++;
 
         while( vect[j] >= pivot )
-        {
-            if( j == i )
-                break;
             j--;
-        }
 
         if( i < j )
         {
