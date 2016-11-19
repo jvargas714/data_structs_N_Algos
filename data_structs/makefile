@@ -1,5 +1,5 @@
 #CC = g++ -std=c++0x
-CC = g++ -std=c++11
+CC = g++ -std=c++11 -g
 
 tester:
 	$(CC) -c -Wall logger.cpp
@@ -23,6 +23,10 @@ linked_list:
 heap:
 	$(CC) -c -Wall heap.cpp
 	$(CC) -Wall test_heap.cpp heap.o -o test_heap
+
+trie:
+	$(CC) -c -Wall trie.cpp
+	$(CC) -Wall trie_test.cpp trie.o -o trie_test
 	
 clean:
-	rm -v *.o
+	rm -vf data_structs test_trie bin_tree tester scrap *.o

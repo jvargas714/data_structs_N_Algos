@@ -1,30 +1,20 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include "time.h"
 #include <cstdlib>
 using namespace std;
-typedef vector< vector<char> > matrix; 
-
-class node 
-{
-    node* left;
-    node* right;
-    int data;
-
-public:
-    bool operator < ( node nd ) { return this->data < nd.data;  }
-    bool operator > ( node nd ) { return this->data > nd.data; }
-    bool operator == ( node nd ) { return this->data == nd.data; }    
-    node() : data( 0 ), left( nullptr ), right( nullptr ){}
-    node( int input ) : data( input ), left( nullptr ), right( nullptr ){}
-};
 
 int main(void) 
 {
-	srand(time(NULL));
-
-	for(int i = 0; i < 50; i++)
-		cout << rand() % 10 << endl;
-
+    ifstream fstrm("trie_test2.input");
+    string n, op, contact;
+    fstrm >> n;
+    fstrm >> op;
+    fstrm >> contact;
+    
+    cout << n << endl;
+    cout << op;
+    cout << "\n" << contact << "\n";
     return 0;
 }

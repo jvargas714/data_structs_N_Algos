@@ -44,24 +44,24 @@ int main()
     auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
     
     cout << "Sorting an vector of length: " << vect_1.size()  << "\n" << endl;
-    //--------------------------------------Bubble Sort---------------------------------------------
-    t1_bub = hrc::now();
-    bubble_sort( vect_1 );
-    t2_bub = hrc::now();
-    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-    cout << "Bubble Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
-        "usec\n" << endl;
-    // end bubble sort
+    // //--------------------------------------Bubble Sort------------------------------------------
+    // t1_bub = hrc::now();
+    // bubble_sort( vect_1 );
+    // t2_bub = hrc::now();
+    // milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    // micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    // cout << "Bubble Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
+    //     "usec\n" << endl;
+    // // end bubble sort
 
-    // //-----------------------------------Insertion Sort---------------------------------------------
-    t1_bub = hrc::now();
-    insertion_sort( vect_2 );
-    t2_bub = hrc::now();
-    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-    cout << "Insertion Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
-        "usec\n" << endl;
+    // // //-----------------------------------Insertion Sort---------------------------------------
+    // t1_bub = hrc::now();
+    // insertion_sort( vect_2 );
+    // t2_bub = hrc::now();
+    // milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    // micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    // cout << "Insertion Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
+    //     "usec\n" << endl;
     // end insertion sort 
 
     //-----------------------------------Heap Sort--------------------------------------------------

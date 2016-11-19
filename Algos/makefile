@@ -8,6 +8,9 @@ misc:
 	$(CC) -c -Wall misc.cpp -o misc.o
 	$(CC) -Wall misc_driver.cpp misc.o -o misc_driver
 
+hacker:
+	$(CC) -Wall hackerrank.cpp -o hacker 
+
 clean:
-	rm -v *.o algos
+	rm -v *.o algos hacker misc_driver
 
