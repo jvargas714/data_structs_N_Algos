@@ -9,4 +9,5 @@ misc:
 	$(CC) -Wall misc_driver.cpp misc.o -o misc_driver
 
 clean:
-	rm -v *.o algos 
+	rm -v *.o algos
+

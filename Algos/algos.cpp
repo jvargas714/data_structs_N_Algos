@@ -27,57 +27,63 @@ int* fill_array( size_t );
 void display( vector<int>& );
 void display( int*, size_t );
 int partition_vect( vector<int>&, int, int );
+int partition( vector<int>&, int, int );
+void swap_el( int*, int* );
+void show_partition( vector<int>&, int );
+
 
 int main()
 {
-    // const uint SIZE = 10000;
-    // vector<int> vect_1 = fill_vector( SIZE );       // used by bubble sort 
-    // vector<int> vect_2( vect_1 );                   // used by Insertion sort
-    // vector<int> vect_3( vect_1 );                   // used by heap sort 
-    // t_point t1_bub, t2_bub;
-    // auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    // auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    const uint SIZE = 100000;
+    vector<int> vect_1 = fill_vector( SIZE );       // sorted by bubble sort 
+    vector<int> vect_2( vect_1 );                   // sorted by Insertion sort
+    vector<int> vect_3( vect_1 );                   // sorted by heap sort
+    vector<int> vect_4( vect_1 );                   // sorted by quicksort
+    t_point t1_bub, t2_bub;
+    auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
     
-    // cout << "Sorting an vector of length: " << vect_1.size()  << "\n" << endl;
-    // //--------------------------------------Bubble Sort---------------------------------------------
-    // t1_bub = hrc::now();
-    // bubble_sort( vect_1 );
-    // t2_bub = hrc::now();
-    // milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    // micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-    // cout << "Bubble Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
-    //     "usec\n" << endl;
-    // // end bubble sort
+    cout << "Sorting an vector of length: " << vect_1.size()  << "\n" << endl;
+    //--------------------------------------Bubble Sort---------------------------------------------
+    t1_bub = hrc::now();
+    bubble_sort( vect_1 );
+    t2_bub = hrc::now();
+    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    cout << "Bubble Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
+        "usec\n" << endl;
+    // end bubble sort
 
     // //-----------------------------------Insertion Sort---------------------------------------------
-    // t1_bub = hrc::now();
-    // insertion_sort( vect_2 );
-    // t2_bub = hrc::now();
-    // milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    // micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-    // cout << "Insertion Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
-    //     "usec\n" << endl;
-    // // end insertion sort 
+    t1_bub = hrc::now();
+    insertion_sort( vect_2 );
+    t2_bub = hrc::now();
+    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    cout << "Insertion Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
+        "usec\n" << endl;
+    // end insertion sort 
 
-    // //-----------------------------------Heap Sort--------------------------------------------------
-    // min_heap hp;
-    // t1_bub = hrc::now();
-    // // O(n)
-    // for( auto& el : vect_3 )    // fill heap first before sort
-    // {
-    //     hp.insert(el);
-    // }
-    // // O(log n)
-    // vector<int> sorted_vect = hp.sort();
-    // t2_bub = hrc::now();
-    // //display(sorted_vect);
-    // milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    // micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-    // cout << "Heap Sort (from min_heap) time of execution-->\n" << milli_sec <<"msec\n" 
-    // << micro_sec << "usec" << endl;
-    // // end heap sort 
+    //-----------------------------------Heap Sort--------------------------------------------------
+    min_heap hp;
+    t1_bub = hrc::now();
+    // O(n)
+    for( auto& el : vect_3 )    // fill heap first before sort
+    {
+        hp.insert(el);
+    }
+    // O(log n)
+    vector<int> sorted_vect = hp.sort();
+    t2_bub = hrc::now();
+    //display(sorted_vect);
+    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    cout << "Heap Sort (from min_heap) time of execution-->\n" << milli_sec <<"msec\n" 
+    << micro_sec << "usec\n" << endl;
+    // end heap sort 
 
     //-----------------------------------Quick Sort-------------------------------------------------
+<<<<<<< HEAD
     // vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6, 77, 1, 2, 5, 6, 7, 8, 00, 9, 8, 6 };
     vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6, 77 };
     // vector<int> data = { 3, 5, 8, 1, 2, 9, 4, 7, 6 };
@@ -88,6 +94,15 @@ int main()
     // cout << " div: " << partition_vect(data, 0, data.size()-1) << "\n";
     display( data );
     // partition_vect(data, 0, 4);
+=======
+    t1_bub = hrc::now();
+    quick_sort( vect_4, 0, vect_1.size()-1 );
+    t2_bub = hrc::now();
+    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    cout << "QuickSort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
+        "usec\n" << endl;
+>>>>>>> c48b724cefb3eb8972c84f103a4fa2aad636d5a8
 
     return 0;
 }
@@ -207,6 +222,7 @@ void insertion_sort( vector<int>& vect )
 */
 void quick_sort( vector<int>& data, int left_ind, int right_ind )
 {   
+<<<<<<< HEAD
     static int cnt = 0;   
     cnt++;
     cout << "cnt: " << cnt << endl; 
@@ -220,8 +236,14 @@ void quick_sort( vector<int>& data, int left_ind, int right_ind )
         int divPt = partition_vect( data, left_ind, right_ind );
         quick_sort( data, left_ind, divPt-1 );      // low side of sub vect 
         quick_sort( data, divPt, right_ind );       // high side 
+=======
+    if( right_ind > left_ind )
+    {
+        int div_pt = partition( data, left_ind, right_ind );
+        quick_sort( data, left_ind, div_pt-1 );      // low side sub vect
+        quick_sort( data, div_pt+1, right_ind );   // high side sub vect 
+>>>>>>> c48b724cefb3eb8972c84f103a4fa2aad636d5a8
     }
-    cout << "GOT OUT" << endl; 
 }
 
 //______________________________________________Helpers_____________________________________________
@@ -255,6 +277,7 @@ int* fill_array( size_t num_els )
 void display( vector<int>& vect )
 {
     int cnt = 0;
+    cout << "size: " << vect.size() << endl; 
     for( auto& el : vect )
     {
         if(cnt == LINE_LIMIT)
@@ -280,16 +303,19 @@ void display( int* ar, size_t num_els )
 }
 
 /*
-    Descr: choose a pivot point and place it in the array so that all elements to the left are 
-        smaller and all elements to the right are larger. 
-        Big Oh: O(n)
-        1. choose pivot index (typically rightmost index)
-        2. compare every element with pivot if > group to the right group if <= group to left
-            * if it is equal to the pivot val we can skip it 
-        3. call this recursively 
+    Descr: 
+    As we traverse through, we know that when the if case is true (data[j] <= pivot) that all
+    The idea behind this partitioning algorithm is to place all elements smallers than the pivot 
+    to the left and all the greater elements to the right. Returns index of division point. 
+    the elements that came before that are larger than the pivot. So we can increment i and swap
+    with the element that is larger than the pivot. We continue from there doing the same till we 
+    run through all the elements of the vector. 
+    Data is split like this: 0....divPt ; divPt+1....n
+    Worst Case: O(n)
 */
-int partition_vect( vector<int>& vect, int left, int right )
+int partition( vector<int>& data, int low, int high )
 {
+<<<<<<< HEAD
     int tmp;
     int i               = left;     // left marker
     int j               = right;    // right marker
@@ -305,26 +331,53 @@ int partition_vect( vector<int>& vect, int left, int right )
 
         while( vect[j] >= pivot )
             j--;
-
-        if( i < j )
+=======
+    int pivot   = data[high];   // typically pivot point is at end of vector
+    int i       = (low - 1);    // index where smaller element exists
+    for( int j = low; j <= high-1; j++ )
+    {
+        if( data[j] <= pivot )
         {
-            cout << "swapping: " << vect[i] << " with " << vect[j] << endl; 
-            tmp = vect[i];
-            vect[i] = vect[j];
-            vect[j] = tmp;
             i++;
-            j--;
-        }
-        else if( i == j )
-        {
-            cout << "swapping " << vect[i] << " with pivot " << pivot << endl;
-            vect[right] = vect[i];
-            vect[i] = pivot;
-            break;
+            swap_el( &data[i], &data[j] );
         }
     }
-    display( vect );
-    cout << "divpt: " << i << endl; 
-    cout << "\n" << endl; 
-    return i;
+    swap( data[i+1], data[high] );
+    return ( i + 1 );
+}
+>>>>>>> c48b724cefb3eb8972c84f103a4fa2aad636d5a8
+
+
+// display vector in its respective partitioned sections according to the partition point 
+void show_partition( vector<int>& data, int part_pt )
+{
+    int cnt = 0;
+    cout << "div_pt: " << part_pt << endl; 
+    cout << "\nThe low side: " << endl;
+    for( int i = 0; i <= part_pt; i++ )
+    {
+        cout << data[i] << " ";
+        if( cnt == LINE_LIMIT )
+        {
+            cout << endl;
+            cnt = 0;
+        }
+    }
+    for( uint i = part_pt+1; i < data.size(); i++ )
+    {
+        cout << data[i] << " ";
+        if( cnt == LINE_LIMIT )
+        {
+            cout << endl;
+            cnt = 0;
+        }   
+    }
+}
+
+// simply swap function
+void swap_el( int* a, int* b )
+{
+    int tmp = *a;
+    *a      = *b;
+    *b      = tmp;
 }
