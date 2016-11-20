@@ -9,7 +9,7 @@ misc:
 	$(CC) -Wall misc_driver.cpp misc.o -o misc_driver
 
 hacker:
-	$(CC) -Wall hackerrank.cpp -o hacker 
+	$(CC) -Wall hackerrank.cpp ../data_structs/heap.o -o hacker
 
 clean:
 	rm -v *.o algos hacker misc_driver

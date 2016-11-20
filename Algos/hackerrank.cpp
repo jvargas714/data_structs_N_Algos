@@ -2,6 +2,8 @@
 #include <iostream> 
 #include <unordered_map>
 #include <sstream>
+#include <iomanip>
+#include "../data_structs/heap.h"
 
 using namespace std;
 // n elements in array 
@@ -16,7 +18,7 @@ void is_this_a_bst_main();
 void arrays_left_rotation_main();
 void time_conversion_main();
 void hash_tables_ransom_note_main();
-
+void heaps_find_running_median_main();
 
 // helpers
 int rotate_vector( vector<int>&, int, int );
@@ -26,10 +28,11 @@ vector<int> array_left_rotation( vector<int>&, int, int);
 bool ransom_note( unordered_map<string, int>&, vector<string>& );
 bool bin_search( string& str, const char target);
 void tester();
+void display_vector( vector<int>& );
 
 int main()
 {
-    tester();
+    heaps_find_running_median_main();
     return 0;
 }
 
@@ -285,8 +288,49 @@ bool bin_search( string& str, const char target ){
     return false;
 }
 
-// misc scrap 
-void tester()
+void heaps_find_running_median_main()
 {
+    int n, tmp, midpt;
+    cin >> n;
+    min_heap heap;
+    
+    // fill min_heap
+    for( int a_i = 0; a_i < n; a_i++ )
+    {
+       cin >> tmp;
+       heap.insert( tmp );
+       if( a_i == 0 )
+       {
+            cout << tmp << endl;
+            continue;
+       }
+        
+       vector<int> sorted_vect = heap.sort( true );
+       int len = sorted_vect.size();
 
+       if( len % 2 == 0 )
+       {
+            midpt = (len / 2) - 1;
+            float med = ( (float)( sorted_vect[midpt] + sorted_vect[midpt+1] ) / (float)2 );
+            printf( "%.1f\n", med );
+       }
+       else
+       {
+            midpt = len / 2;
+            printf( "%.1f\n", (float)sorted_vect[midpt] );
+       }
+
+       
+    }
+}
+
+
+
+void display_vector( vector<int>& v )
+{
+    for(auto& el : v )
+    {
+        cout << el << " ";
+    }
+    cout << endl;
 }

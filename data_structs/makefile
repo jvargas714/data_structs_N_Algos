@@ -3,7 +3,7 @@ CC = g++ -std=c++11 -g
 
 tester:
 	$(CC) -c -Wall logger.cpp
-	$(CC) -Wall -DLOGGING_ON tester.cpp logger.o -o tester
+	$(CC) -Wall -DLOGGING_ON tester.cpp logger.o heap.o -o tester
 
 scrap:
 	$(CC) -Wall scrap.cpp -o scrap

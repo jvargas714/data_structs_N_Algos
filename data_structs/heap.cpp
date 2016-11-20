@@ -187,12 +187,14 @@ std::vector<int> min_heap::sort( bool cpy )
 	std::vector<int> sorted_data, tmp;
 	if( cpy )
 	{
-		tmp.swap( data );
+		//tmp.swap( data );
+		tmp = data;
 	}
 	size_t sz = data.size();
 	for(size_t i = 0; i < sz; i++)
-	{
-		sorted_data.push_back( extract_min() );
+	{	
+		int min = extract_min();
+		sorted_data.push_back( min );
 	}
 	if( cpy )
 	{
