@@ -1,5 +1,5 @@
 #CC = g++ -std=c++0x
-CC = g++ -std=c++11
+CC = g++ -std=c++11 -g
 
 algos:
 	$(CC) -Wall algos.cpp ../data_structs/heap.o -o algos
@@ -10,6 +10,9 @@ misc:
 
 hacker:
 	$(CC) -Wall hackerrank.cpp ../data_structs/heap.o -o hacker
+
+tester:
+	$(CC) -Wall tester.cpp -o tester
 
 clean:
 	rm -v *.o algos hacker misc_driver
