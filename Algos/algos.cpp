@@ -111,7 +111,7 @@ void bubble_sort( vector<int>& vect )
             {
                 if( *(it+1) < *(it) )
                 {
-                    int tmp   = *(it);
+                    int tmp = *(it);
                     *(it)   = *(it+1);
                     *(it+1) = tmp;
                     changed = true;
