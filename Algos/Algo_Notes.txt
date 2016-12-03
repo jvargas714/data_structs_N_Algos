@@ -116,4 +116,68 @@ _____________________________________Questions Mentioned________________________
 	How quickly can we determine whether a number is a power of 2? 
 
 16. Ransom Note
-	 
+
+__________________________________________Sorting Algorithms Described______________________________
+Bubble Sort 
+Worst Case: O(n^2)
+Average Case: O(n^2)
+Best Case: O(n)
+Space Complexity: O(1)
+[ * * * * * * ]
+
+- keeps track of a changed flag which gets set to true if a swap is made 
+- goes through list and checks if the next item ar[i+1] > ar[i]
+	* if so then swap them and set changed flag to true
+- this pattern is repeated under a while loop that is terminated by the changed flag when we are 
+	able to loop through a list with performing any swaps
+
+________________________________________________Bit Manip___________________________________________
+Twos complement typcially used for negative number representation 
+
+to get -18 we can do it like so:
+	take positive 18 first 
+	0 0 0 1 0 0 1 0 
+		1. take all bits except the sign bit (msb)
+		2. then ivert all bits and add 1 to it
+		3. now make the sign bit a 1 
+	1 1 1 0 1 1 0 1
+		** now we add 1 to it 
+	1 1 1 0 1 1 1 0  --> boom we are done 
+
+logical vs arithmetic shifting
+	-- left shift will multiply it by two 
+	-- right shift will divide by two 
+
+	-- dealing with negative numbers and shifting 
+		* logical shift take -23 
+			1 1 1 0 1 0 0 1 
+			>> 
+			0 1 1 1 0 1 0 0 ( 116 )
+
+		* arithmetic right shift (will preserve the original sign bit)
+			1 1 1 0 1 0 0 1
+			>>
+			1 1 1 1 0 1 0 0 (-12)
+________________________________________________recursion___________________________________________
+Example program to count .txt files in file system 
+int countTxt(Dir dir){
+	if(dir == null) return 0;
+	int count = 0;
+	
+	// count current dir we are in now 
+	for(File file : dir){
+		if(file.endsWith(".txt") ){
+			count+=1;
+		}
+	}
+
+	// recursive part
+	for(Dir subdir : dir){
+		count += countTxt(subdir);
+	}
+	return count; 
+}
+
+	  --all recurs methods must have a base case
+	  -- see fib recurs tree for a good example 
+

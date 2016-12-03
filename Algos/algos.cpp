@@ -2,6 +2,8 @@
 #include <iostream>         // cout, endl
 #include <vector>           // vector, size_t
 #include <chrono>
+#include <string>           // std::getline 
+#include <sstream>
 #include "time.h"           // time(NULL)
 #include "../data_structs/master_structs.h"  // min:heap
 
@@ -30,6 +32,7 @@ int partition_vect( vector<int>&, int, int );
 int partition( vector<int>&, int, int );
 void swap_el( int*, int* );
 void show_partition( vector<int>&, int );
+void split(const string&, char delim, vector<string>&);
 
 
 int main()
@@ -111,7 +114,7 @@ void bubble_sort( vector<int>& vect )
             {
                 if( *(it+1) < *(it) )
                 {
-                    int tmp   = *(it);
+                    int tmp = *(it);
                     *(it)   = *(it+1);
                     *(it+1) = tmp;
                     changed = true;
@@ -206,7 +209,7 @@ void insertion_sort( vector<int>& vect )
     Best case: 0(nlog n) (simple partition) or 0(n) (3 way partition)
     Average case: 0(nlog n)
 */
-void quick_sort( vector<int>& data, int left_ind, int right_ind )
+void `quick_sort( vector<int>& data, int left_ind, int right_ind )
 {   
     if( right_ind > left_ind )
     {
@@ -331,4 +334,17 @@ void swap_el( int* a, int* b )
     int tmp = *a;
     *a      = *b;
     *b      = tmp;
+}
+
+// split a string by specified delim, if empty token between delims then do not collect it
+void split( const string& s, char delim, vector<string>& elems )
+{
+    stringstream ss;
+    ss.str(s);  // set contents of ss with s
+    string item;
+    while( getline(ss, item, delim) )
+    {
+        if( !item.empty() )
+            elems.push_back(item);
+    }
 }
