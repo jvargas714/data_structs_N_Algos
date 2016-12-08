@@ -74,7 +74,7 @@ void min_heap::bubble_down( )
 {
 	int parent = 0;
 	int tmp;
-	int max_ind = data.size()-1;
+	size_t max_ind = data.size()-1;
 	// std::cout <<"max_ind: " << max_ind << std::endl; 
 
 	// check for edge cases with 0 1 or 2 elements in heap
@@ -92,6 +92,8 @@ void min_heap::bubble_down( )
 				data[1] = tmp;
 				return;
 			}return;
+        default:
+            break;
 	}
 
 	do
@@ -99,17 +101,14 @@ void min_heap::bubble_down( )
 		int left_child 	= left( parent ); 	// left index  
 		int right_child = right( parent );	// right index
 		int to_be_swapped;
-		// std::cout << "left_child: " << left_child << ", right_child: " << right_child << std::endl;
 
-		// need to ensure that we do not go out of bounds here 
+		// need to ensure that we do not go out of bounds here
 		if( left_child == max_ind ) // left is at max index then right child is def out of bounds 
 		{
-			// std::cout << "left child is max index.." << std::endl; 
 			// we check to see left is larger than parent
 			if( data[ left_child ] <= data[ parent ] )
 			{
-				// std::cout << "then swap" << std::endl;
-				// swap them if so
+				// swap
 				tmp = data[ left_child ];
 				data[ left_child ] = data[ parent ];
 				data[ parent ] = tmp;
@@ -134,7 +133,6 @@ void min_heap::bubble_down( )
 				break;
 			}
 			// the switcharoo
-			// std::cout << "switching !! P: " << data[parent] << " with to_be_swapped: " << data[to_be_swapped] << std::endl;
 			tmp = data[ to_be_swapped ];
 			data[ to_be_swapped ] = data[ parent ];
 			data[ parent ] = tmp;
@@ -152,7 +150,8 @@ void min_heap::bubble_up()
 {
 	int new_el_ind 			= data.size()-1;
 	int parent_ind 			= parent( new_el_ind );
-	int new_el 				= data[ data.size()-1 ]; 
+	int new_el 				= data[ data.size()-1 ];
+
 	// bubble up algorithm
 	while ( new_el_ind != 0 && data[ parent_ind ] > new_el )
 	{

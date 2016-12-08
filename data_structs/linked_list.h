@@ -11,15 +11,14 @@ class linked_list
 	public:
 		node* next;
 		node* prev;
-		int*  data;
+		int  data;
 	
 		node(): next( nullptr ), prev( nullptr ), data( nullptr )
 		{
 		}
 
-		node( const int& input ): next( nullptr ), prev( nullptr )
+		node( const int& input ): next( nullptr ), prev( nullptr ), data( input )
 		{
-			data = new int( input );
 		}
 
 		~node()
