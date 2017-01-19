@@ -1,65 +1,50 @@
 #include <iostream>
 #include <unordered_map>
 #include <vector>
-
-/*
-	TODO: need to fix issue with input files tr_test4.input
-	TODO: for a couple of files execution is too slow, see input file trie_test5.input
-*/
-
+#include <cstdint>
+#include <unordered_map>
 
 // typedefs & defines 
-typedef std::vector<std::string> Names;
-typedef unsigned int uint;
 #define TERMINATOR '*'
+#define ROOT_CHAR  '@'
 
-// fwd dec 
-class contact_trie;
+/*
+	TODO :: Create a dictionary class like a hash map data structure would be something like  
+	A : {sorted vector to bin search through}
+*/
 
 // basic node for trie DS 
 class trie_node 
 {
-	friend class contact_trie;
-	char ch;
-	std::vector<trie_node> children;
-
 public:
+	char ch;
+	// for O(1) searches
+	std::vector<trie_nodes> children;
 	trie_node(): ch( TERMINATOR ){}
-	trie_node( const trie_node& nd ): ch( nd.ch ), children( nd.children ){}
+	trie_node( const trie_node nd ): ch( nd.ch ), children( nd.children ){}
 	trie_node( char c ): ch( c ){}
 };
 
-
-/* 
-	trie DS for contact list application
-	IDEAS:
-		- could have a container in class to hold full contact names
-			** map, vector, set
-*/
-class contact_trie 
+class trie_base
 {
-	
 private:
 	trie_node* root;
-	//Names names;
-	uint num_nodes;
+	uint32_t num_nodes;
 
 public:
-	contact_trie(): root( new trie_node ), num_nodes(0){ };
-	~contact_trie(){ delete root; };
+	trie_base(): root( new trie_node( ROOT_CHAR ) ), num_nodes(0){ };
+	~trie_base(){ delete root; };  // TODO :: will need to traverse and delete every node
 	
 	/* 
-		inserts contact name and creates new branch for each unique character
+		 name and creates new branch for each unique character
 		returns # of new nodes created
 	*/
-	uint insert_contact( const std::string& );
+	uint32_t insert( const std::string& input );
 
-	// traverses trie in search of contact based on partial word input
-	// returns number of possible contacts u tree
-	uint find_partial( const std::string& ) const;
+
 	
 	// for debug purposes show contacts in trie
-	inline void print_contacts( const Names& names ) const
+	inline void print_elements( const Names& names ) const
 	{ 
 		for( auto& name : names ) 
 			std::cout << name << std::endl;
@@ -76,5 +61,31 @@ private:
 	void _display_trie( const trie_node& node) const;
 
 	// recursively goes through nodes to find terminators keeps count
-	void count_terminators( const trie_node&, uint& ) const;
+	void count_terminators( const trie_node&, uint32_t& ) const;
 };
+
+
+
+/* Contains a vector with the current potential matches,
+	-- will need some sort of output interface reference as well 
+ */
+class trie_predictor : public trie_base
+{
+	std::vector<std::string> possible_matches;
+public:
+	// kicker off predictor thread
+	trie_predictor();
+
+	// ctor with file name containing words to insert into the trie, kicks off predictor thread
+	trie_predictor( std::string );
+
+	// traverse tree to return true if a match exists, update the vector with all possible matches 
+	bool possible_matches( const std::string& );
+
+	// displays all possible matches
+	void display_matches() const;
+
+};
+
+
+// TODO :: maybe some gui to test predictions as the user types.
