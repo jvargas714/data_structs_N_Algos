@@ -32,12 +32,9 @@ void linked_list::delete_list()
 /* places element at end of linked list */
 void linked_list::push_back( const int& data )
 {
-	std::cout << "linked_list::push_back(): " << data << std::endl;
 	if( !root )
 	{
-		std::cout << "linked_list::push_back(): root is null" << std::endl;
 		root = new node( data );
-		std::cout << "end push back" << std::endl;
 		return;
 	}
 	node* tmp_node = root;
@@ -51,7 +48,6 @@ void linked_list::push_back( const int& data )
 /* place new data in front of the linked list */
 void linked_list::push_front( const int& data )
 {
-	std::cout << "linked_list::push_front(): " << data << std::endl;
 	node* entry = new node( data );
 	node* tmp 	= root;
 	root 		= entry;
@@ -61,7 +57,6 @@ void linked_list::push_front( const int& data )
 /* returns true on successful insertion, returns false on failure */ 
 bool linked_list::insert( const int& data, const size_t& index )
 {
-	std::cout << "linked_list::insert(): data: " << data << " index: " << index << std::endl;
 	if( size() < index+1 )
 	{
 		return false;
@@ -112,7 +107,7 @@ std::string linked_list::to_string() const
 	ss << "Length of list: " << size() << std::endl;
 	while( nd != nullptr )
 	{
-		ss << *nd->data << " ";
+		ss << nd->data << " ";
 		nd = nd->next;
 	}
 	ss << std::endl;

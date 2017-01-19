@@ -209,7 +209,7 @@ void insertion_sort( vector<int>& vect )
     Best case: 0(nlog n) (simple partition) or 0(n) (3 way partition)
     Average case: 0(nlog n)
 */
-void `quick_sort( vector<int>& data, int left_ind, int right_ind )
+void quick_sort( vector<int>& data, int left_ind, int right_ind )
 {   
     if( right_ind > left_ind )
     {
