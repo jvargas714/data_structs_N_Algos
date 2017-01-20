@@ -1,3 +1,5 @@
+#ifndef __TRIE_H__
+#define __TRIE_H__
 #include <iostream>
 #include <unordered_map>
 #include <vector>
@@ -7,11 +9,15 @@
 // typedefs & defines 
 #define TERMINATOR '*'
 #define ROOT_CHAR  '@'
+#define MAX_PER_LINE 10
 
 /*
 	TODO :: Create a dictionary class like a hash map data structure would be something like  
 	A : {sorted vector to bin search through}
 */
+class trie_node;
+typedef std::vector<trie_node> Nodes;
+typedef std::vector<std::string> Predictions;
 
 // basic node for trie DS 
 class trie_node 
@@ -19,46 +25,32 @@ class trie_node
 public:
 	char ch;
 	// for O(1) searches
-	std::vector<trie_nodes> children;
+	Nodes children;
 	trie_node(): ch( TERMINATOR ){}
-	trie_node( const trie_node nd ): ch( nd.ch ), children( nd.children ){}
+	trie_node( const trie_node& nd ): ch( nd.ch ), children( nd.children ){}
 	trie_node( char c ): ch( c ){}
+	std::iostream& operator << ( std::iostream& os );
 };
 
 class trie_base
 {
-private:
+protected:
 	trie_node* root;
 	uint32_t num_nodes;
 
 public:
 	trie_base(): root( new trie_node( ROOT_CHAR ) ), num_nodes(0){ };
-	~trie_base(){ delete root; };  // TODO :: will need to traverse and delete every node
-	
-	/* 
-		 name and creates new branch for each unique character
-		returns # of new nodes created
-	*/
+	~trie_base(){ /*TODO:: run through all chidren and delete them */ }
+
 	uint32_t insert( const std::string& input );
-
-
-	
-	// for debug purposes show contacts in trie
-	inline void print_elements( const Names& names ) const
-	{ 
-		for( auto& name : names ) 
-			std::cout << name << std::endl;
-	}
-
-	// public facing display for function for troubleshooting
-	void display_trie() const;
+    inline size_t get_cnt() { return num_nodes; }
 
 private:
 	// returns true if node has a TERMINATOR char '*'
 	bool has_term( const trie_node& ) const;
 
 	// helper function to get recursive display started 
-	void _display_trie( const trie_node& node) const;
+	void display_trie( const trie_node& node) const;
 
 	// recursively goes through nodes to find terminators keeps count
 	void count_terminators( const trie_node&, uint32_t& ) const;
@@ -71,21 +63,23 @@ private:
  */
 class trie_predictor : public trie_base
 {
-	std::vector<std::string> possible_matches;
+	Predictions possible_matches;
 public:
 	// kicker off predictor thread
-	trie_predictor();
+	trie_predictor(){}
 
 	// ctor with file name containing words to insert into the trie, kicks off predictor thread
 	trie_predictor( std::string );
 
-	// traverse tree to return true if a match exists, update the vector with all possible matches 
-	bool possible_matches( const std::string& );
+	// traverse tree to return number of matches found if a match exists, updates vector with matches
+	size_t find_matches( const std::string& );
 
 	// displays all possible matches
 	void display_matches() const;
 
+private:
+	// helper function to fill match vector
+	void words_from_node( trie_node*, const std::string& );
 };
 
-
-// TODO :: maybe some gui to test predictions as the user types.
+#endif  // __TRIE_H__

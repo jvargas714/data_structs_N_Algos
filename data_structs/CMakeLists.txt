@@ -4,10 +4,8 @@ project(data_structs)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
-    main.cpp
-    node.h
-    heap.cpp
-    heap.h
-    queue.h)
+    trie_complete/trie_main.cpp
+        trie.h
+        trie.cpp)
 
 add_executable(data_structs ${SOURCE_FILES})
