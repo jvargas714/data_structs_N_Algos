@@ -6,6 +6,6 @@ set(CMAKE_CXX_STANDARD 11)
 set(SOURCE_FILES
     trie_complete/trie_main.cpp
         trie.h
-        trie.cpp)
+        trie.cpp string_util.h string_util.cpp)
 
 add_executable(data_structs ${SOURCE_FILES})

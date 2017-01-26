@@ -5,11 +5,13 @@
 #include <vector>
 #include <cstdint>
 #include <unordered_map>
+#include <string>
 
 // typedefs & defines 
 #define TERMINATOR '*'
 #define ROOT_CHAR  '@'
 #define MAX_PER_LINE 10
+#define MAX_WORD_LENGTH 45   // longest word in a major dictionary
 
 /*
 	TODO :: Create a dictionary class like a hash map data structure would be something like  
@@ -45,15 +47,17 @@ public:
 	uint32_t insert( const std::string& input );
     inline size_t get_cnt() { return num_nodes; }
 
-private:
-	// returns true if node has a TERMINATOR char '*'
-	bool has_term( const trie_node& ) const;
+    virtual size_t find_matches( const std::string& )=0;
+    virtual void display_matches()const=0;
+    virtual void display_trie( const trie_node& node) const=0;
 
-	// helper function to get recursive display started 
-	void display_trie( const trie_node& node) const;
-
+protected:
 	// recursively goes through nodes to find terminators keeps count
 	void count_terminators( const trie_node&, uint32_t& ) const;
+
+private:
+    // returns true if node has a TERMINATOR char '*'
+    bool has_term( const trie_node& ) const;
 };
 
 
@@ -66,6 +70,7 @@ class trie_predictor : public trie_base
 	Predictions possible_matches;
 public:
 	// kicker off predictor thread
+    // default ctor
 	trie_predictor(){}
 
 	// ctor with file name containing words to insert into the trie, kicks off predictor thread
@@ -76,6 +81,9 @@ public:
 
 	// displays all possible matches
 	void display_matches() const;
+
+    // display trie structure
+    virtual void display_trie( const trie_node& node) const;
 
 private:
 	// helper function to fill match vector

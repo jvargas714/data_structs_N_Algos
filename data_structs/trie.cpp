@@ -1,6 +1,7 @@
 #include "trie.h"
-#include <algorithm>   // std::find
-
+#include <algorithm>    // std::find
+#include <fstream>      // std::ifstream
+#include "string_util.h"
 
 std::iostream& trie_node::operator << ( std::iostream& os )
 {
@@ -21,7 +22,7 @@ std::iostream& trie_node::operator << ( std::iostream& os )
 */
 uint32_t trie_base::insert( const std::string& input )
 {
-	std::cout << "inserting " << input << " into the trie." << std::endl;
+	std::cout << "inserting " << input << std::endl;
 	// should handle case where input string is only 1 character in length 
 	if( input.size() == 1 )
 	{
@@ -30,11 +31,11 @@ uint32_t trie_base::insert( const std::string& input )
 		{
 			return nd.ch == input[0];
 		} );
-		if( tmp_it == root->children.end() )
+		if( tmp_it == root->children.end() ) // did not find single letter input
 		{
-			root->children.emplace_back(  *(new trie_node( input[0]) ) );
+			root->children.emplace_back( *(new trie_node( input[0]) ) );
 			num_nodes++;
-            display_trie( *root );
+            //display_trie( *root );
 			return 1;
 		}
 		else   // if found then just add a terminator if its not already there
@@ -43,24 +44,24 @@ uint32_t trie_base::insert( const std::string& input )
 			{
 				tmp_it->children.push_back( TERMINATOR );
 				num_nodes++;
-                display_trie( *root );
+                //display_trie( *root );
 				return 1;
 			}
-            display_trie( *root );
+            //display_trie( *root );
 			return 0; // this one letter word has already been entered in to the trie
 		}
 	}
-
+    // multi-letter word entry
 	trie_node* 	tmp = root;
 	uint32_t 	cnt = 0; 
-	for( auto it = input.begin(); it != input.end(); it++ )
+	for( auto it = input.begin(); it != input.end(); it++ )     // go through char by char
 	{
-		auto child_it = std::find_if( tmp->children.begin(), tmp->children.end(),
+		auto child_it = std::find_if( tmp->children.begin(), tmp->children.end(), // check if current node has a terminator or not
 	   []( const trie_node& nd )
 		{
 			return (nd.ch == TERMINATOR);
 		} );
-		if( child_it == tmp->children.end() )
+		if( child_it == tmp->children.end() )  // if node does not have a term
 		{
 			// if no terminator and last letter of word
 			if( it == input.end()-1 )
@@ -69,7 +70,7 @@ uint32_t trie_base::insert( const std::string& input )
 				tmp->children.push_back( TERMINATOR );
 				cnt+=2;
 				num_nodes+=2;
-                display_trie( *root );
+                //display_trie( *root );
 				return cnt;
 			}
 		}
@@ -97,7 +98,7 @@ uint32_t trie_base::insert( const std::string& input )
 			tmp = &*child_it;
 		}
 	}
-	display_trie( *root );
+	// display_trie( *root );
 	return cnt;
 }
 
@@ -112,24 +113,19 @@ bool trie_base::has_term( const trie_node & nd ) const
 	return false;
 }
 
-
-void trie_base::display_trie( const trie_node& node ) const
+/***************************************trie_predictor*********************************************/
+trie_predictor::trie_predictor( std::string file_name )
 {
-	using std::cout;
-	using std::endl;
-	cout << node.ch << " --> ";
-	cout << "children: ";
-	for( size_t i = 0; i < node.children.size(); i++ )
-	{
-		cout << node.children[i].ch << " ";
-	}
-	cout << endl;
-	// recurse to next child at this level
-	for( auto nd : node.children )
-		display_trie( nd );
+    std::ifstream fstrm( file_name );
+    std::string word;
+    while( fstrm.good() )
+    {
+        std::getline( fstrm, word );
+        word = elim_whitespace( word );
+        insert( word );
+    }
 }
 
-/************************trie_predictor**************************/
 size_t trie_predictor::find_matches( const std::string& query )
 {
 	possible_matches.clear();
@@ -193,6 +189,22 @@ void trie_predictor::words_from_node( trie_node* nd, const std::string& prefix )
 	}
 }
 
+void trie_predictor::display_trie( const trie_node& node ) const
+{
+    using std::cout;
+    using std::endl;
+    cout << node.ch << " --> ";
+    cout << "children: ";
+    for( size_t i = 0; i < node.children.size(); i++ )
+    {
+        cout << node.children[i].ch << " ";
+    }
+    cout << endl;
+    // recurse to next child at this level
+    for( auto nd : node.children )
+        display_trie( nd );
+    cout << endl;
+}
 
 
 
