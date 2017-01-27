@@ -42,7 +42,7 @@ protected:
 
 public:
 	trie_base(): root( new trie_node( ROOT_CHAR ) ), num_nodes(0){ };
-	~trie_base(){ /*TODO:: run through all chidren and delete them */ }
+	virtual ~trie_base(){ /*TODO:: run through all chidren and delete them */ }
 
 	uint32_t insert( const std::string& input );
     inline size_t get_cnt() { return num_nodes; }

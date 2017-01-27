@@ -19,6 +19,8 @@ std::iostream& trie_node::operator << ( std::iostream& os )
 	@---t---r-------------y---*
 	         \            \___i___n___g___*
 	         \_i__p__*
+
+	         TODO:: issue lies with terminator placement not at end, need to take another look at this
 */
 uint32_t trie_base::insert( const std::string& input )
 {
@@ -42,7 +44,7 @@ uint32_t trie_base::insert( const std::string& input )
 		{
 			if( !has_term( *tmp_it ) )
 			{
-				tmp_it->children.push_back( TERMINATOR );
+				tmp_it->children.push_back( *(new trie_node( TERMINATOR ) ) );
 				num_nodes++;
                 //display_trie( *root );
 				return 1;
@@ -56,46 +58,73 @@ uint32_t trie_base::insert( const std::string& input )
 	uint32_t 	cnt = 0; 
 	for( auto it = input.begin(); it != input.end(); it++ )     // go through char by char
 	{
+		std::cout << "Current letter: " << *it << std::endl;
 		auto child_it = std::find_if( tmp->children.begin(), tmp->children.end(), // check if current node has a terminator or not
-	   []( const trie_node& nd )
+	    []( const trie_node& nd )
 		{
 			return (nd.ch == TERMINATOR);
 		} );
 		if( child_it == tmp->children.end() )  // if node does not have a term
 		{
+			std::cout << "Current node " << tmp->ch << " does not have a terminator." << std::endl;
 			// if no terminator and last letter of word
 			if( it == input.end()-1 )
 			{
+				std::cout << "last letter and no terminator present, adding terminator node to node: " << tmp->ch << std::endl;
 				tmp->children.emplace_back( *it );
-				tmp->children.push_back( TERMINATOR );
+				tmp->children.push_back( *( new trie_node(TERMINATOR ) ) );
 				cnt+=2;
 				num_nodes+=2;
+				std::cout << "Children of node: " << tmp->ch << std::endl;
+				for( auto& n : tmp->children )
+				{
+					std::cout << "CHILD: " << n.ch << std::endl;
+				}
                 //display_trie( *root );
 				return cnt;
 			}
 		}
-		child_it = std::find_if( tmp->children.begin(), tmp->children.end(),
+		else  // case where terminator exists
+		{
+			// last letter of word with a terminator means do nothing we are done
+			if( it == input.end()-1 )
+			{
+				break;
+			}
+		}
+		child_it = std::find_if( tmp->children.begin(), tmp->children.end(),  // check if a child node has this char
 		  [it]( const trie_node& nd )
 		  {
 			  return *it == nd.ch;
 		  });
-		if( child_it == tmp->children.end() )
+		if( child_it == tmp->children.end() )  // if current node does not have this character as a child
 		{
-			// case where the child does not exists
+			std::cout << "current node " << tmp->ch << " does not have " << *it << " as a child..." << std::endl;
+			// case where the child does not exists place rest of characters of word down a new branch
 			for( auto _it = it; _it != input.end(); _it++ )
 			{
-				tmp->children.emplace_back( *(new trie_node(*_it)) );
+				std::cout << "Finishing rest of word down branch, adding " << *_it << std::endl;
+				tmp->children.emplace_back( *(new trie_node(*_it)) ); // [w, o, r, d]
 				tmp = &tmp->children.back();
+				std::cout << "new current node: " << tmp->ch << std::endl;
 				cnt++;
 				num_nodes++;
 			}
-			tmp->children.push_back( TERMINATOR );
+			std::cout << "Adding a terminator to node: " << tmp->ch << std::endl;
+			tmp->children.push_back( *(new trie_node(TERMINATOR)) );  // add terminator to signify end of word d->[*]
+			// jdebug
+			//std::cout << "Displaying children of node: " << (tmp-1)->ch << std::endl;
+			//for( int i = 0; i < (tmp-1)->children.size(); i++ )
+			//{
+			//	std::cout << "Child: " << (tmp-1)->children[i].ch << std::endl;
+			//}
 			break;
 		}
-		else
+		else  // means current node had the next lette of the word as a child so
 		{
-			// Child does exists 
+			std::cout << "Current node " << tmp->ch << " has child " << *it << std::endl;
 			tmp = &*child_it;
+			std::cout << "New current node " << tmp->ch << std::endl;
 		}
 	}
 	// display_trie( *root );
