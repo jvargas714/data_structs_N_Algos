@@ -6,7 +6,7 @@ using namespace std;
 trie_base* handle_args( int argc, char** argv )
 {
     trie_base* trie;
-    if( !strcmp( argv[1], "manual" ) )
+    if( !strcmp( argv[1], "man" ) )
     {
         trie = new trie_predictor;
     }
@@ -28,7 +28,7 @@ int main( int argc, char** argv )
     trie_base* trie = handle_args( argc, argv );
     string input;
     string mode( argv[1] );
-    if( mode == "manual" )
+    if( mode == "man" )
     {
         cout << "indefinately enter words to add to trie. To end session type 'end' " << endl;
         while( true )
@@ -40,6 +40,7 @@ int main( int argc, char** argv )
             cout << trie->insert( input ) << " nodes created" << endl;
             cout << "Total Nodes: " << trie->get_cnt() << endl;
             cout << "\n\n" << endl;
+            trie->display_trie();
         }
     }
     while( true )

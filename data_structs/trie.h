@@ -46,14 +46,15 @@ public:
 
 	uint32_t insert( const std::string& input );
     inline size_t get_cnt() { return num_nodes; }
-
     virtual size_t find_matches( const std::string& )=0;
     virtual void display_matches()const=0;
-    virtual void display_trie( const trie_node& node) const=0;
+    virtual void display_trie() const=0;
+    
 
 protected:
 	// recursively goes through nodes to find terminators keeps count
 	void count_terminators( const trie_node&, uint32_t& ) const;
+	virtual void _display_trie( const trie_node& node) const=0;
 
 private:
     // returns true if node has a TERMINATOR char '*'
@@ -82,8 +83,12 @@ public:
 	// displays all possible matches
 	void display_matches() const;
 
+	// displays trie starting at the root 
+	void display_trie() const;
+
+protected:
     // display trie structure
-    virtual void display_trie( const trie_node& node) const;
+    void _display_trie( const trie_node& node) const;
 
 private:
 	// helper function to fill match vector

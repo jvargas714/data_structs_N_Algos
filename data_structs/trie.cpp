@@ -25,7 +25,6 @@ std::iostream& trie_node::operator << ( std::iostream& os )
 uint32_t trie_base::insert( const std::string& input )
 {
 	std::cout << "inserting " << input << std::endl;
-	// should handle case where input string is only 1 character in length 
 	if( input.size() == 1 )
 	{
 		auto tmp_it = std::find_if( root->children.begin(), root->children.end(),
@@ -33,78 +32,90 @@ uint32_t trie_base::insert( const std::string& input )
 		{
 			return nd.ch == input[0];
 		} );
-		if( tmp_it == root->children.end() ) // did not find single letter input
+		if( tmp_it == root->children.end() )
 		{
-			root->children.emplace_back( *(new trie_node( input[0]) ) );
+			root->children.emplace_back( input[0] );
 			num_nodes++;
-            //display_trie( *root );
 			return 1;
 		}
-		else   // if found then just add a terminator if its not already there
+		else
 		{
 			if( !has_term( *tmp_it ) )
 			{
 				tmp_it->children.push_back( *(new trie_node( TERMINATOR ) ) );
 				num_nodes++;
-                //display_trie( *root );
 				return 1;
 			}
-            //display_trie( *root );
-			return 0; // this one letter word has already been entered in to the trie
+			return 0;
 		}
 	}
     // multi-letter word entry
 	trie_node* 	tmp = root;
-	uint32_t 	cnt = 0; 
-	for( auto it = input.begin(); it != input.end(); it++ )     // go through char by char
+	uint32_t 	cnt = 0;
+	for( auto it = input.begin(); it != input.end(); it++ )
 	{
+		// when we are processing the last letter of the word 
+		if( it == input.end()-1 )
+		{
+			std::cout << "we have hit the last letter " << *it << std::endl;
+
+			// Move tmp to last letter child if exists else just add both
+			auto possible_last_letter_nd = std::find_if( tmp->children.begin(), tmp->children.end(), 
+				[ it ]( const trie_node& nd ) 
+				{
+					return (nd.ch == *it);
+				});
+			if( possible_last_letter_nd == tmp->children.end() )
+			{
+				tmp->children.emplace_back( *it );
+				tmp = &tmp->children.back();
+				tmp->children.emplace_back( TERMINATOR );
+				cnt+=2;
+				return cnt;
+			}
+			else   // otherwise add a terminator if it isnt already there 
+			{
+				tmp = &*possible_last_letter_nd;
+				if( !has_term( *tmp ) )
+				{
+					tmp->children.emplace_back( TERMINATOR );
+					cnt++;
+					return cnt;
+				}
+				else
+				{
+					return cnt;
+				}
+			}
+		}
 		std::cout << "Current letter: " << *it << std::endl;
 		auto child_it = std::find_if( tmp->children.begin(), tmp->children.end(), // check if current node has a terminator or not
+	    
+	    // case where last letter and has a terminator
 	    []( const trie_node& nd )
 		{
 			return (nd.ch == TERMINATOR);
 		} );
-		if( child_it == tmp->children.end() )  // if node does not have a term
+		if( child_it != tmp->children.end() && (it == input.end()-1) )  // there is a term 
 		{
-			std::cout << "Current node " << tmp->ch << " does not have a terminator." << std::endl;
-			// if no terminator and last letter of word
-			if( it == input.end()-1 )
-			{
-				std::cout << "last letter and no terminator present, adding terminator node to node: " << tmp->ch << std::endl;
-				tmp->children.emplace_back( *it );
-				tmp->children.push_back( *( new trie_node(TERMINATOR ) ) );
-				cnt+=2;
-				num_nodes+=2;
-				std::cout << "Children of node: " << tmp->ch << std::endl;
-				for( auto& n : tmp->children )
-				{
-					std::cout << "CHILD: " << n.ch << std::endl;
-				}
-                //display_trie( *root );
 				return cnt;
-			}
 		}
-		else  // case where terminator exists
-		{
-			// last letter of word with a terminator means do nothing we are done
-			if( it == input.end()-1 )
-			{
-				break;
-			}
-		}
-		child_it = std::find_if( tmp->children.begin(), tmp->children.end(),  // check if a child node has this char
+
+		// Case where we are not at the last letter in the word 
+		child_it = std::find_if( tmp->children.begin(), tmp->children.end(),
 		  [it]( const trie_node& nd )
 		  {
 			  return *it == nd.ch;
 		  });
-		if( child_it == tmp->children.end() )  // if current node does not have this character as a child
+		if( child_it == tmp->children.end() )
 		{
 			std::cout << "current node " << tmp->ch << " does not have " << *it << " as a child..." << std::endl;
-			// case where the child does not exists place rest of characters of word down a new branch
+
+			// child does not exists place rest of word down a new branch
 			for( auto _it = it; _it != input.end(); _it++ )
 			{
 				std::cout << "Finishing rest of word down branch, adding " << *_it << std::endl;
-				tmp->children.emplace_back( *(new trie_node(*_it)) ); // [w, o, r, d]
+				tmp->children.emplace_back( *_it ); // [w, o, r, d]
 				tmp = &tmp->children.back();
 				std::cout << "new current node: " << tmp->ch << std::endl;
 				cnt++;
@@ -112,12 +123,7 @@ uint32_t trie_base::insert( const std::string& input )
 			}
 			std::cout << "Adding a terminator to node: " << tmp->ch << std::endl;
 			tmp->children.push_back( *(new trie_node(TERMINATOR)) );  // add terminator to signify end of word d->[*]
-			// jdebug
-			//std::cout << "Displaying children of node: " << (tmp-1)->ch << std::endl;
-			//for( int i = 0; i < (tmp-1)->children.size(); i++ )
-			//{
-			//	std::cout << "Child: " << (tmp-1)->children[i].ch << std::endl;
-			//}
+			cnt++;
 			break;
 		}
 		else  // means current node had the next lette of the word as a child so
@@ -127,12 +133,11 @@ uint32_t trie_base::insert( const std::string& input )
 			std::cout << "New current node " << tmp->ch << std::endl;
 		}
 	}
-	// display_trie( *root );
 	return cnt;
 }
 
 
-bool trie_base::has_term( const trie_node & nd ) const
+bool trie_base::has_term( const trie_node& nd ) const
 {
 	for( auto el : nd.children )
 	{
@@ -218,7 +223,7 @@ void trie_predictor::words_from_node( trie_node* nd, const std::string& prefix )
 	}
 }
 
-void trie_predictor::display_trie( const trie_node& node ) const
+void trie_predictor::_display_trie( const trie_node& node ) const
 {
     using std::cout;
     using std::endl;
@@ -231,10 +236,14 @@ void trie_predictor::display_trie( const trie_node& node ) const
     cout << endl;
     // recurse to next child at this level
     for( auto nd : node.children )
-        display_trie( nd );
+        _display_trie( nd );
     cout << endl;
 }
 
+void trie_predictor::display_trie() const
+{
+	_display_trie( *root );
+}
 
 
 
