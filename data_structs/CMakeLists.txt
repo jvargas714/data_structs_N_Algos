@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 project(data_structs)
 
 set(CMAKE_CXX_STANDARD 11)
-
+#add_definitions(-DDEBUG)
 set(SOURCE_FILES
     trie_complete/trie_main.cpp
         trie.h

@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <unordered_map>
 #include <string>
+#include <map>
 
 // typedefs & defines 
 #define TERMINATOR '*'
@@ -19,7 +20,9 @@
 */
 class trie_node;
 typedef std::vector<trie_node> Nodes;
+typedef Nodes::iterator Trie_node_it;
 typedef std::vector<std::string> Predictions;
+typedef std::map<std::string, std::string> Word_bank;
 
 // basic node for trie DS 
 class trie_node 
@@ -38,7 +41,9 @@ class trie_base
 {
 protected:
 	trie_node* root;
-	uint32_t num_nodes;
+	Word_bank word_bank;
+    uint32_t num_nodes;
+
 
 public:
 	trie_base(): root( new trie_node( ROOT_CHAR ) ), num_nodes(0){ };
@@ -47,23 +52,27 @@ public:
 	uint32_t insert( const std::string& input );
     inline size_t get_cnt() { return num_nodes; }
     virtual size_t find_matches( const std::string& )=0;
-    virtual void display_matches()const=0;
-    virtual void display_trie() const=0;
-    
+    virtual void display_matches( std::ostream& )const=0;
+    virtual void display_trie( std::ostream& ) const=0;
+    inline size_t get_word_cnt() const { return word_bank.size(); }
 
 protected:
 	// recursively goes through nodes to find terminators keeps count
 	void count_terminators( const trie_node&, uint32_t& ) const;
-	virtual void _display_trie( const trie_node& node) const=0;
+	virtual void _display_trie( const trie_node& node, std::ostream& ) const=0;
+    Trie_node_it has_child( trie_node& src_node, const char& target ) const;
+    void display_children( const trie_node&, std::ostream& ) const;
+
 
 private:
     // returns true if node has a TERMINATOR char '*'
-    bool has_term( const trie_node& ) const;
+    Trie_node_it has_term( trie_node& ) const;
 };
 
 
 
-/* Contains a vector with the current potential matches,
+/*
+ * Contains a vector with the current potential matches,
 	-- will need some sort of output interface reference as well 
  */
 class trie_predictor : public trie_base
@@ -81,18 +90,17 @@ public:
 	size_t find_matches( const std::string& );
 
 	// displays all possible matches
-	void display_matches() const;
+	void display_matches( std::ostream& ) const;
 
 	// displays trie starting at the root 
-	void display_trie() const;
+	void display_trie( std::ostream& ) const;
 
 protected:
     // display trie structure
-    void _display_trie( const trie_node& node) const;
+    void _display_trie( const trie_node& node, std::ostream& ) const;
 
 private:
 	// helper function to fill match vector
 	void words_from_node( trie_node*, const std::string& );
 };
-
 #endif  // __TRIE_H__
