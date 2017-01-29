@@ -8,4 +8,5 @@ set(SOURCE_FILES
         trie.h
         trie.cpp string_util.h string_util.cpp)
 
-add_executable(data_structs ${SOURCE_FILES})
+add_executable( trie_main ${SOURCE_FILES})
+execute_process( COMMAND install_trie.sh )

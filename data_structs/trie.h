@@ -12,13 +12,9 @@
 #define TERMINATOR '*'
 #define ROOT_CHAR  '@'
 #define MAX_PER_LINE 10
-#define MAX_WORD_LENGTH 45   // longest word in a major dictionary
+#define MAX_WORD_LENGTH 45
 
-/*
-	TODO :: Create a dictionary class like a hash map data structure would be something like  
-	A : {sorted vector to bin search through}
-*/
-class trie_node;
+class   trie_node;
 typedef std::vector<trie_node> Nodes;
 typedef Nodes::iterator Trie_node_it;
 typedef std::vector<std::string> Predictions;
@@ -37,6 +33,9 @@ public:
 	std::iostream& operator << ( std::iostream& os );
 };
 
+/*
+ * Abstract Base class for a trie data structure containing words
+ */
 class trie_base
 {
 protected:
@@ -44,14 +43,13 @@ protected:
 	Word_bank word_bank;
     uint32_t num_nodes;
 
-
 public:
 	trie_base(): root( new trie_node( ROOT_CHAR ) ), num_nodes(0){ };
 	virtual ~trie_base(){ /*TODO:: run through all chidren and delete them */ }
 
 	uint32_t insert( const std::string& input );
     inline size_t get_cnt() { return num_nodes; }
-    virtual size_t find_matches( const std::string& )=0;
+    virtual size_t find_matches( std::string )=0;
     virtual void display_matches( std::ostream& )const=0;
     virtual void display_trie( std::ostream& ) const=0;
     inline size_t get_word_cnt() const { return word_bank.size(); }
@@ -63,7 +61,6 @@ protected:
     Trie_node_it has_child( trie_node& src_node, const char& target ) const;
     void display_children( const trie_node&, std::ostream& ) const;
 
-
 private:
     // returns true if node has a TERMINATOR char '*'
     Trie_node_it has_term( trie_node& ) const;
@@ -72,8 +69,7 @@ private:
 
 
 /*
- * Contains a vector with the current potential matches,
-	-- will need some sort of output interface reference as well 
+    Class that performs predictions based on prefix input from user
  */
 class trie_predictor : public trie_base
 {
@@ -87,7 +83,7 @@ public:
 	trie_predictor( std::string );
 
 	// traverse tree to return number of matches found if a match exists, updates vector with matches
-	size_t find_matches( const std::string& );
+	size_t find_matches( std::string );
 
 	// displays all possible matches
 	void display_matches( std::ostream& ) const;
@@ -101,6 +97,6 @@ protected:
 
 private:
 	// helper function to fill match vector
-	void words_from_node( trie_node*, const std::string& );
+	void words_from_node( trie_node&, std::string& );
 };
 #endif  // __TRIE_H__

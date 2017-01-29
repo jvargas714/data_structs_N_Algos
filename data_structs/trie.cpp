@@ -32,8 +32,9 @@ uint32_t trie_base::insert( const std::string& input )
 		if( tmp_it == root->children.end() )
 		{
 			root->children.emplace_back( input[0] );
-			num_nodes++;
-			return 1;
+            root->children.back().children.emplace_back( TERMINATOR );
+			num_nodes+=2;
+			return 2;
 		}
 		else
 		{
@@ -132,6 +133,7 @@ void trie_base::display_children( const trie_node& node, std::ostream& os ) cons
         os << nd.ch << " ";
     os << std::endl;
 }
+
 /***************************************trie_predictor*********************************************/
 trie_predictor::trie_predictor( std::string file_name )
 {
@@ -146,10 +148,10 @@ trie_predictor::trie_predictor( std::string file_name )
 }
 
 /* Take a provided query string and match potential matches against what is the trie */
-size_t trie_predictor::find_matches( const std::string& query )
+size_t trie_predictor::find_matches( std::string query )
 {
 	possible_matches.clear();
-	if( query.size() == 1 )
+	if( query.size() == 1 || query.size() > MAX_WORD_LENGTH )
 		return 0;
 	trie_node* prediction_root = root;
 	auto child_it = prediction_root->children.begin();
@@ -167,48 +169,36 @@ size_t trie_predictor::find_matches( const std::string& query )
 
 		prediction_root = &*child_it;
 	}
-    std::cout << "Prediction root: (" << prediction_root->ch << ")" << std::endl;
-    display_children( *prediction_root, std::cout );
-
 	// build matches from prediction node
-	words_from_node( prediction_root, query );
+	words_from_node( *prediction_root, query );
 	return possible_matches.size();
 }
 
 void trie_predictor::display_matches( std::ostream& os ) const
 {
-	size_t cnt = 0;
-	os << "Displaying matches: " << std::endl;
 	for( auto& el : possible_matches )
 	{
-		cnt++;
-		os << el << "\t" << std::endl;
-		if( cnt == MAX_PER_LINE )
-		{
-			os << std::endl;
-			cnt = 0;
-		}
+		os << el << "\n";
 	}
+    os << "There are " << possible_matches.size() << " matches..." << std::endl;
 }
 
 // maybe can be recursive to find words
-void trie_predictor::words_from_node( trie_node* nd, const std::string& prefix )
+void trie_predictor::words_from_node( trie_node& nd, std::string& prefix )
 {
-	std::string predicted_word = prefix;
-	for( auto it = nd->children.begin(); it != nd->children.end(); it++ )
+    std::string predicted_word = prefix;
+	for( auto it = nd.children.begin(); it != nd.children.end(); it++ )
 	{
 		if( it->ch == TERMINATOR )
 		{
 			possible_matches.push_back( predicted_word );
-			return;
 		}
 		else // keep building word
 		{
-			std::cout << "adding letter: " << it->ch << std::endl;
 			predicted_word+=it->ch;
+            words_from_node( *it, predicted_word );
+            predicted_word.pop_back();
 		}
-		if( it->children.size() )
-			words_from_node( &*it, prefix );
 	}
 }
 

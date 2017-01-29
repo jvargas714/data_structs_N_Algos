@@ -39,7 +39,6 @@ int main( int argc, char** argv )
             std::cout << trie->insert( input ) << " nodes created" << std::endl;
             std::cout << "Total Nodes: " << trie->get_cnt() << std::endl;
             std::cout << "\n\n" << std::endl;
-            trie->display_trie( std::cout );
         }
     }
     while( true )
