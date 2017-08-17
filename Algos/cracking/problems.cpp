@@ -1,7 +1,8 @@
 #include "problems.h"
 #include <vector>
-#include <string>
-
+#include <cstring>
+#include <algorithm>
+typedef unsigned int uint;
 /*
  * 1.1
  * Implement an algorithm to determine if a string has all unique characters.
@@ -32,8 +33,8 @@ bool arrays_n_strings::check_permutation( std::string str1, std::string str2 )
 {
     if( str1.size() != str2.size() ) return false;
 
-    sort( str1.begin(), str1.end() );
-    sort( str2.begin(), str2.end() );
+    std::sort( str1.begin(), str1.end() );
+    std::sort( str2.begin(), str2.end() );
     if( !str1.compare( str2 ) )
         return true;
     return false;
@@ -71,6 +72,8 @@ void arrays_n_strings::urlify( std::string& str )
  *  We know that for a string to be a palindrome that is must be able to be read the same forward and
  *  backwards. This tells us that all characters must appear an even number of times. If there are an
  *  odd number of characters in the input string then exactly one character must only appear once.
+ *  Therefore we only have to check if a palindrome permutation a string can have no more than one 
+ *  character that is odd in frequency.
  * input: Tact Coa
  * */
 bool arrays_n_strings::palindrome_permutation( const std::string& str )
@@ -78,23 +81,72 @@ bool arrays_n_strings::palindrome_permutation( const std::string& str )
     size_t len = str.size();
     if( len == 0 ) return false;
     if( len == 2 && str[0] == str[1] ) return false;
-    if( (len % 2) == 0 )    // even case
-    {
-        // here is where eveny character must appear an even number of times
-    }
-    else                    // odd case
-    {
-        // here every character must appear an even amount of time but one char must appear once.
-    }
+    unsigned int* freq_table = _build_frequency_table( str );
+    return _check_max_one_odd(freq_table);    
 }
 
-bool arrays_n_strings::is_palindrome( const std::string str )
+bool arrays_n_strings::_is_palindrome( const std::string str )
 {
     size_t len = str.size();
-    for( int i = 0; i < len; ++i )
+    for( unsigned int i = 0; i < len; ++i )
     {
-        if( str[i] != str[len - i - 1])
+        if( str[i] != str[len - i - 1] )
             return false;
     }
+    return true;
+}
+
+/*Helper method to build a frequency table*/
+unsigned int* arrays_n_strings::_build_frequency_table( const std::string& str ) 
+{ 
+    unsigned int* freq_table = new unsigned int[26];   // where index 0 is 'a' and index 25 is 'z'
+    memset(freq_table, 0, 26);
+    for( auto chr : str ) 
+    {
+        int tmp = get_char_index(chr);
+        if( tmp != -1 )
+            freq_table[tmp]++;
+    }
+    return freq_table;
+}
+
+/*
+    This method will return an integer for the position of the character, non-letter chars
+    will return -1 
+    numerical difference between 'A' and 'a' is 32 
+*/
+unsigned int arrays_n_strings::get_char_index( const char& chr )
+{
+    if( chr >= 'a' && chr <= 'z' ) // lowercase 
+    {
+        return (chr-'a');
+    }
+    else if ( chr >= 'A' && chr <= 'Z' ) 
+    {
+        return (chr-'A');
+    }
+    else // non-letter char 
+    {
+        return -1;
+    }   
+}
+
+/*
+    This function will check the input array conforms to the criteria that is needed for a phrase 
+    to be a palindrone permutation, and that is for a character 
+*/
+bool arrays_n_strings::_check_max_one_odd(unsigned int* freq_table)
+{
+    bool odd_found = false; 
+    for(int i = 0; i < 26; ++i)
+    {
+        if ( freq_table[i]%2 == 1 )
+        {
+            if(odd_found)   // at this point we already found a char that has freq so no a permutation
+                return false;
+            odd_found = true; 
+        }
+    }
+    delete [] freq_table;
     return true;
 }

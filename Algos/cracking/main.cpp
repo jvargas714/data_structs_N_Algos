@@ -6,9 +6,15 @@ void display_input( int cnt, char** args );
 
 int main( int argc, char* argv[] )
 {
-    string tmp( "This is a test, here we are   testing   testing " );
-    arrays_n_strings::urlify( tmp );
-
+	string palinPhrase = "Tact Coa";
+	if( arrays_n_strings::palindrome_permutation(palinPhrase) )
+	{
+		cout << palinPhrase << " is a palindrome_permutation!!" << endl;
+	}
+	else 
+	{
+		cout << palinPhrase << " is not a palindrome_permutation :(" << endl; 
+	}
     return 0;
 }
 
