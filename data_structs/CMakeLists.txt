@@ -3,10 +3,14 @@ project(data_structs)
 
 set(CMAKE_CXX_STANDARD 11)
 #add_definitions(-DDEBUG)
-set(SOURCE_FILES
-    trie_complete/trie_main.cpp
+set(TRIE_FILES
         trie.h
-        trie.cpp string_util.h string_util.cpp)
+        trie.cpp string_util.h string_util.cpp linked_list_main.cpp)
+add_executable( trie_main ${TRIE_FILES})
 
-add_executable( trie_main ${SOURCE_FILES})
-execute_process( COMMAND install_trie.sh )
+set(LINKED_LIST_FILES
+        linked_list.h
+        linked_list.cpp
+        linked_list_main.cpp)
+add_executable(linked_list_main ${LINKED_LIST_FILES})
+
