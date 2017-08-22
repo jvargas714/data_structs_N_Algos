@@ -7,22 +7,22 @@ void display_input( int cnt, char** args );
 int main( int argc, char* argv[] )
 {
 	string palinPhrase = "Tact Coa";
-	if( arrays_n_strings::palindrome_permutation(palinPhrase) )
-	{
-		cout << palinPhrase << " is a palindrome_permutation!!" << endl;
+	string a, b;
+	if( argc == 3 ) {
+		a=argv[1];
+		b=argv[2];
+	} else {
+		a=argv[1];
 	}
-	else 
-	{
-		cout << palinPhrase << " is not a palindrome_permutation :(" << endl; 
-	}
+
+	cout << arrays_n_strings::string_compression(a) << endl;
+	
     return 0;
 }
 
-void display_input( int cnt, char** args )
-{
+void display_input( int cnt, char** args ) {
     cout << "input: ";
-    for( int i = 1; i < cnt; ++i )
-    {
+    for( int i = 1; i < cnt; ++i ) {
         cout << args[i] << " ";
     }
     cout << endl;

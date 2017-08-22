@@ -2,6 +2,9 @@
 #include <vector>
 #include <cstring>
 #include <algorithm>
+#include <cstdlib>
+#include <sstream>
+
 typedef unsigned int uint;
 /*
  * 1.1
@@ -85,6 +88,60 @@ bool arrays_n_strings::palindrome_permutation( const std::string& str )
     return _check_max_one_odd(freq_table);    
 }
 
+/*
+    1.5: One Away 
+        There are three types of edits that can be made on strings, insert a character, remove a character, or 
+        replace a character. Given two strings, write a method to check if they are one edit (or zero edits) away 
+*/
+bool arrays_n_strings::one_away(const std::string& a, const std::string& b) 
+{
+    // check if same first 
+    if (a==b)
+        return true;
+    
+    size_t size_a = a.size();
+    size_t size_b = b.size();
+    size_t mod_cnt = 0;
+
+    if( std::abs(size_a-size_b) >= 2) {  // check deletes and inserts here
+        return false;
+    }
+    else { // case where we may have more than one replace, or can have a replace and delete, or replace and insert
+        // O(n)
+        size_t char_cnt = (size_a<size_b) ? size_a:size_b; // take shorter word length 
+        for( size_t i = 0; i < char_cnt; ++i) {
+            if(mod_cnt>1)
+                return false;
+            if(a[i] != b[i])
+                mod_cnt++;
+        }
+    }
+    // if we found a modification the strings can still different in length by 1 if so that would be the second mod 
+        if( mod_cnt == 1 && (size_a != size_b))
+            return false;
+        else
+            return true;
+}
+
+std::string arrays_n_strings::string_compression(const std::string& str) {
+    char curr_char = str[0];
+    int cnt = 0;
+    std::stringstream result;
+    for(auto it = str.begin(); it != str.end(); it++) {
+        if (*it == curr_char) {
+            cnt++;
+        }
+        else { // a new char
+            result << curr_char << cnt;
+            curr_char = *it;
+            cnt=1;
+        }
+    }
+    result << curr_char << cnt;
+    return (str.size() > result.str().size()) ? result.str():str;
+}
+
+/********************************************HELPER METHODS****************************************/
 bool arrays_n_strings::_is_palindrome( const std::string str )
 {
     size_t len = str.size();

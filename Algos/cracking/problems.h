@@ -18,24 +18,29 @@ class arrays_n_strings
 {
 public:
     arrays_n_strings(){}
-    /*1.1*/
+    /*1.1 Is_Unique*/
     static bool is_unique( const std::string& );
 
-    /*1.2*/
+    /*1.2: Check Permutation*/
     static bool check_permutation( std::string, std::string );
 
-    /*1.3*/
+    /*1.3: Urlify*/
     static void urlify( std::string& );
 
-    /*1.4*/
+    /*1.4: Palindrome Permutation*/
     static bool palindrome_permutation( const std::string& );
+
+    /*1.5: One Away*/
+    static bool one_away(const std::string&, const std::string&);
+
+    /*1.6: String Compression*/
+    static std::string string_compression(const std::string&);
 
 private:    
     static unsigned int* _build_frequency_table( const std::string& str );
     static bool _is_palindrome( const std::string );
     static bool _check_max_one_odd(unsigned int* freq_table);
     static unsigned int _get_char_index( const char& chr );
-
 };
 
 #endif //CRACKING_PROBLEMS_H
