@@ -1,0 +1,53 @@
+Q1: Difference between new/delete and malloc/free?
+
+A1: new/delete
+    * mem allocated from 'Free Store'
+    * Returns a fully typed pointer 
+    * new (std version) never returns a NULL (will throw on failure)
+    * Are called with Type-ID (compiler calculates the size)
+    * Has a version explicitly to handle arrays
+    * Reallocating (to get more space) not handled intuitively (because of copy ctor)
+    * Whether they call malloc/free is implementation defined
+    * Can add a new mem allocator to deal with low memory (set_new_handler)
+    * operator new/delete can be overidden legally 
+    * ctor/dtor used to initialize/destroy the object 
+
+   malloc/free
+    * Mem allocated from 'Heap'
+    * Returns a void*
+    * Returns NULL on failure
+    * Must specify the size required in bytes
+    * Allocating aray requires manual calculation of space
+    * Reallocating larger chunk of memory simple (No cpy ctor to worry about)
+    * The will NOT call new/delete
+    * No way to splice user code into the allocation seq to help with low memory 
+    * malloc/free can NOT be overidden legally 
+----------------------------------------------------------------------------------------------------
+
+Q2: List number type ranking from lowest to highest?
+
+A2: 
+----------------------------------------------------------------------------------------------------
+
+Q3: C++ supports multiple inheritance. What is the “diamond problem” 
+    that can occur with multiple inheritance? Give an example.
+
+A3: 
+----------------------------------------------------------------------------------------------------
+
+Q3: What is a LRU Cache What C++ data structures would you use to implement LRU cache? Show 
+implementation.
+
+A3: Least Recent Used Cache. 
+
+----------------------------------------------------------------------------------------------------
+
+Q4: What is the difference between the stdlib unordered_map and map in C++?
+
+A4: Major difference is , map is implemented internally as balance search tree while unordered_map 
+    y hashing. that is why average case complexity for add, search and remove in case of map is O(lg n) 
+    and in case of unordered_map it is O(1) but in worst case unordered_map's complexity can reach 
+    to O(N) (if hash function is bad) so places where guaranteed performance is required or sorted 
+    order is required map should be used otherwise we should go with unordered_map.
+----------------------------------------------------------------------------------------------------
+

@@ -17,23 +17,40 @@ bool check_order(std::vector<int>& v){
        }return true;
 }
 
-
-// Worst Case: O(n^2)
-// bool unique_chars( const std::string& str )
-// {
-// 	// check for empty string
-// 	if( !str.size() )
-// 		return false;
-
-// 	// can try a brute strength way first
-// 	//for( auto it = str.begin(); it != str.end(); ++it )
-// 	for( std::string::iterator it = str.begin(); it != str.end(); ++it )
-// 	{
-// 		for( auto it_ = it+1; it_ != str.end(); ++it_ )
-// 		{
-// 			if( *it == *it_ )
-// 				return false;
-// 		}
-// 	}
-// 	return true;
-// }
+/*
+  take integer input and return string representation of that integer ie 123456 --> 123,456
+*/
+std::string format_number(const int& num) {
+  std::string result("");
+  std::string sign = "";
+  const unsigned int ASCII_ZERO = 48; 
+  const char SEP = ',';
+  bool neg = (num<0);
+  unsigned int tmp, charCnt=0;
+  int rem = num;
+  
+  if(neg) {
+    sign = "-";
+    rem*=-1;
+  }
+  if (num == 0) {
+    return "0";
+  }
+  else if (rem < 10) {
+    result = std::string(1, static_cast<char>(rem+ASCII_ZERO)); 
+    std::cout << "result: " << result << std::endl;
+    return (sign + result);
+  }
+  while(rem > 0) {
+    result.insert(0, 1, static_cast<char>((ASCII_ZERO+(rem%10))));   // string::insert(pos, size, char)
+    charCnt++;
+    if( !(charCnt%3) ) {
+      result.insert(0, 1, SEP);
+    }
+    rem /= 10;
+  }
+  // remove comma if at front of number 
+  if(result[0] == ',')
+    result.erase(0, 1);   // std::string::erase(pos, npos); position and number of positions to erase 
+  return (sign + result);
+}

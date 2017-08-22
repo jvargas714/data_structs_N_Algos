@@ -103,7 +103,7 @@ unsigned int* arrays_n_strings::_build_frequency_table( const std::string& str )
     memset(freq_table, 0, 26);
     for( auto chr : str ) 
     {
-        int tmp = get_char_index(chr);
+        int tmp = _get_char_index(chr);
         if( tmp != -1 )
             freq_table[tmp]++;
     }
@@ -115,7 +115,7 @@ unsigned int* arrays_n_strings::_build_frequency_table( const std::string& str )
     will return -1 
     numerical difference between 'A' and 'a' is 32 
 */
-unsigned int arrays_n_strings::get_char_index( const char& chr )
+unsigned int arrays_n_strings::_get_char_index( const char& chr )
 {
     if( chr >= 'a' && chr <= 'z' ) // lowercase 
     {

@@ -7,6 +7,13 @@
 #define ASCII_a 97
 #define ASCII_z 122
 
+// /home/jay/Documents/Interview/data_structs_N_Algos/Algos/cracking
+
+/*
+    Questions from cracking the coding interview 
+*/
+
+/* CHAPTER 1 QUESTIONS*/
 class arrays_n_strings
 {
 public:
@@ -27,7 +34,7 @@ private:
     static unsigned int* _build_frequency_table( const std::string& str );
     static bool _is_palindrome( const std::string );
     static bool _check_max_one_odd(unsigned int* freq_table);
-    static unsigned int get_char_index( const char& chr );
+    static unsigned int _get_char_index( const char& chr );
 
 };
 
