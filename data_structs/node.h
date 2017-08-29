@@ -1,4 +1,5 @@
-
+#ifndef __NODE_H__
+#define __NODE_H__
 
 /* 
     ---- standard node class used in linked list, binary trees etc etc ----
@@ -16,6 +17,8 @@ public:
     bool operator == ( bin_node nd ) { return this->data == nd.data; }
     bin_node() : data( 0 ), left( nullptr ), right( nullptr ){}
     bin_node( int input ) : data( input ), left( nullptr ), right( nullptr ){}
+    int getLData() { return left->data; }
+    int getRData() { return right->data; }
 };
 
 template<typename T>
@@ -42,3 +45,4 @@ struct dl_node
     dl_node() : data( 0 ), next( nullptr ), prev( nullptr ){ }
     dl_node( T input ) : data( input ), next( nullptr ), prev( nullptr ){ }
 };
+#endif  // __NODE_H__
