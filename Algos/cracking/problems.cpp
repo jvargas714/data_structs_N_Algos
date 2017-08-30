@@ -305,7 +305,7 @@ void linked_list_CH2::removeDups(llnode* nd) {
 }
 
 /*2.2: Find Kth from end element*/
-int findKthFromEnd(llnode* nd, size_t kth, size_t len) {
+int linked_list_CH2::findKthFromEnd(llnode* nd, size_t kth, size_t len) {
     int rc = -1;
     if (!nd || (kth>len))
         return rc;  // normally throw an exception here 
@@ -315,6 +315,27 @@ int findKthFromEnd(llnode* nd, size_t kth, size_t len) {
         nd = nd->next;
     }
     return nd->data;
+}
+
+/*2.2: Find Kth from end element length is not provided
+    Approach: 
+        Recursive approach, traverse down to end and recursively come back while keeping count
+*/
+int linked_list_CH2::findKthFromEndNoLen(llnode* nd, size_t kth) {
+    if (!nd)
+        return kth;
+    size_t i = 0;
+    return _findKthFromEndNoLen(nd, kth, i)->data;
+}
+
+llnode* linked_list_CH2::_findKthFromEndNoLen(llnode* nd, size_t kth, size_t& index) {
+    if (!nd)
+        return nullptr;
+    llnode* tmp = _findKthFromEndNoLen(nd->next, kth, index);
+    index+=1;
+    if(index==kth)
+        return nd;
+    return tmp;
 }
 
 void linked_list_CH2::populateLL(linked_list& ll, size_t amt, size_t num_range) {

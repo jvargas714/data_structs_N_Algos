@@ -56,9 +56,13 @@ namespace linked_list_CH2
 
     /*2.2: find kth to end of the linkedlist (size known)*/
     int findKthFromEnd(llnode* nd, size_t kth, size_t len);
+    int findKthFromEndNoLen(llnode* nd, size_t kth);
+
+
 
     // HELPERs 
     void populateLL(linked_list& ll, size_t amt, size_t num_range);
+    llnode* _findKthFromEndNoLen(llnode* nd, size_t kth, size_t& i);
 }
 
 #endif //CRACKING_PROBLEMS_H

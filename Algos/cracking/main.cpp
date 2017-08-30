@@ -4,12 +4,14 @@ using namespace std;
 
 void display_input( int cnt, char** args );
 void test_remove_dups();
-void test_removeKthElement();
-
+void test_findKthElement();
+void test_findKthElementRecursive(size_t);
 
 
 int main( int argc, char* argv[] ) {
-	test_removeKthElement();
+	test_findKthElement();
+	cout << "\n\n\n" << endl; 
+	test_findKthElementRecursive(3);
     return 0;
 }
 
@@ -41,14 +43,16 @@ void test_remove_dups() {
 	cout << ll2.to_string() << "\n" << endl;
 }
 
-void test_removeKthElement() {
+void test_findKthElement() {
 	linked_list ll, ll2;
 	linked_list_CH2::populateLL(ll, 10, 100000);
-	linked_list_CH2::populateLL(ll2, 10, 100000);
 	cout << ll.to_string() << endl;
 	cout << "element found: " << linked_list_CH2::findKthFromEnd(ll.data(), 3, ll.size()) << endl;
 }
-
-
-
+void test_findKthElementRecursive(size_t kth) {
+	linked_list ll; 
+	linked_list_CH2::populateLL(ll, 50, 1000);
+	cout << ll.to_string() << "\n\n" << endl;
+	cout << "the " << kth << "th " << "element from the element is " << linked_list_CH2::findKthFromEndNoLen(ll.data(), 3) << endl;
+}
 
