@@ -13,7 +13,7 @@ class linked_list_base
 {
 public:
 	virtual std::string to_string() const{ return "Must Implement"; };
-	virtual void push_back( const int& )=0;
+	virtual void push_back( int )=0;
 	virtual void push_front( const int& data )=0;
 	virtual bool insert( const int&, const size_t& )=0;
 	virtual bool remove( const size_t& )=0;
@@ -31,31 +31,32 @@ public:
 	linked_list( const linked_list& );
 	~linked_list();
 	std::string to_string() const;
-	void push_back( const int& );
+	void push_back( int );
 	void push_front( const int& data );
 	bool insert( const int&, const size_t& );
 	bool remove( const size_t& );
-	int &operator[](int i);
+	int &operator[](const size_t& i);
+	llnode* getElement(const size_t&);
 	size_t size() const;
 	void delete_list();
 	llnode* data(){ return root; }
 };
 
-class dlinked_list : public linked_list_base
-{ 
-	dlnode* root;
+// class dlinked_list : public linked_list_base
+// { 
+// 	dlnode* root;
 
-public:
-	dlinked_list();
-	dlinked_list(const int&);
-	~dlinked_list();
-	std::string to_string() const;
-	void push_back( const int& );
-	void push_front( const int& data );
-	bool insert( const int&, const size_t& );
-	bool remove( const size_t& );
-	size_t size() const;
-	void delete_list();
-};
+// public:
+// 	dlinked_list();
+// 	dlinked_list(const int&);
+// 	~dlinked_list();
+// 	std::string to_string() const;
+// 	void push_back( const int& );
+// 	void push_front( const int& data );
+// 	bool insert( const int&, const size_t& );
+// 	bool remove( const size_t& );
+// 	size_t size() const;
+// 	void delete_list();
+// };
 
 #endif 	// end LINKED_LIST_H

@@ -1,6 +1,9 @@
 #include "linked_list.h"
 #include <sstream>
-#include <stdexcept>  // out_of_range
+#include <stdexcept>  	// out_of_range
+#include <utility>		// std::move 
+
+
 
 
 linked_list::linked_list(): root( nullptr )
@@ -12,7 +15,7 @@ linked_list::linked_list( const int& data )
 }
 
 // TODO :: define iterators to clean the loop up
-linked_list::linked_list( const linked_list& ll )
+linked_list::linked_list( const linked_list& ll ) : root(nullptr)
 {
 	using namespace std;
 	size_t llsize = ll.size();
@@ -24,7 +27,7 @@ linked_list::linked_list( const linked_list& ll )
 	llnode* tmp = ll.root;
 	while ( tmp != nullptr )
 	{
-		push_back(tmp->data);
+		push_back( tmp->data );
 		tmp = tmp->next;
 	}
 }
@@ -50,7 +53,7 @@ void linked_list::delete_list()
 }
 
 /* places element at end of linked list */
-void linked_list::push_back( const int& data )
+void linked_list::push_back( int data )
 {
 	// if no root the we simply add to front of llist as root
 	if( !root )
@@ -59,10 +62,10 @@ void linked_list::push_back( const int& data )
 		return;
 	}
 	llnode* tmp_node = root;
+
 	while( tmp_node->next != nullptr )
-	{
 		tmp_node = tmp_node->next;
-	}
+
 	// once the finally hit a null ptr we can then assign the llnode
 	tmp_node->next = new llnode( data );
 }
@@ -154,7 +157,7 @@ std::string linked_list::to_string() const
 	return ss.str();
 }
 
-int &linked_list::operator[](int i) 
+int &linked_list::operator[](const size_t& i) 
 {
 	if( i > size() )
 		throw std::out_of_range("Index out of range");
@@ -164,7 +167,13 @@ int &linked_list::operator[](int i)
 	return tmp->data;
 }
 
-
+llnode* linked_list::getElement(const size_t& index)
+{
+	llnode* tmp = root;
+	for(size_t i = 0; i < index; ++i)
+		tmp = tmp->next;
+	return tmp;
+}
 
 
 

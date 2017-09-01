@@ -33,16 +33,23 @@ int main()
 	linked_list newll(ll);
 
 	cout << endl;
-	cout << newll.to_string() << endl;
+	cout << "copy of list:\n" << newll.to_string() << endl;
 
 	cout << "Testing subscripting of LList." << endl; 
-	for(int i = 0; i < ll.size(); i++)
-		cout << ll[i] << endl;
+	for(unsigned int i = 0; i < ll.size(); i++)
+		cout << ll[i] << " ";
+	cout << "\n" << endl;
 
 	cout << "Assigning 999 to index 2" << endl; 
 	ll[2] = 999;
-	for(int i = 0; i < ll.size(); i++)
-		cout << ll[i] << endl;
+
+	cout << "\nTESTING access via index...." << endl;
+	for(unsigned int i = 0; i < ll.size(); i++)
+		cout << ll[i] << " ";
+	cout << "\n" << endl;
+
+	cout << "testing get element method: >> getting element @ index 3" << endl;
+	cout << ll.to_string() << "Element has data value of " << ll.getElement(3)->data << endl; 
 	
 	return 0;
 }

@@ -198,60 +198,7 @@ bool arrays_n_strings_CH1::is_rotation_optimized(const std::string& s1, const st
     }
 }
 
-/********************************************HELPER METHODS****************************************/
-bool arrays_n_strings_CH1::_is_palindrome( const std::string str ) {
-    size_t len = str.size();
-    for( unsigned int i = 0; i < len; ++i ) {
-        if( str[i] != str[len - i - 1] )
-            return false;
-    }
-    return true;
-}
 
-/*Helper method to build a frequency table*/
-unsigned int* arrays_n_strings_CH1::_build_frequency_table( const std::string& str ) { 
-    unsigned int* freq_table = new unsigned int[26];   // where index 0 is 'a' and index 25 is 'z'
-    memset(freq_table, 0, 26);
-    for( auto chr : str ) {
-        int tmp = _get_char_index(chr);
-        if( tmp != -1 )
-            freq_table[tmp]++;
-    }
-    return freq_table;
-}
-
-/*
-    This method will return an integer for the position of the character, non-letter chars
-    will return -1 
-    numerical difference between 'A' and 'a' is 32 
-*/
-unsigned int arrays_n_strings_CH1::_get_char_index( const char& chr ) {
-    if( chr >= 'a' && chr <= 'z' ) {
-        return (chr-'a');
-    }
-    else if ( chr >= 'A' && chr <= 'Z' ) {
-        return (chr-'A');
-    } else {
-        return -1;
-    }   
-}
-
-/*
-    This function will check the input array conforms to the criteria that is needed for a phrase 
-    to be a palindrone permutation, and that is for a character 
-*/
-bool arrays_n_strings_CH1::_check_max_one_odd(unsigned int* freq_table) {
-    bool odd_found = false; 
-    for(int i = 0; i < 26; ++i) {
-        if ( freq_table[i]%2 == 1 ) {
-            if(odd_found)   // at this point we already found a char that has freq so no a permutation
-                return false;
-            odd_found = true; 
-        }
-    }
-    delete [] freq_table;
-    return true;
-}
 
 /*2.1: Remove Duplicates from LinkedList, with temp buffer 0(n) Solution*/
 // [ * * * * * * * ]
@@ -328,6 +275,133 @@ int linked_list_CH2::findKthFromEndNoLen(llnode* nd, size_t kth) {
     return _findKthFromEndNoLen(nd, kth, i)->data;
 }
 
+/*2.3: Delete middle node of a singly ll*/
+bool linked_list_CH2::deleteNodeInMiddle(llnode* nd) {
+    if (!nd || !nd->next)
+        return false;
+    llnode* tmp = nd->next; 
+    
+    // copy over data to overwrite node to be deleted 
+    nd->data = nd->next->data;
+    nd->next = nd->next->next;
+    delete tmp;
+    return true;
+}
+
+/*2.4: partition
+    Descr:
+        Partition linked list such that all elements >= to partPt are to the right side, and 
+        all elements that are < are to the left side 
+    Example:
+        ll = [3, 5, 8, 5, 10, 2, 1]
+        partPt = 5
+        result = [3, 1, 2, 10, 5, 5, 8]
+*/
+llnode* linked_list_CH2::partition(llnode* root, int partPt) {
+    // TODO :: NEEDS TO BE FINISHED 
+    using namespace std;
+    if(!root||!root->next)
+        return root;
+    llnode* currNode = root;
+    llnode* tmpr = nullptr;
+    llnode* tmpl = nullptr;
+    llnode* llr = nullptr;
+    llnode* lll = nullptr;
+    llnode* firstr = nullptr;
+    llnode* lastl = nullptr;
+    while (currNode != nullptr) {
+        llnode* newNode = new llnode(currNode->data);
+        if (currNode->data >= partPt) {
+            if (!llr) {  // right partition
+                tmpr = newNode;     // set the R traveling pointer 
+                llr = tmpr;         // set the head of the new right side partition 
+                firstr = newNode;
+            } else {
+                tmpr->next = newNode;
+                tmpr = tmpr->next;      // traverse to next mem location to copy data over 
+            }
+        } else {    // less than case, build left partition
+            if (!lll) {
+                tmpl = newNode;         // set L traversing pointer 
+                lll = tmpl;             // sets new head of L partition 
+            }
+            cout << "appending to L " << currNode->data << endl; 
+            tmpl->next = newNode;
+            tmpl = tmpl->next;
+            lastl = newNode;
+        }
+        // increment to next node 
+        currNode = currNode->next;
+    }
+    std::cout << "Right partition-->" << std::endl;
+    display_ll(llr);
+
+    std::cout << "Left partition-->" << std::endl;
+    display_ll(lll);
+    lastl->next = firstr;
+    return lll;
+}
+
+
+/********************************************HELPER METHODS****************************************/
+bool arrays_n_strings_CH1::_is_palindrome( const std::string str ) {
+    size_t len = str.size();
+    for( unsigned int i = 0; i < len; ++i ) {
+        if( str[i] != str[len - i - 1] )
+            return false;
+    }
+    return true;
+}
+
+/*Helper method to build a frequency table*/
+unsigned int* arrays_n_strings_CH1::_build_frequency_table( const std::string& str ) { 
+    unsigned int* freq_table = new unsigned int[26];   // where index 0 is 'a' and index 25 is 'z'
+    memset(freq_table, 0, 26);
+    for( auto chr : str ) {
+        int tmp = _get_char_index(chr);
+        if( tmp != -1 )
+            freq_table[tmp]++;
+    }
+    return freq_table;
+}
+
+/*
+    This method will return an integer for the position of the character, non-letter chars
+    will return -1 
+    numerical difference between 'A' and 'a' is 32 
+*/
+unsigned int arrays_n_strings_CH1::_get_char_index( const char& chr ) {
+    if( chr >= 'a' && chr <= 'z' ) {
+        return (chr-'a');
+    }
+    else if ( chr >= 'A' && chr <= 'Z' ) {
+        return (chr-'A');
+    } else {
+        return -1;
+    }   
+}
+
+/*
+    This function will check the input array conforms to the criteria that is needed for a phrase 
+    to be a palindrone permutation, and that is for a character 
+*/
+bool arrays_n_strings_CH1::_check_max_one_odd(unsigned int* freq_table) {
+    bool odd_found = false; 
+    for(int i = 0; i < 26; ++i) {
+        if ( freq_table[i]%2 == 1 ) {
+            if(odd_found)   // at this point we already found a char that has freq so no a permutation
+                return false;
+            odd_found = true; 
+        }
+    }
+    delete [] freq_table;
+    return true;
+}
+
+/*
+    recursive helper function for problem 2.2 recursive variation 
+    to find element that is kth from the end
+*/
 llnode* linked_list_CH2::_findKthFromEndNoLen(llnode* nd, size_t kth, size_t& index) {
     if (!nd)
         return nullptr;
@@ -344,7 +418,14 @@ void linked_list_CH2::populateLL(linked_list& ll, size_t amt, size_t num_range) 
         ll.push_back(rd()%num_range);
 }
 
-
+void linked_list_CH2::display_ll(const llnode* root) {
+    const llnode* tmp = root;
+    while (tmp != nullptr) {
+        std::cout << tmp->data << " ";
+        tmp = tmp->next;
+    }
+    std::cout << std::endl;
+}
 
 
 

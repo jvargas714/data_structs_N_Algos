@@ -58,11 +58,17 @@ namespace linked_list_CH2
     int findKthFromEnd(llnode* nd, size_t kth, size_t len);
     int findKthFromEndNoLen(llnode* nd, size_t kth);
 
+    /*2.3: Delete Middle Node*/
+    bool deleteNodeInMiddle(llnode*);
+
+    /*2.4: partition*/
+    llnode* partition(llnode* root, int partPt);
 
 
     // HELPERs 
     void populateLL(linked_list& ll, size_t amt, size_t num_range);
     llnode* _findKthFromEndNoLen(llnode* nd, size_t kth, size_t& i);
+    void display_ll(const llnode*);
 }
 
 #endif //CRACKING_PROBLEMS_H
