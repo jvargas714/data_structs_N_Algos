@@ -5,8 +5,10 @@
 #include <cstdlib>
 #include <sstream>
 #include <random> 
-#include <map> 
-
+#include <map>
+#include <stack>
+#include <sstream>
+#define LNLEN 20
 typedef unsigned int uint;
 /*
  * 1.1
@@ -325,7 +327,6 @@ llnode* linked_list_CH2::partition(llnode* root, int partPt) {
                 tmpl = newNode;         // set L traversing pointer 
                 lll = tmpl;             // sets new head of L partition 
             }
-            cout << "appending to L " << currNode->data << endl; 
             tmpl->next = newNode;
             tmpl = tmpl->next;
             lastl = newNode;
@@ -334,12 +335,35 @@ llnode* linked_list_CH2::partition(llnode* root, int partPt) {
         currNode = currNode->next;
     }
     std::cout << "Right partition-->" << std::endl;
-    display_ll(llr);
+    display_ll(llr, true);
 
     std::cout << "Left partition-->" << std::endl;
-    display_ll(lll);
+    display_ll(lll, true);
     lastl->next = firstr;
     return lll;
+}
+
+/*2.6: Check if ll is a palindrome
+    Descr:
+        Approach for this function would be to push list on to a stack and pop off stack to compare elements.    
+*/
+bool linked_list_CH2::ll_is_palindrome(const llnode* root) {
+    std::stack<int> stk;
+    const llnode* tmp = root;
+    
+    // populate stack with ll data
+    while (tmp) {
+        stk.push(tmp->data);
+        tmp = tmp->next;
+    }
+    tmp = root;
+    while (tmp) {
+        if(tmp->data != stk.top())
+           return false;
+        tmp = tmp->next;
+        stk.pop();
+    }
+    return true;
 }
 
 
@@ -418,11 +442,31 @@ void linked_list_CH2::populateLL(linked_list& ll, size_t amt, size_t num_range) 
         ll.push_back(rd()%num_range);
 }
 
-void linked_list_CH2::display_ll(const llnode* root) {
+void linked_list_CH2::display_ll(const llnode* root, bool formatted) {
     const llnode* tmp = root;
-    while (tmp != nullptr) {
-        std::cout << tmp->data << " ";
-        tmp = tmp->next;
+    if (formatted) {
+        int cnt = 0;
+        const llnode* nd = root;
+        std::stringstream ss;
+        ss << "\t";
+        while(nd != nullptr) {
+            if (cnt == LNLEN) {
+                ss << "\n\t" << nd->data << " ";
+                cnt=0;
+            } 
+            else {
+                ss << nd->data << " ";
+            }
+            nd = nd->next;
+            cnt++;
+        }
+        ss << std::endl;
+        std::cout << ss.str() << std::endl;
+    } else {
+        while (tmp != nullptr) {
+            std::cout << tmp->data << " ";
+            tmp = tmp->next;
+        }
     }
     std::cout << std::endl;
 }

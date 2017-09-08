@@ -13,7 +13,7 @@
     Questions from cracking the coding interview 
 */
 
-/* CHAPTER 1 QUESTIONS*/
+/*CHAPTER 1 QUESTIONS*/
 namespace arrays_n_strings_CH1 
 {
     /*1.1 Is_Unique*/
@@ -48,6 +48,7 @@ namespace arrays_n_strings_CH1
     unsigned int _get_char_index( const char& chr );
 };
 
+/*CHAPTER 2 QUESTIONS*/
 namespace linked_list_CH2
 {
     /*2.1: Remove Duplicates from LinkedList, without temop buffer*/
@@ -64,11 +65,20 @@ namespace linked_list_CH2
     /*2.4: partition*/
     llnode* partition(llnode* root, int partPt);
 
+    /*2.6: Check if ll is a palindrome*/
+    bool ll_is_palindrome(const llnode* root);
+
+    /*2.7: Intersection*/
+    llnode* find_intersection_node(const llnode* root1, const llnode* root2);
+
+    /*2.8: loop-detection*/
+    bool find_loop(const llnode* root);
+
 
     // HELPERs 
     void populateLL(linked_list& ll, size_t amt, size_t num_range);
     llnode* _findKthFromEndNoLen(llnode* nd, size_t kth, size_t& i);
-    void display_ll(const llnode*);
+    void display_ll(const llnode*, bool formatted=false);
 }
 
 #endif //CRACKING_PROBLEMS_H

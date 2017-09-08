@@ -2,7 +2,7 @@
 #include <sstream>
 #include <stdexcept>  	// out_of_range
 #include <utility>		// std::move 
-
+#define LINE_LEN 20
 
 
 
@@ -13,6 +13,13 @@ linked_list::linked_list( const int& data )
 {
 	root = new llnode( data );
 }
+
+linked_list::linked_list( const std::initializer_list<int> lst)  : root(nullptr)
+{
+	for (auto el : lst)
+		push_back(el);
+}
+
 
 // TODO :: define iterators to clean the loop up
 linked_list::linked_list( const linked_list& ll ) : root(nullptr)
@@ -35,6 +42,7 @@ linked_list::linked_list( const linked_list& ll ) : root(nullptr)
 /* deallocate memory before list is destroyed */
 linked_list::~linked_list()
 {
+	std::cout << __FUNCTION__ << "(): deallocating elements in list" << std::endl; 
 	delete_list();
 }
 
@@ -145,13 +153,23 @@ size_t linked_list::size() const
 
 std::string linked_list::to_string() const 
 {
+	int cnt = 0;
 	const llnode* nd = root;
 	std::stringstream ss;
-	ss << "Linked List--->\nLength of list: " << size() << std::endl;
+	ss << "Linked List--->\n\tLength of list: " << size() << "\n\t";
 	while( nd != nullptr )
 	{
-		ss << nd->data << " ";
+		if ( cnt == LINE_LEN )
+		{
+			ss << "\n\t" << nd->data << " ";
+			cnt=0;
+		} 
+		else 
+		{
+			ss << nd->data << " ";
+		}
 		nd = nd->next;
+		cnt++;
 	}
 	ss << std::endl;
 	return ss.str();

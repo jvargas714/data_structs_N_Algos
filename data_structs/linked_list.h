@@ -2,8 +2,9 @@
 #define LINKED_LIST_H
 #include <string>
 #include <cstdlib>
-#include <iostream>
-#include "node.h"
+#include <iostream>	 			// std::cout, std::endl
+#include "node.h" 				// node<int> dl_node<int>
+#include <initializer_list> 	// std::initializer_list
 
 using llnode = node<int>;
 using dlnode = dl_node<int>;
@@ -28,6 +29,7 @@ class linked_list : public linked_list_base
 public:
 	linked_list();
 	linked_list( const int& );
+	linked_list( const std::initializer_list<int> );
 	linked_list( const linked_list& );
 	~linked_list();
 	std::string to_string() const;

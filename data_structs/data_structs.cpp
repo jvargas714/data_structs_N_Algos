@@ -6,9 +6,15 @@
 #include "linked_list.h"
 
 using namespace std; 
+void test_linkedList();
 
-int main()
-{
+int main() {
+
+	test_linkedList();
+	return 0;
+}
+
+void test_linkedList() {
 	srand( time(NULL) );
 	linked_list ll;
 	ll.push_back( 22 );
@@ -48,8 +54,10 @@ int main()
 		cout << ll[i] << " ";
 	cout << "\n" << endl;
 
-	cout << "testing get element method: >> getting element @ index 3" << endl;
-	cout << ll.to_string() << "Element has data value of " << ll.getElement(3)->data << endl; 
-	
-	return 0;
+	cout << "\ntesting get element method: >> getting element @ index 3" << endl;
+	cout << ll.to_string() << "Element has data value of " << ll.getElement(3)->data << endl;
+
+	cout << "\ntesting initializer list initialization with [1...15]" << endl; 
+	linked_list initTestll = {1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
+	cout << initTestll.to_string() << endl;
 }
