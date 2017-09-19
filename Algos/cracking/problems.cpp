@@ -8,6 +8,10 @@
 #include <map>
 #include <stack>
 #include <sstream>
+#include <iomanip>
+#include <memory>
+#include <cstdint>
+
 #define LNLEN 20
 typedef unsigned int uint;
 /*
@@ -358,7 +362,7 @@ bool linked_list_CH2::ll_is_palindrome(const llnode* root) {
     }
     tmp = root;
     while (tmp) {
-        if(tmp->data != stk.top())
+        if (tmp->data != stk.top())
            return false;
         tmp = tmp->next;
         stk.pop();
@@ -366,6 +370,29 @@ bool linked_list_CH2::ll_is_palindrome(const llnode* root) {
     return true;
 }
 
+/* 
+    inserts M in to N, starting inclusively from the ith bit to the jth bit.
+    Note that bit index is considered to be the most right bit, LSBit
+    Algo:
+        1. clear bits i through inclusive
+        2. logical shift M by i places 
+        3. OR in changed bits
+*/
+bool bit_banger_CH5::insertInto(uint32_t& N, uint32_t& M, uint32_t i, uint32_t j) {
+    uint32_t mask = 0x00000001;
+    if ((j-i)>32)
+        return false;
+    // clear bits i through j inclusive
+    for (uint32_t ii = 0; ii<32; ++ii) {
+        if (ii >= i && ii <= j) {
+            N &= ~mask;
+        }
+        mask<<=1;
+    }
+    M<<=i;
+    N|=M;
+    return true;
+}
 
 /********************************************HELPER METHODS****************************************/
 bool arrays_n_strings_CH1::_is_palindrome( const std::string str ) {
@@ -469,6 +496,50 @@ void linked_list_CH2::display_ll(const llnode* root, bool formatted) {
         }
     }
     std::cout << std::endl;
+}
+
+/*
+Debug function to display bits of passed in buffer,
+if spaces is true then every 8 bits will have a space in between
+*/
+std::string bit_banger_CH5::bin2str(const unsigned char* val, size_t len, bool spaces) {
+    std::stringstream ss; 
+    ss << std::hex;
+    unsigned char tmp;
+    unsigned char mask = 0x80;  // reads bit all the way to the left first ie... a gets read 1010 --> left to right
+    uint32_t tmp2;
+    if (!val) {
+        return "";
+    }
+    for (size_t i = 0; i < len; ++i) {
+        tmp = (const unsigned char)val[i];
+        for (uint32_t j = 0; j < 8; ++j) {
+            tmp2 = static_cast<uint32_t>( (tmp&mask) );
+            ss << std::setw(1) << std::setfill('0') << ((tmp2>0) ? "1":"0");
+            mask>>=1;
+        }
+        if (spaces)
+            ss << " ";
+        mask = 0x80;
+    }
+    return ss.str();
+}
+
+std::string bit_banger_CH5::bin2str(const uint32_t* val, bool spaces) {
+    if (!val)
+        return "";
+    std::stringstream ss;
+    ss << std::hex;
+    uint32_t mask = 0x80000000;   // MSbit
+    uint32_t tmp = 0;
+    for (uint32_t i = 1; i <= 32; ++i) {
+        tmp = (*val)&(mask);
+        ss << std::setw(1) << std::setfill('0') << ((tmp>0) ? "1":"0");
+        mask>>=1;
+        if (!(i%8) && spaces)
+            ss << " ";
+    }
+    return ss.str();
 }
 
 

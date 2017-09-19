@@ -70,15 +70,20 @@ namespace linked_list_CH2
 
     /*2.7: Intersection*/
     llnode* find_intersection_node(const llnode* root1, const llnode* root2);
-
-    /*2.8: loop-detection*/
-    bool find_loop(const llnode* root);
-
-
+    
     // HELPERs 
     void populateLL(linked_list& ll, size_t amt, size_t num_range);
     llnode* _findKthFromEndNoLen(llnode* nd, size_t kth, size_t& i);
     void display_ll(const llnode*, bool formatted=false);
+}
+
+namespace bit_banger_CH5 {
+    bool insertInto(uint32_t& M, uint32_t& N, uint32_t i, uint32_t j);
+
+    // Helpers 
+    std::string bin2str(const unsigned char* val, size_t len, bool spaces=false);
+    std::string bin2str(const uint32_t* val, bool spaces=false);
+
 }
 
 #endif //CRACKING_PROBLEMS_H

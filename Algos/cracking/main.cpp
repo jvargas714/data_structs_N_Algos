@@ -9,6 +9,8 @@ void test_findKthElementRecursive(size_t);
 void test_deleteMiddleNode(size_t);
 void test_partitionLL(int);
 void test_llIsPalindrome();
+void test_insertInto();
+void test_helpers();
 
 
 
@@ -26,7 +28,10 @@ int main( int argc, char* argv[] ) {
 	cout << endl;
 	test_llIsPalindrome();
 	cout << endl;
-
+	test_insertInto();
+	cout << endl;
+	test_helpers();
+	cout << endl;
 	cout << "exiting..." << endl;
     return 0;
 }
@@ -126,5 +131,36 @@ void test_llIsPalindrome() {
 		output = "no";
 	cout << ll2.to_string() << "\nis a palindrome?? --> " << output << endl;
 	cout << "=================================================================================================" << endl; 	
+}
+
+void test_insertInto() { 
+	cout << "==================================== TESTING 5.1: InsertInto=====================================" << endl;
+	uint32_t N = 0xffffffff;
+	// uint32_t N = 103217;
+	uint32_t M = 0x00030;
+	// uint32_t M = 0x51;
+	uint32_t i = 10;
+	uint32_t j = 20;
+	std::string tmp = bit_banger_CH5::bin2str(&N);
+	cout << "N: " << tmp << endl;
+	cout << "M: " << bit_banger_CH5::bin2str(&M) << endl;
+	cout << "i: " << i << "\tj: " << j << endl;
+	bit_banger_CH5::insertInto(N, M, i, j);
+	cout << "N modified: " << bit_banger_CH5::bin2str(&N) << endl;
+	cout << "=================================================================================================" << endl;
+}
+
+void test_helpers() {
+	cout << "==================================== TESTING HELPER FUNCTIONS====================================" << endl;
+	uint32_t N = 0xfedcba98;
+	cout << std::hex << N << endl;
+	std::string binstring = bit_banger_CH5::bin2str(&N, true);
+	cout << binstring << endl;
+
+	unsigned char buff[4] = {0x55, 0xFF, 0x23, 0xaa};
+	cout << "\n0x55, 0xFF, 0x23, 0xaa" << endl; 
+	std::string tmp = bit_banger_CH5::bin2str(buff, 4, true);
+	cout << tmp << endl;
+	cout << "=================================================================================================" << endl;
 }
 
