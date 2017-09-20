@@ -78,6 +78,7 @@ namespace linked_list_CH2
 }
 
 namespace bit_banger_CH5 {
+    /*5.1*/
     bool insertInto(uint32_t& M, uint32_t& N, uint32_t i, uint32_t j);
 
     // Helpers 

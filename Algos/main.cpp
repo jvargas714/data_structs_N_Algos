@@ -6,32 +6,15 @@ using namespace std;
 
 int main()
 {
-    int tmp;
-    size_t len;
-    string word;
-    map<char, unsigned int> char_map;
-    const int ascii_a   = 97;
-    unsigned int h      = 0;
-    int tallest_char    = 0;
+    int num = 1;
 
-    // map out characters
-    for( int i = 0; i < 26; i++ )
+    if (*(char *)&num == 1)
     {
-        cin >> h;
-        char_map[ (char)(ascii_a + i) ] = h;
+        printf("Little-Endian\n");
     }
-    cin >> word;
-    len = word.size();
-
-    // get tallest char
-    for( char& ch : word )
+    else
     {
-        tmp = char_map[ ch ];
-        if( tmp > tallest_char )
-        {
-            tallest_char = tmp;
-        }
+        printf("Big-Endian\n");
     }
-    cout << tallest_char * len;
     return 0;
 }
