@@ -64,7 +64,7 @@ void test_bbanger_functions() {
 	bit_banger::toggle_nth_bit(w, 30);
 	cout << w << "\n" << endl;
 
-	result = bit_banger::bits_to_string(x, sizeof(x)*8, true);
+	result = bit_banger::bits_to_string(x, sizeof(x)*8, false);
 	cout << "Displaying 0x" << x << " in binary --->\n" << result << endl;
 
 	cout << "Displaying buffer contents: \n" << bit_banger::bits_to_string(buff, sizeof(buff)*8, true) << endl;

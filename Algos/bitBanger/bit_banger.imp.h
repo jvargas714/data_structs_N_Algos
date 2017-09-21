@@ -49,20 +49,17 @@ bool jaystd::bit_banger::toggle_nth_bit(T& t, size_t nth) {
 	return true;
 }
 
-
 template<typename T>
 std::string jaystd::bit_banger::bits_to_string(T& t, size_t nbits, bool spaces) {
 	std::stringstream ss;
 	ss <<"\t";
 	size_t cnt = 0;
 	const uint8_t* t_ptr = reinterpret_cast<unsigned char*>(&t);
-	uint32_t tmp, ncols=0;
+	uint32_t tmp, ncols=(spaces)?0:1;
 	uint8_t mask = 0x80;
 	size_t nbytes = (nbits/8);
-	
 	if (nbits%8)
 		nbytes++;
-	
 	for (uint32_t i = 0; i < nbytes; ++i) {
 		for ( uint32_t j = 0; j < sizeof(uint8_t)*8; j++) {
 			(is_little_endian()) ? tmp = t_ptr[(nbytes-1)-i]&mask : tmp = t_ptr[i]&mask;
@@ -82,8 +79,21 @@ std::string jaystd::bit_banger::bits_to_string(T& t, size_t nbits, bool spaces) 
 	return ss.str();
 }
 
-
+// LSB located in the first memory location 
 bool jaystd::bit_banger::is_little_endian() {
 	uint32_t tmp = 0xff000000;
 	return (*(unsigned char*)&tmp>0xff) ? false:true;
 }
+
+// sets the rightmost 1 bit to 0
+template<typename T>
+void jaystd::bit_banger::turn_off_rht_most_1bit(T& t) {
+	t&=(x-1);
+}
+
+// finds the rightmost 1 bit and sets all other bits to zero
+template<typename T>
+void jaystd::bit_banger::isolate_rht_most_1bit(T& t) {
+	t&=-t;
+}
+

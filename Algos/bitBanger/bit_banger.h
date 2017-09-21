@@ -3,7 +3,7 @@
 
 namespace jaystd {
 	/* methods in this namespace are based on the following convention
-		- functions cound bit positions from right to left 
+		- functions count bit positions from right to left 
 		- bit position 0 in the following example is set high
 			00000001   <<< bit position 0 set high
 			10000000   <<< bit position 7 set high 
@@ -37,8 +37,19 @@ namespace jaystd {
 		template<typename T>
 		std::string bits_to_string(T& t, size_t nbits, bool spaces=false);
 
+		// sets the rightmost 1 bit to 0
+		template<typename T>
+		void turn_off_RHbit(T& t);
+
 		// determine if system is little or big endian
 		bool is_little_endian();
+
+		// finds the right most 1-bit and sets all other bits to 0
+		void jaystd::bit_banger::isolate_rht_most_1bit(T& t);
+
+		// todo 
+		void jaystd::bit_banger::rht_propagate_rhtmost_1bit(T& t);
+		
 	}
 }
 
