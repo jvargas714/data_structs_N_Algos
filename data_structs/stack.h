@@ -10,6 +10,14 @@
 
 #define RESIZE_FACTOR 2
 
+/* 
+TODO :: stack::min() function will operate at 0(1)
+to maintain the min in the stack we can have a second stack that will keep track of 
+the min value for us. On a push operation if there is a new min val we can push
+to that second stack. If on the pop we pop a value that matches the min val then 
+we pop off the second stack as well 
+*/
+
 template<typename T>
 class stack 
 {
@@ -28,6 +36,7 @@ class stack
         void push( T&& );
         T& top() const;
         void pop();
+        T& min();
         size_t size();
 
     private:

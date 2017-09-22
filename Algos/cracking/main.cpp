@@ -1,4 +1,5 @@
 #include <iostream>
+#include <random>
 #include "problems.h"
 using namespace std;
 
@@ -11,7 +12,7 @@ void test_partitionLL(int);
 void test_llIsPalindrome();
 void test_insertInto();
 void test_helpers();
-
+void test_stackOfPlates();
 
 
 /*Driver program for test functions*/
@@ -31,6 +32,8 @@ int main( int argc, char* argv[] ) {
 	test_insertInto();
 	cout << endl;
 	test_helpers();
+	cout << endl;
+	test_stackOfPlates();
 	cout << endl;
 	cout << "exiting..." << endl;
     return 0;
@@ -159,8 +162,27 @@ void test_helpers() {
 
 	unsigned char buff[4] = {0x55, 0xFF, 0x23, 0xaa};
 	cout << "\n0x55, 0xFF, 0x23, 0xaa" << endl; 
-	std::string tmp = bit_banger_CH5::bin2str(buff, 4, true);
+	string tmp = bit_banger_CH5::bin2str(buff, 4, true);
 	cout << tmp << endl;
 	cout << "=================================================================================================" << endl;
 }
 
+void test_stackOfPlates() {
+	using namespace stacks_n_queues;
+	cout << "==================================== TESTING Stack of Plates=====================================" << endl;
+	SetOfPlates stkPlates;
+	std::random_device rd;
+	for (int i = 0; i < 50; i++)
+		stkPlates.push(rd()%1000);
+	cout << "\nPopping 25 elements...." << endl;
+	for (int i = 0; i < 25; i++)
+		stkPlates.pop();
+	stkPlates.display();
+	cout << "Popping stack at index 2...\n\n";
+	stkPlates.popAt(2);
+	stkPlates.display();
+	cout << "\nPopping stack at index 1...\n\n";
+	stkPlates.popAt(1);
+	stkPlates.display();
+	cout << "=================================================================================================" << endl;
+}

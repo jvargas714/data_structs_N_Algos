@@ -11,6 +11,8 @@
 #include <iomanip>
 #include <memory>
 #include <cstdint>
+#include <utility>
+#include <queue>
 
 #define LNLEN 20
 typedef unsigned int uint;
@@ -349,7 +351,8 @@ llnode* linked_list_CH2::partition(llnode* root, int partPt) {
 
 /*2.6: Check if ll is a palindrome
     Descr:
-        Approach for this function would be to push list on to a stack and pop off stack to compare elements.    
+        Approach for this function would be to push list on to a stack and pop off stack to 
+        compare elements.    
 */
 bool linked_list_CH2::ll_is_palindrome(const llnode* root) {
     std::stack<int> stk;
@@ -368,6 +371,80 @@ bool linked_list_CH2::ll_is_palindrome(const llnode* root) {
         stk.pop();
     }
     return true;
+}
+
+
+/*
+    3.3 Stack of Plates implement a data structure that mimics a stack of plates 
+    that at a threshold will need to create a new stack so that it doesnt topple
+*/
+stacks_n_queues::SetOfPlates::SetOfPlates(): _threshold(10)
+{_stacks.push_back(std::stack<int>());}
+
+stacks_n_queues::SetOfPlates::SetOfPlates(size_t threshold): _threshold(threshold) 
+{_stacks.push_back(std::stack<int>());}
+
+void stacks_n_queues::SetOfPlates::push(int val) {
+    std::cout << std::dec << "inserting " << val << " into stack of plates" << 
+        "current stack size: " << _stacks.back().size() << std::endl; 
+    if (!_stacks.empty() && (_stacks.back().size() == _threshold)) {
+        std::cout << "threshold reached created a new stack of plates!!" << std::endl;
+        std::stack<int> newStack;
+        newStack.push(val);
+        _stacks.push_back(newStack);
+    } else {
+        _stacks.back().push(val);
+    }
+}
+
+void stacks_n_queues::SetOfPlates::pop() {
+    if (_stacks.empty())
+        return;
+    _stacks.back().pop();
+    if (_stacks.back().size() == 0)
+        _stacks.pop_back();
+}
+
+int stacks_n_queues::SetOfPlates::peek() {
+    if (_stacks.empty())
+        return INT32_MAX;
+    return _stacks.back().top();  // leaves element on stack
+}
+
+/* 
+    perform pop operation on a specific sub stack within the vector
+    In the case that stack not at the end of the vector is popped then 
+    we need a rollover system of sorts. We would need to move elements from
+    the last stack to the middle one
+*/
+void stacks_n_queues::SetOfPlates::popAt(const size_t& index) {
+    if (_stacks.size()-1 < index)
+        return;
+    else {
+        if(_stacks[index].size())
+            _stacks[index].pop();
+    }
+    // case where we popped from a stack in the middle of the vector 
+    if (index != _stacks.size()-1) {
+        // move element from end stack to the middle stack
+        _stacks[index].push(_stacks.back().top());
+        _stacks.back().pop();
+    }
+}
+
+void stacks_n_queues::SetOfPlates::display() const {
+    using namespace std;    
+    unsigned int stkCnt = 0;
+    for (auto stk : _stacks) {
+        stkCnt++;
+        cout << "stack# " << stkCnt << ", size: " << stk.size() << "\n";
+        size_t sz = stk.size();
+        for (size_t i = 0; i < sz; i++) {
+            cout << stk.top() << "\n";
+            stk.pop();
+        }
+    }
+    cout << endl;
 }
 
 /* 
@@ -393,6 +470,17 @@ bool bit_banger_CH5::insertInto(uint32_t& N, uint32_t& M, uint32_t i, uint32_t j
     N|=M;
     return true;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 /********************************************HELPER METHODS****************************************/
 bool arrays_n_strings_CH1::_is_palindrome( const std::string str ) {

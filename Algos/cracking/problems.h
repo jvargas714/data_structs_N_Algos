@@ -3,6 +3,8 @@
 #include <iostream>
 #include "node.h"
 #include "linked_list.h"
+#include <vector>
+#include <stack>
 
 #define ASCII_Z 90
 #define ASCII_A 65
@@ -75,6 +77,24 @@ namespace linked_list_CH2
     void populateLL(linked_list& ll, size_t amt, size_t num_range);
     llnode* _findKthFromEndNoLen(llnode* nd, size_t kth, size_t& i);
     void display_ll(const llnode*, bool formatted=false);
+}
+
+namespace stacks_n_queues {
+    /*3.2 Stack Min*/
+    class SetOfPlates {
+    private:
+        std::vector<std::stack<int>> _stacks;
+        size_t _threshold;
+
+    public:
+        SetOfPlates();
+        SetOfPlates(size_t threshold);
+        void push(int);
+        void pop();
+        int peek();
+        void popAt(const size_t&);
+        void display() const;
+    };
 }
 
 namespace bit_banger_CH5 {
