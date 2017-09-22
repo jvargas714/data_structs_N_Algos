@@ -13,6 +13,7 @@
 #include <cstdint>
 #include <utility>
 #include <queue>
+#include <stdexcept>
 
 #define LNLEN 20
 typedef unsigned int uint;
@@ -445,6 +446,49 @@ void stacks_n_queues::SetOfPlates::display() const {
         }
     }
     cout << endl;
+}
+
+stacks_n_queues::TwoStackQueue::TwoStackQueue(){}
+
+void stacks_n_queues::TwoStackQueue::push(const int& val) {
+    _stk1.push(val);
+}
+
+int stacks_n_queues::TwoStackQueue::pop() {
+    int tmp;
+    if (_stk1.empty() && _stk2.empty()) {
+        throw std::runtime_error("ERROR :: queues are empty!!");
+    } else if (!_stk2.empty()) {
+        tmp = _stk2.top();
+        _stk2.pop();
+    } else {  // invert stack into the other for pop front ops 
+        transfer_stacks();
+        tmp = _stk2.top();
+        _stk2.pop();
+    }
+    return tmp;
+}
+
+int& stacks_n_queues::TwoStackQueue::front() {
+    if (_stk1.empty() && _stk2.empty()) {
+        throw std::runtime_error("ERROR :: queues are empty!!");
+    } else if (!_stk2.empty()) {
+        return _stk2.top();
+    } else {  // second stack is empty and stack 1 is not, so transfer to stack 2 
+        transfer_stacks();
+        return _stk2.top();
+    }
+}
+
+void stacks_n_queues::TwoStackQueue::transfer_stacks() {
+    while (!_stk1.empty()) {
+        _stk2.push(_stk1.top());
+        _stk1.pop();
+    }
+}
+
+size_t stacks_n_queues::TwoStackQueue::size() const {
+    return _stk1.size() + _stk2.size();
 }
 
 /* 

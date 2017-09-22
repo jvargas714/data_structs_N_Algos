@@ -80,12 +80,9 @@ namespace linked_list_CH2
 }
 
 namespace stacks_n_queues {
-    /*3.2 Stack Min*/
-    class SetOfPlates {
-    private:
-        std::vector<std::stack<int>> _stacks;
-        size_t _threshold;
-
+    /*3.3 Stack Min, LIFO*/
+    class SetOfPlates 
+    {
     public:
         SetOfPlates();
         SetOfPlates(size_t threshold);
@@ -94,9 +91,30 @@ namespace stacks_n_queues {
         int peek();
         void popAt(const size_t&);
         void display() const;
+    private:
+        std::vector<std::stack<int>> _stacks;
+        size_t _threshold;
+    };
+
+    /*3.4 implement queue via two stacks, FIFO */
+    class TwoStackQueue   // TODO :: this class needs testing as well as a to_string function    
+    {
+    public:
+        TwoStackQueue();
+        int& front();
+        void push(const int&);
+        int pop();
+        size_t size() const;
+    private:
+        std::stack<int> _stk1;
+        std::stack<int> _stk2;
+        void transfer_stacks();
     };
 }
 
+/*
+    
+*/
 namespace bit_banger_CH5 {
     /*5.1*/
     bool insertInto(uint32_t& M, uint32_t& N, uint32_t i, uint32_t j);
