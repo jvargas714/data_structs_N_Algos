@@ -1,23 +1,21 @@
 #include <iostream>
 #include <cstdio>
+#include <cfloat>
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	string str = "jay";
-	string str2 = "kelsey";
-	string str3 = "jay";
-	int x = 556677;
-	int y = 3344;
+	float x = .7234;
+	float tmp = x;
+	cout << "num of sig digs in floating pt" << DBL_DIG << endl; 
+    for(int i = 0; i < 7; i++) {
+        tmp = tmp*10;
+        cout << tmp << endl;
+        cout << (int)tmp << endl;
+        tmp = tmp-(int)tmp;
+        cout << "after subtraction: " << tmp << endl;
+        cout << endl;
+    }
 
-	for( int i = 1; i < argc; i++) {
-		cout << argv[i] << endl;
-	}
-
-	cout << true << endl; 
-	cout << (str == str2) << endl;
-	cout << (str == str3) << endl;   // strings can be compared using the == operator 
-	cout << 'z'-'a' << " " << 'Z'-'A' << endl; 
-	cout << "subtracting two unsigned numbers: " << abs(y - x) << endl; 
     return 0;
 }

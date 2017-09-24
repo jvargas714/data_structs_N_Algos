@@ -2,6 +2,7 @@
 #include <random>
 #include "problems.h"
 using namespace std;
+std::random_device rd;
 
 void display_input( int cnt, char** args );
 void test_remove_dups();
@@ -13,6 +14,8 @@ void test_llIsPalindrome();
 void test_insertInto();
 void test_helpers();
 void test_stackOfPlates();
+void test_twoStackQueue();
+void test_binaryToString();
 
 
 /*Driver program for test functions*/
@@ -35,6 +38,9 @@ int main( int argc, char* argv[] ) {
 	cout << endl;
 	test_stackOfPlates();
 	cout << endl;
+	test_twoStackQueue();
+	cout << endl;
+	test_binaryToString();
 	cout << "exiting..." << endl;
     return 0;
 }
@@ -171,7 +177,6 @@ void test_stackOfPlates() {
 	using namespace stacks_n_queues;
 	cout << "==================================== TESTING Stack of Plates=====================================" << endl;
 	SetOfPlates stkPlates;
-	std::random_device rd;
 	for (int i = 0; i < 50; i++)
 		stkPlates.push(rd()%1000);
 	cout << "\nPopping 25 elements...." << endl;
@@ -186,3 +191,34 @@ void test_stackOfPlates() {
 	stkPlates.display();
 	cout << "=================================================================================================" << endl;
 }
+
+void test_twoStackQueue() {
+	using namespace stacks_n_queues;
+	cout << "==================================== TESTING Queue via Two Stacks================================" << endl;
+	TwoStackQueue queue;
+	int tmp;
+	cout << "inserting 10 random integer values into the queue..." << endl; 
+	for (int i = 0; i < 10; ++i) {
+		tmp = rd()%1000;
+		cout << "pushing " << tmp << " to queue" << endl; 
+		queue.push(tmp);
+	}
+	cout << "front of queue " << queue.front() << endl;
+	cout << "front of queue " << queue.front() << endl;
+
+	queue.display();
+	queue.display();
+	cout << "=================================================================================================" << endl;
+}
+
+void test_binaryToString() {
+	cout << "==================================== TESTING Binary to String====================================" << endl;
+	double x = .7223435765687;
+	float xx = .7223435765687;
+	cout << "converting double " << x << " to a string" << endl; 
+	cout << "RESULT: " << bit_banger_CH5::bin2str(x) << endl; 
+	cout << "\nconverting float " <<  xx << " to a string" << endl;
+	cout << "RESULT: " << bit_banger_CH5::bin2str(xx) << endl;
+	cout << "=================================================================================================" << endl;
+}
+

@@ -14,6 +14,7 @@
 #include <utility>
 #include <queue>
 #include <stdexcept>
+#include <cfloat>   // FLT_DIG
 
 #define LNLEN 20
 typedef unsigned int uint;
@@ -491,6 +492,18 @@ size_t stacks_n_queues::TwoStackQueue::size() const {
     return _stk1.size() + _stk2.size();
 }
 
+// 0(2n)
+void stacks_n_queues::TwoStackQueue::display() {
+    transfer_stacks();
+    std::stack<int> tmp;
+    std::cout << "TwoStackQueue size: " << size() << std::endl; 
+    while (!_stk2.empty()) {
+        std::cout << _stk2.top() << "\n";
+        _stk1.push(_stk2.top());
+        _stk2.pop();
+    }
+    std::cout << std::endl;
+}
 /* 
     inserts M in to N, starting inclusively from the ith bit to the jth bit.
     Note that bit index is considered to be the most right bit, LSBit
@@ -515,14 +528,43 @@ bool bit_banger_CH5::insertInto(uint32_t& N, uint32_t& M, uint32_t i, uint32_t j
     return true;
 }
 
+/*  
+    5.2 Binary to String, when passed in a float like 0.732 return the string representation of that 
+    number, do not use stringstream
+*/
+std::string bit_banger_CH5::bin2str(const double& x) {
+    if(x<1 || x==0)
+        return "ERROR";
+    
+    const uint32_t ASCII_ZERO = 48;
+    std::string res = "0.";
+    double tmp=x;
+    char digchar;
+    for (int i =0; i<DBL_DIG; ++i) {
+        tmp = tmp*10;
+        digchar = static_cast<char>( ASCII_ZERO+tmp );
+        res += digchar; 
+        tmp = tmp-static_cast<int>(tmp);
+    }
+    return res;
+}
 
+std::string bit_banger_CH5::bin2str(const float& x) {
+    if(x<1 || x==0)
+        return "ERROR";
 
-
-
-
-
-
-
+    const uint32_t ASCII_ZERO = 48;
+    std::string res = "0.";
+    float tmp=x;
+    char digchar;
+    for (int i =0; i<FLT_DIG; ++i) {
+        tmp = tmp*10;
+        digchar = static_cast<char>( ASCII_ZERO+tmp );
+        res += digchar; 
+        tmp = tmp-static_cast<int>(tmp);
+    }
+    return res;
+}
 
 
 

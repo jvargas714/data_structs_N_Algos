@@ -97,7 +97,7 @@ namespace stacks_n_queues {
     };
 
     /*3.4 implement queue via two stacks, FIFO */
-    class TwoStackQueue   // TODO :: this class needs testing as well as a to_string function    
+    class TwoStackQueue
     {
     public:
         TwoStackQueue();
@@ -105,6 +105,7 @@ namespace stacks_n_queues {
         void push(const int&);
         int pop();
         size_t size() const;
+        void display();
     private:
         std::stack<int> _stk1;
         std::stack<int> _stk2;
@@ -116,8 +117,12 @@ namespace stacks_n_queues {
     
 */
 namespace bit_banger_CH5 {
-    /*5.1*/
+    /*5.1: Insertion*/
     bool insertInto(uint32_t& M, uint32_t& N, uint32_t i, uint32_t j);
+
+    /*5.2: Binary to String*/
+    std::string bin2str(const double&);
+    std::string bin2str(const float&);
 
     // Helpers 
     std::string bin2str(const unsigned char* val, size_t len, bool spaces=false);
