@@ -3,8 +3,8 @@
 #include <cstdlib>          // rand(), size_t 
 #include <iostream>         // cout, endl
 #include <vector>           // vector, size_t
-#include <stack>            // std::stack
-#include <memory>           // unique_ptr<T>
+#include <stack>            // std::stack<T> 
+#include <memory>           // std::unique_ptr<T>, std::shared_ptr<T> 
 #include "logger.h"         // logger
 #include <sstream>          // std::stringstream
 
@@ -317,8 +317,6 @@ void binary_tree<T>::_levelorder_trav( const node_ptr& nd ) const
     {
         log_element( *nd->data );
     }
-
-    //for()
 }
 
 

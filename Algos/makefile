@@ -1,4 +1,3 @@
-include $(SRC_ROOT)/config.vars
 
 OBJS=obj.o
 FIB=fib
