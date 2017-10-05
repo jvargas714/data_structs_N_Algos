@@ -81,8 +81,8 @@ std::string jaystd::bit_banger::bits_to_string(T& t, size_t nbits, bool spaces) 
 
 // LSB located in the first memory location 
 bool jaystd::bit_banger::is_little_endian() {
-	uint32_t tmp = 0xff000000;
-	return (*(unsigned char*)&tmp>0xff) ? false:true;
+	uint32_t tmp = 1;
+	return (((unsigned char*)&tmp)[0])?true:false;
 }
 
 // sets the rightmost 1 bit to 0
