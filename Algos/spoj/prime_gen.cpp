@@ -13,15 +13,15 @@ using namespace std;
 			test cases separated by an empty line.
 */
 
-void gen_primes(const unsigned int&, const unsigned int&);
-bool is_prime(const unsigned int&);
+void gen_primes(const uint32_t&, const uint32_t&);
+bool is_prime(const uint32_t&);
 
 int main() {
-	unsigned int n_tests;
-	unsigned int m, n;
+	uint32_t n_tests;
+	uint32_t m, n;
 	cin >> n_tests;
 	
-	for (unsigned int i = 0; i < n_tests; i++) {
+	for (uint32_t i = 0; i < n_tests; i++) {
 		cin >> m >> n;
 		gen_primes(m, n);
 		cout << endl;
@@ -30,20 +30,20 @@ int main() {
 }
 
 // gen primes between m and n
-void gen_primes(const unsigned int& m, const unsigned int& n) {
-	for (unsigned int i = m; i <= n; ++i) {
+void gen_primes(const uint32_t& m, const uint32_t& n) {
+	for (uint32_t i = m; i <= n; ++i) {
 		if (is_prime(i))
 			cout << i << "\n";
 	}
 }
 
 // check if prime or not 
-bool is_prime(const unsigned int& x) {
+bool is_prime(const uint32_t& x) {
 	if (x==2)
 	    return true;
-	if (x==1 || x==0 || !(x%2))
+	if ( x==1 || x==0 || !(x&1) )
 		return false;
-	for (unsigned int i = 3; i < x; ++i) {
+	for (uint32_t i = 3; i < x; ++i) {
 		if (!(x%i))
 			return false;
 	}
