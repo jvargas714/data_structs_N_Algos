@@ -1,6 +1,12 @@
-#include <iostream>
-#include <cstdint>
+#include <iostream> // std::cout std::cin 
+#include <cstdint>	// typedefs 
+#include <chrono>	// std::chrono::high_resolution_clock
+#include <cmath>	// std::sqrt
 using namespace std;
+using namespace std::chrono;
+typedef unsigned int uint;
+typedef high_resolution_clock hrc;
+typedef hrc::time_point t_point;
 /*
 	SPOJ problem: PRIME1 - Prime Generator
 	Descr: 
@@ -20,12 +26,25 @@ int main() {
 	uint32_t n_tests;
 	uint32_t m, n;
 	cin >> n_tests;
+
+	t_point t1_bub, t2_bub;
+	auto milli_sec = duration_cast<milliseconds>(t2_bub - t1_bub).count();
+	auto micro_sec = duration_cast<microseconds>(t2_bub - t1_bub).count();
 	
 	for (uint32_t i = 0; i < n_tests; i++) {
 		cin >> m >> n;
+
+		t1_bub = hrc::now();
 		gen_primes(m, n);
+		t2_bub = hrc::now();
+		
+		milli_sec = duration_cast<milliseconds>(t2_bub - t1_bub).count();
+		micro_sec = duration_cast<microseconds>(t2_bub - t1_bub).count();
+		
+		cout << "time of execution-->\n" << milli_sec << " msec\n" << micro_sec << " usec\n" << endl;
 		cout << endl;
 	}
+	cin >> n;
 	return 0;
 }
 
@@ -39,12 +58,13 @@ void gen_primes(const uint32_t& m, const uint32_t& n) {
 
 // check if prime or not 
 bool is_prime(const uint32_t& x) {
-	if (x==2)
-	    return true;
-	if ( x==1 || x==0 || !(x&1) )
+	if (x <= 3)
+		return x > 1;
+	if (!(x & 1) || !(x % 3))
 		return false;
-	for (uint32_t i = 3; i < x; ++i) {
-		if (!(x%i))
+	// incrementing by 6 skips over multiples of 2 and 3
+	for (uint32_t i = 5; i*i <= x; i += 6) {
+		if ( !(x%i) || !(x%(i+2)) )
 			return false;
 	}
 	return true;

@@ -1,0 +1,15 @@
+
+.vs/data_structs_n_algos/v15/.suo
+*.db
+*.opendb
+*.ipch
+*.vcxproj
+*.filters
+*.sln
+*.exe
+*.ilk
+*.pdb
+*.obj
+*.log
+*.tlog
+*.idb
