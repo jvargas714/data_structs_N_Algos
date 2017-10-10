@@ -22,7 +22,7 @@ typedef hrc::time_point t_point;
 void gen_primes(const uint32_t&, const uint32_t&);
 bool is_prime(const uint32_t&);
 
-int main() {
+int __main() {
 	uint32_t n_tests;
 	uint32_t m, n;
 	cin >> n_tests;
