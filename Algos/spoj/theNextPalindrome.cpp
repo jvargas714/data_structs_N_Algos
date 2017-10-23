@@ -15,6 +15,31 @@ The first line contains integer t, the number of test cases. Integers K are give
 
 Output:
 For each K, output the smallest palindrome larger than K.
+
+Test Vector:
+9
+0
+1
+9
+99
+12
+808
+2133
+321123
+94187978322
+99999992939393
+
+Correct output:
+1
+2
+11
+22
+101
+818
+2222
+322223
+94188088149
+??? 
 */
 
 bool is_palindrome(const std::string&);
@@ -26,7 +51,9 @@ void process_3_digit_num(std::string&);
 void remove_leading_zeros(std::string&);
 bool all_zeros(const std::string&);
 void increment_by_one(std::string&, uint32_t);
-void carry_operation(std::string&, uint32_t, uint32_t);
+//void carry_operation(std::string&, uint32_t, uint32_t);
+void carry_operation(std::string&, uint32_t);
+
 
 int main() {
 	uint32_t n;
@@ -151,19 +178,62 @@ void increment_by_one(std::string& strval, uint32_t i) {
 
 // increment all pairs from curr_idx up to limit
 // TODO :: needs fixing 
-void carry_operation(std::string& numstr, uint32_t curr_idx, uint32_t limit) {
-	if (curr_idx == limit)
+//void carry_operation(std::string& numstr, uint32_t curr_idx, uint32_t limit) {
+//	//if (curr_idx == limit)
+//	//	return;
+//	uint32_t tmp = numstr[curr_idx] - ASCII_ZERO;
+//	tmp++;
+//	if (tmp == 10) {
+//		insert_int_pair(numstr, curr_idx, 0);
+//		std::cout << "carry op(): after insert: " << numstr << std::endl;
+//		carry_operation(numstr, ++curr_idx, limit);
+//	}
+//	else { 
+//		insert_int_pair(numstr, curr_idx, tmp);
+//	}
+//	std::cout << "carry op : " << numstr << std::endl;
+//}
+/*
+	this function should just perform the carry operation when tmp > tmp2 in the loop below 
+	function could potentially be recursive to deal with 9 values 
+	so far just working on non 9 values
+	TODO :: DEBUG this function
+*/
+void carry_operation(std::string& numstr, uint32_t i) {
+	uint32_t j = numstr.size() - i - 1;
+
+	if ( i==j || (j-1)<0 ) {
 		return;
-	uint32_t tmp = numstr[curr_idx] - ASCII_ZERO;
-	tmp++;
-	if (tmp == 10) {
-		insert_int_pair(numstr, curr_idx, 0);
-		carry_operation(numstr, ++curr_idx, limit);
 	}
-	else {
-		insert_int_pair(numstr, curr_idx, tmp);
+
+	uint32_t insert_val, ival, jval;
+	ival = numstr[i] - ASCII_ZERO;
+	jval = numstr[j] - ASCII_ZERO;
+		
+	if (ival < jval) {
+		insert_int_pair(numstr, i, jval);
 	}
-	std::cout << "carry op : " << numstr << std::endl;
+	
+	else if (ival > jval) {
+		insert_int_pair(numstr, i, ival);
+	}
+	else if (ival == jval) {
+		ival++;
+		if (ival == 10) {
+			insert_int_pair(numstr, i, 0);
+			i++;
+			if (i==j) {
+				ival = numstr[i - 2] - ASCII_ZERO;
+				ival++;
+				insert_int_pair(numstr, i - 2, ival);
+				return;
+			}
+			carry_operation(numstr, i);  // recursive call 
+		}
+		else {
+			insert_int_pair(numstr, i, ival);
+		}
+	}
 }
 
 /*calculate the next palindrome that is greater than the provided string*/
@@ -189,8 +259,13 @@ void find_next_palindrome(std::string& str_val) {
 			continue;
 		
 		if (tmp < tmp2) {
-			midpt = (len % 2) ? (len/2):(len/2-1);
-			carry_operation(str_val, midpt, i);
+			tmp2 = tmp;
+			//midpt = (len % 2) ? (len/2):(len/2-1);
+			//insert_int_pair(str_val, i, tmp);
+			//std::cout << "after insert: " << str_val << std::endl;
+			carry_operation(str_val, i);
+			insert_int_pair(str_val, i+1, tmp);
+			continue;
 		}
 		tmp2 = tmp;
 		insert_int_pair(str_val, i, tmp);
