@@ -106,21 +106,21 @@ int main()
 */
 void bubble_sort( vector<int>& vect )
 {
-        bool changed    = true;
-        while( changed )
+    bool changed    = true;
+    while( changed )
+    {
+        changed = false;
+        for( vector<int>::iterator it = vect.begin(); (it+1) != vect.end(); it++ )
         {
-            changed = false;
-            for( vector<int>::iterator it = vect.begin(); (it+1) != vect.end(); it++ )
+            if( *(it+1) < *(it) )
             {
-                if( *(it+1) < *(it) )
-                {
-                    int tmp = *(it);
-                    *(it)   = *(it+1);
-                    *(it+1) = tmp;
-                    changed = true;
-                } 
-            }
+                int tmp = *(it);
+                *(it)   = *(it+1);
+                *(it+1) = tmp;
+                changed = true;
+            } 
         }
+    }
 }
 
 /*
