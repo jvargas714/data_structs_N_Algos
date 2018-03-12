@@ -28,7 +28,7 @@ def check_result(ans, prblm_name, input_line_offset=0):
 		else:
 			entry = f'{ln},{inval.strip()},{exp_line.strip()},{ans_line.strip()},Corrent'
 			no_correct += 1
-			# output.write(entry+'\n')
+			output.write(entry+'\n')
 		
 	summary = f'\n\n\nResults:\nNumber Correct,Number Wrong,% Correct\n'\
 					f'{no_correct},{no_wrong},{round(no_correct/(no_correct+no_wrong)*100, 3)}%\n'
