@@ -15,3 +15,4 @@
 *.idb
 *.db-shm
 *.db-wal
+*.pyc

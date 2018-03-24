@@ -55,3 +55,49 @@ def time_execution(func_obj, args=None):
 		print(f'Error executing function object.\n\ntype: \
 			      	{exc_info()[0]}, \n\nvalue:{exc_info()[1]}')
 	return str(f'Time of Execution: {round((t1-t0)*1000, 3)}msecs\n')
+
+def generate_random_matrix(m, n, max_val):
+    """
+    Generates a matrix of size m x n of random size. Where m is the size of the row 
+    Args:
+        m (int): num of rows
+        n (int): num of cols 
+        max_val(int): max val of element in the matrix 
+    """
+    matrix = []
+    for i in range(n):
+    	row = [] 
+    	for j in range(m):
+    		row.append(rd.randint(0, max_val))
+    	matrix.append(row)
+    return matrix 
+
+def logical_left_shift(arr, n):
+	"""
+	    A left shift of an array by n places, zeros are shifted in 
+	    
+	    Args:
+	        arr (list): list to be shifted
+	        n (int): number of shifts 
+    """
+	print(arr)
+	for x in range(n):
+		for i in range(len(arr)-1):
+			arr[i] = arr[i+1]
+		arr[len(arr)-1] = 0
+		print(arr)
+
+def logical_right_shift(arr, n):
+	"""
+	    A right shift of an array by n places, zeros are shifted in 
+	    
+	    Args:
+	        arr (list): list to be shifted
+	        n (int): number of shifts 
+    """
+	print(arr)
+	for x in range(n):
+		for i in range(len(arr)-1, 0, -1):
+			arr[i] = arr[i-1 ]
+		arr[0] = 0
+		print(arr)

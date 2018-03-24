@@ -39,7 +39,7 @@ def timeInWords(h, m):
     
     # easy even time
     if m == 0:
-        return ONES[h] + " o'clock"
+        return ONES[h] + " o' clock"
     
     # build second half of the statement 
     if m > 30:
@@ -67,14 +67,14 @@ def timeInWords(h, m):
             minToNext = 60 - m
             if minToNext == 1:
                 firstHalf = 'one minute '
-            elif minToNext >= 10 and minToNExt < 20:
+            elif minToNext >= 10 and minToNext < 20:
                 firstHalf = TENS[minToNext] + ' minutes '
             elif minToNext == 20:
                 firstHalf = 'twenty minutes '
+            elif minToNext > 20:
+                firstHalf = 'twenty ' + ONES[minToNext % 10] + ' minutes '
             else:
-                
-            
-            
+                firstHalf = ONES[minToNext] + ' minutes '
     return firstHalf + secondHalf
 
 if __name__ == "__main__":
