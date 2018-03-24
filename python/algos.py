@@ -36,7 +36,6 @@ def bubble_sort(arr, rev=False):
 				ut.swap(arr, j, j+1)
 				changed = True
 			
-
 def insertion_sort(arr, rev=False):
 	'''
 		Worst Case: O(n^2)
@@ -52,6 +51,24 @@ def insertion_sort(arr, rev=False):
 			i-=1
 			j-=1
 
+def reverseInteger(n):
+    """
+    Algorithm to reverse provided integer, n=12345678 result=87654321
+    
+    Args:
+        n (Integer): integer value to be reversed 
+    """
+    pwr = 10
+    nums = [] 
+    result = 0
+    while n>0:  # n = 458. 8: 10     5 : 100     4 : 1000. [4 5 8]
+    	nums.append(n%pwr)
+    	n = int(n/10)
+    pwr = pow(10, len(nums)) / 10 
+    for num in nums:
+    	result += num*pwr
+    	pwr/=10
+    return int(result)
 
 
 

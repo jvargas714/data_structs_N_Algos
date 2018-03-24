@@ -1,5 +1,3 @@
-import save_the_prisoner as sp 
+import algos 
 
-# we want 40  n m s 
-# 40 277585960 1
-print (sp.saveThePrisoner(40, 277585960, 1))
+print(algos.reverseInteger(123456))
