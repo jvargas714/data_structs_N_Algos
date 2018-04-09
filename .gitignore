@@ -15,4 +15,5 @@
 *.idb
 *.db-shm
 *.db-wal
-*.pyc
+*.pyc__pycache__
+python/__pycache__

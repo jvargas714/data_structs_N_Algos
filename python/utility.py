@@ -8,7 +8,7 @@ def generate_array(n):
 		generates an array of random numbers between -n .... n
 	'''
 	for i in range(n):
-		yield rd.randint(0, i)
+		yield rd.randint(0, n*100)
 
 def arr_to_string(arr):
 	'''

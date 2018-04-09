@@ -2,6 +2,7 @@ import utility as ut
 import time
 import argparse
 import itertools
+import copy
 # import plot_mania as plt
 
 # globals
@@ -181,6 +182,7 @@ def max_profit(prices):
 
 def rotate_array_r(nums, k):
 	"""
+		problem 189
 		algorithm to inplace modify an input list rotating it to the right by k spots. 
 		Worst Case O(kn): where n is length of input list 
 		Memory: O(1)
@@ -200,6 +202,7 @@ def rotate_array_r(nums, k):
 
 def rotate_array_l(nums, k):
 	"""
+		problem 189
 		algorithm to inplace modify an input list rotating it to the left by k spots. 
 		Worst Case O(kn): where n is length of input list 
 		Memory: O(1)
@@ -217,8 +220,81 @@ def rotate_array_l(nums, k):
 		nums[-1] = tmp
 
 def rotate_array_r_v2(nums, k):
-	k=k%sz
-	
+	"""
+		problem 189
+		this version is faster than v1 but uses O(n) more memory 
+		
+		Args:
+		    nums (list): Description
+		    k (int): number of rotations to make 
+	"""
+	sz = len(nums)
+	k = k%sz
+	tmp = nums[:]
+	for i in range(0, sz):
+		ii = i + k
+		if ii >= sz:
+			ii-=sz
+		nums[ii] = tmp[i]
+
+def contains_duplicate(nums):
+	'''
+		problem 217 
+	'''
+	if not len(nums):
+		return False
+	nums.sort()
+	tmp = nums[0]
+	for el in nums[1:]:
+		if tmp == el:
+			return True
+		else:
+			tmp = el
+	return False
+
+def single_number(nums):
+	'''
+		problem 136
+		Given an array of integers, every element appears twice except for one. Find that single one
+	'''
+	sz = len(nums)
+	if sz < 3:
+		return 
+	nums.sort()
+	if nums[0]  != nums[1]:
+		return nums[0]
+	for i in range(0, sz-1, 2):
+		if nums[i] != nums[i+1]:
+			return nums[i]
+	return nums[-1]
+
+def intersection_of_arrays(nums1, nums2):
+	"""
+		Given two arrays, write a function to compute their intersection.
+		Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2, 2].
+    """
+	result = [] 
+	tmp_map = {} 
+	len1 = len(nums1)
+	len2 = len(nums2)
+	(tmp, tmp2) = (nums1, nums2) if len1 > len2 else (nums2, nums1)
+	# build value map showing number times an element appears 
+	for el in tmp:
+		if el not in tmp_map:
+			tmp_map[el] = 1
+		else:
+			tmp_map[el] += 1
+	# build intersection 
+	for el in tmp2:
+		if el in tmp_map:
+			result.append(el)
+			tmp_map[el]-=1
+			if tmp_map[el] == 0:
+				del tmp_map[el]
+	return result
+
+
+
 
 #----------------------------------------END-LEETCODE--------------------------------------------
 
