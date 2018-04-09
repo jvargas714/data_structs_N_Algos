@@ -7,7 +7,17 @@ import itertools
 # globals
 DISPLAY_ARRS = False
 
-def checkForDupLst(lstOfLst, lst):
+def check_dupl_list(lstOfLst, lst):
+	"""
+		quick function to check if a list exists in a list of lists
+		
+		Args:
+		    lstOfLst (list of lists): list of lists 
+		    lst (list): single list of integers 
+		
+		Returns:
+		    bool: true of list exists in lstOfLst 
+	"""
 	for lst_el in lstOfLst:
 		if lst_el == lst:
 			return True
@@ -67,12 +77,12 @@ def insertion_sort(arr, rev=False):
 			i-=1
 			j-=1
 
-def reverseInteger(n):
+def reverse_integer(n):
 	"""
-	Algorithm to reverse provided integer, n=12345678 result=87654321
-	
-	Args:
-		n (Integer): integer value to be reversed 
+		Algorithm to reverse provided integer, n=12345678 result=87654321
+		
+		Args:
+			n (Integer): integer value to be reversed 
 	"""
 	pwr = 10
 	nums = [] 
@@ -88,7 +98,7 @@ def reverseInteger(n):
 
 def perms(arr, baseInd, result):
 	'''can just use list(itertools.permutations(arr))'''
-	if not checkForDupLst(result, arr):
+	if not check_dupl_list(result, arr):
 		result.append(arr)
 	subperms = [arr]
 	if len(result) == fact(len(arr)) or baseInd == len(arr): 
@@ -115,7 +125,24 @@ def all_perms(elements):
 				yield perm[:i] + elements[0:1] + perm[i:]
 
 #----------------------------------------LeetCode------------------------------------------------
-def removeDuplicates(nums):
+def remove_duplicates(nums):
+	"""
+		inplace algorithm to remove duplicates from an input array.
+		This approach starts with a pointer to the first index called 
+		offset and another pointer on the next index. We count the number
+		of common values. Once we find a different element we delete the 
+		range of numbers and increment the offset as well as the index 
+		next to offset index and repeat till we reach the end of the list.
+		Note that the size of the list changes as well, decrements by the 
+		number of elements deleted. 
+		
+		Args:
+		    nums (list): list of numbers that are in order. List input is in order. smallest to 
+		    	largest. 
+		
+		Returns:
+		    int: size of modified list 
+	"""
 	sz = len(nums)
 	if not sz:
 		return 0
@@ -138,7 +165,7 @@ def removeDuplicates(nums):
 	del nums[offset:offset+cnt]
 	return len(nums)
 
-def maxProfit(prices):
+def max_profit(prices):
 	profits = 0 
 	ln = len(prices)
 	if not ln:
@@ -152,33 +179,64 @@ def maxProfit(prices):
 		lastPrice = price
 	return profits
 
-def _swap(nums, x, y, cnt):
-	if cnt == (len(nums)-1):
-		return
+def rotate_array_r(nums, k):
+	"""
+		algorithm to inplace modify an input list rotating it to the right by k spots. 
+		Worst Case O(kn): where n is length of input list 
+		Memory: O(1)
+		Args:
+		    nums (list): list of elements 
+		    k (int): number of spots to rotate by 
+	"""
+	# no need to rotate more than n times 
+	sz = len(nums)
+	if k > sz:
+		k = k%sz
+	for n in range(k):
+		end_el = nums[-1] 
+		for i in range(sz-1, -1, -1):
+			nums[i] = nums[i-1]
+		nums[0] = end_el
+
+def rotate_array_l(nums, k):
+	"""
+		algorithm to inplace modify an input list rotating it to the left by k spots. 
+		Worst Case O(kn): where n is length of input list 
+		Memory: O(1)
+		Args:
+		    nums (list): list of elements 
+		    k (int): number of spots to rotate by 
+	"""
+	# no need to rotate more than n times 
+	if k > sz:
+		k = k%sz
+	for n in range(k):
+		tmp = nums[0]
+		for i in range(0, len(nums)-1):
+			nums[i] = nums[i+1]
+		nums[-1] = tmp
+
+def rotate_array_r_v2(nums, k):
+	k=k%sz
 	
 
-
-def rotateArrayR(nums, k):
-	 _swap(nums, 0, k, 0)
-
-def rotateArrayL(nums, k):
-	pass
 #----------------------------------------END-LEETCODE--------------------------------------------
 
 if __name__ == '__main__':
-	# args = handle_args()
-	# n = 0
-	# while n <= 0:
-	# 	n = int( input('Enter arr size for sorting. Must be > 0\n') )
-	# arr = list(ut.generate_array(n))
-	# t0 = time.clock()
-	# bubble_sort( arr )
-	# t1 = time.clock()
+	args = handle_args()
+	n = 0
+	while n <= 0:
+		n = int( input('Enter arr size for sorting. Must be > 0\n') )
+	arr = list(ut.generate_array(n))
+	t0 = time.clock()
+	bubble_sort( arr )
+	t1 = time.clock()
 
 	if DISPLAY_ARRS:
 		print(f'result:\n{ut.arr_to_string(arr)}')
-	# print(f'total time for a bubble sort of an array of size { n }: {(t1-t0)*1000}msecs')
+	print(f'total time for a bubble sort of an array of size { n }: {(t1-t0)*1000}msecs')
 
+	print('\n\nfinding permutations of an array.\n\n')
 	res = []
 	lst = [1, 2, 3, 4, 5, 6, 8]
 	perm(lst, 0, res)
