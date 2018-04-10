@@ -13,36 +13,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0097cac5-940b-46f4-bd72-4a8686731f79" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Algos/LeetCode/CMakeLists.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Algos/algos.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Algos/types.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Algos/utility.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Algos/utility.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Algos/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/LeetCode/Solution_Class.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/LeetCode/Solution_Class.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/LeetCode/bestTimeToBuyAndSellStock.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/LeetCode/climbing_stairs.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/LeetCode/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Algos/LeetCode/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/LeetCode/maxSubArray.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/LeetCode/maxSubArraySum.input" beforeDir="false" afterPath="$PROJECT_DIR$/Algos/LeetCode/input/maxSubArraySum.input" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/LeetCode/short_algos.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Algos/LeetCode/leet_algos.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/LeetCode/short_algos.h" beforeDir="false" afterPath="$PROJECT_DIR$/Algos/LeetCode/leet_algos.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/algos.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Algos/algos.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/intzip.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Algos/intzip.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/makefile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/misc_driver.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algos/templateFile.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Algos/templateFile.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buildNRun.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.vars" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_structs/heap.h" beforeDir="false" afterPath="$PROJECT_DIR$/data_structs/heap.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_structs/makefile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/makefile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../python/algos.py" beforeDir="false" afterPath="$PROJECT_DIR$/../python/algos.py" afterDir="false" />
-    </list>
+    <list default="true" id="0097cac5-940b-46f4-bd72-4a8686731f79" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -81,8 +52,8 @@
       <file leaf-file-name="leet_algos.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Algos/LeetCode/leet_algos.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="157" column="16" selection-start-line="157" selection-start-column="16" selection-end-line="157" selection-end-column="16" />
+            <state relative-caret-position="319">
+              <caret line="161" column="5" lean-forward="true" selection-start-line="161" selection-start-column="5" selection-end-line="161" selection-end-column="5" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
                 <element signature="e#25#543#0" />
@@ -286,12 +257,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1523323601588</updated>
-      <workItem from="1523323603371" duration="10036000" />
+      <workItem from="1523323603371" duration="10365000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10036000" />
+    <option name="totallyTimeSpent" value="10365000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -508,8 +479,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Algos/LeetCode/leet_algos.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="157" column="16" selection-start-line="157" selection-start-column="16" selection-end-line="157" selection-end-column="16" />
+        <state relative-caret-position="319">
+          <caret line="161" column="5" lean-forward="true" selection-start-line="161" selection-start-column="5" selection-end-line="161" selection-end-column="5" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
             <element signature="e#25#543#0" />
