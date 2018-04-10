@@ -1,116 +1,25 @@
-#include <cstdlib>          // rand()
-#include <iostream>         // cout, endl
-#include <vector>           // vector, size_t
-#include <chrono>
-#include <string>           // std::getline 
+#include <cstdlib>
+#include <iostream>
+#include <vector>
 #include <sstream>
-#include "time.h"           // time(NULL)
-#include "../data_structs/master_structs.h"  // min:heap
-
-// typedefs and namespaces 
-using namespace std;
-using namespace std::chrono;
-typedef unsigned int uint;
-typedef high_resolution_clock hrc;
-typedef hrc::time_point t_point;
-
-// sorting algos
-void bubble_sort( vector<int>& );
-void bubble_sort( int*, size_t );
-void insertion_sort( vector<int>& );
-void insertion_sort( int* );
-void heap_sort( vector<int>& );
-void merge_sort( vector<int>& );
-void quick_sort( vector<int>&, int, int );
-
-// helper functions
-vector<int> fill_vector( size_t );
-int* fill_array( size_t );
-void display( vector<int>& );
-void display( int*, size_t );
-int partition_vect( vector<int>&, int, int );
-int partition( vector<int>&, int, int );
-void swap_el( int*, int* );
-void show_partition( vector<int>&, int );
-void split(const string&, char delim, vector<string>&);
+#include <string>
+#include "algos.h"
+#include "utility.h"
 
 
-int main()
-{
-    const uint SIZE = 100000;
-    vector<int> vect_1 = fill_vector( SIZE );       // sorted by bubble sort 
-    vector<int> vect_2( vect_1 );                   // sorted by Insertion sort
-    vector<int> vect_3( vect_1 );                   // sorted by heap sort
-    vector<int> vect_4( vect_1 );                   // sorted by quicksort
-    t_point t1_bub, t2_bub;
-    auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-    
-    cout << "Sorting an vector of length: " << vect_1.size()  << "\n" << endl;
-    // //--------------------------------------Bubble Sort------------------------------------------
-    // t1_bub = hrc::now();
-    // bubble_sort( vect_1 );
-    // t2_bub = hrc::now();
-    // milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    // micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-    // cout << "Bubble Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
-    //     "usec\n" << endl;
-    // // end bubble sort
-
-    // // //-----------------------------------Insertion Sort---------------------------------------
-    // t1_bub = hrc::now();
-    // insertion_sort( vect_2 );
-    // t2_bub = hrc::now();
-    // milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    // micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-    // cout << "Insertion Sort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
-    //     "usec\n" << endl;
-    // end insertion sort 
-
-    //-----------------------------------Heap Sort--------------------------------------------------
-    min_heap hp;
-    t1_bub = hrc::now();
-    // O(n)
-    for( auto& el : vect_3 )    // fill heap first before sort
-    {
-        hp.insert(el);
-    }
-    // O(log n)
-    vector<int> sorted_vect = hp.sort();
-    t2_bub = hrc::now();
-    //display(sorted_vect);
-    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-    cout << "Heap Sort (from min_heap) time of execution-->\n" << milli_sec <<"msec\n" 
-    << micro_sec << "usec\n" << endl;
-    // end heap sort 
-
-    //-----------------------------------Quick Sort-------------------------------------------------
-    t1_bub = hrc::now();
-    quick_sort( vect_4, 0, vect_1.size()-1 );
-    t2_bub = hrc::now();
-    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-    cout << "QuickSort time of execution-->\n" << milli_sec << "msec\n" << micro_sec <<  
-        "usec\n" << endl;
-    return 0;
-}
-
-//-----------------------------------------implementations------------------------------------------
-
-/* 
+/*
     bubble sort algo [* * * * * *]
     Worst case: 0(n^2)
     Best case: 0(n)
     Average case: 0(n^2)
 */
-void bubble_sort( vector<int>& vect )
+void bubble_sort( std::vector<int>& vect )
 {
     bool changed    = true;
     while( changed )
     {
         changed = false;
-        for( vector<int>::iterator it = vect.begin(); (it+1) != vect.end(); it++ )
+        for(auto it = vect.begin(); (it+1) != vect.end(); it++ )
         {
             if( *(it+1) < *(it) )
             {
@@ -151,7 +60,7 @@ void bubble_sort( int* ar, size_t len )
 /*
     Descr: Select one element and place it in the correct spot in the list 
 */
-void insertion_sort( vector<int>& vect )
+void insertion_sort( std::vector<int>& vect )
 {
     uint j = 0;
     for( uint i = 1; i < vect.size(); i++ )
@@ -209,7 +118,7 @@ void insertion_sort( vector<int>& vect )
     Best case: 0(nlog n) (simple partition) or 0(n) (3 way partition)
     Average case: 0(nlog n)
 */
-void quick_sort( vector<int>& data, int left_ind, int right_ind )
+void quick_sort( std::vector<int>& data, int left_ind, int right_ind )
 {   
     if( right_ind > left_ind )
     {
@@ -219,132 +128,3 @@ void quick_sort( vector<int>& data, int left_ind, int right_ind )
     }
 }
 
-//______________________________________________Helpers_____________________________________________
-
-// fill vector with random data from 0 to num_els 
-vector<int> fill_vector( size_t num_els )
-{
-    vector<int> vect;
-    srand( time( NULL ) );
-    for( uint i = 0; i < num_els; i++ )
-    {
-        vect.push_back( rand() % num_els );
-    }
-    return vect;
-}
-
-// fills array with num_els random integers
-// allocated on the heap
-int* fill_array( size_t num_els )
-{
-    int* ar = new int[ num_els ];
-    srand( time( NULL ) );
-    for(uint i = 0; i < num_els; i++ )
-    {
-        ar[i] = rand() % num_els;
-    }
-    return ar;
-}
-
-// display contents of vector 
-void display( vector<int>& vect )
-{
-    int cnt = 0;
-    cout << "size: " << vect.size() << endl; 
-    for( auto& el : vect )
-    {
-        if(cnt == LINE_LIMIT)
-        {
-            cout << el << endl;
-            cnt = 1;
-            continue;
-        }
-        cout << el << " ";
-        cnt++;
-    }
-    cout << endl;
-}
-
-// displays an array 
-void display( int* ar, size_t num_els )
-{
-    for( uint i = 0; i < num_els; i++ )
-    {
-        cout << ar[i] << " ";
-    }
-    cout << endl;
-}
-
-/*
-    Descr: 
-    As we traverse through, we know that when the if case is true (data[j] <= pivot) that all
-    The idea behind this partitioning algorithm is to place all elements smallers than the pivot 
-    to the left and all the greater elements to the right. Returns index of division point. 
-    the elements that came before that are larger than the pivot. So we can increment i and swap
-    with the element that is larger than the pivot. We continue from there doing the same till we 
-    run through all the elements of the vector. 
-    Data is split like this: 0....divPt ; divPt+1....n
-    Worst Case: O(n)
-*/
-int partition( vector<int>& data, int low, int high )
-{
-    int pivot   = data[high];   // typically pivot point is at end of vector
-    int i       = (low - 1);    // index where smaller element exists
-    for( int j = low; j <= high-1; j++ )
-    {
-        if( data[j] <= pivot )
-        {
-            i++;
-            swap_el( &data[i], &data[j] );
-        }
-    }
-    swap( data[i+1], data[high] );
-    return ( i + 1 );
-}
-
-// display vector in its respective partitioned sections according to the partition point 
-void show_partition( vector<int>& data, int part_pt )
-{
-    int cnt = 0;
-    cout << "div_pt: " << part_pt << endl; 
-    cout << "\nThe low side: " << endl;
-    for( int i = 0; i <= part_pt; i++ )
-    {
-        cout << data[i] << " ";
-        if( cnt == LINE_LIMIT )
-        {
-            cout << endl;
-            cnt = 0;
-        }
-    }
-    for( uint i = part_pt+1; i < data.size(); i++ )
-    {
-        cout << data[i] << " ";
-        if( cnt == LINE_LIMIT )
-        {
-            cout << endl;
-            cnt = 0;
-        }   
-    }
-}
-
-// simply swap function
-void swap_el( int* a, int* b )
-{
-    int tmp = *a;
-    *a      = *b;
-    *b      = tmp;
-}
-
-// split a string by specified delim, if empty token between delims then do not collect it
-void split( const string& s, char delim, vector<string>& elems )
-{
-    stringstream ss;
-    ss.str(s);  // set contents of ss with s
-    string item;
-    while( getline(ss, item, delim) )
-    {
-        if( !item.empty() )
-            elems.push_back(item);
-    }
-}

@@ -83,7 +83,6 @@
 */
 
 // used in the display function limit how many elements are displayed per line
-static const int LINE_LIMIT = 30;
 
 class min_heap 
 {

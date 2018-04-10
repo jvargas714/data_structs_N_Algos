@@ -2,21 +2,7 @@
 #include <cstdlib>  // std::abs
 #include <stack>
 #include <cmath>    // std::pow
-
-int zip_ints(int A, int B);
-void display(std::vector<int> a);
-void display( std::stack<int> a );
-typedef unsigned int uint;
- 
-
-int main(){
-    
-    std::cout << "result: " << zip_ints(0, 1234) << std::endl;
-    return 0;    
-}
-
-
-
+#include "types.h"
 
 int zip_ints(int A, int B)
 {
@@ -24,10 +10,6 @@ int zip_ints(int A, int B)
     std::stack<int> digs_b;
     int pwr = 0;
     int res = 0;
-
-    std::cout << "A: " << A << std::endl;
-    std::cout << "B: " << B << std::endl;
-
     if( B == 0 )
     {
         digs_b.push(0);
@@ -63,9 +45,6 @@ int zip_ints(int A, int B)
             B/=10;
         }
     }
-    display(digs_a);
-    display(digs_b);
-
     int a_size = digs_a.size();
     int b_size = digs_b.size();
     int diff = a_size - b_size;
@@ -121,27 +100,5 @@ int zip_ints(int A, int B)
             pwr/=10;
         }
     }
-
-    display(digs_a);
-    display(digs_b);
     return res;
-}
-
-void display( std::vector<int> a )
-{
-    for( auto& el : a )
-    {
-        std::cout << el << " ";
-    }
-    std::cout << std::endl; 
-}
-
-void display( std::stack<int> a )
-{
-    while( !a.empty() )
-    {
-        std::cout << a.top() << " ";
-        a.pop();
-    }
-    std::cout << std::endl; 
 }

@@ -15,13 +15,7 @@ typedef high_resolution_clock hrc;
 typedef hrc::time_point t_point;
 
 //-----------------------------------------declarations---------------------------------------------
-// display contents of an iterable 
-template<typename T>
-void display(const T& t);
 
-// handle input args from terminal 
-template<typename T>
-T handle_input(int argc, char* argv[]);
 
 // algo solution 
 
