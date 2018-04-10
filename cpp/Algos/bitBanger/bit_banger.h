@@ -45,10 +45,12 @@ namespace jaystd {
 		bool is_little_endian();
 
 		// finds the right most 1-bit and sets all other bits to 0
-		void jaystd::bit_banger::isolate_rht_most_1bit(T& t);
+		template<typename T>
+		void bit_banger::isolate_rht_most_1bit(T& t);
 
 		// todo 
-		void jaystd::bit_banger::rht_propagate_rhtmost_1bit(T& t);
+		template<typename T>
+		void bit_banger::rht_propagate_rhtmost_1bit(T& t);
 		
 	}
 }

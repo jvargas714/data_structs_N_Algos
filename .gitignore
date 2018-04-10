@@ -3,9 +3,6 @@
 *.db
 *.opendb
 *.ipch
-*.vcxproj
-*.filters
-*.sln
 *.exe
 *.ilk
 *.pdb
@@ -17,3 +14,4 @@
 *.db-wal
 *.pyc__pycache__
 python/__pycache__
+.vs
