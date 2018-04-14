@@ -46,12 +46,15 @@ namespace jaystd {
 
 		// finds the right most 1-bit and sets all other bits to 0
 		template<typename T>
-		void bit_banger::isolate_rht_most_1bit(T& t);
+		void isolate_rht_most_1bit(T& t);
 
 		// todo 
 		template<typename T>
-		void bit_banger::rht_propagate_rhtmost_1bit(T& t);
+		void rht_propagate_rhtmost_1bit(T& t);
 		
+		template<typename T>
+		void turn_off_rht_most_1bit(T& t);
+
 	}
 }
 

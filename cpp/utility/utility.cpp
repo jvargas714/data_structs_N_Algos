@@ -1,12 +1,13 @@
 #include <iostream>
 #include <sstream>
 #include <random>
+#include "time.h"
 #include "types.h"
 #include "utility.h"
 
 
 // display contents of std::vector
-void display( std::vector<int>& vect )
+void display( const std::vector<int>& vect )
 {
     int cnt = 0;
     std::cout << "size: " << vect.size() << std::endl;
@@ -25,7 +26,7 @@ void display( std::vector<int>& vect )
 }
 
 // displays an array
-void display( int* ar, size_t num_els )
+void display( const int* ar, size_t num_els )
 {
     for( uint i = 0; i < num_els; i++ )
     {
@@ -127,13 +128,6 @@ void swap(int & a, int &b) {
     a = tmp;
 }
 
-template<typename T>
-void display(const T& t) {
-    for (auto& el : t)
-        std::cout << el << " ";
-    std::cout << std::endl;
-}
-
 int accum(std::vector<int>::iterator a, std::vector<int>::iterator b) {
     int sum = 0;
     for (auto it = a; it!=b; it++) {
@@ -165,4 +159,18 @@ size_t deallocateLList(ListNode* head) {
         cnt +=1;
     }
     return cnt;
+}
+
+void _carry(std::vector<int>& digits, int digit_pos) {
+	// terminating condition
+	if (digits[digit_pos] <= 9) {
+		return;
+	}
+	digits[digit_pos] = 0;
+	digit_pos--;
+	if (digit_pos < 0)
+		digits.insert(digits.begin(), 1);
+	else
+		digits[digit_pos]++;
+	_carry(digits, digit_pos);
 }

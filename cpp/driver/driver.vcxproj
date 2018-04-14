@@ -20,13 +20,13 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{6C5AF1A1-6E71-42EC-AB67-7AD243B84B9E}</ProjectGuid>
-    <RootNamespace>Leetcode</RootNamespace>
+    <ProjectGuid>{65B0D048-27B8-47E6-A497-06CC1A40C77E}</ProjectGuid>
+    <RootNamespace>driver</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -76,7 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\;..\..\utility</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Algos;..\Algos\spoj;..\Algos\cracking;..\data_structs;..\Algos\LeetCode;..\utility</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -116,10 +116,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="leet_algos.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="leet_algos.h" />
+    <ProjectReference Include="..\Algos\bitBanger\bit_banger.vcxproj">
+      <Project>{0c9f498d-795e-4c6f-9bd1-f45a9894891f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Algos\cracking\cracking.vcxproj">
+      <Project>{cf90374c-c997-412b-94b4-3c7cc725e6bf}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Algos\LeetCode\Leetcode.vcxproj">
+      <Project>{6c5af1a1-6e71-42ec-ab67-7ad243b84b9e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Algos\spoj\spoj.vcxproj">
+      <Project>{b4bc0e8c-c485-42c8-8756-313cd7c42287}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\data_structs\data_structs.vcxproj">
+      <Project>{e92dbfb2-274b-4917-9d4f-1ba30618d686}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\utility\utility.vcxproj">
+      <Project>{d9bd3c3f-7b37-44af-b0dd-429b20f43b17}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

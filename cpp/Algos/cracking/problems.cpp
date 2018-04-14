@@ -161,14 +161,14 @@ std::string arrays_n_strings_CH1::string_compression(const std::string& str) {
         string::copy(char* str, size_t len, size_t pos=0)
 */
 bool arrays_n_strings_CH1::is_rotation(const std::string& s1, const std::string& s2) {
-    size_t len = s1.size(); 
+    const size_t len = s1.size(); 
     // must be same size
     if (len != s2.size())
         return false; 
-    char s2cpy[len+1];
+	char s2cpy[512];
     // copy for string rotation 
-    size_t cpylen = s2.copy(s2cpy, len);
-    s2cpy[cpylen] = '\0';
+	strcpy_s(s2cpy, s2.size(), s2.data());
+	size_t cpylen = s2.size();
     char new_end;
 
     // from here we just rotate the word a full lap and check if it matches the other string

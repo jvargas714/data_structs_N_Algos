@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include <utility>
 #include "types.h"
 
 #ifndef ALGOS_SHORT_ALGOS_H
@@ -34,4 +33,10 @@ int maxSubArray(std::vector<int>& nums);
 int maxSubArray2(std::vector<int>& nums);
 int maxSubArray3(std::vector<int>& nums);
 
+// problem #66
+std::vector<int> plusOne(std::vector<int>& digits);
+
+// problem #283
+void moveZeroes(std::vector<int>& nums);
+void moveZeroesV2(std::vector<int>& nums);
 #endif //ALGOS_SHORT_ALGOS_H

@@ -160,6 +160,51 @@ ListNode* swapPairs(ListNode* head) {
         tmp->next = tmp;
         tmp = nxt;
     }
+	return nullptr;
 }
 
+std::vector<int> plusOne(std::vector<int>& digits) {
+	int len = digits.size();
+	if (len == 1) {
+		if (digits[0] < 9) {
+			digits[0]++;
+			return digits;
+		}
+		else {
+			digits.insert(digits.begin(), 1);
+			digits[1] = 0;
+			return digits;
+		}
+	}
+
+	// for larger numbers 
+	digits[len - 1]++;
+	if (digits[len - 1] < 10)
+		return digits;
+	else {
+		_carry(digits, (len - 1));
+	}
+	return digits;
+}
+
+// TODO :: this is broken needs fixin 
+void moveZeroes(std::vector<int>& nums) {
+	int moves = 0;
+	int i = 0;
+	size_t len = nums.size();
+	if (nums.empty())
+		return;
+	int tmp;
+	while (i<(len-1) && (moves<len)) {
+		if (!nums[i]) {
+			nums.push_back(nums[i]);
+			nums.erase((nums.begin() + i));
+			moves++;
+			continue;
+		}
+		else {
+			i++;
+		}
+	}
+}
 
