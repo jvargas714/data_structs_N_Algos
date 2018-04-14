@@ -1,0 +1,4 @@
+project(utility)
+add_library(utility STATIC
+        utility.cpp
+        utility.h)

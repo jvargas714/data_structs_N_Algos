@@ -15,6 +15,7 @@
 #include <queue>
 #include <stdexcept>
 #include <cfloat>   // FLT_DIG
+#include <cstring>
 
 #define LNLEN 20
 typedef unsigned int uint;
@@ -167,7 +168,7 @@ bool arrays_n_strings_CH1::is_rotation(const std::string& s1, const std::string&
         return false; 
 	char s2cpy[512];
     // copy for string rotation 
-	strcpy_s(s2cpy, s2.size(), s2.data());
+	strcpy(s2cpy, s2.data());
 	size_t cpylen = s2.size();
     char new_end;
 

@@ -1,7 +1,7 @@
 #include "trie.h"
 #include <algorithm>    // std::find
 #include <fstream>      // std::ifstream
-#include "string_util.h"
+#include "utility.h"
 
 std::iostream& trie_node::operator << ( std::iostream& os )
 {

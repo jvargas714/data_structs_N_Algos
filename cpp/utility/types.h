@@ -3,6 +3,8 @@
 #define CPP_TYPES_H
 #include<utility>
 
+#define ASCII_ZERO 48
+
 struct ListNode {
     int val;
     ListNode *next;

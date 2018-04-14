@@ -128,3 +128,20 @@ void quick_sort( std::vector<int>& data, int left_ind, int right_ind )
     }
 }
 
+int64_t fib( int n )
+{
+    if( n <= 1 ) return n;
+
+    return fib(n-1) + fib(n-2);
+}
+
+// fib calc with memoization
+int64_t fib_mem( int n, std::vector<int64_t>& f )
+{
+    if( n <= 1 ) return n;
+
+    if( f[n] == -1 ) // result of this is not cached
+        f[n] = fib_mem(n-1, f) + fib_mem(n-2, f);
+
+    return f[n];
+}

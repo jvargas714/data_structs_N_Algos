@@ -85,12 +85,6 @@ bool jaystd::bit_banger::is_little_endian() {
 	return (((unsigned char*)&tmp)[0])?true:false;
 }
 
-// sets the rightmost 1 bit to 0
-template<typename T>
-void jaystd::bit_banger::turn_off_rht_most_1bit(T& t) {
-	t&=(x-1);
-}
-
 // finds the rightmost 1 bit and sets all other bits to zero
 template<typename T>
 void jaystd::bit_banger::isolate_rht_most_1bit(T& t) {

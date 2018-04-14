@@ -1,6 +1,8 @@
+#include <algorithm>
+#include <cstdint>
 #include "leet_algos.h"
 #include "utility.h"
-#include <algorithm>
+
 
 /* Problem: #168 */
 std::string excel_column_title( int n ) {
@@ -89,7 +91,7 @@ int maxSubArray(std::vector<int>& nums) {
     if (nums.size()==1)
         return nums[0];
     int sum = *max_element(nums.begin(), nums.end());
-    int tmp = INT_MIN;
+    int tmp = INT32_MIN;
     int cnt = 0;
     for(unsigned int i = 0; i < nums.size(); ++i) {
         for ( unsigned int j = i+1; j <= nums.size(); ++j) {

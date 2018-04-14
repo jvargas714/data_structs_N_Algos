@@ -51,10 +51,6 @@ namespace jaystd {
 		// todo 
 		template<typename T>
 		void rht_propagate_rhtmost_1bit(T& t);
-		
-		template<typename T>
-		void turn_off_rht_most_1bit(T& t);
-
 	}
 }
 

@@ -4,7 +4,8 @@
 #include <sstream>		// std::stringstream
 #include <algorithm>	// std::remove_if(...)
 #include "theNextPalindrome.h"
-const unsigned int ASCII_ZERO = 48;
+#include "types.h"
+
 /*
 Description:
 A positive integer is called a palindrome if its representation in the decimal system is the same when read from

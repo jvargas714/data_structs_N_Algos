@@ -174,3 +174,54 @@ void _carry(std::vector<int>& digits, int digit_pos) {
 		digits[digit_pos]++;
 	_carry(digits, digit_pos);
 }
+
+/*
+  take integer input and return string representation of that integer ie 123456 --> 123,456
+*/
+std::string format_number(const int& num) {
+    std::string result("");
+    std::string sign = "";
+    const char SEP = ',';
+    bool neg = (num<0);
+    unsigned int tmp, charCnt=0;
+    int rem = num;
+
+    if(neg) {
+        sign = "-";
+        rem*=-1;
+    }
+    if (num == 0) {
+        return std::string("0");
+    }
+    else if (rem < 10) {
+        result = std::string(1, static_cast<char>(rem+ASCII_ZERO));
+        std::cout << "result: " << result << std::endl;
+        return (sign + result);
+    }
+    while(rem > 0) {
+        result.insert(0, 1, static_cast<char>((ASCII_ZERO+(rem%10))));   // string::insert(pos, size, char)
+        charCnt++;
+        if( !(charCnt%3) ) {
+            result.insert(0, 1, SEP);
+        }
+        rem /= 10;
+    }
+    // remove comma if at front of number
+    if(result[0] == ',')
+        result.erase(0, 1);   // std::string::erase(pos, npos); position and number of positions to erase
+    return (sign + result);
+}
+
+std::string elim_whitespace( std::string& str )
+{
+    // find char index of first none white space
+    uint32_t ind = 0;
+    for( auto& ch : str )
+    {
+        if( std::isspace( ch ) )
+            ind++;
+        else
+            break;
+    }
+    return str.substr( ind, str.size() );
+}

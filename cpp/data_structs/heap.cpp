@@ -1,5 +1,6 @@
-#include "heap.h"
 #include <sstream>
+#include "heap.h"
+#include "types.h"
 
 /*
 	new element is placed at the bottom of the heap (last index)

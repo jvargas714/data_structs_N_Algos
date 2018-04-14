@@ -52,5 +52,10 @@ void _carry(std::vector<int>& digits, int digit_pos);
 template<typename T>
 T handle_input(int argc, char* argv[]);
 
+// return provided integer in the string form with commas 123456 --> 123,456
+std::string format_number(const int& num);
+
+// eliminate whitespace in a string
+std::string elim_whitespace( std::string& str );
 
 #endif //CPP_UTILITY_H
