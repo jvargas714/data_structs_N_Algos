@@ -1,10 +1,15 @@
 #include <iostream>
 #include <random>
+#include <chrono>
 #include "theNextPalindrome.h"
 #include "problems.h"
 #include "leet_algos.h"
 #include "utility.h"
-std::random_device rd;
+
+using namespace std::chrono;
+typedef high_resolution_clock hrc;
+typedef hrc::time_point t_point;
+
 
 void display_input(int cnt, char** args);
 void test_remove_dups();
@@ -25,10 +30,15 @@ void leetTestSet();
 
 int main() {
 	char exit;
-	leetTestSet();
-	std::cin >> exit;
+    t_point t1_bub, t2_bub;
+    t1_bub = hrc::now();
+    leetTestSet();
+    t2_bub = hrc::now();
+    auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    std::cout << "time of execution -->\n" << milli_sec << "msec\n" << micro_sec << "usec\n" << std::endl;
+    std::cin >> exit;
 	return 0;
-
 }
 
 
@@ -160,6 +170,7 @@ void test_helpers() {
 }
 
 void test_stackOfPlates() {
+	std::random_device rd;
 	using namespace stacks_n_queues;
 	std::cout << "==================================== TESTING Stack of Plates=====================================" << std::endl;
 	SetOfPlates stkPlates;
@@ -180,6 +191,7 @@ void test_stackOfPlates() {
 
 void test_twoStackQueue() {
 	using namespace stacks_n_queues;
+	std::random_device rd;
 	std::cout << "==================================== TESTING Queue via Two Stacks================================" << std::endl;
 	TwoStackQueue queue;
 	int tmp;
@@ -244,7 +256,8 @@ void crackingTestSet() {
 
 void leetTestSet()
 {
-	std::vector<int> arr = {0, 0, 1};
-	moveZeroes(arr);
-	display(arr);
+	std::vector<int> arr = fill_vector(20000);
+//	moveZeroes(arr);
+	display(twoSums(arr, 78));
+//	display(arr);
 }

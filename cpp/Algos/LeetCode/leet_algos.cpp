@@ -189,7 +189,6 @@ std::vector<int> plusOne(std::vector<int>& digits) {
 	return digits;
 }
 
-// TODO :: this is broken needs fixin 
 void moveZeroes(std::vector<int>& nums) {
 	int moves = 0;
 	int i = 0;
@@ -209,4 +208,22 @@ void moveZeroes(std::vector<int>& nums) {
 		}
 	}
 }
+
+// brute force method 0(n^2)
+std::vector<int> twoSums(std::vector<int> &nums, int target) {
+    size_t len = nums.size();
+    for (size_t i = 0; i < len; ++i) {
+        for ( size_t j = i+1; j < (len); ++j) {
+            if ( (nums[i]+nums[j]) == target )
+                return {i, j};
+        }
+    }
+    return {};
+}
+
+std::vector<int> twoSumsV2(std::vector<int> &nums, int target) {
+    return {};
+}
+
+
 

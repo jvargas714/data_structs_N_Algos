@@ -15,22 +15,21 @@ typedef high_resolution_clock hrc;
 typedef hrc::time_point t_point;
 
 //-----------------------------------------declarations---------------------------------------------
-
+template<typename T>
+vector<T> handle_input(int argc, char* argv[]);
 
 // algo solution 
-
+void solution();
 
 //------------------------------------------execution-----------------------------------------------
 int main(int argc, char* argv[]) {
 	auto input = handle_input(argc, argv);
 	t_point t1_bub, t2_bub;
-	auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
     t1_bub = hrc::now();
 	// code goes here 
 	t2_bub = hrc::now();
-	milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+	auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
     cout << "time of execution -->\n" << milli_sec << "msec\n" << micro_sec << "usec\n" << endl;
 	return 0;
 }

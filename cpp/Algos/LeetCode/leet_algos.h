@@ -39,4 +39,9 @@ std::vector<int> plusOne(std::vector<int>& digits);
 // problem #283
 void moveZeroes(std::vector<int>& nums);
 void moveZeroesV2(std::vector<int>& nums);
+
+// problem
+std::vector<int> twoSums(std::vector<int>& nums, int target);
+std::vector<int> twoSumsV2(std::vector<int> &nums, int target);
+
 #endif //ALGOS_SHORT_ALGOS_H
