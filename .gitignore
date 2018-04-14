@@ -15,3 +15,7 @@
 *.pyc__pycache__
 python/__pycache__
 .vs
+.idea
+bin
+lib
+cmake-build*
