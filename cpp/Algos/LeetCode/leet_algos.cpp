@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cstdint>
+#include <map>
 #include "leet_algos.h"
 #include "utility.h"
 
@@ -133,7 +134,7 @@ int maxSubArray3(std::vector<int>& nums) {
     int sum = dp[0];
 
     for (int i = 1; i < n; i++) {
-        dp[i] = nums[i] + (dp[i-1] > 0) ? dp[i-1]:0;
+        dp[i] = nums[i] + ((dp[i-1] > 0) ? dp[i-1]:0);
         sum = std::max(sum, dp[i]);
     }
     return sum;
@@ -215,15 +216,57 @@ std::vector<int> twoSums(std::vector<int> &nums, int target) {
     for (size_t i = 0; i < len; ++i) {
         for ( size_t j = i+1; j < (len); ++j) {
             if ( (nums[i]+nums[j]) == target )
-                return {i, j};
+                return {(int)i, (int)j};
         }
     }
     return {};
 }
 
+// [3, 2, 4]
 std::vector<int> twoSumsV2(std::vector<int> &nums, int target) {
+    int x;
+    std::map<int, int>::iterator it;
+    std::map<int, int> mp;
+    int len = nums.size();
+
+    for (int i = 0; i < len; i++)
+        mp[nums[i]] = i;
+
+    for(int i = 0; i < len; i++) {
+        x = target - nums[i];
+        it = mp.find(x);
+        if (it!=mp.end() && it->second!=i)
+            return {i, it->second};
+    }
     return {};
 }
 
+bool _checkRows(const SudokuBoard& board) {
+
+}
+
+bool _checkRow(const std::vector<char>& rw) {
+    char el = rw[0];
+    for(int i = 1; i < rw.size(); i++) {
+        std::cout << "i: " << i << std::endl;
+        if ((el == '.') || (rw[i] == '.')) {
+            el = rw[i];
+            continue;
+        }
+        if (el == rw[i])
+            return false;
+        el = rw[i];
+    }
+    std::cout << "Row is valid" << std::endl;
+    return true;
+}
+
+bool isValidSudoku(SudokuBoard& board) {
+    for(int i = 0; i < board.size(); i++) {
+        if( !_checkRow(board[i]) )
+            return false;
+    }
+    return false;
+}
 
 

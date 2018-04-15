@@ -7,6 +7,9 @@
 #ifndef ALGOS_SHORT_ALGOS_H
 #define ALGOS_SHORT_ALGOS_H
 
+// typedef and alias
+typedef std::vector<std::vector<char>> SudokuBoard;
+
 // problem #24
 ListNode* swapPairs(ListNode* head);
 
@@ -40,8 +43,12 @@ std::vector<int> plusOne(std::vector<int>& digits);
 void moveZeroes(std::vector<int>& nums);
 void moveZeroesV2(std::vector<int>& nums);
 
-// problem
+// problem #1
 std::vector<int> twoSums(std::vector<int>& nums, int target);
 std::vector<int> twoSumsV2(std::vector<int> &nums, int target);
+
+// problem #
+bool isValidSudoku(SudokuBoard& board);
+bool _checkRow(const std::vector<char>& rw);
 
 #endif //ALGOS_SHORT_ALGOS_H
