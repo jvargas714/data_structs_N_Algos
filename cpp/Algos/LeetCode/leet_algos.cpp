@@ -550,3 +550,36 @@ std::string reverseString(std::string s) {
     }
     return s;
 }
+
+// obvious slow solution 
+int firstUniqChar(std::string s) {
+	std::map<char, int> charMap;
+	for (const auto& ch : s) {
+		auto it = charMap.find(ch);
+		if (it == charMap.end()) {
+			charMap[ch] = 1;
+		}
+		else {
+			charMap[ch]++;
+		}
+	}
+
+	// find first char with only 1 occurence 
+	for (int i = 0; i < s.size(); i++) {
+		auto it = charMap.find(s[i]);
+		if (it->second == 1)
+			return i;
+	}
+	return -1;
+}
+
+int firstUniqCharV2(std::string s) {
+	char tmp = s[0];
+	for (int i = 1; i < s.size()-1; i++) {
+		if (tmp != s[i])
+			return i - 1;
+		else
+			tmp = s[i + 1];
+	}
+	return -1;
+}

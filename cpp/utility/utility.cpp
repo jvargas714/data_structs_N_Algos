@@ -200,7 +200,7 @@ std::string elim_whitespace( std::string& str )
     uint32_t ind = 0;
     for( auto& ch : str )
     {
-        if( std::isspace( ch ) )
+        if( ch == 32 ) // 32 ASCII for Space 
             ind++;
         else
             break;

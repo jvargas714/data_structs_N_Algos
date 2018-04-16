@@ -86,6 +86,11 @@ void rotateV2(IntMatrix& matrix);
 
 // problem #344
 std::string reverseString(std::string);
+
+// problem #
+int firstUniqChar(std::string s);
+int firstUniqCharV2(std::string s);
+
 // helpers
 bool _checkRows(const SudokuBoard& board);
 void _addColsElement(SudokuColumns& cols, const SudokuRow& row, int colIndex);
