@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <map>
 #include "types.h"
 
 #ifndef ALGOS_SHORT_ALGOS_H
@@ -9,6 +10,9 @@
 
 // typedef and alias
 typedef std::vector<std::vector<char>> SudokuBoard;
+typedef std::vector<char> SudokuRow;
+typedef std::map<int, SudokuRow> SudokuColumns;
+typedef std::vector<std::vector<int>> IntMatrix;
 
 // problem #24
 ListNode* swapPairs(ListNode* head);
@@ -47,8 +51,46 @@ void moveZeroesV2(std::vector<int>& nums);
 std::vector<int> twoSums(std::vector<int>& nums, int target);
 std::vector<int> twoSumsV2(std::vector<int> &nums, int target);
 
-// problem #
+// problem #36
+// my submission
 bool isValidSudoku(SudokuBoard& board);
-bool _checkRow(const std::vector<char>& rw);
+// average submission
+bool isValidSudokuV2(SudokuBoard& board);
+// fastest submission
+bool isValidSudokuV3(SudokuBoard& board);
+// short solution using bitwise
+bool isValidSudokuV4(SudokuBoard& board);
+
+/*
+ * problem #48
+ * rotate matrix clockwise (90 degrees)
+ * Given input matrix =
+[
+  [ 5, 1, 9,11],
+  [ 2, 4, 8,10],
+  [13, 3, 6, 7],
+  [15,14,12,16]
+],
+
+rotate the input matrix in-place such that it becomes:
+[
+  [15,13, 2, 5],
+  [14, 3, 4, 1],
+  [12, 6, 8, 9],
+  [16, 7,10,11]
+]
+ */
+void rotate(IntMatrix& matrix);
+void rotateV2(IntMatrix& matrix);
+
+
+// problem #344
+std::string reverseString(std::string);
+// helpers
+bool _checkRows(const SudokuBoard& board);
+void _addColsElement(SudokuColumns& cols, const SudokuRow& row, int colIndex);
+bool _checkSquares(SudokuBoard &board);
+bool _checkDuplicate(const std::vector<char>& rw);
+void _rotateLayer(IntMatrix& matrix, uint32_t layer);
 
 #endif //ALGOS_SHORT_ALGOS_H

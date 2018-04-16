@@ -1,4 +1,5 @@
 #include "markup_parser.h"
+#include "utility.h"
 
 // for now ignoring case when there is a space between '<' and 'tag1'
 void collect_tag_values( std::vector<std::string>& tokens,
@@ -25,21 +26,6 @@ void collect_tag_values( std::vector<std::string>& tokens,
         }
     }
     t_map[curr_token] = vps;
-}
-
-std::vector<std::string> split( const std::string& str, const char delim )
-{
-    std::vector<std::string> tokens;
-    std::stringstream ss( str );
-    std::string token;
-
-    while( getline( ss, token, delim ) )
-    {
-        if( !token.empty() )
-            tokens.push_back( token );
-    }
-
-    return tokens;
 }
 
 void pop_attr_map( tag_map& attr_map, const int& num_lines )
@@ -121,22 +107,6 @@ val_pairs::const_iterator get_attr( const val_pairs& v_pairs, const std::string&
         );
 }
 
-
-
-std::string elim_whitespace( std::string& str )
-{
-    // find char index of first none white space
-    uint32_t ind = 0;
-    for( auto& ch : str )
-    {
-        if( std::isspace( ch ) )
-            ind++;
-        else
-            break;
-    }
-    return str.substr( ind, str.size() );
-}
-
 tag build_tag( const std::vector<tag>& tags )
 {
     tag result = tags[0];
@@ -147,6 +117,7 @@ tag build_tag( const std::vector<tag>& tags )
         result += "." + *it;
     return result;
 }
+
 
 //------------------------------------Display functions---------------------------------------------
 void display( const val_pairs& vps )

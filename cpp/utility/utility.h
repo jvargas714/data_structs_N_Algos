@@ -12,11 +12,77 @@ struct ListNode;
 std::vector<int> fill_vector( uint32_t );
 int* fill_array( uint32_t );
 
-// display vector 
-void display( const std::vector<int>& );
+// display vector
+// display contents of std::vector
+template <class T>
+void display( const T& vect, uint32_t line_limit=LINE_LIMIT )
+{
+    int cnt = 0;
+    std::cout << "size: " << vect.size() << std::endl;
+    for( auto& el : vect )
+    {
+        cnt++;
+        if(cnt == line_limit)
+        {
+            std::cout << el << std::endl;
+            cnt = 0;
+            continue;
+        }
+        std::cout << el << " ";
+    }
+    std::cout << std::endl;
+}
 
 // print array of specified size 
-void display( const int*, int );
+void display( const int*, size_t );
+
+template<class T>
+int findLargestInMatrix(const T& matrix) {
+    int largestVal = matrix[0][0];
+    for(const auto& row: matrix) {
+        for(const auto& el : row) {
+            if (el > largestVal)
+                largestVal = el;
+        }
+    }
+    return largestVal;
+}
+
+template <class T>
+int getMatrixSpacing(const T& matrix) {
+    int largestVal = findLargestInMatrix(matrix);
+    uint32_t cnt = 0;
+    while(largestVal > 0) {
+        largestVal /= 10;
+        cnt++;
+    }
+    return cnt;
+}
+
+template<typename T>
+std::string addSpaces(int numSpaces, const T& el) {
+    std::string result;
+    auto tmp = static_cast<int>(el);
+    uint32_t cnt = 0;
+    while(tmp > 0) {
+        tmp /= 10;
+        cnt++;
+    }
+    return std::string((numSpaces-cnt+1), ' ');
+}
+
+template<class T>
+void displayMatrix(const T& matrix) {
+    int numSpaces = getMatrixSpacing(matrix);
+    for (const auto& row : matrix) {
+        for (const auto& el: row) {
+            std::cout << el << addSpaces(numSpaces, el);
+        }
+        std::cout << std::endl;
+    }
+}
+
+std::vector<std::vector<int>> generateNxNMatrix(size_t n);
 
 // partition vector 
 int partition_vect( std::vector<int>&, int, int );
@@ -56,6 +122,12 @@ T handle_input(int argc, char* argv[]);
 std::string format_number(const int& num);
 
 // eliminate whitespace in a string
-std::string elim_whitespace( std::string& str );
+std::string elim_whitespace(std::string& str);
+
+// shift vector to the right one space
+void logicalShiftR(std::vector<int>&);
+
+// inplace shift vector to the left one space
+void logicalShiftL(std::vector<int>& nums);
 
 #endif //CPP_UTILITY_H

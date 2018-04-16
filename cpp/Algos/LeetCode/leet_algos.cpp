@@ -1,9 +1,9 @@
 #include <algorithm>
-#include <cstdint>
 #include <map>
 #include "leet_algos.h"
 #include "utility.h"
 
+#define LOG std::cout << __FUNCTION__ << "(): "
 
 /* Problem: #168 */
 std::string excel_column_title( int n ) {
@@ -242,31 +242,311 @@ std::vector<int> twoSumsV2(std::vector<int> &nums, int target) {
 }
 
 bool _checkRows(const SudokuBoard& board) {
-
-}
-
-bool _checkRow(const std::vector<char>& rw) {
-    char el = rw[0];
-    for(int i = 1; i < rw.size(); i++) {
-        std::cout << "i: " << i << std::endl;
-        if ((el == '.') || (rw[i] == '.')) {
-            el = rw[i];
-            continue;
-        }
-        if (el == rw[i])
+    for (const auto& row: board) {
+        if(!_checkDuplicate(row))
             return false;
-        el = rw[i];
     }
-    std::cout << "Row is valid" << std::endl;
     return true;
 }
 
-bool isValidSudoku(SudokuBoard& board) {
-    for(int i = 0; i < board.size(); i++) {
-        if( !_checkRow(board[i]) )
-            return false;
+bool _checkDuplicate(const std::vector<char>& rw) {
+    std::map<char, char> valMap;
+    for(const auto& el : rw) {
+        auto mapIt = valMap.find(el);
+        if (mapIt == valMap.end()) {
+            valMap[el] = el;
+        } else {
+            if (mapIt->second != '.')
+                return true;
+        }
     }
     return false;
 }
 
+void _addColsElement(SudokuColumns& cols, const SudokuRow& row, int colIndex) {
+    unsigned int i = 0;
+    for(auto el: row)
+        cols[i++].push_back(el);
+}
 
+void _initColMap(std::map<int, SudokuRow>& cols) {
+    for (int i = 0; i < 9; i++)
+        cols[i] = SudokuRow(9, '.');
+}
+
+bool _checkCols(std::map<int, SudokuRow>& cols) {
+    LOG << "checking columns" << std::endl;
+    for(const auto& col: cols) {
+        if (_checkDuplicate(col.second))
+            return false;
+    }
+    return true;
+}
+
+bool _checkSquares(SudokuBoard &board) {
+    LOG << std::endl;
+    SudokuRow flattenedBox;
+    int box = 1;
+    int colOffset = 0;
+    int rowOffset = 0;
+    while(box<=9) {
+        LOG << "row offset: " << rowOffset << " col Offset: " << colOffset << " box: " << box << std::endl;
+        for(int i = rowOffset; i < (rowOffset+3); i++) {
+            for(int j = colOffset; j < (colOffset+3); j++) {
+                flattenedBox.push_back( board[i][j] );
+            }
+        }
+        display(flattenedBox, 3);
+        if (_checkDuplicate(flattenedBox)) {
+            LOG << "invalid " << std::endl;
+            return false;
+        };
+        flattenedBox.clear();
+        box++;
+
+        // reset which box is targeted
+        if (colOffset == 6) {
+            colOffset = 0;
+            rowOffset += 3;
+        } else {
+            colOffset += 3;
+        }
+    }
+    return true;
+}
+
+// my submission
+bool isValidSudoku(SudokuBoard& board) {
+    LOG << std::endl;
+    displayMatrix(board);
+    std::map<int, SudokuRow> cols;
+    _initColMap(cols);
+    for(int i = 0; i < board.size(); i++) {
+        _addColsElement(cols, board[i], i);
+        if( _checkDuplicate(board[i]) )  // check for valid condition on rows
+            return false;
+    }
+    // check for valid condition on cols
+    if(!_checkCols(cols))
+        return false;
+
+    // check for valid squares
+    return _checkSquares(board);
+}
+
+// average speed submission
+bool isValidSudokuV2(SudokuBoard &board) {
+
+    bool seen_digits[9];
+    for (int i = 0; i < 9; i++) {
+        seen_digits[i] = false;
+    }
+
+    // Check rows
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            char c = board[i][j];
+            if (c == '.') {
+                continue;
+            }
+            int index = c - '0' - 1;
+            if (seen_digits[index]) {
+                return false;
+            }
+            seen_digits[index] = true;
+        }
+        for (int i = 0; i < 9; i++) {
+            seen_digits[i] = false;
+        }
+    }
+
+
+
+    // Check columns
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            char c = board[j][i];
+            if (c == '.') {
+                continue;
+            }
+            int index = c - '0' - 1;
+            if (seen_digits[index]) {
+                return false;
+            }
+            seen_digits[index] = true;
+        }
+        for (int i = 0; i < 9; i++) {
+            seen_digits[i] = false;
+        }
+    }
+
+    for (int i = 0; i < 9; i++) {
+        seen_digits[i] = false;
+    }
+
+    // Check boxes
+    for (int x = 0; x < 3; x++) {
+        for (int y = 0; y < 3; y++) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    char c = board[x * 3 + i][y * 3 + j];
+                    if (c == '.') {
+                        continue;
+                    }
+                    int index = c - '0' - 1;
+                    if (seen_digits[index]) {
+                        return false;
+                    }
+                    seen_digits[index] = true;
+                }
+            }
+            for (int i = 0; i < 9; i++) {
+                seen_digits[i] = false;
+            }
+        }
+    }
+
+    return true;
+}
+
+// fastest c/c++ submission
+bool isValidSudokuV3(SudokuBoard& board) {
+
+    std::vector<int> check = {1,2,3,4,5,6,7,8,9};
+    for (int i = 0; i <board.size(); i++) {
+        std::vector<int> checkrow = check;
+        for (int j = 0; j < board[0].size() ; ++j) {
+            if (board[i][j] != '.') {
+                if (checkrow[board[i][j] - '1'] == board[i][j] - '0') {
+                    checkrow[board[i][j] - '1'] = 0;
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+
+    for (int j = 0; j < board[0].size() ; ++j) {
+        std::vector<int> checkcol = check;
+        for (int i = 0; i <board.size(); i++) {
+            if (board[i][j] != '.') {
+                if (checkcol[board[i][j] - '1'] == board[i][j] - '0') {
+                    checkcol[board[i][j] - '1'] = 0;
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+
+    for (int r = 0; r <board.size(); r = r + 3) {
+        for (int l = 0; l < board[0].size() ; l = l + 3) {
+            std::vector<int> checkblock = check;
+            for (int i = r ; i < r + 3 ; ++i) {
+                for (int j = l; j < l + 3; ++j) {
+                    if (board[i][j] != '.') {
+                        if (checkblock[board[i][j] - '1'] == board[i][j] - '0') {
+                            checkblock[board[i][j] - '1'] = 0;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    return true;
+}
+
+// short solution using bitwise ops
+bool isValidSudokuV4(SudokuBoard& board) {
+    std::vector<short> col(9, 0);
+    std::vector<short> block(9, 0);
+    std::vector<short> row(9, 0);
+    for (int i = 0; i < 9; i++)
+        for (int j = 0; j < 9; j++) {
+            if (board[i][j] != '.') {
+                int idx = 1 << (board[i][j] - '0');
+                if (row[i] & idx || col[j] & idx || block[i/3 * 3 + j / 3] & idx)
+                    return false;
+                row[i] |= idx;
+                col[j] |= idx;
+                block[i/3 * 3 + j/3] |= idx;
+            }
+        }
+    return true;
+}
+
+// rotate an nxn matrix inplace clockwise
+// my submission 6ms
+void rotate(IntMatrix& matrix) {
+    auto len = static_cast<uint32_t>( matrix[0].size());
+    uint32_t numLayers = len / 2;
+    for (uint32_t i = 0; i < numLayers; i++)
+        _rotateLayer(matrix, i);
+}
+
+// fastest submission 4ms
+void rotateV2(IntMatrix& matrix) {
+    int start = 0, end = matrix.size()-1;
+    while(start<end){
+        for(int i=start; i<end; i++){
+            int offset = i-start;
+            int tmp = matrix[start][i];
+            matrix[start][i] = matrix[end-offset][start];
+            matrix[end-offset][start] = matrix[end][end-offset];
+            matrix[end][end-offset] = matrix[start+offset][end];
+            matrix[start+offset][end] = tmp;
+        }
+        start++; end--;
+    }
+}
+
+// rotates layer of a matrix
+// faces --> face1: first row; face2: right vertical; face3: last row; face4: left vertical
+void _rotateLayer(IntMatrix& matrix, uint32_t layer) {
+    size_t i;
+    uint32_t cnt = 0;
+    size_t n = matrix[0].size();
+    size_t numRotations = n-1-2*layer;
+    do {
+        // values to save from the shifts
+        int ur = matrix[layer][n-1-layer];
+        int br = matrix[n-1-layer][n-1-layer];
+        int bl = matrix[n-1-layer][layer];
+
+        // rotate face 1 (top horiz)
+        for (i = (n-1-layer); i > layer; i--)
+            matrix[layer][i] = matrix[layer][i - 1];
+
+        // rotate face 2 (vert right)
+        for (i = (n-1-layer); i > (layer+1); i--)
+            matrix[i][n-1-layer] = matrix[i-1][n-1-layer];
+        matrix[layer+1][n-1-layer] = ur;
+
+        // rotate face 3 (bottom horiz)
+        for (i = layer; i < (n-1-layer); i++)
+            matrix[n-1-layer][i] = matrix[n-1-layer][i+1];
+        matrix[n-1-layer][n-2-layer] = br;
+
+        // rotate face 4 (ver left)
+        for (i = layer; i < (n-1-layer); i++)
+            matrix[i][layer] = matrix[i+1][layer];
+        matrix[n-2-layer][layer] = bl;
+        cnt++;
+    } while(cnt < numRotations);
+}
+
+// best solution
+std::string reverseString(std::string s) {
+    // traverse only half the string
+    // fill in from front and from end at the same time swapping chars
+    for (int i = 0; i < s.size() / 2; i++) {
+        char t = s[i];
+        s[i] = s[s.size() - i-1];
+        s[s.size() - i-1] = t;
+    }
+    return s;
+}

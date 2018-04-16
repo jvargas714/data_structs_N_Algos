@@ -6,24 +6,6 @@
 #include "utility.h"
 
 
-// display contents of std::vector
-void display( const std::vector<int>& vect )
-{
-    int cnt = 0;
-    std::cout << "size: " << vect.size() << std::endl;
-    for( auto& el : vect )
-    {
-        if(cnt == LINE_LIMIT)
-        {
-            std::cout << el << std::endl;
-            cnt = 1;
-            continue;
-        }
-        std::cout << el << " ";
-        cnt++;
-    }
-    std::cout << std::endl;
-}
 
 // displays an array
 void display( const int* ar, size_t num_els )
@@ -224,4 +206,30 @@ std::string elim_whitespace( std::string& str )
             break;
     }
     return str.substr( ind, str.size() );
+}
+
+std::vector<std::vector<int>> generateNxNMatrix(size_t n) {
+    int val = 1;
+    std::vector<std::vector<int>> matrix(n, std::vector<int>(n, 0));
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            matrix[i][j] = val;
+            val++;
+        }
+    }
+    return matrix;
+}
+
+// shifts in a zero at the beginning of the vector
+void logicalShiftR(std::vector<int>& nums) {
+    for(size_t i = nums.size()-1; i > 0; i--)
+        nums[i] = nums[i-1];
+    nums[0] = 0;
+}
+
+void logicalShiftL(std::vector<int>& nums) {
+    for(size_t i = 0; i < nums.size(); i++) {
+        nums[i] = nums[i+1];
+    }
+    nums[nums.size()-1] = 0;
 }
