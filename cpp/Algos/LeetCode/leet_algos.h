@@ -23,14 +23,7 @@ std::string excel_column_title( int n );
 // Problem #59
 std::vector<int> count_bits( int num );
 
-// Problem #122
-int best_time_to_buy_and_sell_stock( std::vector<int>& prices );
-
-
 bool operator > ( envelope& env1, envelope& env2 );
-
-// problem #
-int maxProfit(std::vector<int>& prices);
 
 // problem: 70. Climbing Stairs
 int climbingSteps(int, int, std::vector<int>&);
@@ -44,8 +37,8 @@ int maxSubArray3(std::vector<int>& nums);
 std::vector<int> plusOne(std::vector<int>& digits);
 
 // problem #283
-void moveZeroes(std::vector<int>& nums);
-void moveZeroesV2(std::vector<int>& nums);
+void moveZeros(std::vector<int>& nums);
+void moveZerosV2(std::vector<int>& nums);
 
 // problem #1
 std::vector<int> twoSums(std::vector<int>& nums, int target);
@@ -87,11 +80,26 @@ void rotateV2(IntMatrix& matrix);
 // problem #344
 std::string reverseString(std::string);
 
-// problem #
+// problem #387
 int firstUniqChar(std::string s);
 int firstUniqCharV2(std::string s);
+int firstUniqCharV3(std::string s);
+
+// problem #242
+bool validAnaGram(std::string& s, std::string& t);
+bool validAnaGramV2(std::string& s, std::string t);
+
+// problem #125
+// empty strings are considered valid
+bool validPalindrome(std::string& s);
+
+// problem #
+// result: 27.15% percentile 34 ms
+int myAtoi(const std::string& str);
+int myAtoiV2(const std::string& str);
 
 // helpers
+int _cleanStrToInt(const std::string& str, int pwr, int sign);
 bool _checkRows(const SudokuBoard& board);
 void _addColsElement(SudokuColumns& cols, const SudokuRow& row, int colIndex);
 bool _checkSquares(SudokuBoard &board);

@@ -1,5 +1,7 @@
 #include <algorithm>
 #include <map>
+#include <cctype>
+#include <cmath>
 #include "leet_algos.h"
 #include "utility.h"
 
@@ -190,13 +192,13 @@ std::vector<int> plusOne(std::vector<int>& digits) {
 	return digits;
 }
 
-void moveZeroes(std::vector<int>& nums) {
+// my solution 20ms
+void moveZeros(std::vector<int>& nums) {
 	int moves = 0;
 	int i = 0;
 	size_t len = nums.size();
 	if (nums.empty())
 		return;
-	int tmp;
 	while (i<(len-1) && (moves<len)) {
 		if (!nums[i]) {
 			nums.push_back(nums[i]);
@@ -209,6 +211,24 @@ void moveZeroes(std::vector<int>& nums) {
 		}
 	}
 }
+
+// optimized solution 16ms
+// [* * 0 0 * * 0]
+void moveZerosV2(std::vector<int>& nums) {
+    int i = 0, j = 0;
+    for (i = 0; i < nums.size(); ++i) {
+        if (0 == nums[i])
+            continue;
+
+        nums[j] = nums[i];
+        ++j;
+    }
+
+    // replace back portion of array with zeros
+    for (; j < nums.size(); ++j)
+        nums[j] = 0;
+}
+
 
 // brute force method 0(n^2)
 std::vector<int> twoSums(std::vector<int> &nums, int target) {
@@ -573,13 +593,200 @@ int firstUniqChar(std::string s) {
 	return -1;
 }
 
+// different approach but slow
+// 127 ms
 int firstUniqCharV2(std::string s) {
-	char tmp = s[0];
-	for (int i = 1; i < s.size()-1; i++) {
-		if (tmp != s[i])
-			return i - 1;
-		else
-			tmp = s[i + 1];
-	}
-	return -1;
+	std::map<char, int> charMap;
+	uint32_t res = INT32_MAX;
+	for(int i = 0; i < s.size(); i++) {
+        auto it = charMap.find(s[i]);
+        if (it == charMap.end())
+            charMap[s[i]] = i;
+        else
+            charMap[s[i]] = INT32_MAX;
+    }
+    for (const auto& ch : s)
+        res = (charMap[ch] < res) ? charMap[ch]:res;
+
+	    return (res != INT32_MAX) ? res : -1;
+}
+
+// better solution above average 40ms
+int firstUniqCharV3(std::string s) {
+    std::vector<int> v(26,0);
+    for(int i =0,j=0;i<s.size();i++){
+        v[s[i]-'a']++;
+    }
+    for(int i =0,j=0;i<s.size();i++){
+        if(v[s[i]-'a']==1)
+            return i;
+    }
+    return -1;
+}
+
+// simple approach using a vector, can assume all lower case chars
+// O(n) solution 11ms 84.92 percentile
+bool validAnaGram(std::string& s, std::string& t) {
+    if (s.size() != t.size())
+        return false;
+    std::vector<int> charVect(26, 0);
+    for (const auto& ch: s)
+        charVect[ch - 'a']++;
+    for (const auto& ch: t) {
+        if (charVect[ch - 'a'] == 0)
+            return false;
+        else
+            charVect[ch-'a']--;
+    }
+    return true;
+}
+
+// even better solution 4ms
+bool validAnaGramV2(std::string& s, std::string t) {
+    if(s.size()!=t.size())
+        return false;
+    int chCount[26]={0};
+    for(int i=0;i<s.size();i++){
+        chCount[s[i]-'a']++;
+        chCount[t[i]-'a']--;
+    }
+    for (int i=0;i<26;i++){
+        if(chCount[i]!=0)
+            return false;
+    }
+    return true;
+}
+
+// mysolution: 95.16 percentile solution 10ms
+bool validPalindrome(std::string& s) {
+    if (s.empty())
+        return true;
+    size_t j;
+    size_t i=0;
+
+    // lower case all chars
+    std::transform(s.begin(), s.end(), s.begin(),
+                   [](char ch) -> char { return static_cast<char>(std::tolower(ch)); });
+
+    // remove non letter characters
+    s.erase(
+            std::remove_if(s.begin(), s.end(), [](char ch)-> bool {
+                return ( !((ch >= 'a' && ch <= 'z') ||
+                           (ch >= '0' && ch <= '9')) );
+            }),
+    s.end());
+    std::cout << "modified string: --> \n" << s << std::endl;
+    j = s.size()-1;
+    for(; i < s.size()/2; i++) {
+        if(s[i] != s[j]) return false;
+        j--;
+    }
+
+    return true;
+}
+
+int _cleanStrToInt(const std::string& val, int pwr, int sign) {
+    unsigned int res = 0;
+    std::cout << "input: " << val << std::endl;
+    // check for out of range
+    if (val.size() > 10) {
+        return ((sign == 1) ? INT32_MAX:INT32_MIN);
+    }
+    for (const auto& ch: val) {
+        res += (ch-48)*pwr;
+        pwr/=10;
+    }
+    std::cout <<"val: " << res << std::endl;
+    if (res >= 2147483648)
+        return ((sign == 1) ? INT32_MAX:INT32_MIN);
+    else
+        return (sign*res);
+}
+
+int myAtoi(const std::string& str) {
+    if (str.empty())
+        return 0;
+    std::string tmp = "";
+    int sign = 1;
+    int pwr = 0;
+    bool started = false;
+    bool signHappened = false;
+    const std::map<char, int> charMap = {
+            {'0', 0},
+            {'1', 1},
+            {'2', 2},
+            {'3', 3},
+            {'4', 4},
+            {'5', 5},
+            {'6', 6},
+            {'7', 7},
+            {'8', 8},
+            {'9', 9}
+    };
+    for (auto ch: str) {
+        if ((ch==0x20||ch==0x09)) {
+            if (started) break;
+            continue;
+        }
+        if ((ch=='-'||ch=='+') && !signHappened) {
+            sign = ((ch=='+') ? 1:-1);
+            signHappened = true;
+            started = true;
+            continue;
+        }
+        auto it = charMap.find(ch);
+        if (it!=charMap.end()) {
+            started = true;
+            tmp += it->first;
+            if (!pwr) pwr = 1;
+            else pwr *= 10;
+        } else {
+            break;
+        }
+    }
+    if (tmp.empty())
+        return 0;
+    else
+        return _cleanStrToInt(tmp, pwr, sign);
+}
+
+int myAtoiV2(const std::string& str) {
+    if (str.empty())
+        return 0;
+
+    // trim
+    auto offset = 0;
+    while (str[offset] == ' ' || str[offset] == '0' && offset < str.length())
+        offset++;
+
+    auto sign = 1;
+    // sign
+    if (str[offset] == '-') {
+        sign = -1;
+        ++offset;
+    }
+    else if (str[offset] == '+') {
+        sign = 1;
+        ++offset;
+    }
+
+    auto ret = 0;
+    for (auto i = offset; i < str.length(); ++i) {
+        auto c = str[i];
+        auto val = 0;
+        if (c >= '0' && c <= '9')
+            val = c - '0';
+        else
+            break;
+
+        if (ret > INT_MAX / 10 || (ret == INT_MAX / 10 && val > 7))
+            return sign > 0 ? INT_MAX : INT_MIN;
+
+        ret *= 10;
+        ret += val;
+    }
+
+    return sign * ret;
+}
+
 }

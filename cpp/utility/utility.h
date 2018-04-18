@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <cstdint>
+#include "types.h"
 struct ListNode;
 
 std::vector<int> fill_vector( uint32_t );
