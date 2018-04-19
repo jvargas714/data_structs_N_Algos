@@ -155,6 +155,7 @@ int maxSubArray4() {
  * return pointer to the head
  * For example,
  * Given 1->2->3->4, you should return the list as 2->1->4->3.
+ #todo
  */
 ListNode* swapPairs(ListNode* head) {
     size_t i = 0;
@@ -750,6 +751,7 @@ int myAtoi(const std::string& str) {
         return _cleanStrToInt(tmp, pwr, sign);
 }
 
+// optimized solution 
 int myAtoiV2(const std::string& str) {
     if (str.empty())
         return 0;
@@ -789,4 +791,31 @@ int myAtoiV2(const std::string& str) {
     return sign * ret;
 }
 
+int strStr(std::string haystack, std::string needle) {
+	if (needle.empty()) return 0;
+	int ind = -1;
+	int j = 0;
+	size_t found = 0;
+	size_t needleLen = needle.size();
+	int i = 0;
+	for(; i < haystack.size(); i++) {
+		// found condition 
+		if (found == needleLen)
+			break;
+
+		if (haystack[i] == needle[j]) {
+			if (ind==-1)
+				ind = i;
+			j++;
+			found++;
+		}
+		else {  // reset finding substr
+			ind = -1;
+			j = 0;
+			i = (found) ? i-(found):i;
+			found = 0;
+		}
+	}
+	if (found != needleLen) return -1;
+	return ind;
 }

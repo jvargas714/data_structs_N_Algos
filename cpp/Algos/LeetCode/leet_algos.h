@@ -17,7 +17,7 @@ typedef std::vector<std::vector<int>> IntMatrix;
 // problem #24
 ListNode* swapPairs(ListNode* head);
 
-// Problem #168
+// Problem #168 100% 0ms 
 std::string excel_column_title( int n );
 
 // Problem #59
@@ -93,10 +93,16 @@ bool validAnaGramV2(std::string& s, std::string t);
 // empty strings are considered valid
 bool validPalindrome(std::string& s);
 
-// problem #
+// problem #8 medium 
 // result: 27.15% percentile 34 ms
 int myAtoi(const std::string& str);
 int myAtoiV2(const std::string& str);
+
+// problem #28 98% percentile 6ms
+int strStr(std::string haystack, std::string needle);
+
+// problem #
+
 
 // helpers
 int _cleanStrToInt(const std::string& str, int pwr, int sign);
