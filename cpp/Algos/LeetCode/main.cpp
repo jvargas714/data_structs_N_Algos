@@ -13,14 +13,11 @@ int main()
 		"mississippi"
 		"issip"
 	*/
-    std::string haystack("mississipi");
-	std::string needle("issip");
-	std::cout << "needle: " << needle << " in the hackstack: " << haystack << std::endl; 
     t_point t1_bub, t2_bub;
     
 	t1_bub = hrc::now();
-    std::cout << strStr(haystack, needle) << std::endl;
-    t2_bub = hrc::now();
+	std::cout << "result: " << countAndSay(50) << std::endl;
+	t2_bub = hrc::now();
    
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;
     auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();

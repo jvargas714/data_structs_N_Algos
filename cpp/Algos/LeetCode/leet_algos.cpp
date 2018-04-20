@@ -819,3 +819,49 @@ int strStr(std::string haystack, std::string needle) {
 	if (found != needleLen) return -1;
 	return ind;
 }
+
+int _getCount(const std::string& str, const int& offset) {
+	if (str.size() == 1) {
+		return 1;
+	}
+	
+	int cnt = 1;
+	char tmp = str[offset];
+	for (int i = offset+1; i < str.size(); i++) {
+		if (str[i] == tmp)
+			cnt++;
+		else
+			return cnt;
+	}
+	return cnt;
+}
+
+void _genCntNSay(std::string& currTerm, std::string& nextTerm) {
+	std::string interTerm = currTerm;
+	int offset = 0;
+	int cnt;
+	
+	while (offset < currTerm.size()) {
+		char tmp = currTerm[offset];
+		cnt = _getCount(currTerm, offset);
+		nextTerm += std::to_string(cnt);
+		nextTerm += tmp;
+		offset += cnt;
+
+	}
+}
+
+std::string countAndSay(int n) {
+	if (!n) return "";
+	std::string currTerm = "1";
+	std::string nextTerm = "";
+
+	// generate the sequence up to the nth term
+	for (int i = 1; i < n; i++) {
+		// std::cout << "currTerm: " << currTerm << std::endl; 
+		_genCntNSay(currTerm, nextTerm);
+		currTerm = nextTerm;
+		nextTerm = "";
+	}
+	return currTerm;
+}

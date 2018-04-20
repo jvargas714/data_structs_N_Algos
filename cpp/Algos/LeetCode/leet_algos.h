@@ -102,7 +102,18 @@ int myAtoiV2(const std::string& str);
 int strStr(std::string haystack, std::string needle);
 
 // problem #
-
+// find nth term of the count and say sequence and output to string 
+//1 1
+//2.11
+//3.21
+//4.1211
+//5.111221
+// reading it 
+//1 is read off as "one 1" or 11.
+//11 is read off as "two 1s" or 21.
+//21 is read off as "one 2, then one 1" or 1211.
+// result: 4ms 79.17% percentile
+std::string countAndSay(int n);
 
 // helpers
 int _cleanStrToInt(const std::string& str, int pwr, int sign);
@@ -111,5 +122,8 @@ void _addColsElement(SudokuColumns& cols, const SudokuRow& row, int colIndex);
 bool _checkSquares(SudokuBoard &board);
 bool _checkDuplicate(const std::vector<char>& rw);
 void _rotateLayer(IntMatrix& matrix, uint32_t layer);
+void _genCntNSay(std::string& currTerm, std::string& nextTerm);
+int _getCount(const std::string& str, const int& offset);
+
 
 #endif //ALGOS_SHORT_ALGOS_H
