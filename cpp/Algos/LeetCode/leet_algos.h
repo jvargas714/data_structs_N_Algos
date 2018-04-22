@@ -94,11 +94,11 @@ bool validAnaGramV2(std::string& s, std::string t);
 bool validPalindrome(std::string& s);
 
 // problem #8 medium 
-// result: 27.15% percentile 34 ms
+// result: 27.15%  34 ms
 int myAtoi(const std::string& str);
 int myAtoiV2(const std::string& str);
 
-// problem #28 98% percentile 6ms
+// problem #28 98%  6ms
 int strStr(std::string haystack, std::string needle);
 
 // problem #
@@ -112,10 +112,29 @@ int strStr(std::string haystack, std::string needle);
 //1 is read off as "one 1" or 11.
 //11 is read off as "two 1s" or 21.
 //21 is read off as "one 2, then one 1" or 1211.
-// result: 4ms 79.17% percentile
+// result: 4ms 79.17%
 std::string countAndSay(int n);
 
+// delete provided node from linked list it exists in
+// problem #237
+// 72.38% 14ms
+void deleteNode(ListNode* node);
+
+// problem #19
+// Given a linked list, remove the n-th node from the end of list and return its head.
+// result: 11ms 35.03%
+ListNode* removeNthFromEnd(ListNode* head, int n);
+ListNode* removeNthFromEndV2(ListNode* head, int n);
+
+// reverse linked list
+// problem #206
+// result: iterative: 16ms 7.13%
+ListNode* reverseList(ListNode* head);
+ListNode* reverseListV2(ListNode* head);
+
 // helpers
+void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);
+void _reverseIterative(ListNode** head);
 int _cleanStrToInt(const std::string& str, int pwr, int sign);
 bool _checkRows(const SudokuBoard& board);
 void _addColsElement(SudokuColumns& cols, const SudokuRow& row, int colIndex);

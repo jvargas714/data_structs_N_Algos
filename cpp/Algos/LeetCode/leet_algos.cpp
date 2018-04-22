@@ -511,7 +511,7 @@ void rotate(IntMatrix& matrix) {
 
 // fastest submission 4ms
 void rotateV2(IntMatrix& matrix) {
-    int start = 0, end = matrix.size()-1;
+    int start = 0, end = static_cast<int>(matrix.size()-1);
     while(start<end){
         for(int i=start; i<end; i++){
             int offset = i-start;
@@ -615,10 +615,10 @@ int firstUniqCharV2(std::string s) {
 // better solution above average 40ms
 int firstUniqCharV3(std::string s) {
     std::vector<int> v(26,0);
-    for(int i =0,j=0;i<s.size();i++){
-        v[s[i]-'a']++;
+    for (char i : s) {
+        v[i -'a']++;
     }
-    for(int i =0,j=0;i<s.size();i++){
+    for(int i =0; i<s.size(); i++){
         if(v[s[i]-'a']==1)
             return i;
     }
@@ -651,8 +651,8 @@ bool validAnaGramV2(std::string& s, std::string t) {
         chCount[s[i]-'a']++;
         chCount[t[i]-'a']--;
     }
-    for (int i=0;i<26;i++){
-        if(chCount[i]!=0)
+    for (int i : chCount) {
+        if(i !=0)
             return false;
     }
     return true;
@@ -707,7 +707,7 @@ int _cleanStrToInt(const std::string& val, int pwr, int sign) {
 int myAtoi(const std::string& str) {
     if (str.empty())
         return 0;
-    std::string tmp = "";
+    std::string tmp;
     int sign = 1;
     int pwr = 0;
     bool started = false;
@@ -781,8 +781,8 @@ int myAtoiV2(const std::string& str) {
         else
             break;
 
-        if (ret > INT_MAX / 10 || (ret == INT_MAX / 10 && val > 7))
-            return sign > 0 ? INT_MAX : INT_MIN;
+        if (ret > INT32_MAX / 10 || (ret == INT32_MAX / 10 && val > 7))
+            return sign > 0 ? INT32_MAX : INT32_MIN;
 
         ret *= 10;
         ret += val;
@@ -812,7 +812,7 @@ int strStr(std::string haystack, std::string needle) {
 		else {  // reset finding substr
 			ind = -1;
 			j = 0;
-			i = (found) ? i-(found):i;
+			i = (found) ? static_cast<int>(i-(found)):i;
 			found = 0;
 		}
 	}
@@ -854,14 +854,117 @@ void _genCntNSay(std::string& currTerm, std::string& nextTerm) {
 std::string countAndSay(int n) {
 	if (!n) return "";
 	std::string currTerm = "1";
-	std::string nextTerm = "";
+	std::string nextTerm;
 
 	// generate the sequence up to the nth term
 	for (int i = 1; i < n; i++) {
-		// std::cout << "currTerm: " << currTerm << std::endl; 
+		// std::cout << "currTerm: " << currTerm << std::endl;
 		_genCntNSay(currTerm, nextTerm);
 		currTerm = nextTerm;
 		nextTerm = "";
 	}
 	return currTerm;
 }
+
+// 1->2->3->4->5
+// say node is 3 we should get 1->2->4->5 after deletion
+void deleteNode(ListNode* node) {
+    if (!node||!node->next) return;
+    ListNode* tmp = node->next;
+    node->val = tmp->val;
+    node->next = tmp->next;
+}
+
+// get this in one pass
+// 1->2->3->4->5
+// n is assumed to be valid
+ListNode* removeNthFromEnd(ListNode* head, int n) {
+    if (!head) return nullptr;
+    std::vector<ListNode*> ptrs;
+    ListNode* tmp = head;
+    while(tmp) {
+        ptrs.push_back(tmp);
+        tmp = tmp->next;
+    }
+
+    ListNode* toBeRem = ptrs[ptrs.size() - n]; // node to be removed
+
+    // remove node from list
+    if (n==ptrs.size()) {  // removing head
+        std::cout <<"removing head"<<std::endl;
+        head->val = head->next->val;
+        head->next = head->next->next;
+    } else { // all others
+        std::cout << "all others: " << std::endl;
+        tmp = toBeRem->next;
+        ptrs[ptrs.size()-(n+1)]->next = tmp;
+    }
+    return head;
+}
+
+ListNode* removeNthFromEndV2(ListNode* head, int n) {
+    ListNode *p = head;
+    ListNode *pre = head;
+
+    // finds node pointer to remove
+    while (n > 0) {
+        p = p->next;
+        n--;
+    }
+
+    // if we reached end of list that means we are removing the head from the list so return its next element
+    if (p == nullptr) {
+        return head->next;
+    }
+
+    // from this element to the end we just copy the next pointer to eliminate the one to be removed
+    // 1->2->3->(4)->5->6
+    // 1->2->3->5->6   <<< p = p->next
+    while (p->next != nullptr) {
+        p = p->next;
+        pre = pre->next;
+    }
+    // pre in the while loop started at the head, it ends as the element before the one to be removed
+    // when the loop ends the next element must point to the nexe->next element ie. 3->5 (must point to 5)
+    pre->next = pre->next->next;
+    return head;
+}
+
+void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head) {
+    // if last node set reference to LL head ptr to the tail node of the original LL
+    if (!curr->next) {
+        *head = curr;
+        curr->next = prev;
+        return;
+    }
+    ListNode *next = curr->next;
+    curr->next = prev;
+    _reverseRecursive(next, curr, head);
+}
+
+void _reverseIterative(ListNode** head) {
+    ListNode* curr = *head;
+    ListNode* prev = nullptr;
+    ListNode* next = nullptr;
+    while(curr) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    *head = prev;
+}
+
+// recursive sol
+ListNode* reverseList(ListNode* head) {
+    if (!head) return nullptr;
+    _reverseRecursive(head, nullptr, &head);
+    return head;
+}
+
+// iterative solution
+ListNode* reverseListV2(ListNode* head) {
+    _reverseIterative(&head);
+    return head;
+}
+
