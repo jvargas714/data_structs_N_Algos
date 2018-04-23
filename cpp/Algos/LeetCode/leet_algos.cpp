@@ -968,3 +968,63 @@ ListNode* reverseListV2(ListNode* head) {
     return head;
 }
 
+// Input: 1->2->4, 1->3->4
+// Output: 1->1->2->3->4->4
+ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+    if (!l1) return l2;
+    if (!l2) return l1;
+    ListNode* tmp1 = l1;
+    ListNode* tmp2 = l2;
+    ListNode* result = nullptr;
+    ListNode* tmp3 = nullptr;
+    int sz1 = 0;
+    int sz2 = 0;
+
+    // get lengths of both lists
+    // TOOD :: may have to increment tmp1 and tmp2 in their respective cases
+    while ((tmp1 != nullptr)||(tmp2 != nullptr)) {
+
+        if (tmp1&&tmp2) {
+            if ((tmp1->val < tmp2->val)) {
+                if (!result) {
+                    result = tmp1;
+                    tmp3 = result;
+                } else {
+                    tmp3 = tmp1;
+                }
+                tmp1 = tmp1->next;
+            } else if ((tmp2->val < tmp1->val)) {
+                if (!result) {
+                    result = tmp2;
+                    tmp3 = result;
+                } else {
+                    tmp3 = tmp2;
+                }
+                tmp2 = tmp2->next;
+            } else {   // both are equal
+                if (!result) {
+                    result = tmp1;
+                    result->next = tmp2;
+                    tmp3 = result->next->next;
+                } else {
+                    tmp3 = tmp1;
+                    tmp3->next = tmp2;
+                    tmp3 = tmp3->next->next;
+                }
+            }
+        } else if (tmp1) {   // l1
+            tmp3 = tmp1;
+            tmp3 = tmp3->next;
+        } else {   // l2
+            tmp3 = tmp2;
+            tmp3 = tmp3->next;
+        }
+    }
+}
+
+
+
+
+
+
+
