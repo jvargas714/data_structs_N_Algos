@@ -17,5 +17,6 @@ python/__pycache__
 .vs
 .idea
 bin
-lib
+*.lib
 cmake-build*
+lib
