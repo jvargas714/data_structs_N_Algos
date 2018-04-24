@@ -132,6 +132,14 @@ ListNode* removeNthFromEndV2(ListNode* head, int n);
 ListNode* reverseList(ListNode* head);
 ListNode* reverseListV2(ListNode* head);
 
+// problem #
+// result: 42.63% 15ms
+ListNode* mergeTwoLists(ListNode* l1, ListNode* l2);
+ListNode* mergeTwoListsV2(ListNode* l1, ListNode* l2);
+
+// problem #
+bool isPalindrome(ListNode* head);
+
 // helpers
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);
 void _reverseIterative(ListNode** head);

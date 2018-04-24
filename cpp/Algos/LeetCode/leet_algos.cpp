@@ -977,51 +977,101 @@ ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
     ListNode* tmp2 = l2;
     ListNode* result = nullptr;
     ListNode* tmp3 = nullptr;
-    int sz1 = 0;
-    int sz2 = 0;
 
-    // get lengths of both lists
-    // TOOD :: may have to increment tmp1 and tmp2 in their respective cases
     while ((tmp1 != nullptr)||(tmp2 != nullptr)) {
-
         if (tmp1&&tmp2) {
             if ((tmp1->val < tmp2->val)) {
                 if (!result) {
-                    result = tmp1;
+                    result = new ListNode(tmp1->val);
                     tmp3 = result;
                 } else {
-                    tmp3 = tmp1;
+                   tmp3->next = new ListNode(tmp1->val);
+                   tmp3 = tmp3->next;
                 }
                 tmp1 = tmp1->next;
             } else if ((tmp2->val < tmp1->val)) {
                 if (!result) {
-                    result = tmp2;
+                    result = new ListNode(tmp2->val);
                     tmp3 = result;
                 } else {
-                    tmp3 = tmp2;
+                    tmp3->next = new ListNode(tmp2->val);
+                    tmp3 = tmp3->next;
                 }
                 tmp2 = tmp2->next;
             } else {   // both are equal
                 if (!result) {
-                    result = tmp1;
-                    result->next = tmp2;
-                    tmp3 = result->next->next;
+                    result = new ListNode(tmp1->val);
+                    result->next = new ListNode(tmp2->val);
+                    tmp3 = result->next;
                 } else {
-                    tmp3 = tmp1;
-                    tmp3->next = tmp2;
+                    tmp3->next = new ListNode(tmp1->val);
+                    tmp3->next->next = new ListNode(tmp2->val);
                     tmp3 = tmp3->next->next;
                 }
+                tmp1 = tmp1->next;
+                tmp2 = tmp2->next;
             }
-        } else if (tmp1) {   // l1
-            tmp3 = tmp1;
+        } else if (tmp1) {      // l1
+            tmp3->next = new ListNode(tmp1->val);
             tmp3 = tmp3->next;
-        } else {   // l2
-            tmp3 = tmp2;
+            tmp1 = tmp1->next;
+        } else {                // l2
+            tmp3->next = new ListNode(tmp2->val);
             tmp3 = tmp3->next;
+            tmp2 = tmp2->next;
         }
     }
+    return result;
 }
 
+ListNode* mergeTwoListsV2(ListNode* l1, ListNode* l2) {
+
+    ListNode* dummy  =  new ListNode(-1);
+    ListNode* cur = dummy;
+
+    while(l1!=NULL && l2!=NULL){
+        if(l1->val<l2->val) {
+            cur->next = l1;
+            l1 = l1->next;
+        } else {
+            cur->next = l2;
+            l2 = l2->next;
+        }
+        cur = cur->next;
+    }
+    cur->next = l1?l1:l2;
+    return dummy->next;  // << this leaks mem
+}
+
+// try to get in O(n)
+bool isPalindrome(ListNode* head) {
+    if (!head) return false;
+    ListNode* tmp = head;
+    ListNode* halfNode = nullptr;
+    int cnt = 0;
+
+    // get cnt
+    while (tmp) {
+        cnt++;
+        tmp = tmp->next;
+    }
+
+    int half = cnt/2;
+    tmp = head;
+    cnt = 0;
+
+    // get half node
+    while (true) {
+        cnt++;
+        tmp = tmp->next;
+        if (cnt == half) {
+            halfNode = tmp;
+            break;
+        }
+    }
+
+    tmp = head;
+}
 
 
 

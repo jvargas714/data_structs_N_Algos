@@ -10,17 +10,17 @@ typedef hrc::time_point t_point;
 int main()
 {
     t_point t1_bub, t2_bub;
-    ListNode* root = fillListNode({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    ListNode* l1 = fillListNode({1, 2, 4});
+    ListNode* l2 = fillListNode({1, 3, 4, 5, 6, 7});
 
 	t1_bub = hrc::now();
-//    ListNode* newLl = reverseListV2(root);
-	deleteNode(root->next);
+	ListNode* result = mergeTwoLists(l1, l2);
 	t2_bub = hrc::now();
 
 
 	std::cout << "Linked List after reversal: " << std::endl;
-   	displayListNodes(root);
-   	deallocateLList(root);
+   	displayListNodes(result);
+   	deallocateLList(result);
 
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;
     auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
