@@ -10,6 +10,8 @@
 #include "types.h"
 struct ListNode;
 
+#define LOG std::cout << __FUNCTION__ << "(): "
+
 std::vector<int> fill_vector( uint32_t );
 int* fill_array( uint32_t );
 

@@ -5,7 +5,6 @@
 #include "leet_algos.h"
 #include "utility.h"
 
-#define LOG std::cout << __FUNCTION__ << "(): "
 
 /* Problem: #168 */
 std::string excel_column_title( int n ) {
@@ -1043,34 +1042,51 @@ ListNode* mergeTwoListsV2(ListNode* l1, ListNode* l2) {
     return dummy->next;  // << this leaks mem
 }
 
+ListNode* _revList(ListNode* head) {
+    ListNode* prev = nullptr;
+    ListNode* curr = head;
+    ListNode* next = nullptr;
+    while (curr) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    head = prev;
+    return head;
+}
 // try to get in O(n)
 bool isPalindrome(ListNode* head) {
-    if (!head) return false;
-    ListNode* tmp = head;
-    ListNode* halfNode = nullptr;
+    if (!head||!head->next) return true;
+    ListNode* slow = head;
+    ListNode* fast = head;
+    ListNode* midNode = nullptr;
     int cnt = 0;
 
-    // get cnt
-    while (tmp) {
+    // find center node using two pointers
+    while (fast&&fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
         cnt++;
-        tmp = tmp->next;
     }
-
-    int half = cnt/2;
-    tmp = head;
-    cnt = 0;
-
-    // get half node
-    while (true) {
-        cnt++;
-        tmp = tmp->next;
-        if (cnt == half) {
-            halfNode = tmp;
-            break;
-        }
+    midNode = slow;
+    // reverse elements from center to end
+    ListNode* revList = _revList(slow->next);
+    midNode->next = revList;
+    fast = head;
+    while(revList) {
+        if (revList->val != fast->val)
+            return false;
+        revList = revList->next;
+        fast = fast->next;
     }
+    return (fast->val == midNode->val);
+}
 
-    tmp = head;
+bool hasCycle(ListNode *head) {
+    ListNode* fast = head;
+    ListNode* slow = head;
+
 }
 
 

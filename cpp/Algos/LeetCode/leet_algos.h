@@ -137,8 +137,14 @@ ListNode* reverseListV2(ListNode* head);
 ListNode* mergeTwoLists(ListNode* l1, ListNode* l2);
 ListNode* mergeTwoListsV2(ListNode* l1, ListNode* l2);
 
-// problem #
+// problem #234
+// result: 96.66% 20ms
 bool isPalindrome(ListNode* head);
+
+// problem
+// result:
+bool hasCycle(ListNode *head);
+
 
 // helpers
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);
@@ -151,6 +157,7 @@ bool _checkDuplicate(const std::vector<char>& rw);
 void _rotateLayer(IntMatrix& matrix, uint32_t layer);
 void _genCntNSay(std::string& currTerm, std::string& nextTerm);
 int _getCount(const std::string& str, const int& offset);
+ListNode* _revList(ListNode* head);
 
 
 #endif //ALGOS_SHORT_ALGOS_H
