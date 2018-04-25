@@ -1083,10 +1083,20 @@ bool isPalindrome(ListNode* head) {
     return (fast->val == midNode->val);
 }
 
+// [* * * * * * * *]
 bool hasCycle(ListNode *head) {
+    if (!head||!head->next) return false;
     ListNode* fast = head;
     ListNode* slow = head;
-
+    int cnt = 0;
+    while (fast&&slow&&fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if ((fast == slow) && (fast)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 

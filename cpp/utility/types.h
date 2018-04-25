@@ -11,6 +11,13 @@ struct ListNode {
     explicit ListNode(int x) : val(x), next(nullptr) {}
 };
 
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    explicit TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
 typedef unsigned int uint;
 static const int LINE_LIMIT = 30;
 typedef std::pair<int, int> envelope;

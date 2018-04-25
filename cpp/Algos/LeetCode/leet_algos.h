@@ -141,10 +141,13 @@ ListNode* mergeTwoListsV2(ListNode* l1, ListNode* l2);
 // result: 96.66% 20ms
 bool isPalindrome(ListNode* head);
 
-// problem
-// result:
+// problem: 141
+// result: 98.7% 10ms
 bool hasCycle(ListNode *head);
 
+// problem:
+// result:
+int maxDepth(TreeNode* root);
 
 // helpers
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);
