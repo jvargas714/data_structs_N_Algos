@@ -8,7 +8,6 @@
 #include <string>
 #include <cstdint>
 #include "types.h"
-struct ListNode;
 
 #define LOG std::cout << __FUNCTION__ << "(): "
 
@@ -134,5 +133,11 @@ void logicalShiftR(std::vector<int>&);
 
 // inplace shift vector to the left one space
 void logicalShiftL(std::vector<int>& nums);
+
+// builds an integer binary tree from a vector
+TreeNode* allocateBinTreeFromVect(const std::vector<int>&);
+
+// helper function to allocate the bin tree
+void _fill(const std::vector<int>& data, TreeNode* node, int i);
 
 #endif //CPP_UTILITY_H

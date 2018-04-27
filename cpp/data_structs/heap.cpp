@@ -46,7 +46,7 @@ void min_heap::display() const
 */
 int min_heap::extract_min()
 {
-	if( data.size() == 0 )
+	if( data.empty() )
 	{
 		std::stringstream ss; 
 		ss << "min_heap::extract_min(): Error heap size is zero\n";

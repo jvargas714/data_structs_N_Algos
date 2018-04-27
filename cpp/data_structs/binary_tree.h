@@ -63,8 +63,8 @@ class binary_tree
     public:
         //ctors & dtor
         binary_tree();
-        binary_tree( T& );
-        binary_tree( T&& );
+        explicit binary_tree( T& );
+        explicit binary_tree( T&& );
         virtual ~binary_tree( );
         
         // find node in tree, can specify traversal algo

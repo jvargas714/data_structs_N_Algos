@@ -243,3 +243,26 @@ void displayListNodes(ListNode* root) {
     }
     std::cout << std::endl;
 }
+
+void _fill(const std::vector<int>& data, TreeNode* node, int i) {
+    if (i >= data.size()) {
+        node = nullptr;
+        return;
+    }
+    node = new TreeNode( data[i] );
+    _fill( data, node->left, (2*i+1) );
+    _fill( data, node->right, (2*i+2));
+}
+
+/*
+    using 0 based indexing
+    for node at index i left child is at 2i+1
+    for node at index i right child is at 2i+2
+    parent of node at i is at i/2 integer division
+*/
+TreeNode* allocateBinTreeFromVect(const std::vector<int>& data) {
+    if ( data.empty() ) return nullptr;
+    TreeNode* root = nullptr;
+    _fill(data, root, 0);
+    return root;
+}
