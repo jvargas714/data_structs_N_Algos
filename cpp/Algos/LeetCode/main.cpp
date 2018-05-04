@@ -7,11 +7,36 @@
 using namespace std::chrono;
 typedef high_resolution_clock hrc;
 typedef hrc::time_point t_point;
+
+void testBinTree() {
+    std::vector<int> data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    TreeNode *binTree = allocateBinTreeFromVect(data);
+    std::vector<TreeNode*> inOrderTrav = inOrderTraversal(binTree);
+    std::vector<TreeNode*> postOrderTrav = postOrderTraversal(binTree);
+    std::vector<TreeNode*> preOrderTrav = preOrderTraversal(binTree);
+    std::cout << "InOrder Traversal" << std::endl;
+    for (const auto &el: inOrderTrav) {
+        std::cout << el << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "preOrder Traversal" << std::endl;
+    for (const auto &el : preOrderTrav) {
+        std::cout << el << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "postOrder Traversal" << std::endl;
+    for (const auto &el : postOrderTrav) {
+        std::cout << el << " ";
+    }
+    std::cout << std::endl;
+}
+
 int main()
 {
     t_point t1_bub, t2_bub;
 
     t1_bub = hrc::now();
+    testBinTree();
 	t2_bub = hrc::now();
 
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;

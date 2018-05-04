@@ -757,7 +757,7 @@ int myAtoiV2(const std::string& str) {
 
     // trim
     auto offset = 0;
-    while (str[offset] == ' ' || str[offset] == '0' && offset < str.length())
+    while ((str[offset] == ' ' || str[offset] == '0') && offset < str.length())
         offset++;
 
     auto sign = 1;
@@ -1083,7 +1083,6 @@ bool isPalindrome(ListNode* head) {
     return (fast->val == midNode->val);
 }
 
-// [* * * * * * * *]
 bool hasCycle(ListNode *head) {
     if (!head||!head->next) return false;
     ListNode* fast = head;

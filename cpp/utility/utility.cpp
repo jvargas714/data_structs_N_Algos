@@ -238,20 +238,36 @@ void displayListNodes(ListNode* root) {
     if (!root)  return;
     const ListNode* tmp = root;
     while (tmp) {
-        std::cout << tmp->val << " ";
+         std::cout << tmp->val << " ";
         tmp = tmp->next;
     }
     std::cout << std::endl;
 }
 
-void _fill(const std::vector<int>& data, TreeNode* node, int i) {
-    if (i >= data.size()) {
+/*
+ * example:
+ *              (1)
+ *            /    \
+ *          /       \
+ *        (2)      (3)
+ *       /   \    /  \
+ *     (4)  (5) (6)  (7)
+ *
+ * from vector [1,2,3,4,5,6,7]
+ */
+void _fill(const std::vector<int>& data, TreeNode** node, int i) {
+    if ( (2*i+1) >= data.size() ) {
         node = nullptr;
         return;
     }
-    node = new TreeNode( data[i] );
-    _fill( data, node->left, (2*i+1) );
-    _fill( data, node->right, (2*i+2));
+    (*node)->left = new TreeNode(data[i]);
+    if ( (i) >= data.size() ) {
+        (*node)->right = nullptr;
+        return;
+    }
+    (*node)->right = new TreeNode(data[i+1]);
+    _fill(data, &(*node)->left, (2*i+1));
+    _fill(data, &(*node)->right, (2*i+2));
 }
 
 /*
@@ -260,9 +276,55 @@ void _fill(const std::vector<int>& data, TreeNode* node, int i) {
     for node at index i right child is at 2i+2
     parent of node at i is at i/2 integer division
 */
-TreeNode* allocateBinTreeFromVect(const std::vector<int>& data) {
+TreeNode* allocateBinTreeFromVect(std::vector<int>& data) {
     if ( data.empty() ) return nullptr;
-    TreeNode* root = nullptr;
-    _fill(data, root, 0);
+    auto root = new TreeNode(data[0]);
+    TreeNode* tmp = root;
+    _fill(data, &tmp, 1);
     return root;
+}
+
+void _inorder(TreeNode* node, std::vector<TreeNode*>& lst) {
+    if (!node) {
+        return;
+    }
+    _inorder(node->left, lst);
+    lst.push_back(node);
+    _inorder(node->right, lst);
+}
+
+void _preorder(TreeNode* node, std::vector<TreeNode*>& lst) {
+    if (!node) {
+        return;
+    }
+    lst.push_back(node);
+    _preorder(node->left, lst);
+    _preorder(node->right, lst);
+}
+
+void _postorder(TreeNode* node, std::vector<TreeNode*>& lst) {
+    if (!node) {
+        return;
+    }
+    _postorder(node->left, lst);
+    _postorder(node->right, lst);
+    lst.push_back(node);
+}
+
+std::vector<TreeNode*> inOrderTraversal(TreeNode* root) {
+    std::vector<TreeNode*> result;
+    _inorder(root, result);
+    return result;
+}
+
+std::vector<TreeNode*> postOrderTraversal(TreeNode* root) {
+    std::vector<TreeNode*> result;
+    _postorder(root, result);
+    return result;
+}
+
+std::vector<TreeNode*> preOrderTraversal(TreeNode* root) {
+    std::vector<TreeNode*> result;
+    _preorder(root, result);
+    return result;
 }
