@@ -11,9 +11,9 @@ typedef hrc::time_point t_point;
 void testBinTree() {
     std::vector<int> data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     TreeNode *binTree = allocateBinTreeFromVect(data);
-    std::vector<TreeNode*> inOrderTrav = inOrderTraversal(binTree);
-    std::vector<TreeNode*> postOrderTrav = postOrderTraversal(binTree);
-    std::vector<TreeNode*> preOrderTrav = preOrderTraversal(binTree);
+    std::vector<int> inOrderTrav = inOrderTraversal(binTree);
+    std::vector<int> postOrderTrav = postOrderTraversal(binTree);
+    std::vector<int> preOrderTrav = preOrderTraversal(binTree);
     std::cout << "InOrder Traversal" << std::endl;
     for (const auto &el: inOrderTrav) {
         std::cout << el << " ";
