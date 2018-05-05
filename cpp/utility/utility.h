@@ -135,10 +135,13 @@ void logicalShiftR(std::vector<int>&);
 void logicalShiftL(std::vector<int>& nums);
 
 // builds an integer binary tree from a vector
-TreeNode* allocateBinTreeFromVect(std::vector<int>&);
+TreeNode* allocateBinTreeFromVect(const std::vector<int>&);
 
-// bin trees traverals
-std::vector<TreeNode*> inOrderTraversal(TreeNode* root);
-std::vector<TreeNode*> preOrderTraversal(TreeNode* root);
-std::vector<TreeNode*> postOrderTraversal(TreeNode* root);
+// helper function to allocate the bin tree
+void _fill(const std::vector<int>& data, TreeNode* node, int i);
+
+// bin tree traversal
+std::vector<int> inOrderTraversal(const TreeNode* root);
+std::vector<int> preOrderTraversal(const TreeNode* root);
+std::vector<int> postOrderTraversal(const TreeNode* root);
 #endif //CPP_UTILITY_H

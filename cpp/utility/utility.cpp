@@ -1,9 +1,11 @@
 #include <iostream>
 #include <sstream>
 #include <random>
+#include <queue>
 #include "time.h"
 #include "types.h"
 #include "utility.h"
+
 
 
 
@@ -200,7 +202,7 @@ std::string elim_whitespace( std::string& str )
     uint32_t ind = 0;
     for( auto& ch : str )
     {
-        if( ch == 32 ) // 32 ASCII for Space 
+        if( ch == 32 ) // 32 ASCII for Space
             ind++;
         else
             break;
@@ -271,60 +273,75 @@ void _fill(const std::vector<int>& data, TreeNode** node, int i) {
 }
 
 /*
-    using 0 based indexing
-    for node at index i left child is at 2i+1
-    for node at index i right child is at 2i+2
-    parent of node at i is at i/2 integer division
+    fills bin tree from left to right from a std::vector<int>, to fill in a null node
+    pass INT32_MIN for that val
+    [1, 2, 3, 4, 5, 6, 7] -->
+       1
+    /   \
+   2    3
+  /\   /\
+ 4 5  6 7
 */
-TreeNode* allocateBinTreeFromVect(std::vector<int>& data) {
+TreeNode* allocateBinTreeFromVect(const std::vector<int>& data) {
     if ( data.empty() ) return nullptr;
     auto root = new TreeNode(data[0]);
     TreeNode* tmp = root;
-    _fill(data, &tmp, 1);
+    std::queue<TreeNode*> cache;
+    cache.push(tmp);
+    size_t cnt = 1;
+    while (cnt < data.size()) {
+        cache.front()->left = new TreeNode(data[cnt++]);
+        if (cnt >= data.size())
+            break;
+        cache.front()->right = new TreeNode(data[cnt++]);
+        cache.push(cache.front()->left);
+        cache.push(cache.front()->right);
+        cache.pop();
+    }
     return root;
 }
 
-void _inorder(TreeNode* node, std::vector<TreeNode*>& lst) {
-    if (!node) {
-        return;
-    }
-    _inorder(node->left, lst);
-    lst.push_back(node);
-    _inorder(node->right, lst);
+void _inorder(const TreeNode* node, std::vector<int>& data) {
+    if (!node||(node->val==INT32_MIN)) return;
+    _inorder(node->left, data);
+    data.push_back(node->val);
+    _inorder(node->right, data);
 }
 
-void _preorder(TreeNode* node, std::vector<TreeNode*>& lst) {
-    if (!node) {
-        return;
-    }
-    lst.push_back(node);
-    _preorder(node->left, lst);
-    _preorder(node->right, lst);
-}
-
-void _postorder(TreeNode* node, std::vector<TreeNode*>& lst) {
-    if (!node) {
-        return;
-    }
-    _postorder(node->left, lst);
-    _postorder(node->right, lst);
-    lst.push_back(node);
-}
-
-std::vector<TreeNode*> inOrderTraversal(TreeNode* root) {
-    std::vector<TreeNode*> result;
-    _inorder(root, result);
+std::vector<int> inOrderTraversal(const TreeNode* root) {
+    if (!root) return {INT32_MIN};
+    std::vector<int> result;
+    const TreeNode* tmp = root;
+    _inorder(tmp, result);
     return result;
 }
 
-std::vector<TreeNode*> postOrderTraversal(TreeNode* root) {
-    std::vector<TreeNode*> result;
-    _postorder(root, result);
+void _preorder(const TreeNode* node, std::vector<int>& result) {
+    if (!node||(node->val==INT32_MIN)) return;
+    result.push_back(node->val);
+    _preorder(node->left, result);
+    _preorder(node->right, result);
+}
+
+std::vector<int> preOrderTraversal(const TreeNode* root) {
+    if (!root) return {INT32_MIN};
+    std::vector<int>result;
+    const TreeNode* tmp = root;
+    _preorder(tmp, result);
     return result;
 }
 
-std::vector<TreeNode*> preOrderTraversal(TreeNode* root) {
-    std::vector<TreeNode*> result;
-    _preorder(root, result);
+void _postorder(const TreeNode* node, std::vector<int>& result) {
+    if (!node||(node->val==INT32_MIN)) return;
+    _postorder(node->left, result);
+    _postorder(node->right, result);
+    result.push_back(node->val);
+}
+
+std::vector<int> postOrderTraversal(const TreeNode* root) {
+    if (!root) return {INT32_MIN};
+    const TreeNode* tmp = root;
+    std::vector<int> result;
+    _postorder(tmp, result);
     return result;
 }

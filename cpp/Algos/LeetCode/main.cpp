@@ -31,7 +31,7 @@ void testBinTree() {
     std::cout << std::endl;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
     t_point t1_bub, t2_bub;
 
