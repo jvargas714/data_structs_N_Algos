@@ -1102,4 +1102,61 @@ bool hasCycle(ListNode *head) {
 
 
 
+void _dive(TreeNode* node, TreeNode* root, int& deep, int& deepest) {
+        if (!node||node->val==INT32_MIN) {
+            std::cout << "deep: " << deep << " deepest: " << deepest << std::endl;
+            if (deep > deepest)
+                deepest = deep;
+            return;
+        }
+        deep++;
+        _dive(node->left, root, deep, deepest);
+        if (node == root)
+            deep = 1;
+        _dive(node->right, root, deep, deepest);
+        return;
+}
 
+int maxDepth(TreeNode* root) {
+    if (!root) return 0;
+    TreeNode* tmp = root;
+    int maxDepth = 0;
+    int deep = 0;
+    _dive(tmp, root, deep, maxDepth);
+    return maxDepth;
+}
+
+
+
+// working code working for a perf upgrade
+// void _dive(std::vector<int>& depths, TreeNode* node, TreeNode* root, int deep) {
+//     if (!node||node->val==INT32_MIN) {
+//         std::cout << "reached null node" << std::endl;
+//         depths.push_back(deep);
+//         return;
+//     }
+//     deep++;
+//     _dive(depths, node->left, root, deep);
+//     std::cout << "depth: " << deep << std::endl;
+//     if (node == root) {
+//         std::cout << "setting depth to 1" << std::endl;
+//         deep = 1;
+//     } 
+        
+//     _dive(depths, node->right, root, deep);
+// }
+
+// int maxDepth(TreeNode* root) {
+//     if (!root) return 0;
+//     std::vector<int> depths;
+//     TreeNode* tmp = root;
+//     _dive(depths, tmp, root, 1);
+//     int max = INT32_MIN;
+//     display(depths);
+//     for (const auto& el : depths) {
+//         if (el > max) {
+//             max = el;
+//         }
+//     }
+//     return max;
+// }

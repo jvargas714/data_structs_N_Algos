@@ -19,4 +19,8 @@ python/__pycache__
 bin
 *.lib
 cmake-build*
+cmake_install*
 lib
+build
+Makefile
+CMakeFiles
