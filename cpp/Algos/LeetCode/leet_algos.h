@@ -139,15 +139,23 @@ ListNode* mergeTwoListsV2(ListNode* l1, ListNode* l2);
 
 // problem #234
 // result: 96.66% 20ms
-bool isPalindrome(ListNode* head);
+bool isPalindrome(ListNode*);
 
 // problem: 141
 // result: 98.7% 10ms
-bool hasCycle(ListNode *head);
+bool hasCycle(ListNode*);
 
-// problem:
-// result:
-int maxDepth(TreeNode* root);
+// problem: 
+// result: 8.81% 11ms 
+int maxDepth(TreeNode*);
+
+// problem: 98 
+// result: 99.55% 10ms 
+bool isValidBST(TreeNode*);
+
+// problem: 
+// result: 
+bool isSymmetric(TreeNode*);
 
 // helpers
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);

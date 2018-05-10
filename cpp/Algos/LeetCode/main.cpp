@@ -34,9 +34,8 @@ void testBinTree() {
 int main(int argc, char* argv[])
 {
     t_point t1_bub, t2_bub;
-    TreeNode* root = allocateBinTreeFromVect({3, 9, 20, INT32_MIN, INT32_MIN, 15, 7});
+	TreeNode* root = allocateBinTreeFromVect({5, 1, 4, INT32_MIN, INT32_MIN, 3, 6});
     t1_bub = hrc::now();
-    std::cout << "Max depth of tree: " << maxDepth(root) << std::endl;
 	t2_bub = hrc::now();
 
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;

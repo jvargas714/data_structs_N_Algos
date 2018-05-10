@@ -1099,9 +1099,6 @@ bool hasCycle(ListNode *head) {
 }
 
 
-
-
-
 void _dive(TreeNode* node, TreeNode* root, int& deep, int& deepest) {
         if (!node||node->val==INT32_MIN) {
             std::cout << "deep: " << deep << " deepest: " << deepest << std::endl;
@@ -1126,37 +1123,32 @@ int maxDepth(TreeNode* root) {
     return maxDepth;
 }
 
+bool _bstCheck(TreeNode* root, TreeNode* _min = nullptr, TreeNode* _max = nullptr) {
+	if (!root) return true;
 
+	if (_min && root->val <= _min->val) return false;
+	if (_max && root->val >= _max->val) return false;
+	return _bstCheck(root->left, _min, root) &
+		_bstCheck(root->right, root, _max);
+}
 
-// working code working for a perf upgrade
-// void _dive(std::vector<int>& depths, TreeNode* node, TreeNode* root, int deep) {
-//     if (!node||node->val==INT32_MIN) {
-//         std::cout << "reached null node" << std::endl;
-//         depths.push_back(deep);
-//         return;
-//     }
-//     deep++;
-//     _dive(depths, node->left, root, deep);
-//     std::cout << "depth: " << deep << std::endl;
-//     if (node == root) {
-//         std::cout << "setting depth to 1" << std::endl;
-//         deep = 1;
-//     } 
-        
-//     _dive(depths, node->right, root, deep);
-// }
+bool isValidBST(TreeNode* root) {
+	if (!root) return true;
+	return _bstCheck(root);
+}
 
-// int maxDepth(TreeNode* root) {
-//     if (!root) return 0;
-//     std::vector<int> depths;
-//     TreeNode* tmp = root;
-//     _dive(depths, tmp, root, 1);
-//     int max = INT32_MIN;
-//     display(depths);
-//     for (const auto& el : depths) {
-//         if (el > max) {
-//             max = el;
-//         }
-//     }
-//     return max;
-// }
+bool _checkSymmetric(TreeNode* root) {
+	if (!root) return true;
+
+	return _checkSymmetric(root->left) & _checkSymmetric(root->right);
+}
+
+//     1
+//    / \
+//   2   2
+//  / \ / \
+// 3  4 4  3
+bool isSymmetric(TreeNode* root) {
+	if (!root) return true;
+	return _checkSymmetric(root);
+}
