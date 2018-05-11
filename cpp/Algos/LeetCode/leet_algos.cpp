@@ -1137,18 +1137,26 @@ bool isValidBST(TreeNode* root) {
 	return _bstCheck(root);
 }
 
-bool _checkSymmetric(TreeNode* root) {
-	if (!root) return true;
+bool _checkSymmetric(TreeNode* lft, TreeNode* rht) {
+    if (!lft && !rht) return true;
 
-	return _checkSymmetric(root->left) & _checkSymmetric(root->right);
+    if ((lft&&rht) && (lft->val==rht->val) ) {
+        return _checkSymmetric(lft->left, lft->right) &&
+
+    } else {
+        return false;
+    }
 }
 
-//     1
-//    / \
-//   2   2
-//  / \ / \
+
+//      1
+//    /  \
+//   2    2
+//  / \  / \
 // 3  4 4  3
+// [1,2,2,null,3,null,3]
+// [2,3,3,4,5,5,4,null,null,8,9,9,8]
 bool isSymmetric(TreeNode* root) {
 	if (!root) return true;
-	return _checkSymmetric(root);
+	return _checkSymmetric(root->left, root->right);
 }

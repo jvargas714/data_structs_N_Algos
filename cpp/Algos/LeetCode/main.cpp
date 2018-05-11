@@ -34,8 +34,9 @@ void testBinTree() {
 int main(int argc, char* argv[])
 {
     t_point t1_bub, t2_bub;
-	TreeNode* root = allocateBinTreeFromVect({5, 1, 4, INT32_MIN, INT32_MIN, 3, 6});
+	TreeNode* root = allocateBinTreeFromVect({1, 2, 2, 3, 4, 4, 3});
     t1_bub = hrc::now();
+    std::cout << "tree is symetric? " << ((isSymmetric(root)?"yes":"no")) << std::endl;
 	t2_bub = hrc::now();
 
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;
