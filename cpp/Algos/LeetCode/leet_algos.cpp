@@ -1142,7 +1142,7 @@ bool _checkSymmetric(TreeNode* lft, TreeNode* rht) {
 
     if ((lft&&rht) && (lft->val==rht->val) ) {
         return _checkSymmetric(lft->left, lft->right) &&
-
+                    _checkSymmetric(rht->right, rht->left);
     } else {
         return false;
     }
