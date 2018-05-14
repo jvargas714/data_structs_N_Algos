@@ -1,5 +1,5 @@
-#include <iostream>
 #include <vector>
+#include <iostream>
 #include <string>
 #include <algorithm>
 #include <map>
@@ -8,23 +8,22 @@
 #ifndef ALGOS_SHORT_ALGOS_H
 #define ALGOS_SHORT_ALGOS_H
 
-// typedef and alias
+//=+=+=+=+=+=+=+=+=+=+=+=+typedef and alias=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 typedef std::vector<std::vector<char>> SudokuBoard;
 typedef std::vector<char> SudokuRow;
 typedef std::map<int, SudokuRow> SudokuColumns;
 typedef std::vector<std::vector<int>> IntMatrix;
 
-// problem #24
-ListNode* swapPairs(ListNode* head);
+//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+misc=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+// Problem #59
+std::vector<int> count_bits( int num );
 
 // Problem #168 100% 0ms 
 std::string excel_column_title( int n );
 
-// Problem #59
-std::vector<int> count_bits( int num );
-
 bool operator > ( envelope& env1, envelope& env2 );
 
+//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+arrays=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // problem: 70. Climbing Stairs
 int climbingSteps(int, int, std::vector<int>&);
 
@@ -58,25 +57,24 @@ bool isValidSudokuV4(SudokuBoard& board);
  * problem #48
  * rotate matrix clockwise (90 degrees)
  * Given input matrix =
-[
-  [ 5, 1, 9,11],
-  [ 2, 4, 8,10],
-  [13, 3, 6, 7],
-  [15,14,12,16]
-],
-
-rotate the input matrix in-place such that it becomes:
-[
-  [15,13, 2, 5],
-  [14, 3, 4, 1],
-  [12, 6, 8, 9],
-  [16, 7,10,11]
-]
+  [
+    [ 5, 1, 9,11],
+    [ 2, 4, 8,10],
+    [13, 3, 6, 7],
+    [15,14,12,16]
+  ],
+  rotate the input matrix in-place such that it becomes:
+  [
+    [15,13, 2, 5],
+    [14, 3, 4, 1],
+    [12, 6, 8, 9],
+    [16, 7,10,11]
+  ]
  */
 void rotate(IntMatrix& matrix);
 void rotateV2(IntMatrix& matrix);
 
-
+//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+strings=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // problem #344
 std::string reverseString(std::string);
 
@@ -115,6 +113,10 @@ int strStr(std::string haystack, std::string needle);
 // result: 4ms 79.17%
 std::string countAndSay(int n);
 
+//=+=+=+=+=+=+=+=+=+=+=+=+=+=+Linked Lists=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+// problem #24
+ListNode* swapPairs(ListNode* head);
+
 // delete provided node from linked list it exists in
 // problem #237
 // 72.38% 14ms
@@ -145,6 +147,7 @@ bool isPalindrome(ListNode*);
 // result: 98.7% 10ms
 bool hasCycle(ListNode*);
 
+//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Binary Trees=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // problem: 
 // result: 8.81% 11ms 
 int maxDepth(TreeNode*);
@@ -157,7 +160,7 @@ bool isValidBST(TreeNode*);
 // result: 
 bool isSymmetric(TreeNode*);
 
-// helpers
+//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+helpers=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);
 void _reverseIterative(ListNode** head);
 int _cleanStrToInt(const std::string& str, int pwr, int sign);
