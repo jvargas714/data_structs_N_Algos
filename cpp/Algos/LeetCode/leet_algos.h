@@ -13,7 +13,7 @@ typedef std::vector<std::vector<char>> SudokuBoard;
 typedef std::vector<char> SudokuRow;
 typedef std::map<int, SudokuRow> SudokuColumns;
 typedef std::vector<std::vector<int>> IntMatrix;
-
+typedef std::vector<std::vector<int>> VectOfVect;
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+misc=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // Problem #59
 std::vector<int> count_bits( int num );
@@ -151,14 +151,29 @@ bool hasCycle(ListNode*);
 // problem: 
 // result: 8.81% 11ms 
 int maxDepth(TreeNode*);
+int maxDepthV2(TreeNode* root);
 
 // problem: 98 
 // result: 99.55% 10ms 
 bool isValidBST(TreeNode*);
 
 // problem: 
-// result: 
+// result:
+// descr:  
 bool isSymmetric(TreeNode*);
+
+// problem: 102
+// result: 27.17% 
+// descr: 
+VectOfVect levelOrder(TreeNode* root);
+VectOfVect levelOrderV2(TreeNode* root);
+
+// problem 
+// result: 
+// descr: Given an array where elements are sorted in ascending order, convert it to a height balanced BST.
+// a height balanced tree is defined as a binary tree in which the depth of the two subtrees of every node never 
+// differ by more than 1.
+TreeNode* sortedArrayToBST(std::vector<int>& data);
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+helpers=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);

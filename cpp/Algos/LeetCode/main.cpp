@@ -32,12 +32,19 @@ void testBinTree() {
 }
 
 int main(int argc, char* argv[])
-{
+{   
+    using namespace std; 
     t_point t1_bub, t2_bub;
-	TreeNode* root = allocateBinTreeFromVect({1, 2, 2, 3, 4, 4, 3});
+	vector<int> data = {-10, -3, 0, 5, 9};
+    
     t1_bub = hrc::now();
-    std::cout << "tree is symetric? " << ((isSymmetric(root)?"yes":"no")) << std::endl;
-	t2_bub = hrc::now();
+    TreeNode* root = sortedArrayToBST(data);
+    t2_bub = hrc::now();
+
+    cout << "result tree inorder traversal of test bin tree: " << endl; 
+    for(const auto& el: inOrderTraversal(root)) {
+        cout << el << " ";
+    }cout << endl; 
 
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;
     auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();

@@ -1123,6 +1123,19 @@ int maxDepth(TreeNode* root) {
     return maxDepth;
 }
 
+int maxDepthV2(TreeNode* root) {
+    if (!root) return 0;
+    else {
+        // traverse down left side and then right side first 
+        int lheight = maxDepthV2(root->left);
+        int rheight = maxDepthV2(root->right);
+
+        // return larger of the sides depth 
+        if (lheight>rheight) return (lheight+1);
+        else return (rheight+1);
+    }
+}
+
 bool _bstCheck(TreeNode* root, TreeNode* _min = nullptr, TreeNode* _max = nullptr) {
 	if (!root) return true;
 
@@ -1160,3 +1173,80 @@ bool isSymmetric(TreeNode* root) {
 	if (!root) return true;
 	return _checkSymmetric(root->left, root->right);
 }
+
+// provided level will be index of the vector 
+void _collectGivenLevel(TreeNode* root, int level, std::vector<int>& data) {
+    if (!root) 
+        return;
+    if (level == 0) {
+        data.push_back(root->val);
+    }
+    else if (level > 0) {
+        _collectGivenLevel(root->left, level-1, data);
+        _collectGivenLevel(root->right, level-1, data);
+    }
+}
+
+// display tree reading it from left to right 
+VectOfVect levelOrder(TreeNode* root) {
+    if (!root) return {{}};
+    TreeNode* tmp = root;
+    int height = maxDepthV2(tmp);
+    tmp = root; 
+    VectOfVect result(height);
+    for (int lvl = 0; lvl < height; lvl++) {
+        _collectGivenLevel(root, lvl, result[lvl]);
+    }
+    return result; 
+}
+
+void _DFS(VectOfVect &res,TreeNode* root,int level){
+    if(root==nullptr)
+        return;
+    if(res.size()==level)
+        res.push_back(std::vector<int>());
+    res[level].push_back(root->val);
+    _DFS(res,root->left,level+1);
+    _DFS(res,root->right,level+1);
+}
+
+// faster more efficient version (6ms)
+VectOfVect levelOrderV2(TreeNode* root) {
+    if(!root)
+        return VectOfVect();
+    VectOfVect res;
+    _DFS(res,root,0);
+    return res;
+}
+
+void _insertData(TreeNode** root, int dataPt) {
+    if ( !(*root) ) {
+        (*root) = new TreeNode(dataPt);
+        return;
+    }
+
+    if (dataPt < (*root)->val) {
+        _insertData(&(*root)->left, dataPt);
+    } else {
+        _insertData(&(*root)->right, dataPt);
+    }
+}
+
+TreeNode* sortedArrayToBST(std::vector<int>& data) {
+    size_t len = data.size(); 
+    if (len == 0) return nullptr; 
+    if (len == 1) return new TreeNode(data[0]);
+    size_t midpt = len / 2;
+
+    TreeNode* root = new TreeNode(data[midpt]);
+    // TreeNode* tmp = root;
+    data.erase(data.begin()+midpt);
+    while (!data.empty()) {
+        midpt = data.size()/2;
+        _insertData(&root, data[midpt/2]);
+        _insertData(&root, data[midpt+(data.size()-midpt)/2]);
+        data.erase(data.begin()+midpt);
+    }
+    return root;
+}
+
