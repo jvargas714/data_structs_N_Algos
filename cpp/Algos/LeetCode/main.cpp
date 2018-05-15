@@ -41,10 +41,10 @@ int main(int argc, char* argv[])
     TreeNode* root = sortedArrayToBST(data);
     t2_bub = hrc::now();
 
-    cout << "result tree inorder traversal of test bin tree: " << endl; 
+    std::cout << "result tree inorder traversal of test bin tree: " << endl; 
     for(const auto& el: inOrderTraversal(root)) {
-        cout << el << " ";
-    }cout << endl; 
+        std::cout << el << " ";
+    }std::cout << endl; 
 
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;
     auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
