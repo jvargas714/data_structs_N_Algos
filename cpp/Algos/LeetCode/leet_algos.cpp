@@ -1219,34 +1219,55 @@ VectOfVect levelOrderV2(TreeNode* root) {
     return res;
 }
 
-void _insertData(TreeNode** root, int dataPt) {
-    if ( !(*root) ) {
-        (*root) = new TreeNode(dataPt);
-        return;
-    }
-
-    if (dataPt < (*root)->val) {
-        _insertData(&(*root)->left, dataPt);
-    } else {
-        _insertData(&(*root)->right, dataPt);
-    }
+TreeNode* _insertData(int l, int r, std::vector<int>& data) {
+    if ( l>r )
+        return nullptr;
+    int midpt = (l+r)/2;
+    auto root = new TreeNode(data[midpt]);
+   root->left = _insertData(l, midpt-1, data);
+   root->right = _insertData(midpt+1, r, data);
+   return root;
 }
 
 TreeNode* sortedArrayToBST(std::vector<int>& data) {
-    size_t len = data.size(); 
-    if (len == 0) return nullptr; 
-    if (len == 1) return new TreeNode(data[0]);
-    size_t midpt = len / 2;
-
-    TreeNode* root = new TreeNode(data[midpt]);
-    // TreeNode* tmp = root;
-    data.erase(data.begin()+midpt);
-    while (!data.empty()) {
-        midpt = data.size()/2;
-        _insertData(&root, data[midpt/2]);
-        _insertData(&root, data[midpt+(data.size()-midpt)/2]);
-        data.erase(data.begin()+midpt);
-    }
-    return root;
+    if (data.empty()) return nullptr;
+    return _insertData(0, (int)(data.size()-1), data);
 }
 
+/*
+ *
+[1,2,4,5,6,0]
+5
+[3]
+1
+Output:
+[1,2,4,5,6,3]
+Expected:
+[1,2,3,4,5,6]
+ */
+// merge nums2 in to nums1 it can be assumed that nums1 has m+n elements already
+void mergeVectors(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n) {
+    if (nums2.empty()) return;
+    int i1=0, i2=0;
+    while (i2<n && i1<m) {
+        if (nums2[i2]<=nums1[i1]) {
+            nums1.erase(nums1.end()-1);
+            nums1.insert(nums1.begin()+i1, nums2[i2++]);
+        } else {
+            i1++;
+        }
+    }
+
+    if (i2 < n) {
+        for (int i = i2; i < n; i++) {
+            if (nums2[i] <= nums1[m+i2-1]) {
+                nums1.erase(nums1.end()-1);
+                nums1.insert(nums1.begin()+i1, nums2[i2]);
+                i1++;
+            } else{
+                nums1[m+i2] = nums2[i];
+            }
+            i2++;
+        }
+    }
+}

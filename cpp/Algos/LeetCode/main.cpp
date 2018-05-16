@@ -35,16 +35,13 @@ int main(int argc, char* argv[])
 {   
     using namespace std; 
     t_point t1_bub, t2_bub;
-	vector<int> data = {-10, -3, 0, 5, 9};
+	vector<int> data = {4,0,0,0,0,0};
+	vector<int> data2 = {1,2,3,5,6};
     
     t1_bub = hrc::now();
-    TreeNode* root = sortedArrayToBST(data);
+    mergeVectors(data, 1, data2, 5);
     t2_bub = hrc::now();
-
-    std::cout << "result tree inorder traversal of test bin tree: " << endl; 
-    for(const auto& el: inOrderTraversal(root)) {
-        std::cout << el << " ";
-    }std::cout << endl; 
+    display(data);
 
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;
     auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();

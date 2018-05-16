@@ -168,12 +168,19 @@ bool isSymmetric(TreeNode*);
 VectOfVect levelOrder(TreeNode* root);
 VectOfVect levelOrderV2(TreeNode* root);
 
-// problem 
-// result: 
+// problem 108
+// result: 26.78% 18ms
 // descr: Given an array where elements are sorted in ascending order, convert it to a height balanced BST.
 // a height balanced tree is defined as a binary tree in which the depth of the two subtrees of every node never 
 // differ by more than 1.
 TreeNode* sortedArrayToBST(std::vector<int>& data);
+
+//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Sort and Searching+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+// problem:
+// result:
+void mergeVectors(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n);
+
+
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+helpers=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);
@@ -187,6 +194,8 @@ void _rotateLayer(IntMatrix& matrix, uint32_t layer);
 void _genCntNSay(std::string& currTerm, std::string& nextTerm);
 int _getCount(const std::string& str, const int& offset);
 ListNode* _revList(ListNode* head);
+TreeNode* _insertData(int l, int r, std::vector<int>& data);
+
 
 
 #endif //ALGOS_SHORT_ALGOS_H
