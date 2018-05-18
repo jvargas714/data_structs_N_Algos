@@ -176,12 +176,15 @@ VectOfVect levelOrderV2(TreeNode* root);
 TreeNode* sortedArrayToBST(std::vector<int>& data);
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Sort and Searching+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-// problem:
-// result:
+// problem: 88
+// result: 67.41% 7ms
 void mergeVectors(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n);
 
-
-
+// problem:
+// result:
+int firstBadVerison(int n);
+bool isBadVersion(int);
+void initVersionVect(int badVersion, int numVersions);
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+helpers=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);
 void _reverseIterative(ListNode** head);

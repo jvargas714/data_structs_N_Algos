@@ -5,6 +5,11 @@
 #include "leet_algos.h"
 #include "utility.h"
 
+// globals
+std::vector<bool> g_versions;
+int g_nVersions;
+int g_badVersion;
+
 
 /* Problem: #168 */
 std::string excel_column_title( int n ) {
@@ -1236,38 +1241,82 @@ TreeNode* sortedArrayToBST(std::vector<int>& data) {
 
 /*
  *
-[1,2,4,5,6,0]
-5
-[3]
-1
-Output:
-[1,2,4,5,6,3]
-Expected:
-[1,2,3,4,5,6]
+[0,1,2,8,0,0]
+4
+[0,2]
+2
  */
 // merge nums2 in to nums1 it can be assumed that nums1 has m+n elements already
 void mergeVectors(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n) {
     if (nums2.empty()) return;
     int i1=0, i2=0;
-    while (i2<n && i1<m) {
-        if (nums2[i2]<=nums1[i1]) {
+    while (i1 < (m+i2) && i2 < n) {
+        std::cout << "i1: " << i1 << ", i2: " << i2 << std::endl;
+        if (nums2[i2] <= nums1[i1]) {
             nums1.erase(nums1.end()-1);
             nums1.insert(nums1.begin()+i1, nums2[i2++]);
+            display(nums1);
         } else {
             i1++;
         }
     }
 
-    if (i2 < n) {
-        for (int i = i2; i < n; i++) {
-            if (nums2[i] <= nums1[m+i2-1]) {
-                nums1.erase(nums1.end()-1);
-                nums1.insert(nums1.begin()+i1, nums2[i2]);
-                i1++;
-            } else{
-                nums1[m+i2] = nums2[i];
-            }
-            i2++;
+    std::cout << "Outside of loop: \n\ti1: " << i1 << ", i2: " << i2 << std::endl;
+
+    // fill in the rest at the end
+    for (; i1 < (m+n) && i2 < n; i1++, i2++)
+        nums1[i1] = nums2[i2];
+}
+
+int firstBadVerison(int n) {
+    int left = 1;
+    int right = n/2 + 1;
+    int tmp;
+    bool lftIsBad;
+    bool rhtIsBad;
+    while (true) {
+        lftIsBad = isBadVersion(left);
+        rhtIsBad = isBadVersion(right);
+        if (!lftIsBad && !rhtIsBad) {           // both ends are good versions
+            left = right;
+            right += right/2;
+        } else if (lftIsBad && rhtIsBad) {      // both ends are bad versions
+            right = left;
+            left -= left/2;
+        } else if (rhtIsBad) {                  // left side is bad only
+            if (!isBadVersion(right-1)) return right;
+            else right -=
+        } else {                                // right is bad only
+
         }
     }
+}
+
+int firstBadVerisonV2(int n) {
+    int v = n / 2 + 1;
+    while (true) {
+         std::cout << "version: " << v << std::endl;
+        if ( isBadVersion(v) ) {  // a bad version
+            if (v==1) return v;
+
+            if ( !isBadVersion(v-1) ) return v;
+            else {
+                v/=2;
+            }
+        } else {  // not a bad version
+            if (isBadVersion(v+1)) return v+1;
+            else v = ((n-v)/2);
+        }
+    }
+}
+
+bool isBadVersion(int v) {
+    if (v >= g_badVersion) return true;
+    else return false;
+}
+
+// number version is based on first index being one
+void initVersionVect(int badVersion, int numVersions) {
+    g_badVersion = badVersion;
+    g_nVersions = numVersions;
 }

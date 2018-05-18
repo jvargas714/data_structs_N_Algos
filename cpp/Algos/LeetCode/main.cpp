@@ -35,13 +35,14 @@ int main(int argc, char* argv[])
 {   
     using namespace std; 
     t_point t1_bub, t2_bub;
-	vector<int> data = {4,0,0,0,0,0};
-	vector<int> data2 = {1,2,3,5,6};
-    
+    int n = 2126753390;
+    int badVersion = 1702766719;
+    initVersionVect(badVersion, n);
+
     t1_bub = hrc::now();
-    mergeVectors(data, 1, data2, 5);
+    std::cout << "First bad version out of " << n << " versions is " << firstBadVerison(n) << "th version" << std::endl;
     t2_bub = hrc::now();
-    display(data);
+    std::cout << "real answer: " << badVersion << std::endl;
 
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;
     auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
