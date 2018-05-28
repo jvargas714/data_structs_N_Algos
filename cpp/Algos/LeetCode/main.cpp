@@ -3,10 +3,35 @@
 #include <types.h>
 #include "utility.h"
 #include "leet_algos.h"
-
 using namespace std::chrono;
 typedef high_resolution_clock hrc;
 typedef hrc::time_point t_point;
+
+void testBinTree();
+
+int main(int argc, char* argv[])
+{   
+    t_point t1_bub, t2_bub;
+    std::vector<int> data = {2,7,9,3,1};
+
+    t1_bub = hrc::now();
+    std::cout << "rob max: " << rob(data) << std::endl;
+    t2_bub = hrc::now();
+
+	std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;
+    auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+	std::cout << "time of execution -->\n" << milli_sec << "msec\n" << micro_sec << "usec\n" << std::endl;
+
+#ifdef WIN_32
+	std::cout << "\n\npress any key to exit" << std::endl;
+	char hold; 
+	std::cin >> hold;
+#endif
+    return 0;
+}
+
+
 
 void testBinTree() {
     std::vector<int> data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -31,28 +56,3 @@ void testBinTree() {
     std::cout << std::endl;
 }
 
-int main(int argc, char* argv[])
-{   
-    using namespace std; 
-    t_point t1_bub, t2_bub;
-    int n = 2126753390;
-    int badVersion = 1702766719;
-    initVersionVect(badVersion, n);
-
-    t1_bub = hrc::now();
-    std::cout << "First bad version out of " << n << " versions is " << firstBadVerison(n) << "th version" << std::endl;
-    t2_bub = hrc::now();
-    std::cout << "real answer: " << badVersion << std::endl;
-
-	std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;
-    auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
-    auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
-	std::cout << "time of execution -->\n" << milli_sec << "msec\n" << micro_sec << "usec\n" << std::endl;
-
-#ifdef WIN_32
-	std::cout << "\n\npress any key to exit" << std::endl;
-	char hold; 
-	std::cin >> hold;
-#endif
-    return 0;
-}

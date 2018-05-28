@@ -83,12 +83,28 @@ void display( std::vector<envelope>& envs ) {
     }std::cout << std::endl;
 }
 
-int climbingSteps( int i, int n, std::vector<int>& memo ) {
+int _climbStairs( int i, int n, std::vector<int>& memo ) {
     if (i > n) return 0;
     if (i == n) return 1;
     if (memo[i] > 0) return memo[i];
-    memo[i] = climbingSteps(i+1, n, memo) + climbingSteps(i+2, n, memo);
+    memo[i] = _climbStairs(i+1, n, memo) + _climbStairs(i+2, n, memo);
     return memo[i];
+}
+
+// recursive solution using memoization 
+int climbStairs(int n) {
+    std::vector<int> memo(n+1, 0);
+    return _climbStairs(0, n, memo);
+}
+
+// iterative solution (faster) Tabulated Version 
+int climbStairsV2(int n) {
+    std::vector<int> ways(n);
+    ways[0] = 1;
+    ways[1] = 2;
+    for(int i = 2; i < n; i++)
+        ways[i] = ways[i-1] + ways[i-2];
+    return ways[n-1];
 }
 
 // brute force O(n^2)
@@ -146,12 +162,62 @@ int maxSubArray3(std::vector<int>& nums) {
     return sum;
 }
 
+// max sum of a sub array that crosses the midpoint -->
+// [* l * * (* * m * * *) * r * ] << max sum between [mid, l] and [mid+1, r] then combine to
+// form the crossSum
+void _maxCrossingSubArray(std::vector<int>& nums, int l, int mid, int r, int& _max) {
+    std::cout << "\n" << std::endl;
+    LOG << "l: " << l << " mid: " << mid << " r: " << r << " max: " << _max << std::endl;
+    int leftSum = INT32_MIN;
+    int sum = 0;
+    // get sum from middle towards l --> [ * * * l * * <--- mid * * * * r]
+    for (int i = mid; i >= l; i--) {
+        sum += nums[i];
+        if (sum > leftSum) {
+            leftSum = sum;
+        }
+    }
+    int rightSum = INT32_MIN; 
+    sum = 0;
+    for (int i = mid+1; i <= r; i++) {
+        sum += nums[i];
+        if (sum > rightSum) {
+            rightSum = sum;
+        }
+    }
+    int crossSum = (leftSum+rightSum);
+    LOG << "leftSum: " << leftSum << " rightSum: " << rightSum << " crossSum: " << crossSum << std::endl;
+
+    // see if crossing sums are larger than current max value
+    if (leftSum > rightSum && leftSum > crossSum && leftSum > _max) _max = leftSum;
+    else if (rightSum > leftSum && rightSum > crossSum && rightSum > _max) _max = rightSum;
+    else if (crossSum > _max) _max = crossSum;
+}
+
+// recurse div and conq 
+void _maxSubArray(std::vector<int>& nums, int l, int r, int& _max)  {
+    using namespace std;
+    LOG << "l: " << l << " r: " << r << " max: " << _max << endl;
+
+    // base case one element
+    if (l==r) {
+        if (nums[l] > _max) _max = nums[l];
+        return;
+    }
+    int mid = (l+r)/2;
+    _maxSubArray(nums, l, mid, _max);
+    _maxSubArray(nums, mid+1, r, _max);
+    _maxCrossingSubArray(nums, l, mid, r, _max);
+}
 /*
 	Divide and conquer solution 0(n)
 	Recursive
 */
-int maxSubArray4() {
-    return 0;
+int maxSubArray4(std::vector<int>& nums) {
+    if (nums.size()==1) return nums[0];
+    int max = INT32_MIN;
+    _maxSubArray(nums, 0, (int)nums.size()-1, max);
+    return max;
 }
 
 /*
@@ -162,7 +228,6 @@ int maxSubArray4() {
  #todo
  */
 ListNode* swapPairs(ListNode* head) {
-    size_t i = 0;
     ListNode* tmp = head;
     ListNode* nxt;
     while(tmp) {
@@ -174,7 +239,7 @@ ListNode* swapPairs(ListNode* head) {
 }
 
 std::vector<int> plusOne(std::vector<int>& digits) {
-	int len = digits.size();
+	int len = (int)digits.size();
 	if (len == 1) {
 		if (digits[0] < 9) {
 			digits[0]++;
@@ -1092,7 +1157,6 @@ bool hasCycle(ListNode *head) {
     if (!head||!head->next) return false;
     ListNode* fast = head;
     ListNode* slow = head;
-    int cnt = 0;
     while (fast&&slow&&fast->next) {
         slow = slow->next;
         fast = fast->next->next;
@@ -1260,7 +1324,6 @@ void mergeVectors(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n
             i1++;
         }
     }
-
     std::cout << "Outside of loop: \n\ti1: " << i1 << ", i2: " << i2 << std::endl;
 
     // fill in the rest at the end
@@ -1269,48 +1332,23 @@ void mergeVectors(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n
 }
 
 int firstBadVerison(int n) {
+    int mid;
     int left = 1;
-    int right = n/2 + 1;
-    int tmp;
-    bool lftIsBad;
-    bool rhtIsBad;
-    while (true) {
-        lftIsBad = isBadVersion(left);
-        rhtIsBad = isBadVersion(right);
-        if (!lftIsBad && !rhtIsBad) {           // both ends are good versions
-            left = right;
-            right += right/2;
-        } else if (lftIsBad && rhtIsBad) {      // both ends are bad versions
-            right = left;
-            left -= left/2;
-        } else if (rhtIsBad) {                  // left side is bad only
-            if (!isBadVersion(right-1)) return right;
-            else right -=
-        } else {                                // right is bad only
-
-        }
+    int right = n;
+    
+    // binary search 
+    while (left < right) {
+        mid = left + (right-left)/2;
+        if (isBadVersion(mid)) right = mid;
+        else left = mid+1;
     }
-}
-
-int firstBadVerisonV2(int n) {
-    int v = n / 2 + 1;
-    while (true) {
-         std::cout << "version: " << v << std::endl;
-        if ( isBadVersion(v) ) {  // a bad version
-            if (v==1) return v;
-
-            if ( !isBadVersion(v-1) ) return v;
-            else {
-                v/=2;
-            }
-        } else {  // not a bad version
-            if (isBadVersion(v+1)) return v+1;
-            else v = ((n-v)/2);
-        }
-    }
+    return left; 
 }
 
 bool isBadVersion(int v) {
+    static size_t cnt = 0;
+    cnt++;
+    std::cout << "API call: " << cnt << std::endl; 
     if (v >= g_badVersion) return true;
     else return false;
 }
@@ -1319,4 +1357,68 @@ bool isBadVersion(int v) {
 void initVersionVect(int badVersion, int numVersions) {
     g_badVersion = badVersion;
     g_nVersions = numVersions;
+}
+
+int maxProfit(std::vector<int>& prices) {
+    int min = INT32_MAX; 
+    int profit;
+    for (auto& price : prices) {
+        if (price - min > profit) profit = price - min;
+        else if (price < min) min = price;
+    }
+    return profit; 
+}
+
+void _robHouses() {
+
+}
+
+void _rob(std::vector<int>& nums, int start, int& robbed) {
+    if (start >= nums.size())
+        return;
+    robbed += nums[start];
+    start+=2;
+
+
+}
+
+/*
+ * houses are situated in a row, a theif cannot rob two adjacent houses.
+ *
+ * dp[i] = max (hval[i] + dp[i-2], dp[i-1])
+ *
+ * hval[i] + dp[i-2] is the case when thief
+ * decided to rob house i.
+ *
+ * In that situation max value will be the current value of house + maximum value stolen till last
+ * robbery at house not adjacent to house i which will be house i-2.
+ *
+ * dp[i-1] is the case when theif decided not to rob house i. So he will check adjacent house for
+ * max value stolen till now
+ */
+int rob(std::vector<int> &nums) {
+    if (nums.empty()) return 0;
+    size_t len = nums.size();
+    if (len == 1) return nums[0];
+    if (len == 2) return std::max(nums[0], nums[1]);
+    std::vector<int> dp(len, 0);
+    dp[0] = nums[0];
+    dp[1] = std::max(nums[0], nums[1]);
+    for (int i = 2; i < len; i++) {
+        dp[i] = std::max(nums[i]+dp[i-2], dp[i-1]);
+    }
+    return dp[len-1];
+}
+
+// faster version, O(1) mem usage
+int robV2(std::vector<int>& nums) {
+    int lastRob = 0, lastNotRob = 0;
+    int tmpRob  = 0, tmpNotRob  = 0;
+    for (size_t i = 0; i < nums.size(); ++i) {
+        tmpRob    = lastNotRob + nums[i];
+        tmpNotRob = lastRob > lastNotRob ? lastRob : lastNotRob;
+        lastRob    = tmpRob;
+        lastNotRob = tmpNotRob;
+    }
+    return lastRob > lastNotRob ? lastRob : lastNotRob;
 }

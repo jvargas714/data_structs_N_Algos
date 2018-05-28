@@ -114,10 +114,8 @@ void swap(int & a, int &b) {
 
 int accum(std::vector<int>::iterator a, std::vector<int>::iterator b) {
     int sum = 0;
-    for (auto it = a; it!=b; it++) {
+    for (auto it = a; it!=b; it++)
         sum += *it;
-        // cout << "sum: " << sum << endl;
-    }
     return sum;
 }
 
@@ -167,7 +165,7 @@ std::string format_number(const int& num) {
     std::string sign = "";
     const char SEP = ',';
     bool neg = (num<0);
-    unsigned int tmp, charCnt=0;
+    unsigned int charCnt=0;
     int rem = num;
 
     if(neg) {
