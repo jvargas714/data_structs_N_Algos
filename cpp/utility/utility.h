@@ -10,6 +10,7 @@
 #include "types.h"
 
 #define LOG std::cout << __FUNCTION__ << "(): "
+#define END std::endl
 
 std::vector<int> fill_vector( uint32_t );
 int* fill_array( uint32_t );

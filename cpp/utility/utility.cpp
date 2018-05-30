@@ -107,7 +107,7 @@ int* fill_array( uint32_t num_els ) {
 }
 
 void swap(int & a, int &b) {
-    int tmp = a;
+    int tmp = b;
     b = a;
     a = tmp;
 }

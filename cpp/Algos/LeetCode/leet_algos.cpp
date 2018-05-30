@@ -2,6 +2,7 @@
 #include <map>
 #include <cctype>
 #include <cmath>
+#include <cstddef>
 #include "leet_algos.h"
 #include "utility.h"
 
@@ -1421,4 +1422,93 @@ int robV2(std::vector<int>& nums) {
         lastNotRob = tmpNotRob;
     }
     return lastRob > lastNotRob ? lastRob : lastNotRob;
+}
+
+/*
+ * arr[(i-1)/2] --> returns parent node
+ * arr[(2i)+1] --> returns left child node
+ * arr[(2i)+2] --> returns right child node
+ * */
+void MinStack::push(int x) {
+    // first place element at the end of the data vector
+    _data.push_back(x);
+    _stk.push(x);
+    _size++;
+
+    if (_size == 1) return;
+    size_t i = _size - 1;
+
+    // find correct position within heap
+    // if child node is smaller than parent then swap those
+    while(i != 0 && _data[parent(i)] >= _data[i]) {
+        swap(_data[parent(i)], _data[i]);
+        i = parent(i);
+    }
+}
+
+// pop top of stack and maintain heap properties
+void MinStack::pop() {
+    int tmp;
+    if (!_stk.empty())
+        tmp = _stk.top();
+    else
+        return;
+    _stk.pop();
+    std::ptrdiff_t i = std::distance(_data.begin(), std::find(_data.begin(), _data.end(), tmp));
+    if (i < 0)
+        return;
+    deleteNode(i);
+    heapify(i);
+}
+
+// restore heap properties starting at the sub tree if index i
+void MinStack::heapify(size_t i) {
+    size_t l = left(i);
+    size_t r = right(i);
+    size_t smallest = i;
+
+    // check to see if l is smaller than parent node
+    if (l < _size && _data[l] < _data[i])
+        smallest = l;
+
+    // check to see if r is smaller than parent node
+    if (r < _size && _data[r] < _data[smallest])
+        smallest = r;
+
+    // this case indicates that either l or r were smaller
+    // so swap the nodes and check up the next subtree
+    if (smallest != i) {
+        swap(_data[i], _data[smallest]);
+        heapify(smallest);
+    }
+}
+
+// deletes node at index i
+// decreases that node smallest integer possible, which will bubble it to the root node
+// then we can just call removeMin on it
+void MinStack::deleteNode(size_t i) {
+    if (_size <= 0) return;
+    decreaseNode(i, INT32_MIN);
+    _data[0] = _data[_size-1];
+    _data.erase(_data.begin()+_size-1);
+    _size--;
+    heapify(0);
+}
+
+void MinStack::decreaseNode(size_t i, int val) {
+    _data[i] = val;
+    while (i != 0 && _data[parent(i)] > _data[i]) {
+        swap(_data[parent(i)], _data[i]);
+        i = parent(i);
+    }
+}
+
+int MinStack::top() {
+    if (_size == 0) return INT32_MAX;
+    return _stk.top();
+}
+
+int MinStack::getMin() {
+    if (_size == 0) return INT32_MAX;
+    return _data[0];
 }
