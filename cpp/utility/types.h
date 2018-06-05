@@ -19,7 +19,7 @@ struct TreeNode {
 };
 
 typedef unsigned int uint;
-static const int LINE_LIMIT = 30;
+static const int LINE_LIMIT = 20;
 typedef std::pair<int, int> envelope;
 
 #endif //CPP_TYPES_H

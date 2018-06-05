@@ -16,9 +16,10 @@ int main(int argc, char* argv[])
     t_point t1_bub, t2_bub;
 
     t1_bub = hrc::now();
-    minStackTesting();
+    std::vector<uint64_t> primes = genPrimes(499979);
     t2_bub = hrc::now();
 
+    display(primes);
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;
     auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
     auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();

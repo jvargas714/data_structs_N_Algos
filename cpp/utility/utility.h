@@ -145,4 +145,8 @@ void _fill(const std::vector<int>& data, TreeNode* node, int i);
 std::vector<int> inOrderTraversal(const TreeNode* root);
 std::vector<int> preOrderTraversal(const TreeNode* root);
 std::vector<int> postOrderTraversal(const TreeNode* root);
+
+// generate n prime numbers
+std::vector<uint64_t> genPrimes(const uint64_t n);
+std::vector<uint64_t> genPrimesV2(const uint64_t n);
 #endif //CPP_UTILITY_H

@@ -67,9 +67,5 @@ int maxSubArraySum(int arr[], int l, int h)
 /*Driver program to test maxSubArraySum*/
 int main()
 {
-	int arr[] = {-1,-2,-3,0};
-	int n = sizeof(arr)/sizeof(arr[0]);
-	int max_sum = maxSubArraySum(arr, 0, n-1);
-	printf("Maximum contiguous sum is %d", max_sum);
 	return 0;
 }
