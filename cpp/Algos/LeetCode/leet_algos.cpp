@@ -1512,3 +1512,30 @@ int MinStack::getMin() {
     if (_size == 0) return INT32_MAX;
     return _data[0];
 }
+
+// counts the number of prime numbers less than n
+int countPrimes(int n) {
+    std::vector<bool> notPrime(static_cast<size_t>(n), false);
+    int cnt = 0;
+    for (uint32_t i = 2; i < n; i++) {
+        if (!notPrime[i]) {
+            cnt++;
+            if (i * i < n) {
+                for (uint32_t j = 2; j * i < n; ++j)
+                    notPrime[i * j] = true;
+            }
+        }
+    }
+    return cnt;
+}
+
+// determine if n is a power of three or not
+bool isPowerOfThree(int n) {
+    if (n < 3) return false;
+    LOG << "enter: n=" << n << END;
+    while (n!=1 && n%3==0) {
+        n/=3;
+        LOG << "n: " << n << END;
+    }
+    return n==1;
+}

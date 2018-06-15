@@ -382,6 +382,22 @@ std::vector<uint64_t> genPrimes(const uint64_t n) {
     return primes;
 }
 
+// 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+// O((n-2)log(n-2))
 std::vector<uint64_t> genPrimesV2(const uint64_t n) {
+    std::vector<bool> notPrime(n, false);
+    std::vector<uint64_t> primes;
+    for (uint32_t i = 2; i < n; i++) {
+        if (!notPrime[i]) {
+            primes.push_back(i);  // 2
 
+            // from i^2 to either i > sqrt(n) or j > n
+            // finds non primes by finding there multiple i.e: j+=i
+            if (i * i < n) {
+                for (uint32_t j = 2; j * i < n; ++j)
+                    notPrime[i * j] = true;
+            }
+        }
+    }
+    return primes;
 }

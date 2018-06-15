@@ -8,18 +8,17 @@ typedef high_resolution_clock hrc;
 typedef hrc::time_point t_point;
 
 void testBinTree();
-
 void minStackTesting();
+void testPrimeGeneration();
 
 int main(int argc, char* argv[])
 {   
     t_point t1_bub, t2_bub;
-
+    int n = 27;
     t1_bub = hrc::now();
-    std::vector<uint64_t> primes = genPrimes(499979);
+    LOG << n << (isPowerOfThree(n) ? " is a ":" is not a ") << "power of 3" << END;
     t2_bub = hrc::now();
 
-    display(primes);
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;
     auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
     auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
@@ -77,4 +76,29 @@ void minStackTesting() {
     LOG << "min: " << minStack.getMin() << END;
     minStack.pop();
     LOG << "min: " << minStack.getMin() << END;
+}
+
+void testPrimeGeneration() {
+
+    t_point t1_bub, t2_bub;
+
+    t1_bub = hrc::now();
+    std::vector<uint64_t> primes = genPrimes(1000);
+    t2_bub = hrc::now();
+
+    display(primes);
+    std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;
+    auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    std::cout << "time of execution V1 -->\n" << milli_sec << "msec\n" << micro_sec << "usec\n" << std::endl;
+
+    t1_bub = hrc::now();
+    std::vector<uint64_t> primes_v2 = genPrimesV2(1000);
+    t2_bub = hrc::now();
+
+    display(primes);
+    std::cout << "\n\n----------------------------------------------------------------------\n\n" << std::endl;
+    milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+    micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+    std::cout << "time of execution V2 -->\n" << milli_sec << "msec\n" << micro_sec << "usec\n" << std::endl;
 }

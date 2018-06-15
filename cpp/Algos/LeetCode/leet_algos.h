@@ -279,9 +279,16 @@ private:
 Write a program that outputs the string representation of numbers from 1 to n.
 But for multiples of three it should output “Fizz” instead of the number and for the multiples
  of five output “Buzz”. For numbers which are multiples of both three and five output “FizzBuzz”.
- */
+*/
 std::vector<std::string> fizzBuzz(const int& n);
 
+// result: 71.14% 29ms
+// problem: 204
+int countPrimes(int n);
+
+// problem: 326
+// result: 69.50% 80ms
+bool isPowerOfThree(int n);
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Helpers=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);
 void _reverseIterative(ListNode** head);
