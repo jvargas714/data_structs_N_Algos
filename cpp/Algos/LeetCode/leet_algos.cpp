@@ -1539,3 +1539,114 @@ bool isPowerOfThree(int n) {
     }
     return n==1;
 }
+
+/*
+ *  I can be placed before V (5) and X (10) to make 4 and 9.
+    X can be placed before L (50) and C (100) to make 40 and 90.
+    C can be placed before D (500) and M (1000) to make 400 and 900.
+ */
+int romanToInt(std::string& rnum) {
+    const std::map<char, int> rmap = {
+            {'I', 1},
+            {'V', 5},
+            {'X', 10},
+            {'L', 50},
+            {'C', 100},
+            {'D', 500},
+            {'M', 1000}
+    };
+    int result = 0;
+    char prev = '\0';
+    for (const auto& ch: rnum) {
+        result += rmap.at(ch);
+        if (prev == '\0') {
+            prev = ch;
+            continue;
+        }
+        if (prev == 'I' && (ch == 'X' || ch == 'V')) {
+            result-=2;
+            prev = '\0';
+        } else if (prev == 'X' && (ch == 'L' || ch == 'C')) {
+            result-=20;
+            prev = '\0';
+        } else if (prev == 'C' && (ch == 'D' || ch == 'M')) {
+            result -= 200;
+            prev = '\0';
+        } else {
+            prev = ch;
+        }
+    }
+    return result;
+}
+
+int romaToIntV2(const std::string& rnum) {
+    int rmap[89] = {0};
+    rmap['I'] = 1;
+    rmap['V'] = 5;
+    rmap['X'] = 10;
+    rmap['L'] = 50;
+    rmap['C'] = 100;
+    rmap['D'] = 500;
+    rmap['M'] = 1000;
+    int result = 0;
+    char prev = '\0';
+    for (const auto& ch: rnum) {
+        result += rmap[ch];
+        if (prev == '\0') {
+            prev = ch;
+            continue;
+        }
+        if (prev == 'I' && (ch == 'X' || ch == 'V')) {
+            result-=2;
+            prev = '\0';
+        } else if (prev == 'X' && (ch == 'L' || ch == 'C')) {
+            result-=20;
+            prev = '\0';
+        } else if (prev == 'C' && (ch == 'D' || ch == 'M')) {
+            result -= 200;
+            prev = '\0';
+        } else {
+            prev = ch;
+        }
+    }
+    return result;
+}
+
+// Write a function that takes an unsigned integer and returns
+// the number of '1' bits it has (also known as the Hamming weight).
+int hammingWeight(uint32_t n) {
+    int cnt = 0;
+    uint8_t byte;
+    uint8_t mask = 0x1;
+    for (int i = 0; i < 4; i++) {
+        byte = *((uint8_t*)(&n)+i);
+        for (int j = 0; j < 8; j++) {
+            if (byte & (mask<<j))
+                cnt++;
+        }
+    }
+    return cnt;
+}
+
+int hammingWeightV2(uint32_t n) {
+    int cnt = 0;
+    uint32_t mask = 0x1;
+        for (int j = 0; j < 32; j++) {
+            if (n&mask)
+                cnt++;
+            mask <<= 1;
+        }
+    return cnt;
+}
+
+int hammingDistance(int x, int y) {
+    int dist = 0;
+    uint32_t mask = 0x1;
+    for (int i = 0; i < 32; i++) {
+        if (x&mask != y&mask) dist++;
+        mask <<= 1;
+    }
+    return dist;
+}
+
+

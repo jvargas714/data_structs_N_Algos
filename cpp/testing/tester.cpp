@@ -5,6 +5,8 @@
 #include <string>
 #include <cstdint>
 #include <vector>
+#include <sstream>
+#include <iomanip>
 #include "../utility/utility.h"
 
 using namespace std;
@@ -16,8 +18,7 @@ int max(int a, int b) { return (a > b)? a : b; }
 int max(int a, int b, int c) { return max(max(a, b), c); }
 
 // Find the maximum possible sum in arr[] auch that arr[m] is part of it
-int maxCrossingSum(int arr[], int l, int m, int h)
-{
+int maxCrossingSum(int arr[], int l, int m, int h) {
 	LOG << "l: " << l << " mid: " << m << " r: " << h << endl;
 	// Include elements on left of mid.
 	int sum = 0;
@@ -45,8 +46,7 @@ int maxCrossingSum(int arr[], int l, int m, int h)
 }
 
 // Returns sum of maxium sum subarray in aa[l..h]
-int maxSubArraySum(int arr[], int l, int h)
-{
+int maxSubArraySum(int arr[], int l, int h) {
 	LOG << "l: " << l << " r: " << h << endl;
 	// Base Case: Only one element
 	if (l == h)
@@ -65,7 +65,11 @@ int maxSubArraySum(int arr[], int l, int h)
 }
 
 /*Driver program to test maxSubArraySum*/
-int main()
-{
+int main() {
+	uint32_t n = 12345;
+	std::stringstream ss;
+	ss << std::hex << n << END;
+	std::cout << ss.str() << END;
 	return 0;
 }
+

@@ -274,7 +274,6 @@ private:
     std::stack<int> stack2;
 };
 
-//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=Math=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 /*
 Write a program that outputs the string representation of numbers from 1 to n.
 But for multiples of three it should output “Fizz” instead of the number and for the multiples
@@ -282,6 +281,7 @@ But for multiples of three it should output “Fizz” instead of the number and
 */
 std::vector<std::string> fizzBuzz(const int& n);
 
+//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=Math=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // result: 71.14% 29ms
 // problem: 204
 int countPrimes(int n);
@@ -289,6 +289,22 @@ int countPrimes(int n);
 // problem: 326
 // result: 69.50% 80ms
 bool isPowerOfThree(int n);
+
+// problem: 13
+// result: 78.02% 121ms (using V2)
+int romanToInt(std::string&);
+int romaToIntV2(const std::string&);
+
+
+//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=Other=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+// problem: 191
+// result: 89.95% 5ms (using V2)
+int hammingWeight(uint32_t n);
+int hammingWeightV2(uint32_t n);
+
+// problem:
+// result:
+int hammingDistance(int x, int y);
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Helpers=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);
 void _reverseIterative(ListNode** head);
