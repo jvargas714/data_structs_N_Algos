@@ -305,6 +305,20 @@ int hammingWeightV2(uint32_t n);
 // problem:
 // result:
 int hammingDistance(int x, int y);
+
+// problem: 118
+// result: 96.52% 3ms 
+// Given a non-negative integer numRows, generate the first numRows of Pascal's triangle. 
+std::vector<std::vector<int>> generatePascalsTriangle(int numRows);
+
+// problem: 
+// result: 
+// Given a string containing just the characters 
+// '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+// rules: 1. Open brackets must be closed by the same type of brackets.
+//		  2. Open brackets must be closed in the correct order.
+bool isValidParenthesisStr(std::string&);
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Helpers=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);
 void _reverseIterative(ListNode** head);

@@ -14,18 +14,19 @@ void testPrimeGeneration();
 int main(int argc, char* argv[])
 {   
     t_point t1_bub, t2_bub, t3_bub, t4_bub;
-    int x = 1;
-    int y = 4;
+    int x = 100;
 
     t1_bub = hrc::now();
-    int result = hammingDistance(x, y);
+    std::vector<std::vector<int>> result = generatePascalsTriangle(x);
     t2_bub = hrc::now();
+
+	displayMatrix(result);
 
 //    t3_bub = hrc::now();
 //    int result2 = hammingWeightV2(n);
 //    t4_bub = hrc::now();
 
-    LOG << "V1 result: " << result << END;
+    //LOG << "V1 result: " << result << END;
 //    LOG << "V2 there are " << result2 << " 1's in the bin rep of " << n << END;
 
 	LOG << "\n\n----------------------------------------------------------------------\n\n" << END;
@@ -85,7 +86,7 @@ void minStackTesting() {
     minStack.push(2147483647);
     LOG << "top: " << minStack.top() << END;
     LOG << "min: " << minStack.getMin() << END;
-    minStack.push(-2147483648);
+    //minStack.push(-2147483648);
     LOG << "top: " << minStack.top() << END;
     LOG << "min: " << minStack.getMin() << END;
     minStack.pop();

@@ -1362,7 +1362,7 @@ void initVersionVect(int badVersion, int numVersions) {
 
 int maxProfit(std::vector<int>& prices) {
     int min = INT32_MAX; 
-    int profit;
+    int profit = 0;
     for (auto& price : prices) {
         if (price - min > profit) profit = price - min;
         else if (price < min) min = price;
@@ -1650,3 +1650,61 @@ int hammingDistance(int x, int y) {
 }
 
 
+// Given a non-negative integer numRows, generate the first numRows of Pascal's triangle.
+/*
+Input: 5
+Output:
+[
+     [1],
+    [1,1],
+   [1,2,1],
+  [1,3,3,1],
+ [1,4,6,4,1]
+]
+*/
+std::vector<std::vector<int>> generatePascalsTriangle(int numRows)
+{
+	std::vector<std::vector<int>> triangle(numRows);
+	for (int i = 0; i < numRows; i++) {
+		std::vector<int>& tmp = triangle[i];
+		for (int j = 0; j < (i + 1); j++) {
+			if (j == 0 || j == i ) {
+				tmp.push_back(1);
+				continue;
+			}
+			tmp.push_back( (triangle[i - 1][j-1] + triangle[i - 1][j]) );
+		}
+	}
+	return triangle;
+}
+
+bool isValidParenthesisStr(std::string& str) {
+	if (str.empty()) return true;
+	if (str.size() % 2) return false;
+	std::stack<char> stkOpen, stkClose;
+	char tmp;
+	
+	for (const auto& ch : str) {
+		if (ch == '[' || ch == '(' || ch == '{')
+			stkOpen.push(ch);
+		else {  // closing character 
+			if (!stkOpen.empty())
+				tmp = stkOpen.top();
+			else return false;
+			
+			if (tmp == '[' && ch == ']')
+				stkOpen.pop();
+
+			else if (tmp == '(' && ch == ')')
+				stkOpen.pop();
+			
+			else if (tmp == '{' && ch == '}')
+				stkOpen.pop();
+			
+			else {
+				stkClose.push(ch);
+			}
+		}
+	}
+	if (stkOpen.size() != stkClose.size()) return false;
+}
