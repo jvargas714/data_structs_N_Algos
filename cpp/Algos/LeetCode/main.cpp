@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 //    int result2 = hammingWeightV2(n);
 //    t4_bub = hrc::now();
 
-    //LOG << "V1 result: " << result << END;
+    LOG << "V1 result: " << result << END;
 //    LOG << "V2 there are " << result2 << " 1's in the bin rep of " << n << END;
 
 	LOG << "\n\n----------------------------------------------------------------------\n\n" << END;
@@ -86,7 +86,7 @@ void minStackTesting() {
     minStack.push(2147483647);
     LOG << "top: " << minStack.top() << END;
     LOG << "min: " << minStack.getMin() << END;
-    //minStack.push(-2147483648);
+    minStack.push(-2147483648);
     LOG << "top: " << minStack.top() << END;
     LOG << "min: " << minStack.getMin() << END;
     minStack.pop();

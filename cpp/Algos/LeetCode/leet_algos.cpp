@@ -3,6 +3,7 @@
 #include <cctype>
 #include <cmath>
 #include <cstddef>
+#include <iomanip>
 #include "leet_algos.h"
 #include "utility.h"
 
@@ -1641,16 +1642,25 @@ int hammingWeightV2(uint32_t n) {
 
 int hammingDistance(int x, int y) {
     int dist = 0;
-    uint32_t mask = 0x1;
+    int mask = 0x1;
     for (int i = 0; i < 32; i++) {
-        if (x&mask != y&mask) dist++;
+        if ((int)(x&mask) != (int)(y&mask)) dist++;
         mask <<= 1;
     }
     return dist;
 }
 
+// Reverse bits of a given 32 bits unsigned integer
+uint32_t reverseBits(uint32_t n) {
+    std::vector<int> bits;
+    uint32_t result = 0;
+    for (int i = 0; i < 32; i++)
+        bits.push_back( (n >> i) & 1 );
+    for (int i = 0; i < 32; i++)
+        result += bits[31-i] * (1<<i);
+    return result;
+}
 
-// Given a non-negative integer numRows, generate the first numRows of Pascal's triangle.
 /*
 Input: 5
 Output:

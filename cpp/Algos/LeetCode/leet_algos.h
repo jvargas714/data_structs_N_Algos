@@ -302,18 +302,27 @@ int romaToIntV2(const std::string&);
 int hammingWeight(uint32_t n);
 int hammingWeightV2(uint32_t n);
 
+// problem: 461
+// result: 72.58% 6ms
+int hammingDistance(int x, int y);
+
+// problem: 190
+// result: 62.28% 6ms
+// Reverse bits of a given 32 bits unsigned integer.
+uint32_t reverseBits(uint32_t n);
+
 // problem:
 // result:
 int hammingDistance(int x, int y);
 
 // problem: 118
-// result: 96.52% 3ms 
-// Given a non-negative integer numRows, generate the first numRows of Pascal's triangle. 
+// result: 96.52% 3ms
+// Given a non-negative integer numRows, generate the first numRows of Pascal's triangle.
 std::vector<std::vector<int>> generatePascalsTriangle(int numRows);
 
-// problem: 
-// result: 
-// Given a string containing just the characters 
+// problem:
+// result:
+// Given a string containing just the characters
 // '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
 // rules: 1. Open brackets must be closed by the same type of brackets.
 //		  2. Open brackets must be closed in the correct order.

@@ -66,10 +66,7 @@ int maxSubArraySum(int arr[], int l, int h) {
 
 /*Driver program to test maxSubArraySum*/
 int main() {
-	uint32_t n = 12345;
-	std::stringstream ss;
-	ss << std::hex << n << END;
-	std::cout << ss.str() << END;
+	cout << (1<<5) << endl;
 	return 0;
 }
 
