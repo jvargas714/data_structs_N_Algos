@@ -64,9 +64,28 @@ int maxSubArraySum(int arr[], int l, int h) {
 			   maxCrossingSum(arr, l, m, h));
 }
 
+size_t removeDups(std::vector<int>& nums) {
+	if (nums.empty()) return 0;
+	int tmp = nums[0];
+	int offset = 1;
+	while (offset < nums.size()) {
+		if (tmp == nums[offset]) {
+			nums.erase(nums.begin() + offset);
+			// offset++;
+		} else {  // move to next element to remove
+			tmp = nums[offset++];
+		}
+	}
+	return nums.size();
+}
+
 /*Driver program to test maxSubArraySum*/
 int main() {
-	cout << (1<<5) << endl;
+	std::vector<int> nums = {0,0,0,0,0,0,0,0,1,1,1,2,2,3,3,4};
+	nums[1] = nums[8];
+	removeDups(nums);
+	LOG << "FINAL: " << END;
+	display(nums);
 	return 0;
 }
 

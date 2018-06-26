@@ -18,15 +18,12 @@ int* fill_array( uint32_t );
 // display vector
 // display contents of std::vector
 template <class T>
-void display( const T& vect, uint32_t line_limit=LINE_LIMIT )
-{
+void display( const T& vect, uint32_t line_limit=LINE_LIMIT ) {
     int cnt = 0;
-    std::cout << "size: " << vect.size() << std::endl;
-    for( auto& el : vect )
-    {
+     std::cout << "size: " << vect.size() << std::endl;
+    for( auto& el : vect ) {
         cnt++;
-        if(cnt == line_limit)
-        {
+        if(cnt == line_limit) {
             std::cout << el << std::endl;
             cnt = 0;
             continue;
@@ -39,7 +36,7 @@ void display( const T& vect, uint32_t line_limit=LINE_LIMIT )
 // print array of specified size 
 void display( const int*, size_t );
 
-template<class T>
+template<typename T>
 int findLargestInMatrix(const T& matrix) {
     int largestVal = matrix[0][0];
     for(const auto& row: matrix) {

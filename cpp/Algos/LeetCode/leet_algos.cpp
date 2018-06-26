@@ -321,9 +321,12 @@ std::vector<int> twoSumsV2(std::vector<int> &nums, int target) {
     std::map<int, int> mp;
     int len = nums.size();
 
+    // fill map up with {element : index}
     for (int i = 0; i < len; i++)
         mp[nums[i]] = i;
 
+    // x = target - el;
+    // search for x in input array
     for(int i = 0; i < len; i++) {
         x = target - nums[i];
         it = mp.find(x);
@@ -1688,6 +1691,7 @@ std::vector<std::vector<int>> generatePascalsTriangle(int numRows)
 	return triangle;
 }
 
+// {[]}
 bool isValidParenthesisStr(std::string& str) {
 	if (str.empty()) return true;
 	if (str.size() % 2) return false;
@@ -1704,17 +1708,53 @@ bool isValidParenthesisStr(std::string& str) {
 			
 			if (tmp == '[' && ch == ']')
 				stkOpen.pop();
-
 			else if (tmp == '(' && ch == ')')
 				stkOpen.pop();
-			
 			else if (tmp == '{' && ch == '}')
 				stkOpen.pop();
-			
 			else {
 				stkClose.push(ch);
 			}
 		}
 	}
 	if (stkOpen.size() != stkClose.size()) return false;
+	for (size_t j = 0; j < stkClose.size(); j++) {
+	    if (stkClose.top() != stkOpen.top()) return false;
+	}
+    return true;
 }
+
+// needs to run in linear runtime with 0(1) mem complexity
+int missingNumber(std::vector<int>& nums) {
+    auto el = std::find_if(nums.begin(), nums.end(), [](auto el){ return el == 0; });
+    if (el == nums.end())
+        return 0;
+    LOG << "el: " << *el << END;
+    int sum = std::accumulate(nums.begin(), nums.end(), 0);
+    LOG << "sum: " << sum << END;
+    int targetSum = 0;
+    int tmp = 1;
+    int val = 1;
+    for (int i = 1; i < nums.size()+1; i++) {
+        targetSum += val++;
+    }
+    LOG << "targetSum: " << targetSum << END;
+    return targetSum-sum;
+}
+
+std::vector<std::vector<int>> threeSum(std::vector<int> &nums) {
+    std::vector<std::vector<int>> result;
+
+}
+
+// using the length returned by your function, it prints the first len elements.
+size_t removeDuplicates(std::vector<int> &nums) {
+    int count = 0;
+    size_t n = nums.size();
+    for(int i = 1; i < n; i++){
+        if(nums[i] == nums[i-1]) count++;
+        else nums[i-count] = nums[i];
+    }
+    return n-count;
+}
+

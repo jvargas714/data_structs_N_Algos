@@ -14,18 +14,16 @@ void testPrimeGeneration();
 int main(int argc, char* argv[])
 {   
     t_point t1_bub, t2_bub, t3_bub, t4_bub;
-    int x = 100;
+    std::vector<int> nums = {0,0,1,1,1,2,2,3,3,4};
 
     t1_bub = hrc::now();
-    std::vector<std::vector<int>> result = generatePascalsTriangle(x);
+    size_t result = removeDuplicates(nums);
     t2_bub = hrc::now();
-
-	displayMatrix(result);
 
 //    t3_bub = hrc::now();
 //    int result2 = hammingWeightV2(n);
-//    t4_bub = hrc::now();
-
+//    t4_bub = hrc::now()
+    display(nums);
     LOG << "V1 result: " << result << END;
 //    LOG << "V2 there are " << result2 << " 1's in the bin rep of " << n << END;
 

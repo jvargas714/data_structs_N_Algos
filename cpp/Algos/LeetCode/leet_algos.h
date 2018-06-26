@@ -26,6 +26,12 @@ bool operator > ( envelope& env1, envelope& env2 );
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+arrays=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 
+// problem:
+// result:
+// remove duplicates of sorted array inplace (not my solution)
+// // using the length returned by your function, it prints the first len elements
+size_t removeDuplicates(std::vector<int>& nums);
+
 // problem #66
 std::vector<int> plusOne(std::vector<int>& digits);
 
@@ -34,6 +40,8 @@ void moveZeros(std::vector<int>& nums);
 void moveZerosV2(std::vector<int>& nums);
 
 // problem #1
+// result:
+// Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 std::vector<int> twoSums(std::vector<int>& nums, int target);
 std::vector<int> twoSumsV2(std::vector<int> &nums, int target);
 
@@ -67,6 +75,13 @@ bool isValidSudokuV4(SudokuBoard& board);
  */
 void rotate(IntMatrix& matrix);
 void rotateV2(IntMatrix& matrix);
+
+// ^^^^^^^^^^^^^^^^^^^medium^^^^^^^^^^^^^^^^^^^^^^
+// problem:
+// result:
+// Given an array nums of n integers, are there elements a, b, c in nums
+// such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+std::vector<std::vector<int>> threeSum(std::vector<int>& nums);
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+strings=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // problem #344
@@ -320,14 +335,19 @@ int hammingDistance(int x, int y);
 // Given a non-negative integer numRows, generate the first numRows of Pascal's triangle.
 std::vector<std::vector<int>> generatePascalsTriangle(int numRows);
 
-// problem:
-// result:
+// problem: 20
+// result: 95.53% 4ms
 // Given a string containing just the characters
 // '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
 // rules: 1. Open brackets must be closed by the same type of brackets.
 //		  2. Open brackets must be closed in the correct order.
 bool isValidParenthesisStr(std::string&);
 
+// problem: 268
+// result: 91.26% 24ms
+// Given an array containing n distinct numbers taken
+// from 0, 1, 2, ..., n, find the one that is missing from the array
+int missingNumber(std::vector<int>& nums);
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Helpers=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);
 void _reverseIterative(ListNode** head);
