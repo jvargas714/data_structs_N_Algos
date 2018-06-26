@@ -79,11 +79,27 @@ size_t removeDups(std::vector<int>& nums) {
 	return nums.size();
 }
 
-/*Driver program to test maxSubArraySum*/
+void rotate(vector<int>& nums, int k) {
+	unsigned int ind;
+	size_t n = nums.size();
+	unsigned int offset = k % n;
+	for (unsigned int i=0; i<n; i++) {
+		ind = i + offset;
+		if (ind>=n) {
+			LOG << "i: " << i << " ind: " << ind << END;
+			ind-=n;
+		}
+		LOG << "swapping ==> " << "i: " << i << " ind: " << ind << "\n" << END;
+		nums[i]=nums[ind];
+	}
+}
+
+
+
 int main() {
-	std::vector<int> nums = {0,0,0,0,0,0,0,0,1,1,1,2,2,3,3,4};
+	std::vector<int> nums = {1, 2, 3, 4, 5, 6, 7};
 	nums[1] = nums[8];
-	removeDups(nums);
+	rotate(nums, 3); // [5,6,7,1,2,3,4]
 	LOG << "FINAL: " << END;
 	display(nums);
 	return 0;

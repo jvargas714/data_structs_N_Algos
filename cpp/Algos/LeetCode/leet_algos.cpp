@@ -1758,3 +1758,17 @@ size_t removeDuplicates(std::vector<int> &nums) {
     return n-count;
 }
 
+// inplace 0(1) mem
+void rotateVector(std::vector<int> &nums, int k) {
+    unsigned int ind;
+    size_t n = nums.size();
+    unsigned int offset = k % n;
+    for (unsigned int i=0; i<n; i++) {
+        ind = i + offset;
+        if (ind>=n) {
+            ind-=n;
+        }
+        nums[i]=nums[ind];
+    }
+}
+

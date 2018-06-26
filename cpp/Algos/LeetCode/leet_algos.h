@@ -28,6 +28,11 @@ bool operator > ( envelope& env1, envelope& env2 );
 
 // problem:
 // result:
+// rotate array by k places 
+void rotateVector(std::vector<int>& nums, int k);
+
+// problem:
+// result:
 // remove duplicates of sorted array inplace (not my solution)
 // // using the length returned by your function, it prints the first len elements
 size_t removeDuplicates(std::vector<int>& nums);
