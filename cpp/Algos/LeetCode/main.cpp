@@ -14,17 +14,17 @@ void testPrimeGeneration();
 int main(int argc, char* argv[])
 {   
     t_point t1_bub, t2_bub, t3_bub, t4_bub;
-    std::vector<int> nums = {1, 2, 3, 4, 5, 6, 7};
+	std::vector<int> nums = { -2,0,0,2,2 };
     int k = 3;
 
     t1_bub = hrc::now();
-    rotateVector(nums, k);
+	IntMatrix result = threeSum(nums);
     t2_bub = hrc::now();
 
 //    t3_bub = hrc::now();
 //    int result2 = hammingWeightV2(n);
 //    t4_bub = hrc::now()
-    display(nums);
+	displayMatrix(result);
 //    LOG << "V1 result: " << result << END;
 //    LOG << "V2 there are " << result2 << " 1's in the bin rep of " << n << END;
 
@@ -85,7 +85,7 @@ void minStackTesting() {
     minStack.push(2147483647);
     LOG << "top: " << minStack.top() << END;
     LOG << "min: " << minStack.getMin() << END;
-    minStack.push(-2147483648);
+    // minStack.push(-2147483648);
     LOG << "top: " << minStack.top() << END;
     LOG << "min: " << minStack.getMin() << END;
     minStack.pop();

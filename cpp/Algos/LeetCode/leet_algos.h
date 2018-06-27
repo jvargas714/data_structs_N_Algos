@@ -15,6 +15,10 @@ typedef std::vector<char> SudokuRow;
 typedef std::map<int, SudokuRow> SudokuColumns;
 typedef std::vector<std::vector<int>> IntMatrix;
 typedef std::vector<std::vector<int>> VectOfVect;
+
+
+
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+misc=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // Problem #59
 std::vector<int> count_bits( int num );
@@ -24,8 +28,12 @@ std::string excel_column_title( int n );
 
 bool operator > ( envelope& env1, envelope& env2 );
 
-//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+arrays=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 
+
+
+
+//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+arrays=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem:
 // result:
 // rotate array by k places 
@@ -81,14 +89,20 @@ bool isValidSudokuV4(SudokuBoard& board);
 void rotate(IntMatrix& matrix);
 void rotateV2(IntMatrix& matrix);
 
-// ^^^^^^^^^^^^^^^^^^^medium^^^^^^^^^^^^^^^^^^^^^^
-// problem:
-// result:
+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// problem: 15  
+// result: 63.34% 118ms 
 // Given an array nums of n integers, are there elements a, b, c in nums
 // such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
 std::vector<std::vector<int>> threeSum(std::vector<int>& nums);
 
+
+
+
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+strings=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem #344
 std::string reverseString(std::string);
 
@@ -127,7 +141,13 @@ int strStr(std::string haystack, std::string needle);
 // result: 4ms 79.17%
 std::string countAndSay(int n);
 
+
+
+
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+Linked Lists=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 // problem #24
 ListNode* swapPairs(ListNode* head);
 
@@ -161,7 +181,13 @@ bool isPalindrome(ListNode*);
 // result: 98.7% 10ms
 bool hasCycle(ListNode*);
 
+
+
+
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Binary Trees=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 // problem: 
 // result: 8.81% 11ms 
 int maxDepth(TreeNode*);
@@ -189,7 +215,13 @@ VectOfVect levelOrderV2(TreeNode* root);
 // differ by more than 1.
 TreeNode* sortedArrayToBST(std::vector<int>& data);
 
+
+
+
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Sort and Searching+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 // problem: 88
 // result: 67.41% 7ms
 void mergeVectors(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n);
@@ -200,7 +232,13 @@ int firstBadVerison(int n);
 bool isBadVersion(int);
 void initVersionVect(int badVersion, int numVersions);
 
+
+
+
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Dynamic Programming=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 // problem: 70 
 // result: 29.32% 4ms 
 int climbStairs(int n);
@@ -225,7 +263,13 @@ int maxSubArray4(std::vector<int>& nums);
 int rob(std::vector<int>& nums);
 int robV2(std::vector<int>& nums);
 
+
+
+
+
 //+==+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Design=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 // problem #155
 // result: 79.71% 29 ms
 /*
@@ -301,7 +345,13 @@ But for multiples of three it should output “Fizz” instead of the number and
 */
 std::vector<std::string> fizzBuzz(const int& n);
 
+
+
+
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=Math=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 // result: 71.14% 29ms
 // problem: 204
 int countPrimes(int n);
@@ -316,7 +366,12 @@ int romanToInt(std::string&);
 int romaToIntV2(const std::string&);
 
 
+
+
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=Other=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 // problem: 191
 // result: 89.95% 5ms (using V2)
 int hammingWeight(uint32_t n);
@@ -353,6 +408,11 @@ bool isValidParenthesisStr(std::string&);
 // Given an array containing n distinct numbers taken
 // from 0, 1, 2, ..., n, find the one that is missing from the array
 int missingNumber(std::vector<int>& nums);
+
+
+
+
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Helpers=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);
 void _reverseIterative(ListNode** head);
@@ -366,7 +426,4 @@ void _genCntNSay(std::string& currTerm, std::string& nextTerm);
 int _getCount(const std::string& str, const int& offset);
 ListNode* _revList(ListNode* head);
 TreeNode* _insertData(int l, int r, std::vector<int>& data);
-
-
-
 #endif //ALGOS_SHORT_ALGOS_H

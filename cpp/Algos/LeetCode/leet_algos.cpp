@@ -4,6 +4,8 @@
 #include <cmath>
 #include <cstddef>
 #include <iomanip>
+#include <initializer_list>
+#include <numeric>
 #include "leet_algos.h"
 #include "utility.h"
 
@@ -1742,11 +1744,6 @@ int missingNumber(std::vector<int>& nums) {
     return targetSum-sum;
 }
 
-std::vector<std::vector<int>> threeSum(std::vector<int> &nums) {
-    std::vector<std::vector<int>> result;
-
-}
-
 // using the length returned by your function, it prints the first len elements.
 size_t removeDuplicates(std::vector<int> &nums) {
     int count = 0;
@@ -1770,5 +1767,60 @@ void rotateVector(std::vector<int> &nums, int k) {
         }
         nums[i]=nums[ind];
     }
+}
+
+/*
+Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? 
+Find all unique triplets in the array which gives the sum of zero.
+Approach:
+	Overall: Sort array, then, find indices in different parts of the array, add them up and see if they sum to zero 
+				[* * i j-> * * * * * * * * <-k]. Find a negative value index for i, set j on next element and k and last
+				after that converge j and k together creating different combinations of i j k the ones that add to zero 
+				will be saved as part of the solution. Note that for any duplicates we can skip since the entries need 
+				to be unique arrays. Note the movement of the indices only makes sense since the array is sorted before all
+				of this. The solution set must NOT contain duplicate triplets.
+	Steps:
+		0. sort array 
+		1. index i: 
+			- skip duplicates, 
+			- if we hit positve values then stop processing all together as 3 positve values will never add to zero 
+		2. index j: 
+			- set to 1 position ahead of i
+		3. index k: 
+			- set to last element in array 
+*/
+std::vector<std::vector<int>> threeSum(std::vector<int> &nums) {
+	if (nums.size() < 3)
+		return {  };
+	// 1. sort 
+	std::sort(nums.begin(), nums.end());
+	std::vector<std::vector<int>> result;
+	int i, sum;
+	int j = 0;
+	int k = 0;
+	for (i = 0; i < nums.size() - 2; i++) {
+		if (i > 0 && nums[i] == nums[i - 1]) continue;	// skip duplicates to ensure that each array is unique 
+		if (nums[i] > 0) break;							// stop processing at positive values as they will never add to zero
+		j = i + 1;										// set second index, 1 ahead of i 
+		k = nums.size() - 1;							// third index to last element
+		while (j < k) {
+			if (j > i+1 && nums[j] == nums[j - 1]) {
+				j++;
+				continue;
+			}
+			if (nums[i] + nums[j] > 0) break;  // already above zero, no point in using k as it has no change to sum to zero 
+			sum = nums[i] + nums[j] + nums[k];
+			if (sum < 0) j++;
+			else if (sum > 0) k--;
+			else {
+				result.emplace_back(
+					std::initializer_list<int>{ nums[i], nums[j], nums[k] }
+				);
+				j++;
+				k--;
+			}
+		}
+	}
+	return result;
 }
 
