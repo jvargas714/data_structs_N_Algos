@@ -97,7 +97,10 @@ void rotateV2(IntMatrix& matrix);
 // such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
 std::vector<std::vector<int>> threeSum(std::vector<int>& nums);
 
-
+// problem: 
+// result: 
+//Given a m x n matrix, if an element is 0, set its entire row and column to 0. Do it in-place.
+void setZeroes(IntMatrix& matrix);
 
 
 

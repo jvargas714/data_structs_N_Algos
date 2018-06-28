@@ -1824,3 +1824,26 @@ std::vector<std::vector<int>> threeSum(std::vector<int> &nums) {
 	return result;
 }
 
+/*
+	A straight forward solution using O(mn) space is probably a bad idea.
+	A simple improvement uses O(m + n) space, but still not the best solution.
+	Could you devise a constant space solution?
+*/
+void setZeroes(IntMatrix& matrix)
+{
+	bool firstCol = false;
+	bool firstRow = false; 
+
+	// flag rows and columns to be 0'd out  
+	for (int i = 0; i < matrix.size(); i++) {
+		for (int j = 0; matrix[0].size(); j++) {
+			if (matrix[i][j]) {
+				matrix[i][0] = 0;
+				matrix[0][j] = 0;
+				if (i == 0) firstRow = true; 
+				if (j == 0) firstCol = true; 
+			}
+		}
+	}
+}
+
