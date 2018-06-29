@@ -14,6 +14,7 @@ typedef std::vector<std::vector<char>> SudokuBoard;
 typedef std::vector<char> SudokuRow;
 typedef std::map<int, SudokuRow> SudokuColumns;
 typedef std::vector<std::vector<int>> IntMatrix;
+typedef std::vector<std::vector<std::string>> StrMatrix;
 typedef std::vector<std::vector<int>> VectOfVect;
 
 
@@ -97,12 +98,21 @@ void rotateV2(IntMatrix& matrix);
 // such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
 std::vector<std::vector<int>> threeSum(std::vector<int>& nums);
 
-// problem: 
-// result: 
-//Given a m x n matrix, if an element is 0, set its entire row and column to 0. Do it in-place.
+// problem: 73
+// result: 82.88% 56ms
+// Given a m x n matrix, if an element is 0, set its entire row and column to 0. Do it in-place.
 void setZeroes(IntMatrix& matrix);
 
+// problem: 49
+// result: 39.03% 41ms (V1)
+// Given an array of strings, group anagrams together
+StrMatrix groupAnagrams(std::vector<std::string>& strs);
+StrMatrix groupAnagramsV2(std::vector<std::string>& strs);
 
+// problem:
+// result:
+// Given a string, find the length of the longest substring without repeating characters
+int lengthOfLongestSubstring(std::string& str);
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+strings=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

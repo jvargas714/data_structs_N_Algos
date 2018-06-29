@@ -144,6 +144,7 @@ std::vector<int> preOrderTraversal(const TreeNode* root);
 std::vector<int> postOrderTraversal(const TreeNode* root);
 
 // generate n prime numbers
+bool isPrime(int n);
 std::vector<uint64_t> genPrimes(const uint64_t n);
 std::vector<uint64_t> genPrimesV2(const uint64_t n);
 #endif //CPP_UTILITY_H

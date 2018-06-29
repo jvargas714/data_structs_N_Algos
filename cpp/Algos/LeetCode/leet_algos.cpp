@@ -1832,12 +1832,14 @@ std::vector<std::vector<int>> threeSum(std::vector<int> &nums) {
 void setZeroes(IntMatrix& matrix)
 {
 	bool firstCol = false;
-	bool firstRow = false; 
+	bool firstRow = false;
+	int numRows = (int)matrix.size();
+	int numCols = (int)matrix[0].size();
 
-	// flag rows and columns to be 0'd out  
-	for (int i = 0; i < matrix.size(); i++) {
-		for (int j = 0; matrix[0].size(); j++) {
-			if (matrix[i][j]) {
+	// flag rows and columns to be 0'd out
+	for (int i = 0; i < numRows; i++) {
+		for (int j = 0; j < numCols; j++) {
+			if (!matrix[i][j]) {
 				matrix[i][0] = 0;
 				matrix[0][j] = 0;
 				if (i == 0) firstRow = true; 
@@ -1845,5 +1847,95 @@ void setZeroes(IntMatrix& matrix)
 			}
 		}
 	}
+
+    // set marked rows to zero
+    for (int i = numRows-1; i > 0; i--) {
+	    if (matrix[i][0] == 0)
+	        for (auto& el : matrix[i])
+	            el = 0;
+	}
+
+	// set marked columns
+    for (int i = numCols-1; i > 0; i--) {
+	    if (matrix[0][i] == 0)
+	        for (int j = numRows-1; j > 0; j--)
+	            matrix[j][i] = 0;
+	}
+
+	// if first element of the first row was marked, zero out that row
+    if (firstRow)
+        for (auto& el : matrix[0]) el = 0;
+
+	// if the first element of the first column was marked, we zero out that column
+    if (firstCol)
+	    for (auto& row : matrix) row[0] = 0;
 }
 
+// Space Complexity 0(n)
+// Runtime Complexity 0(n*m)
+// where n = size of strs,
+// and m = number of keys in the map
+StrMatrix groupAnagrams(std::vector<std::string> &strs) {
+    StrMatrix result;
+    std::map<std::string, std::vector<std::string>> anaMap;
+    std::string key;
+    for (auto& str : strs) {
+        key = str;
+        std::sort(key.begin(), key.end());
+        auto entry = anaMap.find(key);
+        if (entry == anaMap.end()) {
+            anaMap[key] = { str };
+        } else {
+            anaMap[key].push_back(str);
+        }
+    }
+
+    // fill result
+    for (auto& entry : anaMap) {
+        std::vector<std::string> tmpVect;
+        for (auto& el : entry.second) {
+            tmpVect.push_back(el);
+        }
+        result.push_back(tmpVect);
+    }
+    return result;
+}
+
+// use map<std::string, int> map to keep the key and the index it came from
+StrMatrix groupAnagramsV2(std::vector<std::string> &strs) {
+    std::vector<int> prime;
+    int c=2;
+    for(int i=0;i<26;i++){
+        while(!isPrime(c))
+            c++;
+        prime.push_back(c++);
+    }
+    std::vector<std::vector<std::string>> ret;
+    std::map<int,std::vector<std::string>> mp;
+    for(auto &str : strs){
+        int tmp = 1;
+        for(int i=0;i<str.size();++i)
+            tmp *= prime[str[i]-'a'];
+        mp[tmp].push_back(str);
+    }
+    for(auto &m:mp)
+        ret.push_back(m.second);
+    return ret;
+}
+
+int lengthOfLongestSubstring(const std::string& str) {
+    size_t longest = 0;
+    size_t currLen = 0;
+    bool charArr[26] = {false};
+    for (const auto& ch : str) {
+        if (!charArr[(int)(ch-'a')]) {
+            currLen++;
+            charArr[(int)(ch-'a')] = true;
+        } else {  // char has already been seen
+            // todo : need to consider offset to overcome repeated chars may need to reset index back
+            if (currLen > longest)
+                longest = currLen;
+            currLen = 0;
+        }
+    }
+}

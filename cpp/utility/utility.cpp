@@ -210,12 +210,13 @@ std::string elim_whitespace( std::string& str )
 }
 
 std::vector<std::vector<int>> generateNxNMatrix(size_t n) {
-    int val = 1;
+    int val;
+    std::random_device randomDevice;
     std::vector<std::vector<int>> matrix(n, std::vector<int>(n, 0));
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < n; j++) {
+            val = static_cast<int>(randomDevice() % n);
             matrix[i][j] = val;
-            val++;
         }
     }
     return matrix;
@@ -400,4 +401,13 @@ std::vector<uint64_t> genPrimesV2(const uint64_t n) {
         }
     }
     return primes;
+}
+
+bool isPrime(int n) {
+    int rt = sqrt((float)n);
+    for(int i=2;i<=rt;i++){
+        if(n%i==0)
+            return false;
+    }
+    return true;
 }
