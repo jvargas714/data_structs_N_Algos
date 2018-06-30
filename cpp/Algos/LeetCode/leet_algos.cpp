@@ -1955,9 +1955,39 @@ int lengthOfLongestSubstringV2(const std::string& str) {
     std::vector<int> charIndex(256, -1);
     int longest = 0, m = 0;
     for (int i = 0; i < str.length(); i++) {
-        m = std::max(charIndex[str[i]] + 1, m);    // automatically takes care of -1 case
+        m = std::max(charIndex[str[i]]+1, m);    // automatically takes care of -1 case
         charIndex[str[i]] = i;
-        longest = std::max(longest, i - m + 1);
+        longest = std::max(longest, i-m+1);
+    }
+    return longest;
+}
+
+// using two pointers start and end
+// abcabcbb
+// 'a' end = 1 {a, 1}
+// 'b'
+int lengthOfLongestSubstringV3(const std::string& str) {
+    if (str.empty()) return 0;
+    int len = (int)str.size();
+    int start=0, end=0, longest=0;
+    bool charMap[128] = {false};
+    while (end < len) {
+        end++;
+        if ( !charMap[str[end-1]] ) {
+            charMap[str[end]] = true;
+            longest = std::max(longest, end - start);
+        } else {  // found duplicate
+            while (start < end - 1) {
+                // find duplicate char, remove all before it in map
+                if (charMap[start]) {
+                    charMap[str[start]] = false;
+                    start++;
+                } else {
+                    start++;
+                    break;
+                }
+            }
+        }
     }
     return longest;
 }
