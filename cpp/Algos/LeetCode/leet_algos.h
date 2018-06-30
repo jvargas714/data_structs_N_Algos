@@ -109,10 +109,11 @@ void setZeroes(IntMatrix& matrix);
 StrMatrix groupAnagrams(std::vector<std::string>& strs);
 StrMatrix groupAnagramsV2(std::vector<std::string>& strs);
 
-// problem:
-// result:
+// problem: 3
+// result: 2.58% 527ms
 // Given a string, find the length of the longest substring without repeating characters
-int lengthOfLongestSubstring(std::string& str);
+int lengthOfLongestSubstring(const std::string& str);
+int lengthOfLongestSubstringV2(const std::string& str);
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+strings=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

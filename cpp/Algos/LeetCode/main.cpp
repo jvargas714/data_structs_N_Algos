@@ -14,26 +14,17 @@ void testPrimeGeneration();
 int main(int argc, char* argv[])
 {   
     t_point t1_bub, t2_bub, t3_bub, t4_bub;
-	IntMatrix matrix = {
-	        {0,1,2,0},
-            {3,4,5,2},
-            {1,3,1,5}
-};
-	IntMatrix matrix2 = generateNxNMatrix(10);
-    int k = 3;
-    LOG << "BEFORE: " << END;
-    displayMatrix(matrix);
-    std::cout << "\n\n\n" << END;
+    std::string word = "pwwkew";
+	int result = lengthOfLongestSubstring(word);
 
     // call function
     t1_bub = hrc::now();
-	setZeroes(matrix2);
+	LOG << "Longest substring in " << word << " is --> " << result << END;
     t2_bub = hrc::now();
 
 //    t3_bub = hrc::now();
 //    int result2 = hammingWeightV2(n);
 //    t4_bub = hrc::now()
-	displayMatrix(matrix2);
 //    LOG << "V1 result: " << result << END;
 //    LOG << "V2 there are " << result2 << " 1's in the bin rep of " << n << END;
 

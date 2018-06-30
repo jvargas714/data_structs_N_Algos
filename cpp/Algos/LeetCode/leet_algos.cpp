@@ -1923,19 +1923,42 @@ StrMatrix groupAnagramsV2(std::vector<std::string> &strs) {
     return ret;
 }
 
+// use a map to keep track of character and the index it came from
+// when a duplicate is found we can reposition i
 int lengthOfLongestSubstring(const std::string& str) {
-    size_t longest = 0;
-    size_t currLen = 0;
-    bool charArr[26] = {false};
-    for (const auto& ch : str) {
-        if (!charArr[(int)(ch-'a')]) {
-            currLen++;
-            charArr[(int)(ch-'a')] = true;
+    if (str.size() == 1) return 1;
+    int i = 0;
+    int longest = 0;
+    auto len = static_cast<int>(str.size());
+    std::map<char, int> charMap; // mapping character to its index
+    while (i<len) {
+        auto it = charMap.find(str[i]);
+        if (it == charMap.end()) {
+            charMap[str[i]] = i;
         } else {  // char has already been seen
-            // todo : need to consider offset to overcome repeated chars may need to reset index back
-            if (currLen > longest)
-                longest = currLen;
-            currLen = 0;
+            if (charMap.size() > longest) {
+                longest = static_cast<int>(charMap.size());
+            }
+            i = it->second;
+            charMap.clear();
         }
+        i++;
     }
+    if (charMap.size() > longest) return static_cast<int>(charMap.size());
+    else return longest;
 }
+
+// optimized verison
+// runtime O(n) solution
+int lengthOfLongestSubstringV2(const std::string& str) {
+    // for ASCII char sequence, use this as a hashmap
+    std::vector<int> charIndex(256, -1);
+    int longest = 0, m = 0;
+    for (int i = 0; i < str.length(); i++) {
+        m = std::max(charIndex[str[i]] + 1, m);    // automatically takes care of -1 case
+        charIndex[str[i]] = i;
+        longest = std::max(longest, i - m + 1);
+    }
+    return longest;
+}
+
