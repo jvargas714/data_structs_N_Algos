@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <initializer_list>
 #include <numeric>
+#include <cstring>
 #include "leet_algos.h"
 #include "utility.h"
 
@@ -1948,7 +1949,7 @@ int lengthOfLongestSubstring(const std::string& str) {
     else return longest;
 }
 
-// optimized verison
+// optimized verison (not working yet)
 // runtime O(n) solution
 int lengthOfLongestSubstringV2(const std::string& str) {
     // for ASCII char sequence, use this as a hashmap
@@ -1968,27 +1969,88 @@ int lengthOfLongestSubstringV2(const std::string& str) {
 // 'b'
 int lengthOfLongestSubstringV3(const std::string& str) {
     if (str.empty()) return 0;
-    int len = (int)str.size();
-    int start=0, end=0, longest=0;
-    bool charMap[128] = {false};
-    while (end < len) {
-        end++;
-        if ( !charMap[str[end-1]] ) {
-            charMap[str[end]] = true;
-            longest = std::max(longest, end - start);
-        } else {  // found duplicate
-            while (start < end - 1) {
-                // find duplicate char, remove all before it in map
-                if (charMap[start]) {
-                    charMap[str[start]] = false;
-                    start++;
-                } else {
-                    start++;
-                    break;
-                }
-            }
+    auto len = (int)str.size();
+    int prevIndex=0, curLen=1, longest=1;
+
+    // 256 different chars
+    int charMap[256];
+    std::memset(charMap, -1, sizeof(charMap));
+
+    // first char already processed
+    charMap[str[0]] = 0;  // a
+
+    /*
+     * 0(n) solution one pass through string. Can think of this as a window passing through
+     * the string. When a duplicate is found the current substring len is updated this is
+     * essentially the distance from current index and one past the char at prev index
+     * "a b c d e f a"
+     *    j         i  --> str[j:i] inclusive is the new current substring the
+     *    length would be i-j --> 6-1+1, add one to compensate for index starting at 0
+     */
+    for (int i = 1; i < len; i++) {
+        char ch = str[i];
+        prevIndex = charMap[str[i]];
+        // check if char has been processed or if i is not part of the current substring (i-curLen)
+        if (prevIndex == -1 || i - curLen > prevIndex) {
+            curLen++; // 2
+        } else {
+            if (curLen > longest)
+                longest = curLen;
+            curLen = i - prevIndex;
         }
+        // save index of processed char
+        charMap[str[i]] = i;
     }
+    if (curLen > longest)
+        longest = curLen;
     return longest;
 }
 
+// ["b","l","u","e"," ","i","s"," ","s","k","y"," ","t","h","e"]
+// simple solution (terrible)
+// runtime: O(n^2) where n is num of chars
+void reverseWords(std::vector<char>& str) {
+    int fromEnd = 0;
+    std::string word;
+    std::vector<char> revWords;
+    for (auto& ch : str) {
+        if (ch != ' ') {
+            word += ch;
+        } else {
+            std::reverse(word.begin(), word.end());
+            for (auto chtmp : word)
+                revWords.insert(revWords.end()-fromEnd++, chtmp);
+            revWords.insert(revWords.end()-fromEnd++, ' ');
+            word = "";
+        }
+    }
+    std::reverse(word.begin(), word.end());
+    for (auto chtmp : word)
+        revWords.insert(revWords.end()-fromEnd++, chtmp);
+    str = revWords;
+}
+
+// optimized
+// runtime: O(n)
+// space: O(n)
+// todo :: finish
+void reverseWordsV2(std::vector<char>& str) {
+    int fromEnd = 0;
+    int cnt = 0;
+    int offset = 0;
+    std::vector<char> revWords;
+    for (auto& ch : str) {
+        if (ch == ' ') {
+            cnt++;
+            LOG << "cnt: " << cnt << END;
+            revWords.insert(revWords.begin(), ch);
+            offset = cnt-1;
+            continue;
+        }
+        LOG << "offset: " << offset << END;
+        LOG << "revWords.len: " << revWords.size() << END;
+        revWords.insert(revWords.begin(), ch);
+        cnt++;
+    }
+    str = revWords;
+}

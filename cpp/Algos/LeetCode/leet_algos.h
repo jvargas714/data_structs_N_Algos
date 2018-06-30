@@ -110,11 +110,20 @@ StrMatrix groupAnagrams(std::vector<std::string>& strs);
 StrMatrix groupAnagramsV2(std::vector<std::string>& strs);
 
 // problem: 3
-// result: 2.58% 527ms
+// result: 2.58% 527ms (V1)
+// result: 77.85% 33ms (V3)
 // Given a string, find the length of the longest substring without repeating characters
 int lengthOfLongestSubstring(const std::string& str);
 int lengthOfLongestSubstringV2(const std::string& str);
 int lengthOfLongestSubstringV3(const std::string& str);
+
+// problem: 186
+//result: did not place
+// Given an input string , reverse the string word by word.
+// sample input: ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
+// samele output: ["b","l","u","e"," ","i","s"," ","s","k","y"," ","t","h","e"]
+void reverseWords(std::vector<char>& str);
+void reverseWordsV2(std::vector<char>& str);
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+strings=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem #344
