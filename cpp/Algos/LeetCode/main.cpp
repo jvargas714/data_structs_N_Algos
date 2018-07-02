@@ -15,24 +15,28 @@ int main(int argc, char* argv[])
 {   
     t_point t1_bub, t2_bub, t3_bub, t4_bub;
     // answer: 95
-    std::vector<char> words = {'t','h','e',' ','s','k','y',' ','i','s',' ','b','l','u','e'};
+//    std::vector<int> nums = fill_vector(50);
+    std::vector<char> str = {'a','b','b','b','b','b','b','b','b','b','b','b','b'};
+//    std::vector<char> str = {"a","b","b","b","b","b","b","b","b","b","b","b","b"}; // {'a','a','b','b','c','c','c'};
+    display(str);
+
     // call function
     t1_bub = hrc::now();
-    reverseWordsV2(words);
+    int result = compressString(str);
     t2_bub = hrc::now();
 
-    for (auto& el : words) std::cout << el << " ";
-    std::cout << std::endl;
+    std::cout << "\n\n" << std::endl;
+    display(str);
 //    LOG << "\n\n----------------------------------------------------------------------\n\n" << END;
 
 //    t3_bub = hrc::now();
 //    LOG << "V3 Longest substring in " << "word " << " is --> " << lengthOfLongestSubstringV3(word) << END;
 //    t4_bub = hrc::now();
 
-//    LOG << "V1 result: " << result << END;
+    LOG << "V1 result: " << result << END;
 //    LOG << "V2 there are " << result2 << " 1's in the bin rep of " << n << END;
 
-	LOG << "\n\n----------------------------------------------------------------------\n\n" << END;
+	std::cout << "\n\n----------------------------------------------------------------------\n\n" << END;
     auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
     auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
 	LOG << "time of execution V1 -->\n" << milli_sec << "msec\n" << micro_sec << "usec\n" << END;

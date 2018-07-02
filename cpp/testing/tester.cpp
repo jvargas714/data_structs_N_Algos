@@ -97,10 +97,10 @@ void rotate(vector<int>& nums, int k) {
 
 
 int main() {
-	std::vector<int> nums = {1, 2, 3, 4, 5, 6, 7};
-	nums[1] = nums[8];
-	rotate(nums, 3); // [5,6,7,1,2,3,4]
-	LOG << "FINAL: " << END;
+	std::vector<int> nums = {1};
+	int cnt = 3;
+	for (int i = 0; i < 4; i++)
+		nums.insert(nums.begin()+1, cnt++);
 	display(nums);
 	return 0;
 }

@@ -72,20 +72,6 @@ bool isValidSudokuV4(SudokuBoard& board);
 /*
  * problem #48
  * rotate matrix clockwise (90 degrees)
- * Given input matrix =
-  [
-    [ 5, 1, 9,11],
-    [ 2, 4, 8,10],
-    [13, 3, 6, 7],
-    [15,14,12,16]
-  ],
-  rotate the input matrix in-place such that it becomes:
-  [
-    [15,13, 2, 5],
-    [14, 3, 4, 1],
-    [12, 6, 8, 9],
-    [16, 7,10,11]
-  ]
  */
 void rotate(IntMatrix& matrix);
 void rotateV2(IntMatrix& matrix);
@@ -118,12 +104,39 @@ int lengthOfLongestSubstringV2(const std::string& str);
 int lengthOfLongestSubstringV3(const std::string& str);
 
 // problem: 186
-//result: did not place
+// result: did not place 118 ms V1
+// result: did not place 98 ms V2
 // Given an input string , reverse the string word by word.
 // sample input: ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
 // samele output: ["b","l","u","e"," ","i","s"," ","s","k","y"," ","t","h","e"]
 void reverseWords(std::vector<char>& str);
 void reverseWordsV2(std::vector<char>& str);
+void reverseWordsV3(std::vector<char>& str);
+
+// problem: 414
+// result: 98.73% 7ms
+// Given a non-empty array of integers, return the third maximum number in this array.
+// If it does not exist, return the maximum number
+// runtime must be O(n)
+int thirdMax(const std::vector<int>& nums);
+
+// problem: 349
+// result: 70.98% 8ms
+// Given two arrays, write a function to compute their intersection.
+// each element in the result must be unique, result can be in any order
+std::vector<int> intersection(std::vector<int>& nums1, std::vector<int>& nums2);
+
+// problem: 443
+// result: 55.04% 9ms
+// Given an array of characters, compress it in-place
+int compressString(std::vector<char>& chars);
+
+// problem:
+// result:
+// Given n non-negative integers representing an elevation map where the width of each bar is 1,
+// compute how much water it is able to trap after raining
+int trapRainWater(std::vector<int>& height);
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+strings=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem #344

@@ -1988,7 +1988,6 @@ int lengthOfLongestSubstringV3(const std::string& str) {
      *    length would be i-j --> 6-1+1, add one to compensate for index starting at 0
      */
     for (int i = 1; i < len; i++) {
-        char ch = str[i];
         prevIndex = charMap[str[i]];
         // check if char has been processed or if i is not part of the current substring (i-curLen)
         if (prevIndex == -1 || i - curLen > prevIndex) {
@@ -2030,27 +2029,152 @@ void reverseWords(std::vector<char>& str) {
     str = revWords;
 }
 
-// optimized
-// runtime: O(n)
-// space: O(n)
-// todo :: finish
 void reverseWordsV2(std::vector<char>& str) {
-    int fromEnd = 0;
     int cnt = 0;
     int offset = 0;
     std::vector<char> revWords;
     for (auto& ch : str) {
         if (ch == ' ') {
             cnt++;
-            LOG << "cnt: " << cnt << END;
             revWords.insert(revWords.begin(), ch);
-            offset = cnt-1;
+            offset = cnt;
             continue;
         }
-        LOG << "offset: " << offset << END;
-        LOG << "revWords.len: " << revWords.size() << END;
-        revWords.insert(revWords.begin(), ch);
+        revWords.insert(revWords.begin()+cnt-offset, ch);
         cnt++;
     }
     str = revWords;
 }
+
+// optimized
+// reverse entire string
+// move j past the first word
+// reverse word between i and j
+// reset iterators to be at the beginning of the next word
+void reverseWordsV3(std::vector<char> &str) {
+    std::reverse(str.begin(), str.end());
+    std::vector<char>::iterator i, j;
+    i = j = str.begin();
+    while (j != str.end()) {
+        while (j != str.end() && !isspace(*j)) {
+            ++j;
+        }
+        std::reverse(i, j);
+
+        //
+        if (j!=str.end()) {
+            i = j = j+1;
+        }
+    }
+}
+
+// Given a non-empty array of integers, return the third maximum number in this array.
+// If it does not exist, return the maximum number.
+int thirdMax(const std::vector<int> &nums) {
+    if (nums.empty()) return 0;
+    if (nums.size() < 3) {
+        return *std::max_element(nums.begin(), nums.end());
+    }
+    int64_t mmax=INT64_MIN, secondMax=INT64_MIN, thirdMax=INT64_MIN;
+    for (auto& el : nums) {
+        if (el > mmax) {
+            thirdMax = secondMax;
+            secondMax = mmax;
+            mmax = el;
+        } else if (el>secondMax && el!=mmax) {
+            thirdMax = secondMax;
+            secondMax = el;
+        } else if (el > thirdMax && !(el==secondMax||el==mmax)){
+            thirdMax = el;
+        }
+    }
+    return
+            static_cast<int>((thirdMax!=INT64_MIN) ?
+                             thirdMax : *std::max_element(nums.begin(), nums.end()));
+}
+
+// just find common elements between both arrays
+std::vector<int> intersection(std::vector<int> &nums1, std::vector<int> &nums2) {
+    size_t len1 = nums1.size();
+    size_t len2 = nums2.size();
+
+    if (len1 == 0 || len2 == 0) return {};
+
+    std::map<int, bool> elMap;
+    std::vector<int> *bigVectRef, *smallVectRef, result;
+
+    // reference the larger of the two vectors
+    if (len1 > len2) {
+        bigVectRef = &nums1;
+        smallVectRef = &nums2;
+    } else {
+        bigVectRef = &nums2;
+        smallVectRef = &nums1;
+    }
+
+    // fill map <element, index>
+    for (auto& el : *bigVectRef)
+        elMap[el] = false;
+
+    for (auto& el : *smallVectRef) {
+        auto entry = elMap.find(el);
+        if (entry != elMap.end()) {
+            if (!entry->second) {
+                result.push_back(el);
+                entry->second = true;  // ensure unique elements in result
+            }
+        }
+    }
+    return result;
+}
+
+static std::vector<char> _combineCharCnt(char ch, int cnt) {
+    std::vector<char> result;
+    result.push_back(ch);
+    if (cnt == 1) return result;
+    while (cnt > 0) {
+        int tmp = cnt % 10;
+        result.insert(result.begin()+1, (char)('0'+tmp));
+        cnt /= 10;
+    }
+    return result;
+}
+
+// sample input: ["a","a","b","b","c","c","c"]
+// output: ["a","2","b","2","c","3"]
+// chars with only 1 do not get compressed
+// for say bbbbbbbbbbbb ==> 'b' '1' '2'
+// simple solution
+int compressString(std::vector<char>& chars) {
+    if (chars.empty())
+        return 0;
+    char tmp = chars[0];
+    int cnt = 1, start=0;
+    int i = 1;
+    while (i < chars.size()) {
+        if (tmp == chars[i]) {
+            cnt++;
+        } else {
+            std::vector<char> entry = _combineCharCnt(tmp, cnt);
+            chars.erase(chars.begin()+start, chars.begin()+i);
+            for (int j = (int)entry.size()-1; j >= 0; j--)
+                chars.insert(chars.begin()+start, entry[j]);
+            start += (int)entry.size();
+            i = start;
+            tmp = chars[i];
+            cnt = 1;
+        }
+        i++;
+    }
+    // last entry
+    std::vector<char> entry = _combineCharCnt(tmp, cnt);
+    chars.erase(chars.begin()+start, chars.begin()+i);
+    for (int j = (int)entry.size()-1; j >= 0; j--)
+        chars.insert(chars.begin()+start, entry[j]);
+    return (int)chars.size();
+}
+
+int trapRainWater(std::vector<int> &height) {
+    return 0;
+}
+
