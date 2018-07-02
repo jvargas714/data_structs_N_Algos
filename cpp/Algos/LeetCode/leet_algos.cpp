@@ -2175,6 +2175,21 @@ int compressString(std::vector<char>& chars) {
 }
 
 int trapRainWater(std::vector<int> &height) {
-    return 0;
+    if (height.empty() || height.size()==1) return 0;
+    int leftBoundary, rightBoundary, lvl, i, startInd;
+    std::vector<int> hole;
+    int prev = height[0], diff = -1, currVolume = -1, holeVolume = 0;
+    bool beginHole = false, endHole = false;
+    while (i < height.size()) {
+        lvl = height[i];
+        diff = prev - lvl;
+        if (diff > 0) {
+            currVolume += diff;
+            startInd = i;
+        }
+
+        prev = lvl;
+    }
+
 }
 
