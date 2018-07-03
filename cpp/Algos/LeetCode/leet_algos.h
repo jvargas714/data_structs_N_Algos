@@ -131,12 +131,16 @@ std::vector<int> intersection(std::vector<int>& nums1, std::vector<int>& nums2);
 // Given an array of characters, compress it in-place
 int compressString(std::vector<char>& chars);
 
-// problem:
-// result:
+// problem: 42
+// result: 66.82% 14ms (not mine)
 // Given n non-negative integers representing an elevation map where the width of each bar is 1,
 // compute how much water it is able to trap after raining
-int trapRainWater(std::vector<int>& height);
+int trapRainWater(const std::vector<int>& height);
 
+// problem: 54
+// result: 97.41% 3ms
+// Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.
+std::vector<int> spiralOrder(IntMatrix& matrix);
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+strings=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem #344
@@ -217,8 +221,13 @@ bool isPalindrome(ListNode*);
 // result: 98.7% 10ms
 bool hasCycle(ListNode*);
 
-
-
+// problem: 2
+// result: 31.57% 67ms
+// You are given two non-empty linked lists representing two non-negative integers.
+// The digits are stored in reverse order and each of their nodes contain a single digit.
+// Add the two numbers and return it as a linked list.
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2);
+ListNode* addTwoNumbersV2(ListNode* l1, ListNode* l2);
 
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Binary Trees=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+

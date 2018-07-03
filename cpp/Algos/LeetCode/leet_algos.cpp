@@ -1,11 +1,7 @@
 #include <algorithm>
 #include <map>
-#include <cctype>
-#include <cmath>
 #include <cstddef>
 #include <iomanip>
-#include <initializer_list>
-#include <numeric>
 #include <cstring>
 #include "leet_algos.h"
 #include "utility.h"
@@ -2174,7 +2170,156 @@ int compressString(std::vector<char>& chars) {
     return (int)chars.size();
 }
 
-int trapRainWater(std::vector<int> &height) {
-    return 0;
+/*
+ * The idea with this algo is to collect all indices that
+ * show the height to continue to decrease and push them on to the
+ * stack.
+ * Once we hit an element where the current height increases we go to
+ * the else case.
+ * In this case we check the left boundary and right boundary and take the min
+ * between those two, to get the depth we take the difference between the
+ * min of the two boundaries and the bottom, the get the length
+ * you subtract i - index of right boundary - 1 --> i - stk.top() - 1
+ * so maxBotWater = depth * width
+ * otherwise if stack is empty then zero water is being contained
+ * Note i is only increased when pushed to the stack to ensure all
+ * indices are processed
+ */
+int trapRainWater(const std::vector<int>& height) {
+    if (height.size()==1 || height.empty()) return 0;
+    std::stack<int> stk;
+    int i = 0, maxWater = 0, maxBotWater = 0;
+    while (i < (int)height.size()) {
+        if (stk.empty() || height[i] < height[stk.top()]) {
+            stk.push(i++);
+        } else {
+            int bottom = stk.top();
+            stk.pop();
+            maxBotWater = stk.empty() ?
+                    0 : (std::min(height[stk.top()], height[i]) - height[bottom]) * (i - stk.top()-1);
+            maxWater += maxBotWater;
+        }
+    }
+    return maxWater;
+}
+
+std::vector<int> spiralOrder(IntMatrix &matrix) {
+    if (matrix.size() == 1)
+        return matrix[0];
+    else if (matrix.empty())
+        return {};
+
+    std::vector<int> spiral;
+    size_t rowLen = matrix[0].size();
+    size_t colLen = matrix.size();
+    size_t rowPadding=0, colPadding=0;
+
+    while (true) {
+        // face 1 top side left to right
+        for (size_t i = colPadding; i < (rowLen - colPadding); i++)
+            spiral.push_back(matrix[rowPadding][i]);
+
+        if (spiral.size()>=(rowLen*colLen)) break;
+
+        // face 2 vertical right top to bottom
+        for (size_t i = rowPadding+1; i < (colLen-rowPadding); i++)
+            spiral.push_back(matrix[i][rowLen - colPadding - 1]);
+
+        if (spiral.size()>=(rowLen*colLen)) break;
+
+        // face 3 horizontal right to left
+        for (int i = (int)(rowLen - colPadding - 2); i >= (int)colPadding; i--)
+            spiral.push_back(matrix[colLen-rowPadding-1][i]);
+
+        if (spiral.size()>=(rowLen*colLen)) break;
+
+        // face 4 vertical left side up
+        for (int i = (int)(colLen - colPadding - 2); i > (int)rowPadding; i--)
+            spiral.push_back(matrix[i][colPadding]);
+
+        if (spiral.size()>=(rowLen*colLen)) break;
+
+        // increment padding
+        colPadding++;
+        rowPadding++;
+
+        //  DEBUG
+        LOG << "displaying spiral: colPadding: " << colPadding << " rowPadding: " << rowPadding << END;
+        display(spiral);
+        std::cout << "\n\n" << END;
+    }
+    return spiral;
+}
+
+/*
+    Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+    Output: 7 -> 0 -> 8
+    Explanation: 342 + 465 = 807.
+ */
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+    int sum;
+    int carry = 0;
+    ListNode* result = nullptr;
+    ListNode* resTmp = nullptr;
+
+    // initialize first element of the result
+    sum = l1->val + l2->val + carry;
+    if (sum<10) {
+        resTmp = new ListNode(sum);
+        carry = 0;
+    } else {  // carry ops
+        resTmp = new ListNode(sum - 10);
+        carry = 1;
+    }
+    l1 = l1->next;
+    l2 = l2->next;
+    result = resTmp;
+    while (l1||l2) {
+        if (l1 && l2) {
+            sum = l1->val + l2->val + carry;
+            l1 = l1->next;
+            l2 = l2->next;
+        }
+        else if (l1 && !l2) {
+            sum = l1->val + carry;
+            l1 = l1->next;
+        }
+        else {
+            sum = l2->val + carry;
+            l2 = l2->next;
+        }
+
+        if (sum<10) {
+            resTmp->next = new ListNode(sum);
+            carry = 0;
+        } else {  // carry ops
+            resTmp->next = new ListNode(sum - 10);
+            carry = 1;
+        }
+        resTmp = resTmp->next;
+    }
+    if (carry==1)
+        resTmp->next = new ListNode(carry);
+    return result;}
+
+ListNode *addTwoNumbersV2(ListNode *l1, ListNode *l2) {
+    int temp=l1->val +l2->val, overhead=temp/10, l1_valid, l2_valid;
+    ListNode* result= new ListNode(temp%10);
+    ListNode* result_cursor= result;
+
+    ListNode* l1_list_block=l1; //copy for safety
+    ListNode* l2_list_block=l2;
+
+    while(l1_list_block->next !=NULL || l2_list_block->next !=NULL || overhead){
+        (l1_list_block->next)?(l1_list_block=l1_list_block->next,l1_valid=1):(l1_valid=0);
+        (l2_list_block->next)?(l2_list_block=l2_list_block->next,l2_valid=1):(l2_valid=0);
+        temp =(l1_list_block->val)*l1_valid +(l2_list_block->val)*l2_valid +overhead;
+        overhead =temp/10;
+        ListNode* tempNode= new ListNode(temp%10);
+        result_cursor->next = tempNode;
+        result_cursor = result_cursor->next;
+    }
+
+    return result;
 }
 
