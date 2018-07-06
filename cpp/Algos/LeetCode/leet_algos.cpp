@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <iomanip>
 #include <cstring>
+#include <queue>            // std::priority_queue
+#include <unordered_map>    // std::unordered_map
 #include "leet_algos.h"
 #include "utility.h"
 
@@ -298,6 +300,18 @@ void moveZerosV2(std::vector<int>& nums) {
     // replace back portion of array with zeros
     for (; j < nums.size(); ++j)
         nums[j] = 0;
+}
+
+// best version 100%
+void moveZerosV3(std::vector<int>& nums) {
+    if (nums.empty()) return;
+    int j = 0;
+    for (int i = 0; i < (int)nums.size(); i++) {
+        if (nums[i] != 0)
+            nums[j++] = nums[i];
+    }
+    for (int i = j; i < nums.size(); i++)
+        nums[i] = 0;
 }
 
 
@@ -694,6 +708,20 @@ int firstUniqCharV3(std::string s) {
     for(int i =0; i<s.size(); i++){
         if(v[s[i]-'a']==1)
             return i;
+    }
+    return -1;
+}
+
+int firstUniqCharV4(std::string s) {
+    int charArr[26];
+    int cnt = 0;
+    std::memset(charArr, 0, sizeof(charArr));
+    for (int i = 0; i < s.size(); i++)
+        charArr[s[i] - 'a']++;
+
+    for (const auto &ch : s) {
+        if (charArr[ch - 'a'] == 1) return cnt;
+        cnt++;
     }
     return -1;
 }
@@ -1333,6 +1361,67 @@ void mergeVectors(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n
     // fill in the rest at the end
     for (; i1 < (m+n) && i2 < n; i1++, i2++)
         nums1[i1] = nums2[i2];
+}
+
+void mergeVectorsV2(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n) {
+    if (nums2.empty()) return;
+    int cnt = 0;
+    int mergeLen = m + n, i = 0, j = 0;
+    bool inserted = false;
+    while (j < n && i < mergeLen - 1) {
+        int tmp = nums2[j];  // 2
+        if (tmp > nums1[i] && tmp <= nums1[i + 1]) {
+            nums1.insert(nums1.begin() + (i + 1), tmp);
+            j++;
+            cnt++;
+            inserted = true;
+        } else if (tmp < nums1[i]) {
+            nums1.insert(nums1.begin()+i, tmp);
+            inserted = true;
+            j++;
+        } else if (tmp == nums1[i]) { // equal
+            nums1.insert(nums1.begin() + i, tmp);
+            inserted = true;
+            j++;
+            cnt++;
+        }
+        i++;
+        if (inserted) {
+            nums1.erase(nums1.end() - 1);
+            inserted = false;
+        }
+    }
+
+    // fill in rest of elements from nums2 that didnt make it
+    std::cout << "i: " << i << " j: " << j << std::endl;
+    if (j == n - 1) {
+        nums1[mergeLen - 1] = nums2[j];
+    } else {
+        for (int z = j; z < n; z++) {
+            nums1[mergeLen - cnt -1] = nums2[z];
+            cnt--;
+        }
+    }
+}
+
+// merge from behind version
+void mergeVectorsV3(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n) {
+    if (nums2.empty()) return;
+    while (m > 0 && n > 0) {
+        if (nums1[m-1] > nums2[n-1]) {
+            nums1[m + n - 1] = nums1[m-1];
+            m--;
+        } else {
+            nums1[m + n - 1] = nums2[n-1];
+            n--;
+        }
+    }
+
+    // fill in rest
+    while (n > 0) {
+        nums1[n-1] = nums2[n - 1];
+        n--;
+    }
 }
 
 int firstBadVerison(int n) {
@@ -2304,7 +2393,7 @@ ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
 
 ListNode *addTwoNumbersV2(ListNode *l1, ListNode *l2) {
     int temp=l1->val +l2->val, overhead=temp/10, l1_valid, l2_valid;
-    ListNode* result= new ListNode(temp%10);
+    auto result= new ListNode(temp%10);
     ListNode* result_cursor= result;
 
     ListNode* l1_list_block=l1; //copy for safety
@@ -2320,6 +2409,74 @@ ListNode *addTwoNumbersV2(ListNode *l1, ListNode *l2) {
         result_cursor = result_cursor->next;
     }
 
+    return result;
+}
+
+// my original solution :: not good
+std::vector<std::string> topKFrequent(const std::vector<std::string> &words, int k) {
+    if (words.size() == 1) return {words[0]};
+    std::vector<std::string> result;
+    std::map<std::string, int> freqMap;
+    int cnt = 0;
+
+    sort(words.begin(), words.end());
+
+    for (const auto& word : words) {
+        auto entry = freqMap.find(word);
+        if (entry == freqMap.end())
+            freqMap[word] = 1;
+        else
+            entry->second++;
+    }
+
+    std::string nextWord;
+    while (cnt < k) {
+        int maxCnt = 0;
+        for (const auto& word : words) {
+            auto entry  = freqMap.find(word);
+            if (entry != freqMap.end() && entry->second > maxCnt) {
+                maxCnt = entry->second;
+                nextWord = entry->first;
+            }
+        }
+        result.push_back(nextWord);
+        freqMap.erase(nextWord);
+        maxCnt = 0;
+        cnt++;
+    }
+    return result;
+}
+
+
+// optimized using a heap
+// O( nlog(k) )
+std::vector<std::string> topKFrequentV2(const std::vector<std::string> &words, int k) {
+    std::unordered_map<std::string, int> freqMap;
+
+    // O(n)
+    for (const auto& word : words)
+        freqMap[word]++;
+
+    // priority queue looks up O(1) with the element being the greatest
+    std::priority_queue<std::pair<std::string, int>,
+            std::vector<std::pair<std::string, int>>, MyPairCompGreater> heap;
+    for (const auto& entry: freqMap) {
+        if (heap.size() < k) {
+            heap.push(std::make_pair(entry.first, entry.second));
+        } else {
+            auto temp = heap.top();
+            if (entry.second < temp.second || entry.second == temp.second && temp.first < entry.first)
+                continue;
+            heap.pop();
+            heap.push(std::make_pair(entry.first, entry.second));
+        }
+    }
+
+    std::vector<std::string> result;
+    while (!heap.empty()) {
+        result.insert(result.begin(), heap.top().first);
+        heap.pop();
+    }
     return result;
 }
 

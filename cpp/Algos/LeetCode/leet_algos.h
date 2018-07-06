@@ -17,8 +17,14 @@ typedef std::vector<std::vector<int>> IntMatrix;
 typedef std::vector<std::vector<std::string>> StrMatrix;
 typedef std::vector<std::vector<int>> VectOfVect;
 
-
-
+//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Data Structs=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+struct MyPairCompGreater {
+    bool operator()(std::pair<std::string, int>& p1, std::pair<std::string, int>& p2) {
+        if (p1.second != p2.second)
+            return p1.second > p2.second;
+        return p1.first < p2.first;
+    }
+};
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+misc=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // Problem #59
@@ -28,7 +34,6 @@ std::vector<int> count_bits( int num );
 std::string excel_column_title( int n );
 
 bool operator > ( envelope& env1, envelope& env2 );
-
 
 
 
@@ -50,8 +55,12 @@ size_t removeDuplicates(std::vector<int>& nums);
 std::vector<int> plusOne(std::vector<int>& digits);
 
 // problem #283
+// result: 100% 8ms (V3)
+// Given an array nums, write a function to move all 0's to the end of it
+// while maintaining the relative order of the non-zero elements.
 void moveZeros(std::vector<int>& nums);
 void moveZerosV2(std::vector<int>& nums);
+void moveZerosV3(std::vector<int>& nums);
 
 // problem #1
 // result:
@@ -141,15 +150,28 @@ int trapRainWater(const std::vector<int>& height);
 // result: 97.41% 3ms
 // Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.
 std::vector<int> spiralOrder(IntMatrix& matrix);
+
+// problem: 692
+// result: 9.16% 24ms
+// result: 100% 8ms (V2)
+// Given a non-empty list of words, return the k most frequent elements.
+// Your answer should be sorted by frequency from highest to lowest
+std::vector<std::string> topKFrequent(const std::vector<std::string>& words, int k);
+std::vector<std::string> topKFrequentV2(const std::vector<std::string>& words, int k);
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+strings=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem #344
 std::string reverseString(std::string);
 
 // problem #387
+// result: 99.22% 24ms (v4 : original solution
+// Given a string, find the first non-repeating character in it and return it's index. If it doesn't exist, return -1.
 int firstUniqChar(std::string s);
 int firstUniqCharV2(std::string s);
 int firstUniqCharV3(std::string s);
+int firstUniqCharV4(std::string s);
+
 
 // problem #242
 bool validAnaGram(std::string& s, std::string& t);
@@ -213,6 +235,7 @@ ListNode* reverseListV2(ListNode* head);
 ListNode* mergeTwoLists(ListNode* l1, ListNode* l2);
 ListNode* mergeTwoListsV2(ListNode* l1, ListNode* l2);
 
+
 // problem #234
 // result: 96.66% 20ms
 bool isPalindrome(ListNode*);
@@ -270,6 +293,8 @@ TreeNode* sortedArrayToBST(std::vector<int>& data);
 // problem: 88
 // result: 67.41% 7ms
 void mergeVectors(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n);
+void mergeVectorsV2(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n);
+void mergeVectorsV3(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n);
 
 // problem: 278 
 // result: 26.47% 3ms 

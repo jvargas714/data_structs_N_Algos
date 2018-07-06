@@ -22,17 +22,21 @@ int main(int argc, char* argv[])
 //            {19, 20, 21, 22, 23, 24},
 //            {25, 26, 27, 28, 29, 30}
 //    };
-    IntMatrix matrix = {
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9}
-    };
-    displayMatrix(matrix);
+
+    std::vector<int> v1 = {4,5,6,0,0,0};
+    std::vector<int> v2 = {1,2,3};
+
+    LOG << "Before: " << END;
+    display(v1);
+    std::cout << "\n" << END;
+    display(v2);
+    std::cout << "\n\n" << END;
 
     // call function
     t1_bub = hrc::now();
-    std::vector<int> result = spiralOrder(matrix);
+    mergeVectorsV3(v1, 3, v2, 3);
     t2_bub = hrc::now();
+
 
 //    LOG << "\n\n----------------------------------------------------------------------\n\n" << END;
 
@@ -41,7 +45,7 @@ int main(int argc, char* argv[])
 //    t4_bub = hrc::now();
 
     LOG << "V1 result: ";
-    display(result);
+    display(v1);
 //    LOG << "V2 there are " << result2 << " 1's in the bin rep of " << n << END;
 
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << END;

@@ -83,14 +83,19 @@ void split( const std::string& s, char delim, std::vector<std::string>& elems )
     }
 }
 
-std::vector<int> fill_vector( uint32_t num_els )
+std::vector<int> fill_vector( uint32_t num_els, bool isRand )
 {
     std::vector<int> vect;
     std::random_device rd;
+    int val;
     srand( static_cast<uint32_t>( time( nullptr ) ) );
     for( uint i = 0; i < num_els; i++ )
     {
-        vect.push_back( rd() % num_els );
+        if (isRand)
+            val = rd() % num_els;
+        else
+            val = i;
+        vect.push_back(val);
     }
     return vect;
 }

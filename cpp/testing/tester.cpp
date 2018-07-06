@@ -7,6 +7,7 @@
 #include <vector>
 #include <sstream>
 #include <iomanip>
+#include <map>
 #include "../utility/utility.h"
 
 using namespace std;
@@ -94,14 +95,26 @@ void rotate(vector<int>& nums, int k) {
 	}
 }
 
+struct MyComp {
+	bool operator() (const int& a, const int& b){
+		return !(a < b);
+	}
+};
 
 
 int main() {
-	std::vector<int> nums = {1};
-	int cnt = 3;
-	for (int i = 0; i < 4; i++)
-		nums.insert(nums.begin()+1, cnt++);
+	std::vector<int> nums = fill_vector(25);
+//	std::map<int, int, MyComp> nmap;
+//	std::map<int, int> nmap;
+	std::map<int, int, std::greater<int>> nmap;
+	int cnt = 1;
+	for (auto el : nums) nmap[el] = ++cnt;
+
 	display(nums);
+
+	for (auto& entry : nmap)
+		LOG << entry.first << " : " << entry.second << END;
+
 	return 0;
 }
 

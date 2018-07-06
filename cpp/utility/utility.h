@@ -12,7 +12,7 @@
 #define LOG std::cout << __FUNCTION__ << "(): "
 #define END std::endl
 
-std::vector<int> fill_vector( uint32_t );
+std::vector<int> fill_vector( uint32_t n, bool isRand=true);
 int* fill_array( uint32_t );
 
 // display vector
