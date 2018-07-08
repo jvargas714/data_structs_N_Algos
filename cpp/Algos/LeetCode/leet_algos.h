@@ -26,6 +26,12 @@ struct MyPairCompGreater {
     }
 };
 
+struct Interval {
+    int start;
+    int end;
+    Interval() : start(0), end(0) {}
+    Interval(int s, int e) : start(s), end(e) {}
+};
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+misc=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // Problem #59
 std::vector<int> count_bits( int num );
@@ -263,10 +269,12 @@ bool isValidBST(TreeNode*);
 bool isSymmetric(TreeNode*);
 
 // problem: 102
-// result: 27.17% 
-// descr: 
+// result: 27.17% (v1) 99.88% 4ms (V3)
+// descr: Given a binary tree, return the level order traversal
+// of its nodes' values (ie, from left to right, level by level).
 VectOfVect levelOrder(TreeNode* root);
 VectOfVect levelOrderV2(TreeNode* root);
+VectOfVect levelOrderV3(TreeNode* root);
 
 // problem 108
 // result: 26.78% 18ms
@@ -275,7 +283,11 @@ VectOfVect levelOrderV2(TreeNode* root);
 // differ by more than 1.
 TreeNode* sortedArrayToBST(std::vector<int>& data);
 
-
+// problem 103
+// result: 100% 0ms
+// Given a binary tree, return the zigzag level order traversal of its nodes' values.
+// (ie, from left to right, then right to left for the next level and alternate between).
+VectOfVect zigzagLevelOrder(TreeNode* root);
 
 
 
@@ -315,13 +327,22 @@ std::vector<int> topFrequentKIntegers(std::vector<int>& nums, int k);
 std::string frequencySort(std::string s);
 
 // problem: 33
-// result:
+// result: 99.98% 4ms
 // Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand
 // (i.e., [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2])
 // You are given a target value to search. If found in the array return its index, otherwise return -1
 // You may assume no duplicate exists in the array
 // Your algorithm's runtime complexity must be in the order of O(log n)
 int searchSortedRotatedArray(std::vector<int>& nums, int target);
+
+// problem: 81
+// result: 99.93% 4ms
+// Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+//(i.e., [0,0,1,2,2,5,6] might become [2,5,6,0,0,1,2]).
+//You are given a target value to search. If found in the array return true, otherwise return false.
+bool searchSortedRotatedArrayII(std::vector<int>& nums, int target);
+bool searchSortedRotatedArrayIIV2(std::vector<int> &nums, int target);
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Dynamic Programming=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -344,15 +365,27 @@ int maxSubArray3(std::vector<int>& nums);
 // result: 61.40% 13ms
 int maxSubArray4(std::vector<int>& nums);
 
-// #problem: 198
+// problem: 198
 // result: 14.42% 4ms
 int rob(std::vector<int>& nums);
 int robV2(std::vector<int>& nums);
 
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// problem: 62
+// result: 100% 0ms (V4 from discussion)
+// A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+//The robot can only move either down or right at any point in time.
+// The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+//How many possible unique paths are there?
+int uniquePaths(int m, int n);
+int uniquePathsV2(int m, int n);
+int uniquePathsV3(int m, int n);
+int uniquePathsV4(int m, int n);
 
-
-
-
+// problem: 56
+// result:
+// Given a collection of intervals, merge all overlapping intervals.
+std::vector<Interval> mergeIntervals(std::vector<Interval>& intervals);
 //+==+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Design=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -496,8 +529,17 @@ bool isValidParenthesisStr(std::string&);
 int missingNumber(std::vector<int>& nums);
 
 
-
-
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%HARD%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// problem: 239
+// result: 21.86% 88ms (V1)
+// result V2: needs fixing
+// result V3: 99.52% 44ms O(n)
+// Given an array nums, there is a sliding window of size k which is moving from the very
+// left of the array to the very right. You can only see the k numbers in the window.
+// Each time the sliding window moves right by one position. Return the max sliding window.
+std::vector<int> maxSlidingWindow(std::vector<int>& nums, int k);
+std::vector<int> maxSlidingWindowV2(const std::vector<int>& nums, int k);
+std::vector<int> maxSlidingWindowV3(const std::vector<int> &nums, int k);
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Helpers=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 void _reverseRecursive(ListNode* curr, ListNode* prev, ListNode** head);

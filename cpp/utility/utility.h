@@ -147,4 +147,18 @@ std::vector<int> postOrderTraversal(const TreeNode* root);
 bool isPrime(int n);
 std::vector<uint64_t> genPrimes(const uint64_t n);
 std::vector<uint64_t> genPrimesV2(const uint64_t n);
+
+// find max val in container using iterators [iter1, iter2] inclusive
+// O(n)
+template<typename RandomAccessIter, typename T>
+T maxElement(RandomAccessIter iter1, RandomAccessIter iter2) {
+    T maxVal = *iter1;
+    iter1++;
+    while (iter1 != iter2) {
+        if (*iter1 > maxVal) maxVal = *iter1;
+        iter1++;
+    }
+    return (*iter2 > maxVal) ? *iter2:maxVal;
+}
 #endif //CPP_UTILITY_H
+

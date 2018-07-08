@@ -14,12 +14,19 @@ void testPrimeGeneration();
 int main(int argc, char* argv[])
 {   
     t_point t1_bub, t2_bub, t3_bub, t4_bub;
-    std::vector<int> nums = {4,5,6,7,0,1,2};
-    display(nums);
+    /*
+        Expected:
+            [9,9,10,10,10,10,10,10,10,9,9,9,8,8]
+     */
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->right->right = new TreeNode(5);
 
     // call function
     t1_bub = hrc::now();
-    int result = searchSortedRotatedArray(nums, 6);
+    VectOfVect result = zigzagLevelOrder(root);
     t2_bub = hrc::now();
 
 
@@ -28,9 +35,12 @@ int main(int argc, char* argv[])
 //    t3_bub = hrc::now();
 //    LOG << "V3 Longest substring in " << "word " << " is --> " << lengthOfLongestSubstringV3(word) << END;
 //    t4_bub = hrc::now();
-
-    LOG << "V1 result: " << result << END;
-    // display(result);
+        LOG << "V1 result: " << END;
+//      LOG << "V1 result: " << result << END;
+//    LOG << "V1 result: " << ( (result) ? "found it":"did not find it" )  << END;
+//    LOG << "V1 result: Expected: 9 9 10 10 10 10 10 10 10 9 9 9 8 8\n";
+//    display(result);
+      displayMatrix(result);
 //    LOG << "V2 there are " << result2 << " 1's in the bin rep of " << n << END;
 
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << END;

@@ -1,12 +1,14 @@
 #include <algorithm>
-#include <map>
 #include <cstddef>
-#include <iomanip>
 #include <cstring>
+#include <deque>            // std::deque
+#include <iomanip>
+#include <map>
+#include <numeric>          // std::accumulate
 #include <queue>            // std::priority_queue
 #include <sstream>          // string stream
 #include <unordered_map>    // std::unordered_map
-#include <numeric>          // std::accumulate
+
 #include "leet_algos.h"
 #include "utility.h"
 
@@ -1322,6 +1324,28 @@ VectOfVect levelOrderV2(TreeNode* root) {
     return res;
 }
 
+// iterative using queue solution, left to right
+VectOfVect levelOrderV3(TreeNode* root) {
+    std::queue<TreeNode*> nodeQue;
+    VectOfVect result;
+    if (!root)
+        return result;
+    nodeQue.push(root);
+    while (!nodeQue.empty()) {
+        auto lvlSize = (int)nodeQue.size();
+        std::vector<int> curLvl;
+        for (int i = 0; i < lvlSize; i++) {
+            TreeNode* nd = nodeQue.front();
+            nodeQue.pop();
+            if (nd->left) nodeQue.push(nd->left);
+            if (nd->right) nodeQue.push(nd->right);
+            curLvl.push_back(nd->val);
+        }
+        result.push_back(curLvl);
+    }
+    return result;
+}
+
 TreeNode* _insertData(int l, int r, std::vector<int>& data) {
     if ( l>r )
         return nullptr;
@@ -2571,52 +2595,349 @@ std::string frequencySort(std::string s) {
 }
 
 /*
- *
- int search(int A[], int n, int target) {
-        int lo=0,hi=n-1;
-        // find the index of the smallest value using binary search.
-        // Loop will terminate since mid < hi, and lo or hi will shrink by at least 1.
-        // Proof by contradiction that mid < hi: if mid==hi, then lo==hi and loop would have been terminated.
-        while(lo<hi){
-            int mid=(lo+hi)/2;
-            if(A[mid]>A[hi]) lo=mid+1;
-            else hi=mid;
-        }
-        // lo==hi is the index of the smallest value and also the number of places rotated.
-        int rot=lo;
-        lo=0;hi=n-1;
-        // The usual binary search and accounting for rotation.
-        while(lo<=hi){
-            int mid=(lo+hi)/2;
-            int realmid=(mid+rot)%n;
-            if(A[realmid]==target)return realmid;
-            if(A[realmid]<target)lo=mid+1;
-            else hi=mid-1;
-        }
-        return -1;
-    }
+ use binary search accounting for rotation
+ [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]
+ first find the number of rotations put on the array
+ this is done by:
+ 1. find the mid index
+ 2a. if that value is larger than the hi index then we move the low index up 1 past the mid index
+ 2b. if that value is equal to or less then we set hi to the mid index
+ 3. when lo == hi we have found the lowest value and how many rotations occurred
  */
-
-// use binary search accounting for rotation
-// [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]
 int searchSortedRotatedArray(std::vector<int>& nums, int target) {
-    int lo=0, hi=static_cast<int>(nums.size()-1);  // 6
+    auto len = static_cast<int>(nums.size());
+    int lo=0, hi=len-1;
 
     // finds the real lo and hi index accounting for the rotation
     while(lo<hi) {
-        int mid = (lo+hi) / 2;   // 3 5 4
-        if (nums[mid] > nums[hi]) lo = mid + 1;  // 4
-        else hi = mid;  // 5 4
+        int mid = (lo+hi) / 2;
+        if (nums[mid] > nums[hi]) lo = mid + 1;  // shrink the gap between lo and hi
+        else hi = mid;
     }
 
-    // lo == hi is the index of smallest value and the number of places
-    // rotated
+    // lo == hi is the index of smallest value and the number of places rotated
     int numRot = lo;
     lo = 0;
-    hi = static_cast<int>(nums.size()-1);
-    // normal bin search accounting for rotation  hi = 4 lo = 4
+    hi = len -1;
+
+    // normal binary search accounting for rotation
     while (lo <= hi) {
         int mid = (lo+hi) / 2;
-        int realMid = (mid+rot)
+        int realMid = (mid+numRot) % len;
+        if (nums[realMid]==target) return realMid;
+        if (nums[realMid]<target) lo = mid+1;
+        else hi = mid - 1;
+    }
+    return -1;  // not found
+}
+
+/*
+ * finding number of rotations in this problem does not work
+ * we must take this approach
+ * steps:
+ * 1.
+ */
+bool searchSortedRotatedArrayII(std::vector<int> &nums, int target) {
+    int left = 0, right = static_cast<int>(nums.size()-1);
+    int mid;
+
+    while (left <= right) {
+        LOG << "left: " << left << " right: " << right << "\n" << END;
+        mid = (left + right) / 2;
+        if (nums[mid] == target) return true;
+
+        // for duplicate case we converge both left and right towards the center by one
+        if (nums[left] == nums[mid] && nums[mid] == nums[right] ) {
+            left++;
+            right--;
+        } else if (nums[left] <= nums[mid]) {  // left side of array is in order
+            if ((nums[left] <= target) && (nums[mid] > target)) // left is < mid and less than target and mid > target
+                right = mid - 1;  // since mid val is larger we bring in the right side
+            else
+                left = mid + 1; // move left up to mid our left side is larger
+        } else {
+            if ( (nums[mid] < target) && (nums[right] >= target) )
+                left = mid + 1;  // normal case where we bring up the left side since mid < target
+            else
+                right = mid - 1;
+        }
+    }
+    return false;
+}
+
+// not as fast as V1
+bool searchSortedRotatedArrayIIV2(std::vector<int> &nums, int target) {
+    int start=0,end=static_cast<int>(nums.size()-1);
+    while(start<=end){
+        int mid=start+(end-start)/2;
+        if(nums[mid]==target) return true;
+        if(nums[mid]==nums[start]) {
+            start++;
+        }
+        else if(nums[start]<=nums[mid]) {
+            if (nums[start] <= target && target <= nums[mid]) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        }
+        else {
+            if (nums[mid] <= target && target <= nums[end]) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+    }
+    return false;
+}
+
+/*
+ * Window position              Max
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+ output: [3, 3, 5, 5, 6, 7]
+ */
+// brute force !!
+// O( k*(n-k+1) )
+std::vector<int> maxSlidingWindow(std::vector<int> &nums, int k) {
+    std::vector<int> result;
+    if (nums.empty() || nums.size() < k) return {};
+    if (nums.size() == 1 || k == 1) return nums;
+
+    int i = 0, j = k - 1;
+    auto len = static_cast<int>(nums.size());
+    while (j < len) {
+        result.push_back(
+                maxElement<std::vector<int>::iterator, int>(nums.begin()+i, nums.begin()+j)
+        );
+        i++;
+        j++;
+    }
+    return result;
+}
+
+// optimized solution
+// O(n)
+// TODO :: still some issues
+std::vector<int> maxSlidingWindowV2(const std::vector<int> &nums, int k) {
+    if (nums.empty() || nums.size() < k) return {};
+    if (nums.size() == 1 || k == 1) return nums;
+
+    std::vector<int> result;
+    std::pair<int , int> prevMaxVal = {INT32_MIN, INT32_MIN};   // val, index
+    std::pair<int , int> maxVal = {INT32_MIN, INT32_MIN};   // val, index
+
+    for (int i = 0; i < (int)nums.size(); i++) {
+        int el = nums[i];
+        // save max and previous max
+        if (el > maxVal.first) {
+            prevMaxVal = maxVal;
+            maxVal.first = el;
+            maxVal.second = i;
+        } else if (el > prevMaxVal.first) {
+            prevMaxVal.first = el;
+            prevMaxVal.second = i;
+        }
+        if (i>=k-1) {
+            result.push_back(maxVal.first);
+            // check if prev Max index falls out of window next iteration
+            if ( maxVal.second <= i - k + 1 ) {
+                maxVal = prevMaxVal;
+                prevMaxVal = {INT32_MIN, INT32_MIN};
+            } else if (prevMaxVal.second <= i - k + 1) {
+                prevMaxVal = {nums[i-1], i-1};
+            }
+        }
+    }
+    return result;
+}
+
+// solution using a deque
+// amortized O(n) solution (from discussion)
+std::vector<int> maxSlidingWindowV3(const std::vector<int> &nums, int k) {
+    if (nums.empty() || k <= 0) return {};
+    int n = (int)nums.size();
+    std::vector<int> result(n-k+1, 0);
+    int ri = 0;
+    std::deque<int> dq;
+    for (int i = 0; i < n; i++) {
+        // removes numbers out of range k
+        while (!dq.empty() && dq.front() < i - k + 1) dq.pop_front();
+
+        // remove smaller numbers in k range as they are useless
+        while (!dq.empty() && nums[dq.back()] < nums[i]) dq.pop_back();
+
+        // q contains index
+        dq.push_back(i);
+        if (i >= k -1) result[ri++] = nums[dq.front()];
+    }
+    return result;
+}
+
+// each step we can either go right or down
+// TODO :: has issues
+void _uniquePaths(std::pair<int, int> currPos, const std::pair<int, int>& targetPos, int& numPaths) {
+
+    // step right and check position
+    if (currPos.first < targetPos.first) {
+        currPos.first++;
+        if (currPos==targetPos) {
+            numPaths++;
+        }
+        _uniquePaths(currPos, targetPos, numPaths);
+    }
+
+    // step down and check position
+    if (currPos.second < targetPos.second) {
+        currPos.second++;
+        if (currPos==targetPos) {
+            numPaths++;
+        }
+        _uniquePaths(currPos, targetPos, numPaths);
     }
 }
+
+/*
+    A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+    The robot can only move either down or right at any point in time.
+    The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+    How many possible unique paths are there?
+ */
+// TODO :: has issues
+int uniquePaths(int m, int n) {
+    int numPaths = 0;
+    std::pair<int, int> curPosition = {0, 0}; // (col, row)
+    _uniquePaths(curPosition, {n-1, m-1}, numPaths);
+    return numPaths;
+}
+
+/*
+ * FYI: mxn matrix is m rows by n columns
+    Since the robot can only move right and down, when it arrives at a point, there are only two possibilities:
+    1. It arrives at that point from above (moving down to that point);
+    2. It arrives at that point from left (moving right to that point).
+
+    Thus, we have the following state equations: suppose the number of paths to arrive at a point (i, j)
+    is denoted as P[i][j], it is easily concluded that P[i][j] = P[i - 1][j] + P[i][j - 1].
+
+    The boundary conditions of the above equation occur at the leftmost column (P[i][j - 1] does not exist)
+    and the uppermost row (P[i - 1][j] does not exist).
+    These conditions can be handled by initialization (pre-processing)
+    --- initialize P[0][j] = 1, P[i][0] = 1 for all valid i, j. Note the initial value is 1 instead of 0!
+
+    Now we write the following unoptimized code ...
+ */
+int uniquePathsV2(int m, int n) {
+    std::vector<std::vector<int> > path(m, std::vector<int> (n, 1));
+    for (int i = 1; i < m; i++) {
+        for (int j = 1; j < n; j++) {
+            path[i][j] = path[i - 1][j] + path[i][j - 1];
+        }
+    }
+    return path[m - 1][n - 1];
+}
+
+/*
+    The following is the same code as above (V2) but optimized
+    It can be observed that each tiime when we update path[i][j] we only need path[i-1][j] (at the same column)
+    and path[i][j-1] (at the left column). So it is enough to maintain two columns
+    (the current column and the left column) instead of maintaining the full mxn matrix.
+    Code is optimized to have O(min(m, n)) space complexity
+
+    Inspecting the code below we find that keeping two columns is used to recover pre[i], which is just
+    cur[i] before its update. So there is even no need to use two vectors and one is just enough.
+    Space is further saved and the code gets shorter as well.
+
+    Since we are only going right and down the column and the column to the left are all that matter
+    * * *
+    * 0 *
+    * * *
+    in the matrix above ^ ... to get to the cell with 0 we only care about the 2nd column (current) and
+    the first column (prev) no need to keep entire matrix in mem
+ */
+int uniquePathsV3(int m, int n) {
+    if (m > n) return uniquePathsV3(n, m);  // ensure space complexity is O(min(m,n))
+    std::vector<int> pre(m, 1);
+    std::vector<int> cur(m, 1);
+    for (int j = 1; j < n; j++) {
+        for (int i = 1; i < m; i++) {
+            cur[i] = cur[i-1] + pre[i];
+        }
+        std::swap(pre, cur);
+    }
+    return pre[m-1];
+}
+
+/*
+    Further inspecting V3 we see that there is no need to keep two vectors as prev[i] is cur[i] before its update
+ */
+int uniquePathsV4(int m, int n) {
+    if (m > n) uniquePathsV4(n, m);
+    std::vector<int> cur(m,1);
+    for (int j =1; j < n; j++) {
+        for (int i = 0; i < m; i++) {
+            cur[i] += cur[i-1];
+        }
+    }
+    return cur[m-1];
+}
+
+VectOfVect zigzagLevelOrder(TreeNode *root) {
+    VectOfVect result;
+    std::deque<TreeNode*> nodeQue;
+    if (!root) return result;
+    bool leftToRight = true;  // bool to dictate direction of level traversal
+    nodeQue.push_back(root);
+    while(!nodeQue.empty()) {
+        int lvlSize = (int)nodeQue.size();
+        std::vector<int> currLvl;
+        for (int i = 0; i < lvlSize; i++) {
+            TreeNode* nd;
+            if (leftToRight) {
+                nd = nodeQue.front();
+                nodeQue.pop_front();
+            }
+            else {
+                nd = nodeQue.back();
+                nodeQue.pop_back();
+            }
+            currLvl.push_back(nd->val);
+            if (leftToRight) {
+                if (nd->left) nodeQue.push_back(nd->left);
+                if (nd->right) nodeQue.push_back(nd->right);
+            } else {    // we go right to left
+                if (nd->right) nodeQue.push_front(nd->right);
+                if (nd->left) nodeQue.push_front(nd->left);
+            }
+        }
+        leftToRight = !leftToRight;
+        result.push_back(currLvl);
+    }
+    return result;
+}
+
+std::vector<Interval> mergeIntervals(std::vector<Interval> &intervals) {
+    std::vector<Interval> result;
+    // sort by starting point, neighboring intervals will be potential overlappers
+    std::sort(intervals.begin(),
+              intervals.end(),
+              [](auto& a, auto& b){ return a.start < b.start; });
+    for (auto& intv : intervals) {
+        /*
+         * if the list of the merged intervals is empty or if the current interval does not overlap
+         * with the previous, simply append it
+         */
+        if ( result.empty() || (result.end()-1)->end < intv.start )
+            result.push_back(intv);
+        else // otherwise there is overlap, so we merge the current and previous intervals
+            (result.end()-1)->end = std::max((result.end()-1)->end, intv.end);
+    }
+    return result;
+}
+
