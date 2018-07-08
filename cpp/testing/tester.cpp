@@ -8,6 +8,7 @@
 #include <sstream>
 #include <iomanip>
 #include <map>
+#include <queue>  
 #include "../utility/utility.h"
 
 using namespace std;
@@ -106,15 +107,14 @@ int main() {
 	std::vector<int> nums = fill_vector(25);
 //	std::map<int, int, MyComp> nmap;
 //	std::map<int, int> nmap;
-	std::map<int, int, std::greater<int>> nmap;
+	std::priority_queue<int, std::vector<int>, std::greater<int>> priQue;
 	int cnt = 1;
-	for (auto el : nums) nmap[el] = ++cnt;
-
-	display(nums);
-
-	for (auto& entry : nmap)
-		LOG << entry.first << " : " << entry.second << END;
-
+	for (auto el : nums) priQue.push(el);
+	display(nums); 
+	while (!priQue.empty()) {
+		LOG << priQue.top() << END; 
+		priQue.pop();
+	}
 	return 0;
 }
 

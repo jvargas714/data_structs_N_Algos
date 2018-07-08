@@ -4,7 +4,9 @@
 #include <iomanip>
 #include <cstring>
 #include <queue>            // std::priority_queue
+#include <sstream>          // string stream
 #include <unordered_map>    // std::unordered_map
+#include <numeric>          // std::accumulate
 #include "leet_algos.h"
 #include "utility.h"
 
@@ -2413,7 +2415,7 @@ ListNode *addTwoNumbersV2(ListNode *l1, ListNode *l2) {
 }
 
 // my original solution :: not good
-std::vector<std::string> topKFrequent(const std::vector<std::string> &words, int k) {
+std::vector<std::string> topKFrequent(std::vector<std::string> &words, int k) {
     if (words.size() == 1) return {words[0]};
     std::vector<std::string> result;
     std::map<std::string, int> freqMap;
@@ -2447,9 +2449,28 @@ std::vector<std::string> topKFrequent(const std::vector<std::string> &words, int
     return result;
 }
 
+/*
+ optimized using a heap
+ fill map <word, number of occurances>
+ fill priority queue (max) each element being a
+ std::pair with the word paired with its numOccurences from the vector
+ the comparator for the queue MyPairCompGreater, the comparator ensures
+ the order is from smallest to largest
 
-// optimized using a heap
-// O( nlog(k) )
+ Elements are compares each word by number of occurences if they are equal the tie
+ is broken by when word comes first in the alphabet
+ this comparator determines the position in the pri queue
+      if (p1.second != p2.second)
+          return p1.second > p2.second;
+      return p1.first < p2.first;
+
+ an additional optimization is once the pri queue reaches size of k
+ we pop the top (word with least occurences)
+
+ After queue is filled we can fill k elements in to the array ending with
+ element 0 to be the word with the most frequent appearances
+ O( nlog(k) )
+ */
 std::vector<std::string> topKFrequentV2(const std::vector<std::string> &words, int k) {
     std::unordered_map<std::string, int> freqMap;
 
@@ -2459,15 +2480,17 @@ std::vector<std::string> topKFrequentV2(const std::vector<std::string> &words, i
 
     // priority queue looks up O(1) with the element being the greatest
     std::priority_queue<std::pair<std::string, int>,
-            std::vector<std::pair<std::string, int>>, MyPairCompGreater> heap;
+            std::vector<std::pair<std::string, int>>,
+            MyPairCompGreater> heap;
     for (const auto& entry: freqMap) {
         if (heap.size() < k) {
             heap.push(std::make_pair(entry.first, entry.second));
         } else {
             auto temp = heap.top();
-            if (entry.second < temp.second || entry.second == temp.second && temp.first < entry.first)
+            if (entry.second < temp.second || entry.second
+                                              == temp.second && temp.first < entry.first)
                 continue;
-            heap.pop();
+            heap.pop();   // keeps pri queue from exceeded k in size
             heap.push(std::make_pair(entry.first, entry.second));
         }
     }
@@ -2480,3 +2503,120 @@ std::vector<std::string> topKFrequentV2(const std::vector<std::string> &words, i
     return result;
 }
 
+struct TopFreqCompare {
+    bool operator()(const std::pair<int, int>& a, const std::pair<int, int>& b) {
+        return a.second < b.second;
+    }
+};
+
+std::vector<int> topFrequentKIntegers(std::vector<int>& nums, int k) {
+    std::vector<int> result;
+    std::map<int, int> freqMap;
+    std::priority_queue<std::pair<int, int>,
+            std::vector<std::pair<int, int>>,
+            TopFreqCompare> priQ;  // top element is least
+
+    // map word : numAppearences
+    for (auto& el : nums)
+        freqMap[el]++;
+
+    for (auto& el : nums) {
+        auto entry = freqMap.find(el);
+        if (entry == freqMap.end()) continue;
+        priQ.push({entry->first, entry->second});
+        freqMap.erase(el);
+        if (freqMap.empty()) break;
+    }
+
+    // fill result from pri-queue
+    while (result.size() < k) {
+        result.insert(result.begin(), priQ.top().first);
+        priQ.pop();
+    }
+    return result;
+}
+
+template<typename T>
+struct TopFreqCompareGreater {
+    bool operator()(T& a, T& b) {
+        return a.second < b.second;
+    }
+};
+
+std::string frequencySort(std::string s) {
+    std::string result;
+    std::map<char, int> freqMap;
+    std::priority_queue<std::pair<char, int>,
+            std::vector<std::pair<char, int>>,
+            TopFreqCompareGreater<std::pair<char, int>>> priQ;
+
+    // fill map <char, numAppearences>
+    // O(n)
+    for (auto& ch : s)
+        freqMap[ch]++;
+
+    // fill queue keeps elements sorted by appearences (most appearences on top)
+    for (auto& entry: freqMap) {
+        priQ.push( {entry.first, entry.second} );
+    }
+
+    // fill result O(priQSize * n)
+    while (!priQ.empty()) {
+        char ch = priQ.top().first;
+        for (int i = 0 ; i < priQ.top().second; i++)
+            result+=ch;
+        priQ.pop();
+    }
+    return result;
+}
+
+/*
+ *
+ int search(int A[], int n, int target) {
+        int lo=0,hi=n-1;
+        // find the index of the smallest value using binary search.
+        // Loop will terminate since mid < hi, and lo or hi will shrink by at least 1.
+        // Proof by contradiction that mid < hi: if mid==hi, then lo==hi and loop would have been terminated.
+        while(lo<hi){
+            int mid=(lo+hi)/2;
+            if(A[mid]>A[hi]) lo=mid+1;
+            else hi=mid;
+        }
+        // lo==hi is the index of the smallest value and also the number of places rotated.
+        int rot=lo;
+        lo=0;hi=n-1;
+        // The usual binary search and accounting for rotation.
+        while(lo<=hi){
+            int mid=(lo+hi)/2;
+            int realmid=(mid+rot)%n;
+            if(A[realmid]==target)return realmid;
+            if(A[realmid]<target)lo=mid+1;
+            else hi=mid-1;
+        }
+        return -1;
+    }
+ */
+
+// use binary search accounting for rotation
+// [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]
+int searchSortedRotatedArray(std::vector<int>& nums, int target) {
+    int lo=0, hi=static_cast<int>(nums.size()-1);  // 6
+
+    // finds the real lo and hi index accounting for the rotation
+    while(lo<hi) {
+        int mid = (lo+hi) / 2;   // 3 5 4
+        if (nums[mid] > nums[hi]) lo = mid + 1;  // 4
+        else hi = mid;  // 5 4
+    }
+
+    // lo == hi is the index of smallest value and the number of places
+    // rotated
+    int numRot = lo;
+    lo = 0;
+    hi = static_cast<int>(nums.size()-1);
+    // normal bin search accounting for rotation  hi = 4 lo = 4
+    while (lo <= hi) {
+        int mid = (lo+hi) / 2;
+        int realMid = (mid+rot)
+    }
+}
