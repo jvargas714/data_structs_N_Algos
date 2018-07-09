@@ -56,6 +56,7 @@ void rotateVector(std::vector<int>& nums, int k);
 // remove duplicates of sorted array inplace (not my solution)
 // // using the length returned by your function, it prints the first len elements
 size_t removeDuplicates(std::vector<int>& nums);
+int removeDuplicatesV2(std::vector<int>& nums);
 
 // problem #66
 std::vector<int> plusOne(std::vector<int>& digits);
@@ -91,6 +92,11 @@ bool isValidSudokuV4(SudokuBoard& board);
 void rotate(IntMatrix& matrix);
 void rotateV2(IntMatrix& matrix);
 
+
+// problem:
+// result:
+//
+int removeElement(std::vector<int>& nums, int val);
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem: 15  
@@ -250,14 +256,25 @@ bool hasCycle(ListNode*);
 ListNode* addTwoNumbers(ListNode* l1, ListNode* l2);
 ListNode* addTwoNumbersV2(ListNode* l1, ListNode* l2);
 
+// problem:
+// result: 99.88%
+//
+ListNode* intersectionOfTwoLinkedList(ListNode* headA, ListNode* headB);
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// problem: 369
+// result: 100ms
+// add to linked list represented number --> 1->2->3  goes to 1->2->4
+ListNode* plusOne(ListNode* head);
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Binary Trees=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 // problem: 
-// result: 8.81% 11ms 
+// result: 8.81% 11ms
+// result: 100% 4ms (V3)
 int maxDepth(TreeNode*);
 int maxDepthV2(TreeNode* root);
+int maxDepthV3(TreeNode *root);
 
 // problem: 98 
 // result: 99.55% 10ms 
@@ -289,7 +306,16 @@ TreeNode* sortedArrayToBST(std::vector<int>& data);
 // (ie, from left to right, then right to left for the next level and alternate between).
 VectOfVect zigzagLevelOrder(TreeNode* root);
 
+// problem: 100
+// result: 100% 0ms
+// return whether trees are the same
+// TODO :: get implementation from website
+bool isSameTree(TreeNode* p, TreeNode* q);
 
+// problem: 669
+// result: 97.28 % 12ms
+//
+TreeNode* trimBST(TreeNode* root, int L, int R);
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Sort and Searching+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -484,7 +510,10 @@ bool isPowerOfThree(int n);
 int romanToInt(std::string&);
 int romaToIntV2(const std::string&);
 
-
+// problem: 69
+// result: 100% 12ms
+// find integer sqr root of x
+int mySqrt(int x);
 
 
 
@@ -516,11 +545,13 @@ std::vector<std::vector<int>> generatePascalsTriangle(int numRows);
 
 // problem: 20
 // result: 95.53% 4ms
+// result:  100% 0ms (V2, original)
 // Given a string containing just the characters
 // '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
 // rules: 1. Open brackets must be closed by the same type of brackets.
 //		  2. Open brackets must be closed in the correct order.
 bool isValidParenthesisStr(std::string&);
+bool isValidParethesisStrV2(std::string s);
 
 // problem: 268
 // result: 91.26% 24ms

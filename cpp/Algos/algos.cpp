@@ -58,7 +58,8 @@ void bubble_sort( int* ar, size_t len )
 }
 
 /*
-    Descr: Select one element and place it in the correct spot in the list 
+    Descr: Select one element and place it in the correct spot in the list
+    O(n^2)
 */
 void insertion_sort( std::vector<int>& vect )
 {

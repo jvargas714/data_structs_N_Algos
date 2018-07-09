@@ -752,10 +752,15 @@ bool validAnaGramV2(std::string& s, std::string t) {
     if(s.size()!=t.size())
         return false;
     int chCount[26]={0};
+
+    // both strings should cancel eachothers counters out if they are anagrams
+    // ie all values in the table should have 0
     for(int i=0;i<s.size();i++){
         chCount[s[i]-'a']++;
         chCount[t[i]-'a']--;
     }
+
+    // makeing sure all counters are zero
     for (int i : chCount) {
         if(i !=0)
             return false;
@@ -1240,6 +1245,29 @@ int maxDepthV2(TreeNode* root) {
         else return (rheight+1);
     }
 }
+
+int maxDepthV3(TreeNode *root) {
+    if(root == nullptr)
+        return 0;
+
+    int res = 0;
+    std::queue<TreeNode *> q;
+    q.push(root);
+    while(!q.empty()) {
+        ++res;
+        for(int i = 0, n = (int)q.size(); i < n; ++i) {
+            TreeNode *p = q.front();
+            q.pop();
+            if(p->left != nullptr)
+                q.push(p->left);
+
+            if(p->right != nullptr)
+                q.push(p->right);
+        }
+    }
+    return res;
+}
+
 
 bool _bstCheck(TreeNode* root, TreeNode* _min = nullptr, TreeNode* _max = nullptr) {
 	if (!root) return true;
@@ -1838,6 +1866,23 @@ bool isValidParenthesisStr(std::string& str) {
     return true;
 }
 
+bool isValidParethesisStrV2(std::string s) {
+    std::stack<char> stkOpen;
+    for (const auto& ch : s) {
+        if (ch == '{' || ch == '[' || ch == '(') {
+            stkOpen.push(ch);
+        } else if (!stkOpen.empty()) {
+            if (ch == ']' && stkOpen.top() != '[') return false;
+            else if (ch == '}' && stkOpen.top() != '{') return false;
+            else if (ch == ')' && stkOpen.top() != '(') return false;
+            stkOpen.pop();
+        } else
+            return false;
+    }
+    if (!stkOpen.empty()) return false;
+    return true;
+}
+
 // needs to run in linear runtime with 0(1) mem complexity
 int missingNumber(std::vector<int>& nums) {
     auto el = std::find_if(nums.begin(), nums.end(), [](auto el){ return el == 0; });
@@ -1867,16 +1912,31 @@ size_t removeDuplicates(std::vector<int> &nums) {
     return n-count;
 }
 
+// inplace remove duplicates
+// [0 0 1 1 1 3 3]
+int removeDuplicatesV2(std::vector<int> &nums) {
+    if (nums.empty()||nums.size()==1) return (int)nums.size();
+    int prev = nums[0];
+    int j = 1;
+    for (int i = 1; i < nums.size(); i++) {
+        if (nums[i] != prev)
+            nums[j++] = nums[i];
+        prev = nums[i];
+    }
+    return j;
+}
+
+
 // inplace 0(1) mem
+// [* * *]  * *
 void rotateVector(std::vector<int> &nums, int k) {
-    unsigned int ind;
-    size_t n = nums.size();
-    unsigned int offset = k % n;
-    for (unsigned int i=0; i<n; i++) {
+    int ind;
+    auto n = (int)nums.size();
+    int offset = k % n;
+    for (int i=0; i<n; i++) {
         ind = i + offset;
-        if (ind>=n) {
+        if (ind>=n)
             ind-=n;
-        }
         nums[i]=nums[ind];
     }
 }
@@ -2941,3 +3001,163 @@ std::vector<Interval> mergeIntervals(std::vector<Interval> &intervals) {
     return result;
 }
 
+// using bin search
+int mySqrt(int x) {
+    if (0 == x) return 0;
+    int left = 1, right = x/2, ans;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (mid <= x / mid) {
+            left = mid + 1;
+            ans = mid;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return ans;
+}
+
+/*
+ *
+    3
+   / \
+  0   4
+   \
+    2
+   /
+  1
+
+  L = 1
+  R = 3
+
+Output:
+      3
+     /
+   2
+  /
+ 1
+
+ */
+TreeNode *trimBST(TreeNode *root, int L, int R) {
+    if (!root) return root;
+
+    // check if out of range
+    if (root->val < L) return trimBST(root->right, L, R);
+    if (root->val > R) return trimBST(root->left, L, R);
+
+    // assign nodes
+    root->left = trimBST(root->left, L, R);
+    root->right = trimBST(root->right, L, R);
+    return root;
+}
+
+ListNode* plusOne(ListNode* head) {
+    std::stack<ListNode *> nodeStk;
+    if (!head) return nullptr;
+
+    // reference to head
+    ListNode *node = head;
+
+    // find last node, build stack incase of carry operation
+    while (node->next) {
+        node = node->next;
+        nodeStk.push(node);
+    }
+
+    // single digit number
+    if (nodeStk.empty()) {
+        head->val++;
+        // carry MSD
+        if (head->val == 10) {
+            head->val = 0;
+            ListNode *tmp = new ListNode(1);
+            tmp->next = head;
+            return tmp;
+        } else
+            return head;
+    }
+
+    // already have ptr to last non-null node
+    nodeStk.pop();
+
+    // node is pointing to the tail in the list
+    node->val++;
+
+    // check for carry operation
+    if (node->val == 10) {
+        // perform carry operation
+        node->val = 0;
+        while (!nodeStk.empty()) {
+            ListNode *tmp = nodeStk.top();
+            tmp->val++;
+            if (tmp->val == 10) {
+                tmp->val = 0;
+                nodeStk.pop();
+            } else
+                return head;
+        }
+        head->val++;
+
+        // carry MSD
+        if (head->val == 10) {
+            head->val = 0;
+            ListNode *tmp = new ListNode(1);
+            tmp->next = head;
+            return tmp;
+        }
+    }
+    return head;
+}
+
+ListNode* intersectionOfTwoLinkedList(ListNode* headA, ListNode* headB) {
+    if (!headA||!headB) return nullptr;
+    ListNode* tmpa = headA;
+    ListNode* tmpb = headB;
+    int cnta = 0, cntb = 0, cnt = 0;
+
+    // find lengths, lists must be same distance from common point first
+    while (tmpa) {
+        cnta++;
+        tmpa = tmpa->next;
+    }
+    while (tmpb) {
+        cntb++;
+        tmpb = tmpb->next;
+    }
+
+    // reset ptrs
+    tmpa = headA;
+    tmpb = headB;
+
+    // set distance to common node to be the same
+    if (cnta > cntb) {
+        while (cnt < (cnta - cntb)) {
+            tmpa = tmpa->next;
+            cnt++;
+        }
+    } else if (cntb > cnta) {
+        while (cnt < (cntb - cnta)) {
+            tmpb = tmpb->next;
+            cnt++;
+        }
+    }
+
+    // find common node
+    while (tmpa && tmpb) {
+        if (tmpa == tmpb) return tmpa;
+        tmpa = tmpa->next;
+        tmpb = tmpb->next;
+    }
+    return nullptr;
+}
+
+int removeElement(std::vector<int>& nums, int val) {
+    if (nums.empty()) return 0;
+    int j = 0;
+    int cnt = 0;
+    for ( int i = 0; i < nums.size(); i++) {
+        if (nums[i] != val)
+            nums[j++] = nums[i];
+    }
+    return j;
+}
