@@ -2299,6 +2299,18 @@ std::vector<int> intersection(std::vector<int> &nums1, std::vector<int> &nums2) 
     return result;
 }
 
+// another solution
+std::vector<int> intersectionsV2(std::vector<int>& nums1, std::vector<int>& nums2) {
+    std::unordered_map<int, int> dict;
+    std::vector<int> res;
+    // fill map containing elements and their frequency from nums2
+    for(int i = 0; i < (int)nums1.size(); i++) dict[nums1[i]]++;
+    // for each element in nums2
+    for(int i = 0; i < (int)nums2.size(); i++)
+        if(--dict[nums2[i]] >= 0) res.push_back(nums2[i]);
+    return res;
+}
+
 static std::vector<char> _combineCharCnt(char ch, int cnt) {
     std::vector<char> result;
     result.push_back(ch);
@@ -2598,12 +2610,13 @@ std::vector<int> topFrequentKIntegers(std::vector<int>& nums, int k) {
     std::map<int, int> freqMap;
     std::priority_queue<std::pair<int, int>,
             std::vector<std::pair<int, int>>,
-            TopFreqCompare> priQ;  // top element is least
+            TopFreqCompare> priQ;  // top element is most frequent
 
     // map word : numAppearences
     for (auto& el : nums)
         freqMap[el]++;
 
+    // fill queue up with freq pairs, will order entries for us, most freq will be at the top
     for (auto& el : nums) {
         auto entry = freqMap.find(el);
         if (entry == freqMap.end()) continue;
@@ -2623,7 +2636,7 @@ std::vector<int> topFrequentKIntegers(std::vector<int>& nums, int k) {
 template<typename T>
 struct TopFreqCompareGreater {
     bool operator()(T& a, T& b) {
-        return a.second < b.second;
+        return a.second<b.second;
     }
 };
 
@@ -3154,10 +3167,68 @@ ListNode* intersectionOfTwoLinkedList(ListNode* headA, ListNode* headB) {
 int removeElement(std::vector<int>& nums, int val) {
     if (nums.empty()) return 0;
     int j = 0;
-    int cnt = 0;
     for ( int i = 0; i < nums.size(); i++) {
         if (nums[i] != val)
             nums[j++] = nums[i];
     }
     return j;
+}
+
+// * * * * * *
+static bool _isPalindrome(const std::string& word) {
+    int len = (int)word.size();
+    int j = (int)word.size()-1;
+    for (int i = 0; i < len/2; i++)
+            if (word[i] != word[j--])
+                return false;
+    return true;
+}
+
+// brute force
+// slow
+// O(n^3)
+std::string longestPalindrome(std::string& s) {
+    if (s.size() == 1 || s.empty()) return s;
+    std::string currSS;
+    std::string longest;
+    auto len = (int)s.size();
+    for (int i = 0 ; i < len-1; i++) {
+        for (int j = i+1; j <= len; j++) {
+            if (j-i > longest.size())
+                currSS = s.substr( (long)i, (long)(j-i) );
+            else
+                continue;
+            if (currSS.size() > longest.size() && _isPalindrome(currSS))
+                longest = currSS;
+        }
+    }
+    return longest;
+}
+
+// lo and hi supplied will be expanded from their starting points
+// lo will go <-- and hi will go -->
+// longest palindrome is returned
+static std::string expandToFindPalindrome(std::string word, int lo, int hi) {
+    int len = (int)word.size();
+    while (lo >= 0 && hi < len && (word[lo] == word[hi])) {
+        lo--;
+        hi++;
+    }
+    return word.substr(lo+1, (hi-lo-1));
+}
+
+// optimized
+std::string longestPalindromeV2(std::string &s) {
+    std::string currWord, longest;
+    int len = static_cast<int>(s.size());
+    for (int i = 0; i < len; i++) {
+
+        // odd lengthed words have one center point
+        currWord = expandToFindPalindrome(s, i, i);
+        if (currWord.size() > longest.size()) longest = currWord;
+
+        currWord = expandToFindPalindrome(s, i, i+1);
+        if (currWord.size() > longest.size()) longest = currWord;
+    }
+    return longest;
 }

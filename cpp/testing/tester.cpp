@@ -6,9 +6,10 @@
 #include <cstdint>
 #include <vector>
 #include <sstream>
+#include <unordered_map>
 #include <iomanip>
 #include <map>
-#include <queue>  
+#include <queue>
 #include "../utility/utility.h"
 
 using namespace std;
@@ -105,16 +106,9 @@ struct MyComp {
 
 int main() {
 	std::vector<int> nums = fill_vector(25);
-//	std::map<int, int, MyComp> nmap;
-//	std::map<int, int> nmap;
-	std::priority_queue<int, std::vector<int>, std::greater<int>> priQue;
-	int cnt = 1;
-	for (auto el : nums) priQue.push(el);
-	display(nums); 
-	while (!priQue.empty()) {
-		LOG << priQue.top() << END; 
-		priQue.pop();
-	}
+	string str = "jay is cool";
+	cout << str.substr(0, 11);
 	return 0;
 }
+
 

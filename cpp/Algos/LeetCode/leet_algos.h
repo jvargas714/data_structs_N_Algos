@@ -143,9 +143,11 @@ int thirdMax(const std::vector<int>& nums);
 
 // problem: 349
 // result: 70.98% 8ms
+// result: 100% (V2)
 // Given two arrays, write a function to compute their intersection.
 // each element in the result must be unique, result can be in any order
 std::vector<int> intersection(std::vector<int>& nums1, std::vector<int>& nums2);
+std::vector<int> intersectionsV2(std::vector<int>& nums1, std::vector<int>& nums2);
 
 // problem: 443
 // result: 55.04% 9ms
@@ -207,7 +209,18 @@ int strStr(std::string haystack, std::string needle);
 // result: 4ms 79.17%
 std::string countAndSay(int n);
 
+// problem: 5
+// result: 7.76% 584ms (V1 brute force)
+// result: 77.72% 16ms
+//Longest Palindromic Substring
+std::string longestPalindrome(std::string& s);
+std::string longestPalindromeV2(std::string& s);
 
+
+// problem:
+// result:
+//
+std::string longestCommonSubString(std::string& str1, std::string& str2);
 
 
 
