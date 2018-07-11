@@ -2123,15 +2123,20 @@ int lengthOfLongestSubstring(const std::string& str) {
 // optimized verison (not working yet)
 // runtime O(n) solution
 int lengthOfLongestSubstringV2(const std::string& str) {
-    // for ASCII char sequence, use this as a hashmap
-    std::vector<int> charIndex(256, -1);
-    int longest = 0, m = 0;
-    for (int i = 0; i < str.length(); i++) {
-        m = std::max(charIndex[str[i]]+1, m);    // automatically takes care of -1 case
-        charIndex[str[i]] = i;
-        longest = std::max(longest, i-m+1);
-    }
-    return longest;
+	if (str.empty() || str.size() == 1) return str.size();
+	auto len = (int)str.size();
+	int start = 0, currLen = 0, longest = 0;
+	std::map<char, int> charMap; // <char, index>
+	for (int i = 0; i < str.size(); i++) {
+		char currChar = str[i];
+		start = std::max(
+			start,
+			((charMap.find(currChar) != charMap.end()) ? charMap[currChar] + 1 : 0)
+		);
+		longest = std::max(i - start + 1, longest);
+		charMap[str[i]] = i;
+	}
+	return longest;
 }
 
 // using two pointers start and end
@@ -3232,3 +3237,4 @@ std::string longestPalindromeV2(std::string &s) {
     }
     return longest;
 }
+
