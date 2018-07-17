@@ -14,19 +14,17 @@ void testPrimeGeneration();
 int main(int argc, char* argv[])
 {   
     t_point t1_bub, t2_bub, t3_bub, t4_bub;
-    /*
-        Expected:
-            [9,9,10,10,10,10,10,10,10,9,9,9,8,8]
-     */
-    TreeNode* root = new TreeNode(1);
-    root->left = new TreeNode(2);
-    root->right = new TreeNode(3);
-    root->left->left = new TreeNode(4);
-    root->right->right = new TreeNode(5);
+    std::vector<int> nums = {2, 3, 1, 1, 4};
+
+    // read from file
+//    if (!fillVectorFromFile("leetcode_prob55.txt", nums)) {
+//        LOG << "ERROR reading file, exiting..." << END;
+//        return 1;
+//    }
 
     // call function
     t1_bub = hrc::now();
-    VectOfVect result = zigzagLevelOrder(root);
+    bool result = canJump(nums);
     t2_bub = hrc::now();
 
 
@@ -38,9 +36,10 @@ int main(int argc, char* argv[])
         LOG << "V1 result: " << END;
 //      LOG << "V1 result: " << result << END;
 //    LOG << "V1 result: " << ( (result) ? "found it":"did not find it" )  << END;
+        LOG << ((result) ? "can":"can not") << " make it" << END;
 //    LOG << "V1 result: Expected: 9 9 10 10 10 10 10 10 10 9 9 9 8 8\n";
 //    display(result);
-      displayMatrix(result);
+//      displayMatrix(result);
 //    LOG << "V2 there are " << result2 << " 1's in the bin rep of " << n << END;
 
 	std::cout << "\n\n----------------------------------------------------------------------\n\n" << END;

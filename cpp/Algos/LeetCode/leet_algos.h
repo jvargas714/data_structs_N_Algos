@@ -166,6 +166,12 @@ int trapRainWater(const std::vector<int>& height);
 // Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.
 std::vector<int> spiralOrder(IntMatrix& matrix);
 
+// problem: 55
+// result:
+// Given an array of non-negative integers, you are initially positioned at the first index of the array.
+//Each element in the array represents your maximum jump length at that position.
+//Determine if you are able to reach the last index.
+bool canJump(std::vector<int>& nums);
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+strings=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem #344

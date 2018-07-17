@@ -3238,3 +3238,41 @@ std::string longestPalindromeV2(std::string &s) {
     return longest;
 }
 
+// 2 3 1 1 4
+// todo :: finish
+static void _jump(const std::vector<int>& nums, int currIndex, int jump, bool& result) {
+    // base case
+    if ( (currIndex==nums.size()-1) || result ) {
+        result = true;
+        return;
+    }
+
+    // jumping
+    while (jump>0 && (currIndex + jump < nums.size())) {
+        _jump(nums, currIndex + jump, nums[currIndex + jump--], result);
+    }
+
+    // exit if result already set true
+    if (result) return;
+
+    // increment current index
+    currIndex++;
+
+    // increment index
+    if (currIndex < nums.size()-1)
+        _jump(nums, currIndex, nums[currIndex], result);
+}
+
+// [3,2,1,0,4]
+// map <num, vector<int>>
+// map is number of steps mapped to index
+bool canJump(std::vector<int> &nums) {
+    if (nums.empty()) return false;
+    if (nums.size()==1)
+        return !nums[0];
+    bool result = false;
+    _jump(nums, 0, nums[0], result);
+    return result;
+}
+
+

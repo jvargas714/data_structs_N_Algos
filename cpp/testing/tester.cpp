@@ -105,9 +105,11 @@ struct MyComp {
 
 
 int main() {
-	std::vector<int> nums = fill_vector(25);
-	string str = "jay is cool";
-	cout << str.substr(0, 11);
+
+	std::vector<int> nums;
+	if ( !fillVectorFromFile("leetcode_prob55.txt", nums) ) LOG << "failed to read file!!" << END;
+
+	LOG << "size of vect: " << nums.size() << END;
 	return 0;
 }
 

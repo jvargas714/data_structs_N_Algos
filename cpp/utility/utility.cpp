@@ -3,6 +3,7 @@
 #include <random>
 #include <queue>
 #include <map>
+#include <fstream>
 #include "time.h"
 #include "types.h"
 #include "utility.h"
@@ -413,6 +414,30 @@ bool isPrime(int n) {
     for(int i=2;i<=rt;i++){
         if(n%i==0)
             return false;
+    }
+    return true;
+}
+
+bool fillVectorFromFile(const std::string& fileName, std::vector<int>& vect) {
+    std::ifstream freader(fileName);
+
+    if (!freader.is_open()) return false;
+
+    std::string line;
+    std::vector<std::string> splitVect;
+    std::getline(freader, line);
+
+    if (!line.empty())
+        split(line, ',', splitVect);
+    else
+        return false;
+
+    for (const auto& el : splitVect) {
+        vect.push_back(
+                static_cast<int>(
+                        std::strtoll(el.c_str(), 0, 10)
+                )
+        );
     }
     return true;
 }
