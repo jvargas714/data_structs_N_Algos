@@ -3275,4 +3275,25 @@ bool canJump(std::vector<int> &nums) {
     return result;
 }
 
+static int _calcNum(int n) {
+    int tmp;
+    int result = 0;
+    while (n > 0) {
+        tmp = n % 10;
+        n/=10;
+        result += tmp*tmp;
+    }
+    return result;
+}
 
+bool isHappy(int n) {
+    int val = n;
+    std::map<int, int> nums;
+    while (val!=1) {
+        val = _calcNum(val);
+        auto entry = nums.find(val);
+        if (entry != nums.end()) return false;
+        nums[val] = val;
+    }
+    return true;
+}

@@ -32,17 +32,6 @@ struct Interval {
     Interval() : start(0), end(0) {}
     Interval(int s, int e) : start(s), end(e) {}
 };
-//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+misc=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-// Problem #59
-std::vector<int> count_bits( int num );
-
-// Problem #168 100% 0ms 
-std::string excel_column_title( int n );
-
-bool operator > ( envelope& env1, envelope& env2 );
-
-
-
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+arrays=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -535,8 +524,6 @@ int romaToIntV2(const std::string&);
 // find integer sqr root of x
 int mySqrt(int x);
 
-
-
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=Other=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -579,6 +566,26 @@ bool isValidParethesisStrV2(std::string s);
 // from 0, 1, 2, ..., n, find the one that is missing from the array
 int missingNumber(std::vector<int>& nums);
 
+// problem: 202
+// result: 100% 0ms
+// A happy number is a number defined by the following process:
+// Starting with any positive integer,
+// replace the number by the sum of the squares of its digits,
+// and repeat the process until the number equals 1 (where it will stay),
+// or it loops endlessly in a cycle which does not include 1.
+// Those numbers for which this process ends in 1 are happy numbers.
+bool isHappy(int n);
+
+// Problem #59
+std::vector<int> count_bits( int num );
+
+// problem: 168
+// result: 100% 0ms
+// Given a positive integer, return its corresponding column
+// title as appear in an Excel sheet.
+std::string excel_column_title( int n );
+
+bool operator > ( envelope& env1, envelope& env2 );
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%HARD%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem: 239
