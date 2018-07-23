@@ -3315,3 +3315,32 @@ std::vector<int> inorderTraversal(TreeNode* root) {
     }
     return result;
 }
+
+// TODO :: runtime error currently, fix me
+std::vector<int> productExceptSelf(std::vector<int> &nums) {
+    size_t len = nums.size();
+    if (len == 1) return nums;
+    if (nums.empty()) return {};
+    std::vector<int> result(len);
+    std::vector<int> fromLeft(len);
+    std::vector<int> fromRight(len);
+
+    // first element of fromLeft is 1
+    fromLeft[0] = 1;
+
+    // last element of from right will always be 1
+    fromRight[len-1] = 1;
+
+    // product up to nums[i] for each iteration
+    for (size_t i = 1; i < len; i++)
+        fromLeft[i] = fromLeft[i-1] * nums[i-1];
+
+    // product up to nums[i] for each iteration but from right side of nums
+    for (size_t i = len-2; i >= 0; i--)
+        fromRight[i] = fromRight[i+1]*nums[i+1];
+
+    // result would be multipication of product up to nums[i] from left and right
+    for (size_t i = 0; i < len; i++)
+        result[i] = fromLeft[i]*fromRight[i];
+    return result;
+}

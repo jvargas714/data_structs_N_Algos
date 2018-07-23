@@ -527,6 +527,13 @@ int romaToIntV2(const std::string&);
 // find integer sqr root of x
 int mySqrt(int x);
 
+// problem:  238
+// result:
+// Given an array nums of n integers where n > 1,
+// return an array output such that output[i] is equal to the
+// product of all the elements of nums except nums[i].
+std::vector<int> productExceptSelf(std::vector<int>& nums);
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=Other=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
