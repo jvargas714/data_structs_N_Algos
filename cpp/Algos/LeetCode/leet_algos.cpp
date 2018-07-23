@@ -3297,3 +3297,22 @@ bool isHappy(int n) {
     }
     return true;
 }
+
+std::vector<int> iterativeInorderTraversal(TreeNode* root) {
+    if (!root) return {{}};
+    TreeNode* tmp = root;
+    std::vector<int> result;
+    std::stack<TreeNode*> stk;
+    while (tmp || !stk.empty()) {
+        if (tmp->left) {
+            stk.push(tmp->left);
+            tmp = tmp->left;
+        } else {
+            TreeNode* node = stk.top();
+            result.push_back(node->val);
+            if (node->right)
+                stk.push(node->right);
+        }
+    }
+    return result;
+}

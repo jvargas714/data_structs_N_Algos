@@ -16,15 +16,9 @@ int main(int argc, char* argv[])
     t_point t1_bub, t2_bub, t3_bub, t4_bub;
     std::vector<int> nums = {2, 3, 1, 1, 4};
 
-    // read from file
-//    if (!fillVectorFromFile("leetcode_prob55.txt", nums)) {
-//        LOG << "ERROR reading file, exiting..." << END;
-//        return 1;
-//    }
-
-    // call function
+    TreeNode* root = allocateBinTreeFromVect( {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} );
     t1_bub = hrc::now();
-    bool result = canJump(nums);
+    std::vector<int> result = iterativeInorderTraversal(root);
     t2_bub = hrc::now();
 
 
@@ -36,9 +30,9 @@ int main(int argc, char* argv[])
         LOG << "V1 result: " << END;
 //      LOG << "V1 result: " << result << END;
 //    LOG << "V1 result: " << ( (result) ? "found it":"did not find it" )  << END;
-        LOG << ((result) ? "can":"can not") << " make it" << END;
+//        LOG << ((result) ? "can":"can not") << " make it" << END;
 //    LOG << "V1 result: Expected: 9 9 10 10 10 10 10 10 10 9 9 9 8 8\n";
-//    display(result);
+    display(result);
 //      displayMatrix(result);
 //    LOG << "V2 there are " << result2 << " 1's in the bin rep of " << n << END;
 
