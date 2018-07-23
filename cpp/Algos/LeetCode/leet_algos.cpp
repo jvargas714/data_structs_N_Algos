@@ -3297,44 +3297,21 @@ bool isHappy(int n) {
     return true;
 }
 
-<<<<<<< HEAD
-std::vector<int> iterativeInorderTraversal(TreeNode* root) {
-    if (!root) return {{}};
-    TreeNode* tmp = root;
-    std::vector<int> result;
-    std::stack<TreeNode*> stk;
-=======
-
-std::vector<int> inorderIterative(TreeNode* root) {
+std::vector<int> inorderTraversal(TreeNode* root) {
     if (!root) return {};
     std::stack<TreeNode*> stk;
-    TreeNode* tmp = root;
     std::vector<int> result;
-
->>>>>>> f4a4ad40ec5226e8731f9747355a75ed41e3f775
-    while (tmp || !stk.empty()) {
-        if (tmp->left) {
-            stk.push(tmp->left);
-            tmp = tmp->left;
+    TreeNode* node = root;
+    while(node||!stk.empty()) {
+        if (node) {
+            stk.push(node);
+            node = node->left;
         } else {
-<<<<<<< HEAD
-            TreeNode* node = stk.top();
+            node = stk.top();
             result.push_back(node->val);
-            if (node->right)
-                stk.push(node->right);
+            node = node->right;
+            stk.pop();
         }
     }
     return result;
 }
-=======
-            TreeNode* nodeTmp = stk.top()->right;
-            result.push_back( stk.top()->val );
-            stk.pop();
-            if (nodeTmp)
-                stk.push( nodeTmp );
-            tmp = tmp->right;
-        }
-    }
-}
-
->>>>>>> f4a4ad40ec5226e8731f9747355a75ed41e3f775
