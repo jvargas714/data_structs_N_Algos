@@ -326,11 +326,18 @@ bool isSameTree(TreeNode* p, TreeNode* q);
 //
 TreeNode* trimBST(TreeNode* root, int L, int R);
 
+<<<<<<< HEAD
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem:
 // result:
 // iterative solution to a binary tree inorder traversal
 std::vector<int> iterativeInorderTraversal(TreeNode* root);
+=======
+// problem: 
+// result: 
+// traverse binary tree inorder using iterative approach 
+std::vector<int> inorderIterative(TreeNode* root);
+>>>>>>> f4a4ad40ec5226e8731f9747355a75ed41e3f775
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Sort and Searching+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
