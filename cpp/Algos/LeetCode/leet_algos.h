@@ -528,7 +528,7 @@ int romaToIntV2(const std::string&);
 int mySqrt(int x);
 
 // problem:  238
-// result:
+// result: 99.07% 32ms
 // Given an array nums of n integers where n > 1,
 // return an array output such that output[i] is equal to the
 // product of all the elements of nums except nums[i].
@@ -597,6 +597,12 @@ std::string excel_column_title( int n );
 
 bool operator > ( envelope& env1, envelope& env2 );
 
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// problem: 22
+// result: 0% 204ms
+//Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+std::vector<std::string> generateParenthesis(int n);
+std::vector<std::string> generateParenthesisV2(int n);
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%HARD%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem: 239
 // result: 21.86% 88ms (V1)
@@ -622,4 +628,7 @@ void _genCntNSay(std::string& currTerm, std::string& nextTerm);
 int _getCount(const std::string& str, const int& offset);
 ListNode* _revList(ListNode* head);
 TreeNode* _insertData(int l, int r, std::vector<int>& data);
+
+// check if string is a valid open and closed parenth combinations () (()) ()() etc etc
+bool isVaildParenth(const std::string& str);
 #endif //ALGOS_SHORT_ALGOS_H

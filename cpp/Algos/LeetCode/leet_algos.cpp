@@ -8,6 +8,7 @@
 #include <queue>            // std::priority_queue
 #include <sstream>          // string stream
 #include <unordered_map>    // std::unordered_map
+#include <set>
 
 #include "leet_algos.h"
 #include "utility.h"
@@ -16,7 +17,7 @@
 std::vector<bool> g_versions;
 int g_nVersions;
 int g_badVersion;
-
+static int cnt = 0;
 
 /* Problem: #168 */
 std::string excel_column_title( int n ) {
@@ -1727,17 +1728,17 @@ int romanToInt(std::string& rnum) {
 
 int romaToIntV2(const std::string& rnum) {
     int rmap[89] = {0};
-    rmap['I'] = 1;
-    rmap['V'] = 5;
-    rmap['X'] = 10;
-    rmap['L'] = 50;
-    rmap['C'] = 100;
-    rmap['D'] = 500;
-    rmap['M'] = 1000;
+    rmap[(int)'I'] = 1;
+    rmap[(int)'V'] = 5;
+    rmap[(int)'X'] = 10;
+    rmap[(int)'L'] = 50;
+    rmap[(int)'C'] = 100;
+    rmap[(int)'D'] = 500;
+    rmap[(int)'M'] = 1000;
     int result = 0;
     char prev = '\0';
     for (const auto& ch: rnum) {
-        result += rmap[ch];
+        result += rmap[ static_cast<int>(ch) ];
         if (prev == '\0') {
             prev = ch;
             continue;
@@ -1892,7 +1893,6 @@ int missingNumber(std::vector<int>& nums) {
     int sum = std::accumulate(nums.begin(), nums.end(), 0);
     LOG << "sum: " << sum << END;
     int targetSum = 0;
-    int tmp = 1;
     int val = 1;
     for (int i = 1; i < nums.size()+1; i++) {
         targetSum += val++;
@@ -2124,8 +2124,7 @@ int lengthOfLongestSubstring(const std::string& str) {
 // runtime O(n) solution
 int lengthOfLongestSubstringV2(const std::string& str) {
 	if (str.empty() || str.size() == 1) return str.size();
-	auto len = (int)str.size();
-	int start = 0, currLen = 0, longest = 0;
+	int start = 0, longest = 0;
 	std::map<char, int> charMap; // <char, index>
 	for (int i = 0; i < str.size(); i++) {
 		char currChar = str[i];
@@ -2153,7 +2152,7 @@ int lengthOfLongestSubstringV3(const std::string& str) {
     std::memset(charMap, -1, sizeof(charMap));
 
     // first char already processed
-    charMap[str[0]] = 0;  // a
+    charMap[ static_cast<int>(str[0]) ] = 0;  // a
 
     /*
      * 0(n) solution one pass through string. Can think of this as a window passing through
@@ -2164,7 +2163,7 @@ int lengthOfLongestSubstringV3(const std::string& str) {
      *    length would be i-j --> 6-1+1, add one to compensate for index starting at 0
      */
     for (int i = 1; i < len; i++) {
-        prevIndex = charMap[str[i]];
+        prevIndex = charMap[ static_cast<int>(str[i]) ];
         // check if char has been processed or if i is not part of the current substring (i-curLen)
         if (prevIndex == -1 || i - curLen > prevIndex) {
             curLen++; // 2
@@ -2174,7 +2173,7 @@ int lengthOfLongestSubstringV3(const std::string& str) {
             curLen = i - prevIndex;
         }
         // save index of processed char
-        charMap[str[i]] = i;
+        charMap[static_cast<int>(str[i])] = i;
     }
     if (curLen > longest)
         longest = curLen;
@@ -2588,8 +2587,8 @@ std::vector<std::string> topKFrequentV2(const std::vector<std::string> &words, i
             heap.push(std::make_pair(entry.first, entry.second));
         } else {
             auto temp = heap.top();
-            if (entry.second < temp.second || entry.second
-                                              == temp.second && temp.first < entry.first)
+            if ( ((entry.second < temp.second) || entry.second)
+                                              == (temp.second && (temp.first < entry.first)) )
                 continue;
             heap.pop();   // keeps pri queue from exceeded k in size
             heap.push(std::make_pair(entry.first, entry.second));
@@ -3238,40 +3237,16 @@ std::string longestPalindromeV2(std::string &s) {
     return longest;
 }
 
-// 2 3 1 1 4
-// todo :: finish
-static void _jump(const std::vector<int>& nums, int currIndex, int jump, bool& result) {
-    // base case
-    if ( (currIndex==nums.size()-1) || result ) {
-        result = true;
-        return;
-    }
-
-    // jumping
-    while (jump>0 && (currIndex + jump < nums.size()))
-        _jump(nums, currIndex + jump, nums[currIndex + jump--], result);
-
-    // exit if result already set true
-    if (result) return;
-
-    // increment current index
-    currIndex++;
-
-    // increment index
-    if (currIndex < nums.size()-1)
-        _jump(nums, currIndex, nums[currIndex], result);
-}
-
 // [3,2,1,0,4]
 // map <num, vector<int>>
 // map is number of steps mapped to index
 bool canJump(std::vector<int> &nums) {
-    if (nums.empty()) return false;
-    if (nums.size()==1)
-        return !nums[0];
-    bool result = false;
-    _jump(nums, 0, nums[0], result);
-    return result;
+    auto len = (int)nums.size();
+    int i = 0;
+    for (int reach = 0; i < len && i <= reach; i++)
+        reach = std::max(i + nums[i], reach);
+    return i == len;
+
 }
 
 static int _calcNum(int n) {
@@ -3316,9 +3291,9 @@ std::vector<int> inorderTraversal(TreeNode* root) {
     return result;
 }
 
-// TODO :: runtime error currently, fix me
+// [24,12,8,6]
 std::vector<int> productExceptSelf(std::vector<int> &nums) {
-    size_t len = nums.size();
+    int len = static_cast<int>(nums.size());
     if (len == 1) return nums;
     if (nums.empty()) return {};
     std::vector<int> result(len);
@@ -3332,15 +3307,70 @@ std::vector<int> productExceptSelf(std::vector<int> &nums) {
     fromRight[len-1] = 1;
 
     // product up to nums[i] for each iteration
-    for (size_t i = 1; i < len; i++)
+    for (int i = 1; i < len; i++)
         fromLeft[i] = fromLeft[i-1] * nums[i-1];
 
     // product up to nums[i] for each iteration but from right side of nums
-    for (size_t i = len-2; i >= 0; i--)
+    for (int i = len-2; i >= 0; i--)
         fromRight[i] = fromRight[i+1]*nums[i+1];
 
     // result would be multipication of product up to nums[i] from left and right
-    for (size_t i = 0; i < len; i++)
+    for (int i = 0; i < len; i++)
         result[i] = fromLeft[i]*fromRight[i];
     return result;
 }
+
+// checks to see if str is valid open and close parenths
+bool isVaildParenth(const std::string& str) {
+    int balance = 0;
+    for (const auto& ch : str) {
+        if (ch == '(')
+            balance++;
+        else
+            balance--;
+        if (balance<0) return false;
+    }
+    return (balance==0);
+}
+
+void _genParenth(int n, int openCnt, int closeCnt, const std::string& currStr, std::unordered_map<std::string, std::string>& validMap) {
+    if (openCnt > n || closeCnt > n) return;
+    if (currStr.size() == n*2) {
+        if (validMap.find(currStr)==validMap.end() && isVaildParenth(currStr))
+            validMap[currStr]=currStr;
+        return;
+    }
+    _genParenth(n, openCnt+1, closeCnt, "("+currStr, validMap);
+    _genParenth(n, openCnt+1, closeCnt, currStr+"(", validMap);
+    _genParenth(n, openCnt, closeCnt+1, currStr+")", validMap);
+}
+
+void _backtrackParen(std::vector<std::string>& result, std::string curr, int openCnt, int closeCnt, int maxCnt) {
+    if (curr.size() == maxCnt * 2) {
+        result.push_back(curr);
+        return;
+    }
+    if (openCnt < maxCnt)
+        _backtrackParen(result, curr+"(", openCnt, closeCnt, maxCnt);
+    if (closeCnt < openCnt)
+        _backtrackParen(result, curr + ")", openCnt, closeCnt+1, maxCnt);
+}
+
+std::vector<std::string> generateParenthesis(int n) {
+    if (n == 0) return {};
+    std::unordered_map<std::string, std::string> validMap;
+    std::vector<std::string> result;
+
+    // recurse through other potential solutions
+    _genParenth(n, 1, 0, "(", validMap);
+    for (auto& entry: validMap) result.push_back(entry.second);
+    return result;
+}
+
+// optimized TODO ::finish from problem solution
+std::vector<std::string> generateParenthesisV2(int n) {
+    std::vector<std::string> result;
+
+    return result;
+}
+

@@ -14,11 +14,11 @@ void testPrimeGeneration();
 int main(int argc, char* argv[])
 {   
     t_point t1_bub, t2_bub, t3_bub, t4_bub;
-    std::vector<int> nums = {2, 3, 1, 1, 4};
+//    std::vector<int> nums = {1, 2, 3, 4};
+    int n = 8;
 
-    TreeNode* root = allocateBinTreeFromVect( {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} );
     t1_bub = hrc::now();
-    std::vector<int> result = iterativeInorderTraversal(root);
+    std::vector<std::string> result = generateParenthesis(n);
     t2_bub = hrc::now();
 
 
