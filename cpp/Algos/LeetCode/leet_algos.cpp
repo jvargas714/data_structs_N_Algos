@@ -3367,10 +3367,105 @@ std::vector<std::string> generateParenthesis(int n) {
     return result;
 }
 
-// optimized TODO ::finish from problem solution
-std::vector<std::string> generateParenthesisV2(int n) {
-    std::vector<std::string> result;
+// optimized solution
+void generateParenthesisHelper(int left, int right, int n, std::vector<std::string>& res, std::string str) {
+    if (left == n && right == n) {
+        res.push_back(str);
+    } else if (right > left || right > n || left > n) {
+        //created invalid sequence
+        return;
+    } else {
+        generateParenthesisHelper(left+1, right, n, res, str + "(");
+        generateParenthesisHelper(left, right+1, n, res, str + ")");
+    }
+}
 
-    return result;
+std::vector<std::string> generateParenthesisV2(int n) {
+    std::vector<std::string> res;
+    std::string s;
+    generateParenthesisHelper(0, 0, n, res, s);
+    return res;
+}
+
+// num of tabs show depth of directory
+// "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
+// "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"
+// todo :: finish
+int lengthLongestPath(const std::string& dirTree) {
+    if (dirTree.empty()) return 0;
+    int cnt = 0;
+    int longest = 0;
+    int rootCnt = 0;
+    int numFiles = 0;
+    int numTabs = 0;
+    int prevNumTabs = 1;
+    int elementCnt = 0;
+    std::string tmp;
+    std::string rootDir;
+    bool isRoot = true;
+    bool ext = false;
+    bool tabs = false;
+    std::stack<std::string> stk;
+
+    for (const auto& ch: dirTree) {
+        // get root dir length
+        if (isRoot && ch != '\n') {
+            rootCnt++;
+            rootDir+=ch;
+            continue;
+        }
+
+        isRoot = false;
+        if (ch == '\t') {
+            tabs = true;
+            numTabs++;
+            continue;
+        }
+        if (tabs) {
+            tabs = false;
+            if (numTabs <= prevNumTabs) {
+                LOG << "removing: " << elementCnt << " chars from total cnt" << END;
+                cnt -= elementCnt;
+            }
+            prevNumTabs = numTabs;
+            elementCnt = 0;
+            numTabs = 0;
+        }
+
+        if (ch == '\n' && !ext) {
+            cnt++;  // foward slash
+            tmp+='/';
+            continue;
+        }
+
+        // reached file extension
+        if (ch == '.') {
+            tmp += ch;
+            ext = true;
+            cnt++;
+            continue;
+        }
+
+        if (ext && ch=='\n') {
+            ext = false;
+            numFiles++;
+            if (cnt + rootCnt > longest)
+                longest = cnt + rootCnt;
+            elementCnt = 0;
+            cnt = 0;
+            LOG << "full dir found: " << rootDir + tmp << END;
+            tmp = "";
+            continue;
+        }
+        cnt++;
+        elementCnt++;
+        tmp += ch;
+    }
+    if (ext) {
+        numFiles++;
+        if (cnt + rootCnt > longest) longest = cnt + rootCnt;
+        LOG << "full dir found at end: " << rootDir + tmp << END;
+    }
+    return (numFiles == 0) ? 0 : longest;
 }
 

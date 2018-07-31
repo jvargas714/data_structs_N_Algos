@@ -14,25 +14,26 @@ void testPrimeGeneration();
 int main(int argc, char* argv[])
 {   
     t_point t1_bub, t2_bub, t3_bub, t4_bub;
-//    std::vector<int> nums = {1, 2, 3, 4};
-    int n = 8;
 
     t1_bub = hrc::now();
-    std::vector<std::string> result = generateParenthesis(n);
+//    int result = lengthLongestPath(
+//            "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
+//            );
+    int result = lengthLongestPath("dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext");
     t2_bub = hrc::now();
 
 
-//    LOG << "\n\n----------------------------------------------------------------------\n\n" << END;
+    LOG << "\n\n----------------------------------------------------------------------\n\n" << END;
 
 //    t3_bub = hrc::now();
 //    LOG << "V3 Longest substring in " << "word " << " is --> " << lengthOfLongestSubstringV3(word) << END;
 //    t4_bub = hrc::now();
-        LOG << "V1 result: " << END;
-//      LOG << "V1 result: " << result << END;
+//      LOG << "V1 result: " << END;
+      LOG << "V1 result: " << result << END;
 //    LOG << "V1 result: " << ( (result) ? "found it":"did not find it" )  << END;
 //        LOG << ((result) ? "can":"can not") << " make it" << END;
 //    LOG << "V1 result: Expected: 9 9 10 10 10 10 10 10 10 9 9 9 8 8\n";
-    display(result);
+//    display(result);
 //      displayMatrix(result);
 //    LOG << "V2 there are " << result2 << " 1's in the bin rep of " << n << END;
 
