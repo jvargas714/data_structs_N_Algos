@@ -239,7 +239,8 @@ std::string longestCommonSubString(std::string& str1, std::string& str2);
 // the longest absolute path to file in the abstracted file system.
 // length is determined by number of characters and not how deep the file goes
 // If there is no file in the system, return 0.
-int lengthLongestPath(const std::string& input);
+int lengthLongestPath(const std::string&);
+int lengthLongestPathV2(const std::string&);
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+Linked Lists=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cctype>
 #include <cstddef>
 #include <cstring>
 #include <deque>            // std::deque
@@ -3390,7 +3391,6 @@ std::vector<std::string> generateParenthesisV2(int n) {
 // num of tabs show depth of directory
 // "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
 // "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"
-// todo :: finish
 int lengthLongestPath(const std::string& dirTree) {
     if (dirTree.empty()) return 0;
     int cnt = 0;
@@ -3430,6 +3430,7 @@ int lengthLongestPath(const std::string& dirTree) {
             prevNumTabs = numTabs;
             elementCnt = 0;
             numTabs = 0;
+			continue;
         }
 
         if (ch == '\n' && !ext) {
@@ -3467,5 +3468,56 @@ int lengthLongestPath(const std::string& dirTree) {
         LOG << "full dir found at end: " << rootDir + tmp << END;
     }
     return (numFiles == 0) ? 0 : longest;
+}
+// "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"
+// "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext" << current 
+void _lenLongestPath(const std::string& dirTree, int currLen, int& maxLen, int index, int prevTabs) {
+	if (index >= dirTree.size()) return;
+	int tabCount = 0;
+	int cnt = 0;
+	bool tabs = false;
+	bool isFile = false;
+	std::string tmp;
+
+	LOG << "index: " << index << ", currLen: " << currLen << ", maxLen: " << maxLen << ", prevTabs: " << prevTabs << END;
+
+	for (; index < dirTree.size(); index++) {
+		char ch = dirTree[index];
+		if (dirTree[index] == '\t') {
+			tabCount++;
+			tabs = true;
+			continue;
+		}
+		if (tabs)
+			break;
+		if (dirTree[index] == '.') isFile = true;
+		cnt++;
+		tmp += (ch == '\n') ? '/':ch;
+		LOG << "current tmp: " << tmp << END;
+	}
+
+	// if its a file and currLen + cnt > max, update maxLen 
+	if (isFile && (currLen + cnt > maxLen)) {
+		maxLen = currLen + cnt;
+		//currLen = maxLen;
+	}
+
+	// if prevTabs == tabCount then subdir has no more children so cnt goes to zero
+	if (tabCount <= prevTabs) cnt = 0;
+	_lenLongestPath(dirTree, currLen+cnt, maxLen, index, tabCount);
+}
+
+// "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"
+int lengthLongestPathV2(const std::string& dirTree) {
+	// get length of root dir first 
+	int rootLen = 0;
+	for (const auto& ch : dirTree) {
+		if (ch != '\t') rootLen++;
+		else break;
+	}
+	int res = 0;
+	_lenLongestPath(dirTree, rootLen, res, rootLen + 1, 1);
+	LOG << "result: " << res << END;
+	return res;
 }
 
