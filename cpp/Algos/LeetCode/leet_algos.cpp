@@ -3388,136 +3388,55 @@ std::vector<std::string> generateParenthesisV2(int n) {
     return res;
 }
 
-// num of tabs show depth of directory
-// "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
-// "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"
 int lengthLongestPath(const std::string& dirTree) {
-    if (dirTree.empty()) return 0;
-    int cnt = 0;
-    int longest = 0;
-    int rootCnt = 0;
-    int numFiles = 0;
-    int numTabs = 0;
-    int prevNumTabs = 1;
-    int elementCnt = 0;
-    std::string tmp;
-    std::string rootDir;
-    bool isRoot = true;
-    bool ext = false;
-    bool tabs = false;
-    std::stack<std::string> stk;
+    std::map<int, std::string> tabRootMap;
+    int index=-1, tabCnt=0, maxLen=0, currLevel=0;
+    bool istabs = false;
+    bool isfile = false;
+    std::map<int, int> parentDirMap;  // <numTabs, dirlen>
 
-    for (const auto& ch: dirTree) {
-        // get root dir length
-        if (isRoot && ch != '\n') {
-            rootCnt++;
-            rootDir+=ch;
-            continue;
-        }
-
-        isRoot = false;
-        if (ch == '\t') {
-            tabs = true;
-            numTabs++;
-            continue;
-        }
-        if (tabs) {
-            tabs = false;
-            if (numTabs <= prevNumTabs) {
-                LOG << "removing: " << elementCnt << " chars from total cnt" << END;
-                cnt -= elementCnt;
+    for (int i = index+1; i < (int)dirTree.size(); i++) {
+        char ch = dirTree[i];
+        if (istabs) {
+            if (ch == '\t') {
+                tabCnt++;
+                continue;
+            } else {
+                parentDirMap[tabCnt] = 0;
+                currLevel = tabCnt;
+                tabCnt = 0;
+                istabs = false;
             }
-            prevNumTabs = numTabs;
-            elementCnt = 0;
-            numTabs = 0;
-			continue;
         }
 
-        if (ch == '\n' && !ext) {
-            cnt++;  // foward slash
-            tmp+='/';
-            continue;
+        // check if current segment is a file or not
+        if (ch == '\n' && isfile) {
+            isfile = false;
+            int lenDir=0;
+            // find length of current directory
+            for (int j = 0; j <= currLevel; j++) lenDir+=parentDirMap[j];
+            if (lenDir > maxLen) maxLen = lenDir;
+            parentDirMap[currLevel] = 0;
         }
 
-        // reached file extension
-        if (ch == '.') {
-            tmp += ch;
-            ext = true;
-            cnt++;
-            continue;
+        // count chars including / which is counted as the new line char
+        if (ch != '\n') {
+            parentDirMap[currLevel]++;
+            if (ch == '.' && !isfile) isfile = true;
         }
-
-        if (ext && ch=='\n') {
-            ext = false;
-            numFiles++;
-            if (cnt + rootCnt > longest)
-                longest = cnt + rootCnt;
-            elementCnt = 0;
-            cnt = 0;
-            LOG << "full dir found: " << rootDir + tmp << END;
-            tmp = "";
-            continue;
+        else {  // new line
+            parentDirMap[currLevel]++;
+            istabs = true;
         }
-        cnt++;
-        elementCnt++;
-        tmp += ch;
     }
-    if (ext) {
-        numFiles++;
-        if (cnt + rootCnt > longest) longest = cnt + rootCnt;
-        LOG << "full dir found at end: " << rootDir + tmp << END;
+    if (isfile) {
+        int lenDir=0;
+        for (int j = 0; j <= currLevel; j++) lenDir+=parentDirMap[j];
+        if (lenDir > maxLen) maxLen = lenDir;
     }
-    return (numFiles == 0) ? 0 : longest;
-}
-// "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"
-// "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext" << current 
-void _lenLongestPath(const std::string& dirTree, int currLen, int& maxLen, int index, int prevTabs) {
-	if (index >= dirTree.size()) return;
-	int tabCount = 0;
-	int cnt = 0;
-	bool tabs = false;
-	bool isFile = false;
-	std::string tmp;
-
-	LOG << "index: " << index << ", currLen: " << currLen << ", maxLen: " << maxLen << ", prevTabs: " << prevTabs << END;
-
-	for (; index < dirTree.size(); index++) {
-		char ch = dirTree[index];
-		if (dirTree[index] == '\t') {
-			tabCount++;
-			tabs = true;
-			continue;
-		}
-		if (tabs)
-			break;
-		if (dirTree[index] == '.') isFile = true;
-		cnt++;
-		tmp += (ch == '\n') ? '/':ch;
-		LOG << "current tmp: " << tmp << END;
-	}
-
-	// if its a file and currLen + cnt > max, update maxLen 
-	if (isFile && (currLen + cnt > maxLen)) {
-		maxLen = currLen + cnt;
-		//currLen = maxLen;
-	}
-
-	// if prevTabs == tabCount then subdir has no more children so cnt goes to zero
-	if (tabCount <= prevTabs) cnt = 0;
-	_lenLongestPath(dirTree, currLen+cnt, maxLen, index, tabCount);
+    return maxLen;
 }
 
-// "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"
-int lengthLongestPathV2(const std::string& dirTree) {
-	// get length of root dir first 
-	int rootLen = 0;
-	for (const auto& ch : dirTree) {
-		if (ch != '\t') rootLen++;
-		else break;
-	}
-	int res = 0;
-	_lenLongestPath(dirTree, rootLen, res, rootLen + 1, 1);
-	LOG << "result: " << res << END;
-	return res;
+IntMatrix permute(std::vector<int> &nums) {
+    IntMatrix result;
 }
-

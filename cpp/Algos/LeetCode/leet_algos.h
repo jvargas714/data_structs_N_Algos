@@ -218,8 +218,8 @@ std::string longestPalindromeV2(std::string& s);
 //
 std::string longestCommonSubString(std::string& str1, std::string& str2);
 
-// problem:
-// result:
+// problem: 388
+// result: 0ms 100%
 // The string "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext" represents:
 // dir
 //     subdir1
@@ -231,7 +231,6 @@ std::string longestCommonSubString(std::string& str1, std::string& str2);
 // The directory dir contains two sub-directories subdir1 and subdir2.
 // subdir1 contains a file file1.ext and an empty second-level sub-directory subsubdir1.
 // subdir2 contains a second-level sub-directory subsubdir2 containing a file file2.ext.
-
 //We are interested in finding the longest (number of characters) absolute path to a file within our file system.
 // For example, in the second example above, the longest absolute path is "dir/subdir2/subsubdir2/file2.ext",
 // and its length is 32 (not including the double quotes).
@@ -240,7 +239,6 @@ std::string longestCommonSubString(std::string& str1, std::string& str2);
 // length is determined by number of characters and not how deep the file goes
 // If there is no file in the system, return 0.
 int lengthLongestPath(const std::string&);
-int lengthLongestPathV2(const std::string&);
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+Linked Lists=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -625,6 +623,11 @@ bool operator > ( envelope& env1, envelope& env2 );
 //Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
 std::vector<std::string> generateParenthesis(int n);
 std::vector<std::string> generateParenthesisV2(int n);
+
+// problem: 46
+// result:
+// Given a collection of distinct integers, return all possible permutations.
+std::vector<std::vector<int>> permute(std::vector<int>& nums);
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%HARD%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem: 239
 // result: 21.86% 88ms (V1)

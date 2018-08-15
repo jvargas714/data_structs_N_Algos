@@ -19,11 +19,16 @@ int main(int argc, char* argv[])
 //    int result = lengthLongestPath(
 //            "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
 //            );
-	std::string dirTree = "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext";
-	LOG << "Dir Tree: \n" << dirTree << "\n" << END; 
-    int result = lengthLongestPathV2(dirTree);
-    t2_bub = hrc::now();
+// "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext";
+// "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext";
+// "a\n\tb.txt\na2\n\tb2.txt"  << expected 9
 
+
+	std::string dirTree =
+	        "rzzmf\nv\n\tix\n\t\tiklav\n\t\t\ttqse\n\t\t\t\ttppzf\n\t\t\t\t\tzav\n\t\t\t\t\t\tkktei\n\t\t\t\t\t\t\thhmav\n\t\t\t\t\t\t\t\tbzvwf.txt";
+	LOG << "Dir Tree: \n" << dirTree << "\n" << END;
+    int result = lengthLongestPathV3(dirTree);
+    t2_bub = hrc::now();
 
     LOG << "\n\n----------------------------------------------------------------------\n\n" << END;
 
