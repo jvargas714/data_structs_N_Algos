@@ -12,22 +12,19 @@ void minStackTesting();
 void testPrimeGeneration();
 
 int main(int argc, char* argv[])
-{   
+{
+    /*
+"aaaaaaaaaaaaaaaaaaaaaab"
+"ba"
+
+     */
     t_point t1_bub, t2_bub, t3_bub, t4_bub;
-
+    std::vector<int> nums = {1,2,3};
+    std::string a = "aaaaaaaaaaaaaaaaaaaaaab";
+    std::string b = "ba";
+    LOG << "a: " << a << "\nb: " << b << END;
     t1_bub = hrc::now();
-//    int result = lengthLongestPath(
-//            "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
-//            );
-// "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext";
-// "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext";
-// "a\n\tb.txt\na2\n\tb2.txt"  << expected 9
-
-
-	std::string dirTree =
-	        "rzzmf\nv\n\tix\n\t\tiklav\n\t\t\ttqse\n\t\t\t\ttppzf\n\t\t\t\t\tzav\n\t\t\t\t\t\tkktei\n\t\t\t\t\t\t\thhmav\n\t\t\t\t\t\t\t\tbzvwf.txt";
-	LOG << "Dir Tree: \n" << dirTree << "\n" << END;
-    int result = lengthLongestPathV3(dirTree);
+    auto result = repeatedStringMatch(a, b);
     t2_bub = hrc::now();
 
     LOG << "\n\n----------------------------------------------------------------------\n\n" << END;
@@ -41,6 +38,7 @@ int main(int argc, char* argv[])
 //        LOG << ((result) ? "can":"can not") << " make it" << END;
 //    LOG << "V1 result: Expected: 9 9 10 10 10 10 10 10 10 9 9 9 8 8\n";
 //    display(result);
+//    LOG << "matrix size: " << result.size() << END;
 //      displayMatrix(result);
 //    LOG << "V2 there are " << result2 << " 1's in the bin rep of " << n << END;
 

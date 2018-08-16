@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <cstdint>
+#include <iostream>
 #include "types.h"
 
 #define LOG std::cout << __FUNCTION__ << "(): "
@@ -44,6 +45,7 @@ void display( const int*, size_t );
 
 template<typename T>
 int findLargestInMatrix(const T& matrix) {
+    if (matrix.empty() || matrix[0].empty()) return 0;
     int largestVal = matrix[0][0];
     for(const auto& row: matrix) {
         for(const auto& el : row) {

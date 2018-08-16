@@ -161,6 +161,7 @@ std::vector<int> spiralOrder(IntMatrix& matrix);
 //Each element in the array represents your maximum jump length at that position.
 //Determine if you are able to reach the last index.
 bool canJump(std::vector<int>& nums);
+
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+strings=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem #344
@@ -217,6 +218,20 @@ std::string longestPalindromeV2(std::string& s);
 // result:
 //
 std::string longestCommonSubString(std::string& str1, std::string& str2);
+
+
+// problem: 686
+// result: 85.99% 8ms
+/*
+Given two strings A and B, find the minimum number of times A has to be
+repeated such that B is a substring of it. If no such solution, return -1.
+For example, with A = "abcd" and B = "cdabcdab".
+Return 3, because by repeating A three times (“abcdabcdabcd”),
+B is a substring of it; and B is not a substring of A repeated two times ("abcdabcd").
+Note:
+The length of A and B will be between 1 and 10000.
+ */
+int repeatedStringMatch(std::string A, std::string B);
 
 // problem: 388
 // result: 0ms 100%
@@ -444,6 +459,7 @@ int uniquePathsV4(int m, int n);
 // result:
 // Given a collection of intervals, merge all overlapping intervals.
 std::vector<Interval> mergeIntervals(std::vector<Interval>& intervals);
+
 //+==+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+Design=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -625,7 +641,7 @@ std::vector<std::string> generateParenthesis(int n);
 std::vector<std::string> generateParenthesisV2(int n);
 
 // problem: 46
-// result:
+// result: 99.92 %  8ms
 // Given a collection of distinct integers, return all possible permutations.
 std::vector<std::vector<int>> permute(std::vector<int>& nums);
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%HARD%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

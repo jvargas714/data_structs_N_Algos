@@ -3437,6 +3437,77 @@ int lengthLongestPath(const std::string& dirTree) {
     return maxLen;
 }
 
-IntMatrix permute(std::vector<int> &nums) {
-    IntMatrix result;
+void _permute(std::vector<int>& nums, std::vector<std::vector<int>>& result, int lvl) {
+    if (lvl == nums.size()) {
+        result.push_back(nums);
+        return;
+    }
+    for (int i = lvl; i < (int)nums.size(); i++) {
+        swap(nums[lvl], nums[i]);
+        _permute(nums, result, lvl+1);
+        swap(nums[lvl], nums[i]);
+    }
+}
+
+std::vector<std::vector<int>> permute(std::vector<int> &nums) {
+    if (nums.empty()) return {};
+    std::vector<std::vector<int>> result;
+    _permute(nums, result, 0);
+    return result;
+}
+
+// is target a substring of base
+bool isSubString(const std::string& base, const std::string& target) {
+    if (base.size() < target.size()) return false;
+    size_t i = 0;
+    size_t tarLen = target.size();
+    size_t baseLen = base.size();
+    std::string tmpSub;
+    while (i < baseLen) {
+        if (base[i]==target[0])
+            if (base.substr(i, tarLen) == target) return true;
+        i++;
+    }
+    return false;
+}
+
+/*
+Given two strings A and B, find the minimum number of times A has to be
+repeated such that B is a substring of it.
+    "aa"
+    "a"
+ 1 + b*3/a
+ numrepeats :: numRpts < (1 + (b.size()*3)/a.size())
+ */
+int repeatedStringMatch(std::string a, std::string b) {
+    int numRpts = 1;
+    std::string origA(a);
+    if (a.empty()) return -1;
+    size_t maxRpts = (2 + (b.size()*2)/a.size());
+    LOG << "maxRpts: " << maxRpts << END;
+    int charMap[256];
+    std::memset(charMap, 0, sizeof(charMap));
+
+    // ensure every char in b is in a as well
+    for (const auto& ch : a)
+        charMap[(int)ch]++;
+
+    for (const auto& ch : b)
+        if (!charMap[(int)ch]) return -1;
+
+    // size a so that at least it is at least as long as B if its shorter
+    while(a.size() < b.size()) {
+        a+=origA;
+        numRpts++;
+    }
+
+    while (numRpts <= maxRpts) {
+        LOG << a << " :: numRpts: " << numRpts << END;
+        if ( isSubString(a, b) ) return numRpts;
+        else {
+            a += origA;
+            numRpts++;
+        }
+    }
+    return -1;
 }
