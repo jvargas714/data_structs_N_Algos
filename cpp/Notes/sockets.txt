@@ -1,0 +1,42 @@
+UDP Sockets
+	- connectionless 
+	- need to bind them to a specific port to recv data on that port 
+	- a udp socket cannot recv on multiple ports simaltaneously
+	- udp sockets that send data dont need to do anything before sending 
+	- can send to and from anyone at any time with the same socket 
+	- udp socket is unreliable performs less checks than tcp 
+	- faster than tcp 
+	- datagram protocol datagram packets cant be mixed with each other, guarenteed to be the same as when it was sent 
+	- can broadcast to multiple clients 
+	- should use UDP specific system calls, sendto() and recvfrom() instead of read/write 
+	- can use same socket obj (fd) to send and recv udp socks, just change the sockaddr struct
+
+TCP Sockets
+	- connection based 
+	- cannot send or recv anything util you are connected to another tcp socket on the remote machine 
+	- after connection is made can only communicate with the connected machine 
+	- one tcp socket will be needed for each client in your application 
+	- tcp sockets are reliable performs more checks than udp
+	- faster than udp
+	- stream protocol 
+	- no message boundary ie if sent "hello world" you could recv --> "hell" "oworld"
+	- tcp connection is a one to one connection so no broadcast 
+
+
+Sever/Client Sockets 
+	Server
+		- create socket get file descriptor 
+		- bind to an address, what port am i on?
+		- listen on a port, and wait for connection to be established 
+		- accept the connection from a client 
+		- send/recv the same way u read and write from a file 
+		- shutdown to end read/write 
+		- close to release data 
+
+	Client
+		- create a socket 
+		- bind : this is probably not needed since ur the client here 
+		- connect to a server 
+		- send/recv repeat until we have or recv data 
+		- shutdown to end read/write 
+		- close to release data 
