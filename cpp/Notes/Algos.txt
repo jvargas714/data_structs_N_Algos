@@ -1,0 +1,19 @@
+Algorithm Paradigms 
+	Backtracking:  https://www.geeksforgeeks.org/backtracking-introduction/
+		- Algorithmic technique for solving problems recursively by trying to build a solution incrementally
+		- when a solution is found to not satisfy the constraints we ditch that solution (backtrack)
+		- solved one piece at a time, removing solutions that do not satisfy the constraints of the problem at any time
+
+		How to know when to use backtracking:
+			- when searching for every possible combination in order to solve an optimization problem
+			- when solving a constraint satisfaction problem (CSPs)
+				* CSPs are mathematical questions defined as a set of objects whose state must satisfy a number of
+					constraints or limitations. 
+				* examples: 
+					1. Sudoku solving algorithm 
+					2. Eight queen puzzle 
+					3. Crosswords
+					4. Futoshiki
+			- well defined constraints 
+			- 
+			
