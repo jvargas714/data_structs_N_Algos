@@ -2,6 +2,7 @@
 #include <iostream>
 #include <queue>
 #include <stack>
+#include <unordered_map>
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%helper functions%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 static TreeNode* _insertData(int l, int r, std::vector<int>& data) {
@@ -273,4 +274,36 @@ std::vector<int> inorderTraversal(TreeNode* root) {
 
 int longestUnivaluePath(TreeNode *root) {
 
+}
+
+/*
+Example:
+Given a / b = 2.0, b / c = 3.0.
+queries are: a / c = ?, b / a = ?, a / e = ?, a / a = ?, x / x = ? .
+return [6.0, 0.5, -1.0, 1.0, -1.0 ]
+
+equations = [ ["a", "b"], ["b", "c"] ],
+values = [2.0, 3.0],
+queries = [ ["a", "c"], ["b", "a"], ["a", "e"], ["a", "a"], ["x", "x"] ].
+ */
+std::vector<double>
+calcEquation(std::vector<std::pair<std::string, std::string>> equations,
+				std::vector<double> &values,
+			 	std::vector<std::pair<std::string, std::string>> queries) {
+	std::vector<double> result;
+	std::unordered_map<std::string, std::vector<std::string>> pairs;
+	std::unordered_map<std::string, std::vector<double>> valuesPairs;
+
+	for (int i = 0; i < equations.size(); i++) {
+		std::pair<std::string, std::string> equation = equations[i];
+		if (pairs.find(equation.first) == pairs.end()) {
+			pairs[equation.first] = std::vector<std::string>();
+			valuesPairs[equation.first] = std::vector<double>();
+		}
+		if (pairs.find(equation.second) == pairs.end()) {
+			pairs[equation.second] = std::vector<std::string>();
+			valuesPairs[equation.second] = std::vector<double>();
+		}
+	}
+	return result;
 }
