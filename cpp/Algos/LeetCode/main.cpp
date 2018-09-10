@@ -2,13 +2,13 @@
 #include <chrono>
 #include <types.h>
 #include "utility.h"
-#include "leet_algos.h"
+#include "string_problems.h"
+
 using namespace std::chrono;
 typedef high_resolution_clock hrc;
 typedef hrc::time_point t_point;
 
 void testBinTree();
-void minStackTesting();
 void testPrimeGeneration();
 
 int main(int argc, char* argv[])
@@ -19,12 +19,10 @@ int main(int argc, char* argv[])
 
      */
     t_point t1_bub, t2_bub, t3_bub, t4_bub;
-    std::vector<int> nums = {1,2,3};
-    std::string a = "aaaaaaaaaaaaaaaaaaaaaab";
-    std::string b = "ba";
-    LOG << "a: " << a << "\nb: " << b << END;
+    int K = 4;
+    std::string key = "5F3Z-2e-9-w";
     t1_bub = hrc::now();
-    auto result = repeatedStringMatch(a, b);
+    auto result = licenseKeyFormatting(key, K);
     t2_bub = hrc::now();
 
     LOG << "\n\n----------------------------------------------------------------------\n\n" << END;
@@ -83,27 +81,6 @@ void testBinTree() {
         std::cout << el << " ";
     }
     std::cout << std::endl;
-}
-
-void minStackTesting() {
-    MinStack minStack;
-    minStack.push(2147483646);
-    minStack.push(2147483646);
-    minStack.push(2147483647);
-    LOG << "top: " << minStack.top() << END;
-    minStack.pop();
-    LOG << "min: " << minStack.getMin() << END;
-    minStack.pop();
-    LOG << "min: " << minStack.getMin() << END;
-    minStack.pop();
-    minStack.push(2147483647);
-    LOG << "top: " << minStack.top() << END;
-    LOG << "min: " << minStack.getMin() << END;
-    // minStack.push(-2147483648);
-    LOG << "top: " << minStack.top() << END;
-    LOG << "min: " << minStack.getMin() << END;
-    minStack.pop();
-    LOG << "min: " << minStack.getMin() << END;
 }
 
 void testPrimeGeneration() {

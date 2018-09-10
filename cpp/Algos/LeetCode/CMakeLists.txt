@@ -2,12 +2,14 @@ project(leetCode)
 include_directories(../)
 
 add_library(leetCode STATIC
-        leet_algos.cpp
-        leet_algos.h
+        string_problems.h
+        string_problems.cpp
         )
 
-add_executable(leetTest
-        main.cpp)
+add_executable(string_testing
+        string_testing.cpp)
+add_executable(binary_tree_testing binary_tree_testing.cpp)
 
-target_link_libraries(leetTest leetCode utility)
+target_link_libraries(string_testing leetCode utility)
+target_link_libraries(binary_tree_testing leetCode utility)
 

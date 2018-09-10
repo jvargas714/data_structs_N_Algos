@@ -12,6 +12,8 @@
 
 #define LOG std::cout << __FUNCTION__ << "(): "
 #define END std::endl
+#define  FUNCT_HEADER std::cout << "\n\n=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << __FUNCTION__ << "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << std::endl
+#define FUNCT_END std::cout << "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << __FUNCTION__ << " END " << "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << std::endl
 
 // fill vector from file
 bool fillVectorFromFile(const std::string& fileName, std::vector<int>& vect);

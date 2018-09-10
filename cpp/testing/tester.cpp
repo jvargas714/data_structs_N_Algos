@@ -105,11 +105,17 @@ struct MyComp {
 
 
 int main() {
-
-	std::vector<int> nums;
-	if ( !fillVectorFromFile("leetcode_prob55.txt", nums) ) LOG << "failed to read file!!" << END;
-
-	LOG << "size of vect: " << nums.size() << END;
+	std::string tmp = "thiS-is-A-test";
+	char ch = (char)std::toupper(tmp[0]);
+	std::transform(tmp.begin(), tmp.end(), tmp.begin(),
+		[](auto& ch) {
+		return std::toupper(ch);
+	});
+	tmp.erase(
+		std::remove_if(tmp.begin(), tmp.end(), [](auto& ch) { return ch == '-'; }),
+		tmp.end()
+	);
+	cout << tmp << endl;
 	return 0;
 }
 
