@@ -3,6 +3,7 @@
 #include <queue>
 #include <stack>
 #include <unordered_map>
+#include <set>
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%helper functions%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 static TreeNode* _insertData(int l, int r, std::vector<int>& data) {
@@ -27,6 +28,32 @@ static void _dive(TreeNode* node, TreeNode* root, int& deep, int& deepest) {
 	if (node == root)
 		deep = 1;
 	_dive(node->right, root, deep, deepest);
+}
+
+/*
+	Descr:
+        - the set makes the function return if there isn't any elements in it
+
+ */
+static double calcEquation_dfs(const std::string& start,
+	const std::string& end,
+	std::unordered_map<std::string, std::vector<std::string>>& pairs,
+	std::unordered_map<std::string, std::vector<double>>& values,
+	std::set<std::string> alreadyVisited,
+	double value) {
+	if (alreadyVisited.find(start)==alreadyVisited.end()) return 0.0;
+	if (pairs.find(start)==pairs.end()) return 0.0;
+	if (start==end) return value;
+	alreadyVisited.insert(start);
+	std::vector<std::string> strVect = pairs.find(start)->second;
+	std::vector<double> valVect = values.find(start)->second;
+	double tmp = 0.0;
+	for (int i = 0; i < strVect.size(); i++) {
+		tmp = calcEquation_dfs(strVect[i], end, pairs, values, alreadyVisited, value * valVect[i]);
+		if (tmp != 0.0) break;
+	}
+	alreadyVisited.erase(start);
+	return tmp;
 }
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END helper functions%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -290,7 +317,6 @@ std::vector<double>
 calcEquation(std::vector<std::pair<std::string, std::string>> equations,
 				std::vector<double> &values,
 			 	std::vector<std::pair<std::string, std::string>> queries) {
-	std::vector<double> result;
 	std::unordered_map<std::string, std::vector<std::string>> pairs;
 	std::unordered_map<std::string, std::vector<double>> valuesPairs;
 
@@ -304,6 +330,40 @@ calcEquation(std::vector<std::pair<std::string, std::string>> equations,
 			pairs[equation.second] = std::vector<std::string>();
 			valuesPairs[equation.second] = std::vector<double>();
 		}
+		pairs.find(equation.first)->second.push_back(equation.second);
+		pairs.find(equation.second)->second.push_back(equation.first);
+		valuesPairs.find(equation.first)->second.push_back(values[i]);
+		valuesPairs.find(equation.second)->second.push_back(1/values[i]);
+	}
+	std::pair<std::string, std::string> query;
+	std::vector<double> result(queries.size());
+	for (int i = 0; i < queries.size(); i++) {
+		query = queries[i];
+		result[i] = calcEquation_dfs(query.first, query.second, pairs, valuesPairs, std::set<std::string>(), 1.0);
+		if (result[i] == 0.0) result[i] = -1.0;
 	}
 	return result;
 }
+
+/*
+static double calcEquation_dfs(const std::string& start,
+	const std::string& end,
+	std::unordered_map<std::string, std::vector<std::string>>& pairs,
+	std::unordered_map<std::string, std::vector<double>>& values,
+	std::set<std::string>& alreadyVisited,
+	double value) {
+	if (alreadyVisited.find(start)==alreadyVisited.end()) return 0.0;
+	if (pairs.find(start)==pairs.end()) return 0.0;
+	if (start==end) return value;
+	alreadyVisited.insert(start);
+	std::vector<std::string> strVect = pairs.find(start)->second;
+	std::vector<double> valVect = values.find(start)->second;
+	double tmp = 0.0;
+	for (int i = 0; i < strVect.size(); i++) {
+		tmp = calcEquation_dfs(strVect[i], end, pairs, values, alreadyVisited, value * valVect[i]);
+		if (tmp != 0.0) break;
+	}
+	alreadyVisited.erase(start);
+	return tmp;
+}
+*/
