@@ -6,6 +6,8 @@ add_library(leetCode STATIC
         string_problems.cpp
         binary_tree_problems.h
         binary_tree_problems.cpp
+        array_problems.h
+        array_problems.cpp
         )
 
 add_executable(string_testing

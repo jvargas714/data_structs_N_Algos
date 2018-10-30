@@ -105,6 +105,18 @@ int lengthLongestPath(const std::string&);
 //Given a non-empty string S and a number K, format the string according to the rules described above.
 std::string licenseKeyFormatting(std::string S, int K);
 
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+// problem: 3
+// result: 2.58% 527ms (V1)
+// result: 96.61% 20ms (V2)
+// result: 77.85% 33ms (V3)
+// Given a string, find the length of the longest substring without repeating characters
+int lengthOfLongestSubstring(const std::string& str);
+int lengthOfLongestSubstringV2(const std::string& str);
+int lengthOfLongestSubstringV3(const std::string& str);
+
+
 
 
 #endif  // DATASTRUCTS_N_ALGOS_STRING_PROBLEMS_H

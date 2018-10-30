@@ -4,6 +4,7 @@
 #include <vector>
 #include <iomanip>
 #include <algorithm>
+#include <cstring>
 #include "utility.h"
 
 //============================================helper functions=================================================
@@ -525,3 +526,89 @@ std::string licenseKeyFormatting(std::string S, int K) {
 	}
 	return result;
 }
+
+// use a map to keep track of character and the index it came from
+// when a duplicate is found we can reposition i
+int lengthOfLongestSubstring(const std::string& str) {
+    if (str.size() == 1) return 1;
+    int i = 0;
+    int longest = 0;
+    auto len = static_cast<int>(str.size());
+    std::map<char, int> charMap; // mapping character to its index
+    while (i<len) {
+        auto it = charMap.find(str[i]);
+        if (it == charMap.end()) {
+            charMap[str[i]] = i;
+        } else {  // char has already been seen
+            if (charMap.size() > longest) {
+                longest = static_cast<int>(charMap.size());
+            }
+            i = it->second;
+            charMap.clear();
+        }
+        i++;
+    }
+    if (charMap.size() > longest) return static_cast<int>(charMap.size());
+    else return longest;
+}
+
+// optimized verison (not working yet)
+// runtime O(n) solution
+int lengthOfLongestSubstringV2(const std::string& str) {
+	if (str.empty() || str.size() == 1) return str.size();
+	int start = 0, longest = 0;
+	std::map<char, int> charMap; // <char, index>
+	for (int i = 0; i < str.size(); i++) {
+		char currChar = str[i];
+		start = std::max(
+			start,
+			((charMap.find(currChar) != charMap.end()) ? charMap[currChar] + 1 : 0)
+		);
+		longest = std::max(i - start + 1, longest);
+		charMap[str[i]] = i;
+	}
+	return longest;
+}
+
+// using two pointers start and end
+// abcabcbb
+// 'a' end = 1 {a, 1}
+// 'b'
+int lengthOfLongestSubstringV3(const std::string& str) {
+    if (str.empty()) return 0;
+    auto len = (int)str.size();
+    int prevIndex=0, curLen=1, longest=1;
+
+    // 256 different chars
+    int charMap[256];
+    std::memset(charMap, -1, sizeof(charMap));
+
+    // first char already processed
+    charMap[ static_cast<int>(str[0]) ] = 0;  // a
+
+    /*
+     * 0(n) solution one pass through string. Can think of this as a window passing through
+     * the string. When a duplicate is found the current substring len is updated this is
+     * essentially the distance from current index and one past the char at prev index
+     * "a b c d e f a"
+     *    j         i  --> str[j:i] inclusive is the new current substring the
+     *    length would be i-j --> 6-1+1, add one to compensate for index starting at 0
+     */
+    for (int i = 1; i < len; i++) {
+        prevIndex = charMap[ static_cast<int>(str[i]) ];
+        // check if char has been processed or if i is not part of the current substring (i-curLen)
+        if (prevIndex == -1 || i - curLen > prevIndex) {
+            curLen++; // 2
+        } else {
+            if (curLen > longest)
+                longest = curLen;
+            curLen = i - prevIndex;
+        }
+        // save index of processed char
+        charMap[static_cast<int>(str[i])] = i;
+    }
+    if (curLen > longest)
+        longest = curLen;
+    return longest;
+}
+
