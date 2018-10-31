@@ -143,4 +143,4 @@ bool canJump(std::vector<int>& nums);
 
 // Output:
 // [[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
-
+std::vector<std::pair<int, int>> reconstructQueue(std::vector<std::pair<int, int>>& people);

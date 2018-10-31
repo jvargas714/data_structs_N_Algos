@@ -106,7 +106,24 @@ static void _rotateLayer(IntMatrix& matrix, uint32_t layer) {
     } while(cnt < numRotations);
 }
 
-
+// find partner to swap with
+static bool _findSwap(std::vector<std::pair<int, int>>& people, int personInd) {
+    int cnt = 0;
+    int height = people[personInd].first;
+    int inFrontCnt = people[personInd].second;
+    for (int i = 0; i < people.size(); i++) {
+        if (i == personInd) continue;
+        if (people[i].first >= height) cnt++;
+        if (cnt == inFrontCnt) {
+            if (i > personInd) {
+                iter_swap(people.begin()+i, people.begin()+personInd);
+                return true;
+            }
+            return false;
+        }
+    }
+    return false;
+}
 // ===============================================END HELPER FUNCTIONS==================================================
 
 
@@ -885,3 +902,38 @@ bool canJump(std::vector<int> &nums) {
 
 }
 
+/*
+Input:
+    [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+
+Output:
+    [[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
+ */
+std::vector<std::pair<int, int>> reconstructQueue(std::vector<std::pair<int, int>>& people) {
+    if (people.size() == 1|| people.empty()) return people;
+    // sort by height first
+    sort(people.begin(), people.end(), [](auto& a, auto& b) {
+        if (a.first == b.first)
+            return a.second < b.second;
+        else
+            return a.first < b.first;
+    });
+
+    // handle edge case
+    if (people.size()<=2) {
+        _findSwap(people, 0);
+        return people;
+    }
+    int i = 0;
+    int cnt = 0;
+    int len = people.size();
+    while (cnt < len) {
+        if (i >= len) {
+            i = 0;
+            cnt = 0;
+        }
+        if (!_findSwap(people, i++)) cnt++;
+    }
+
+    return people;
+}
