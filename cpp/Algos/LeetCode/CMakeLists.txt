@@ -8,12 +8,13 @@ add_library(leetCode STATIC
         binary_tree_problems.cpp
         array_problems.h
         array_problems.cpp
-        )
+        array_testing.cpp)
 
-add_executable(string_testing
-        string_testing.cpp)
+add_executable(string_testing string_testing.cpp)
 add_executable(binary_tree_testing binary_tree_testing.cpp)
+add_executable(array_testing array_testing.cpp)
 
 target_link_libraries(string_testing leetCode utility)
 target_link_libraries(binary_tree_testing leetCode utility)
+target_link_libraries(array_testing leetCode utility)
 

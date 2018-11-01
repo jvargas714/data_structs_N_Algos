@@ -903,37 +903,47 @@ bool canJump(std::vector<int> &nums) {
 }
 
 /*
-Input:
-    [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
-
-Output:
-    [[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
+ * complexity: nlogn (due to sort)
+ * 1. sort by height descending order
+ *      - if same height then sort by allow in front ascending order
+ *      - example --> [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]] --> [7,0] [7,1] [6,1] ...
+ * 2. iterate through sorted list and insert each person in to solution list by allowed in front being the index
  */
 std::vector<std::pair<int, int>> reconstructQueue(std::vector<std::pair<int, int>>& people) {
-    if (people.size() == 1|| people.empty()) return people;
-    // sort by height first
-    sort(people.begin(), people.end(), [](auto& a, auto& b) {
-        if (a.first == b.first)
-            return a.second < b.second;
-        else
-            return a.first < b.first;
+    sort(people.begin(), people.end(),[](std::pair<int,int> p1, std::pair<int,int> p2){
+        return p1.first > p2.first || (p1.first == p2.first && p1.second < p2.second);
     });
-
-    // handle edge case
-    if (people.size()<=2) {
-        _findSwap(people, 0);
-        return people;
+    std::vector<std::pair<int,int>> sol;
+    for (auto person : people){
+        sol.insert(sol.begin() + person.second, person);
     }
-    int i = 0;
-    int cnt = 0;
-    int len = people.size();
-    while (cnt < len) {
-        if (i >= len) {
-            i = 0;
-            cnt = 0;
+    return sol;
+}
+
+// time limit exceeds for larger inputs
+std::vector<int> dailyTemperatures(std::vector<int> &T) {
+    if (T.empty()) return {};
+    std::vector<int> res;
+    int cnt = 1;
+    bool foundDay = false;
+    for (int i = 0; i < T.size()-1; i++) {
+        for (int j = i+1; j < T.size(); j++) {
+            if (T[j] > T[i]) {
+                res.push_back(cnt);
+                foundDay = true;
+                break;
+            } else
+                cnt++;
         }
-        if (!_findSwap(people, i++)) cnt++;
+        if (!foundDay) res.push_back(0);
+        foundDay = false;
+        cnt = 1;
     }
+    res.push_back(0);
+    return res;
+}
 
-    return people;
+std::vector<int> dailyTemperaturesV2(std::vector<int> &temps) {
+    std::vector<int> res(temps.size(), -1);
+
 }

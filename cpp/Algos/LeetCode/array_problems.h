@@ -132,7 +132,7 @@ std::vector<int> spiralOrder(IntMatrix& matrix);
 bool canJump(std::vector<int>& nums);
 
 // problem: 406
-// result: 
+// result: 99.6% (not my solution)
 // Suppose you have a random list of people standing in a queue. 
 // Each person is described by a pair of integers (h, k), 
 // where h is the height of the person and k is the number of people in front of 
@@ -140,7 +140,16 @@ bool canJump(std::vector<int>& nums);
 // Example
 // Input:
 // [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
-
 // Output:
 // [[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
 std::vector<std::pair<int, int>> reconstructQueue(std::vector<std::pair<int, int>>& people);
+
+// problem: 739
+// result: V1(3.51%), V2()
+//Given a list of daily temperatures T, return a list such that, for each day in the input,
+// tells you how many days you would have to wait until a warmer temperature.
+// If there is no future day for which this is possible, put 0 instead.
+//For example, given the list of temperatures T = [73, 74, 75, 71, 69, 72, 76, 73],
+// your output should be [1, 1, 4, 2, 1, 1, 0, 0].
+std::vector<int> dailyTemperatures(std::vector<int>& T);
+std::vector<int> dailyTemperaturesV2(std::vector<int> &T);

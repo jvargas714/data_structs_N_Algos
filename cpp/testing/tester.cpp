@@ -92,7 +92,7 @@ void rotate(vector<int>& nums, int k) {
 			LOG << "i: " << i << " ind: " << ind << END;
 			ind-=n;
 		}
-		LOG << "swapping ==> " << "i: " << i << " ind: " << ind << "\n" << END;
+		LOG << "swapping ==> ==>" << "i: " << i << " ind: " << ind << "\n" << END;
 		nums[i]=nums[ind];
 	}
 }
@@ -105,17 +105,9 @@ struct MyComp {
 
 
 int main() {
-	std::string tmp = "thiS-is-A-test";
-	char ch = (char)std::toupper(tmp[0]);
-	std::transform(tmp.begin(), tmp.end(), tmp.begin(),
-		[](auto& ch) {
-		return std::toupper(ch);
-	});
-	tmp.erase(
-		std::remove_if(tmp.begin(), tmp.end(), [](auto& ch) { return ch == '-'; }),
-		tmp.end()
-	);
-	cout << tmp << endl;
+	map<int, vector<int>> mp;
+	mp[0].push_back(0);
+	for (auto entry : mp) cout << entry.first << entry.second[0];
 	return 0;
 }
 
