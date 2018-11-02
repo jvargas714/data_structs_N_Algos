@@ -7,6 +7,7 @@
 // types
 typedef std::vector<std::vector<int>> IntMatrix;
 typedef std::vector<std::vector<std::string>> StrMatrix;
+typedef std::vector<std::vector<char>> CharMatrix;
 typedef std::vector<std::vector<char>> SudokuBoard;
 typedef std::vector<char> SudokuRow;
 typedef std::map<int, SudokuRow> SudokuColumns;

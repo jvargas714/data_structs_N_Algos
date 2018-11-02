@@ -61,11 +61,52 @@ void test_reconstructTheQueue() {
 void test_numOfIslands() {
     SEPARATOR;
     cout << "Problem #200 Number of Islands" << endl;
+    CharMatrix grid = {
+            {'1','1','1','1','0'},
+            {'1','1','0','1','0'},
+            {'1','1','0','0','0'},
+            {'0','0','0','0','1'}
+    };
+    CharMatrix grid2 = {
+            {'0'},
+            {'1'},
+            {'1'},
+            {'0'},
+            {'1'}
+    };
+    CharMatrix grid3 = {
+            {'1','0','1','1','1'},
+            {'1','0','1','0','1'},
+            {'1','1','1','0','1'}
+    };
+    CharMatrix grid4 = {
+            {'1','1','1','1','0'},
+            {'1','1','0','1','0'},
+            {'1','1','0','0','0'},
+            {'0','0','0','0','0'}
+    };
+    CharMatrix grid5 = {
+            {'1','1','1','0','1','0'},
+            {'1','1','0','0','0','0'},
+            {'0','1','0','0','0','0'},
+            {'0','1','0','0','0','0'},
+            {'0','0','0','1','0','1'}
+    };
+    displayMatrix(grid5);
+//    int expected = 2;
+    t1_bub = hrc::now();
+    int res = numIslands(grid5);
+    t2_bub = hrc::now();
+    cout << "result: " << res << endl;
+//    cout << "expected: " << expected << endl;
+    showExeTime();
+    END_PROBLEM;
 }
 
 int main() {
     test_dailyTemperatures();
     test_reconstructTheQueue();
+    test_numOfIslands();
     return 0;
 }
 

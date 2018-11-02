@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <stack>
+#include <string>
 #include <unordered_map>
 #include "array_problems.h"
 #include "utility.h"
@@ -123,6 +124,33 @@ static bool _findSwap(std::vector<std::pair<int, int>>& people, int personInd) {
         }
     }
     return false;
+}
+
+// zero out land squares as we travel through them DFS
+// read about traversing graphs, DFS, BFS, and their associated method types (ie. recursive)
+static void traverseIslandDFS(CharMatrix& grid, int row, int col) {
+    bool onReset = true;
+    int startCol = col;
+    int startRow = row;
+    int lastRow = grid.size()-1;
+    int lastCol = grid[0].size()-1;
+
+    while (col < grid[0].size()) {
+        if (row <= lastRow) {
+            if (grid[row][col] == '1') {
+                grid[row++][col] = '0';
+            } else {
+                col = startCol++;
+                row = startRow;
+                if (grid[row][col]) {
+
+                }
+            }
+        } else {
+            col = startCol++;
+            row = startRow;
+        }
+    }
 }
 // ===============================================END HELPER FUNCTIONS==================================================
 
@@ -1012,7 +1040,27 @@ int findPeakElement(std::vector<int> &nums) {
  * During DFS, every visited node should be set as '0' to mark as visited node.
  * Count the number of root nodes that trigger DFS, this number would be the number of
  * islands since each DFS starting at some root identifies an island.
+ * 11000
+ * 11000
+ * 00100
+ * 00011
+ *
+ * 11000
+ * 01100
  */
 int numIslands(std::vector<std::vector<char>> &grid) {
-    return 0;
+    if (grid.empty()) return 0;
+    int cnt = 0;
+    bool onLand = false;
+    for (int row = 0; row < grid.size(); row++) {
+        for (int col = 0; col < grid[0].size(); col++) {
+            if (grid[row][col]=='1' && !onLand) {
+                onLand = true;
+                cnt++;
+                // start DFS zero out land pieces
+                traverseIslandDFS(grid, row, col);
+            }
+        }
+    }
+    return cnt;
 }
