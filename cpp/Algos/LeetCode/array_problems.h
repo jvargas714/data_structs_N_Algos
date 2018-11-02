@@ -145,7 +145,8 @@ bool canJump(std::vector<int>& nums);
 std::vector<std::pair<int, int>> reconstructQueue(std::vector<std::pair<int, int>>& people);
 
 // problem: 739
-// result: V1(3.51%), V2()
+// result: V1(3.51%), V2(96.56%)
+// V2: concept was taken from discussion implementation was mine
 //Given a list of daily temperatures T, return a list such that, for each day in the input,
 // tells you how many days you would have to wait until a warmer temperature.
 // If there is no future day for which this is possible, put 0 instead.
@@ -153,3 +154,29 @@ std::vector<std::pair<int, int>> reconstructQueue(std::vector<std::pair<int, int
 // your output should be [1, 1, 4, 2, 1, 1, 0, 0].
 std::vector<int> dailyTemperatures(std::vector<int>& T);
 std::vector<int> dailyTemperaturesV2(std::vector<int> &T);
+
+// problem: 162
+// result: 99%
+// A peak element is an element that is greater than its neighbors.
+// Given an input array nums, where nums[i] ≠ nums[i+1], find a peak element and return its index.
+// The array may contain multiple peaks, in that case return the index to any one of the peaks is fine.
+// You may imagine that nums[-1] = nums[n] = -∞. Should have a logarithmic solution
+// Input: nums = [1,2,3,1]
+// Output: 2
+// Explanation: 3 is a peak element and your function should return the index number 2.
+int findPeakElement(std::vector<int>& nums);
+
+// problem: 200
+// result:
+// Given a 2d grid map of '1's (land) and '0's (water), count the number of islands.
+// An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically.
+// You may assume all four edges of the grid are all surrounded by water.
+//
+//Example 1:
+//Input:
+//11110
+//11010
+//11000
+//00000
+//Output: 1
+int numIslands(std::vector<std::vector<char>>& grid);

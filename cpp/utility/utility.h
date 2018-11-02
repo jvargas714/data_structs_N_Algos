@@ -1,7 +1,3 @@
-//
-// Created by JAY VARGAS on 4/9/18.
-//
-
 #ifndef CPP_UTILITY_H
 #define CPP_UTILITY_H
 #include <vector>
@@ -14,6 +10,8 @@
 #define END std::endl
 #define  FUNCT_HEADER std::cout << "\n\n=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << __FUNCTION__ << "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << std::endl
 #define FUNCT_END std::cout << "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << __FUNCTION__ << " END " << "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << std::endl
+#define END_PROBLEM cout << "\n\n\n\n" << endl
+#define SEPARATOR cout <<"----------------------------------------------------------------------" << endl;
 
 // fill vector from file
 bool fillVectorFromFile(const std::string& fileName, std::vector<int>& vect);
@@ -27,9 +25,9 @@ int* fill_array( uint32_t );
 // display vector
 // display contents of std::vector
 template <class T>
-void display( const T& vect, uint32_t line_limit=LINE_LIMIT ) {
+void display( const std::vector<T>& vect, uint32_t line_limit=LINE_LIMIT ) {
     int cnt = 0;
-     std::cout << "size: " << vect.size() << std::endl;
+//    std::cout << "size: " << vect.size() << std::endl;
     for( auto& el : vect ) {
         cnt++;
         if(cnt == line_limit) {
@@ -44,6 +42,22 @@ void display( const T& vect, uint32_t line_limit=LINE_LIMIT ) {
 
 // print array of specified size 
 void display( const int*, size_t );
+
+template<typename T1, typename T2>
+void display(const std::vector<std::pair<T1, T2>>& pairs, uint32_t line_limit=LINE_LIMIT) {
+    int cnt = 0;
+//    std::cout << "size: " << pairs.size() << std::endl;
+    for (const auto& el : pairs) {
+        cnt++;
+        if (cnt == line_limit) {
+            std::cout << "(" << el.first << "," << el.second << ")" << std::endl;
+            cnt = 0;
+            continue;
+        }
+        std::cout << "(" << el.first << "," << el.second << ")" << " ";
+    }
+    std::cout << std::endl;
+}
 
 template<typename T>
 int findLargestInMatrix(const T& matrix) {

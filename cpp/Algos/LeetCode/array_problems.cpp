@@ -905,16 +905,22 @@ bool canJump(std::vector<int> &nums) {
 /*
  * complexity: nlogn (due to sort)
  * 1. sort by height descending order
- *      - if same height then sort by allow in front ascending order
- *      - example --> [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]] --> [7,0] [7,1] [6,1] ...
- * 2. iterate through sorted list and insert each person in to solution list by allowed in front being the index
+ *      - if same height then sort by number of ppl in front in ascending order
+ *      - example --> [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]] --> [7,0] [7,1] [6,1] [5,0] ...
+ * 2. iterate through sorted list and insert each person in to solution list by number of ppl in front being the index
+ * if we are at [7,0] [7,1] [6,1] and we need to insert [5,0] then that element would go -->
+ * [5,0] [7,0] [7,1] [6,1] ...
  */
 std::vector<std::pair<int, int>> reconstructQueue(std::vector<std::pair<int, int>>& people) {
     sort(people.begin(), people.end(),[](std::pair<int,int> p1, std::pair<int,int> p2){
         return p1.first > p2.first || (p1.first == p2.first && p1.second < p2.second);
     });
+    std::cout << "sorted...." << std::endl;
+    display(people);
+    std::cout << "\n\n" << std::endl;
     std::vector<std::pair<int,int>> sol;
     for (auto person : people){
+        display(sol);
         sol.insert(sol.begin() + person.second, person);
     }
     return sol;
@@ -943,7 +949,70 @@ std::vector<int> dailyTemperatures(std::vector<int> &T) {
     return res;
 }
 
+/*
+ * Explanation:
+ * example based on i = 2 and j = 3
+ *   ?   ?   ?   2   1   1   0   0
+ * [73, 74, 75, 71, 69, 72, 76, 73]
+ * 0. allocate memory for result to be temps.size()
+ * 1. we start from end of temps
+ * 2. we use i and j = i+1;
+ * 3. if (temps[i] < temps[j]) then res.push_back(1)
+ * 4. if (temps[i] > temps[j]) then
+ * 4a. we look at res[j] ==> res[3] and see how many days until a hotter day (2)
+ *      - we can jump to that day which is 72 (i=5)
+ *      - 72 is still lower than 75, since 72 has a day 1 day ahead that is hotter we jump there
+ *      -  we arrive at 76
+ *      - we add the total steps taken to be 2 + 1 = 3,
+ *      - 3 days was from j=i+1 so we add 1 more so total of 4 days from i
+ */
 std::vector<int> dailyTemperaturesV2(std::vector<int> &temps) {
-    std::vector<int> res(temps.size(), -1);
+    if (temps.size()==1) return temps;
+    std::vector<int> res(temps.size(), 0);
+    int j;
+    for (int i = temps.size()-2; i >= 0; i--) {
+        j = i+1;
+        if (temps[i] < temps[j]) {
+            res[i]=1;
+        } else {
+            // use res to find next highest day by jumping
+            std::cout << "found >= case ==> i=" << i << " j=" << j << " temp: " << temps[i] << "\n";
+            res[i]=0;
+            while (j<res.size()-1 && temps[i] >= temps[j] && res[j]>0) {
+                j += res[j];
+                std::cout << "j=" << j << std::endl;
+                if (temps[i] < temps[j]) {
+                    std::cout << "offset found: " << (j-i) << std::endl;
+                    res[i] = (j-i);
+                    break;
+                }
+            }
+        }
+    }
+    return res;
+}
 
+// to get logn complexity we find a local max by using binary search
+int findPeakElement(std::vector<int> &nums) {
+    int l = 0, r = nums.size() - 1;
+    while (l < r) {
+        int mid = (l + r) / 2;
+        if (nums[mid] > nums[mid + 1])
+            r = mid;
+        else
+            l = mid + 1;
+    }
+    return l;
+}
+
+/*
+ * Algorithm:
+ * Linear scan the 2d grid map, if a node contains a '1',
+ * then it is a root node that triggers a Depth First Search.
+ * During DFS, every visited node should be set as '0' to mark as visited node.
+ * Count the number of root nodes that trigger DFS, this number would be the number of
+ * islands since each DFS starting at some root identifies an island.
+ */
+int numIslands(std::vector<std::vector<char>> &grid) {
+    return 0;
 }
