@@ -1,3 +1,5 @@
+#ifndef  DATASTRUCTS_N_ALGOS_ARRAY_PROBLEMS_H
+#define DATASTRUCTS_N_ALGOS_ARRAY_PROBLEMS_H
 #include <vector>
 #include <string>
 #include <map>
@@ -168,7 +170,7 @@ std::vector<int> dailyTemperaturesV2(std::vector<int> &T);
 int findPeakElement(std::vector<int>& nums);
 
 // problem: 200
-// result:
+// result: 98.93% (took concept from discussion)
 // Given a 2d grid map of '1's (land) and '0's (water), count the number of islands.
 // An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically.
 // You may assume all four edges of the grid are all surrounded by water.
@@ -181,3 +183,5 @@ int findPeakElement(std::vector<int>& nums);
 //00000
 //Output: 1
 int numIslands(std::vector<std::vector<char>>& grid);
+
+#endif // DATASTRUCTS_N_ALGOS_ARRAY_PROBLEMS_H

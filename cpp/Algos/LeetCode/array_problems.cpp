@@ -129,28 +129,15 @@ static bool _findSwap(std::vector<std::pair<int, int>>& people, int personInd) {
 // zero out land squares as we travel through them DFS
 // read about traversing graphs, DFS, BFS, and their associated method types (ie. recursive)
 static void traverseIslandDFS(CharMatrix& grid, int row, int col) {
-    bool onReset = true;
-    int startCol = col;
-    int startRow = row;
-    int lastRow = grid.size()-1;
-    int lastCol = grid[0].size()-1;
-
-    while (col < grid[0].size()) {
-        if (row <= lastRow) {
-            if (grid[row][col] == '1') {
-                grid[row++][col] = '0';
-            } else {
-                col = startCol++;
-                row = startRow;
-                if (grid[row][col]) {
-
-                }
-            }
-        } else {
-            col = startCol++;
-            row = startRow;
-        }
+    if (grid[row][col]=='1') {
+        grid[row][col] = '0';
+        std::cout << "\n" << std::endl; displayMatrix(grid);
     }
+    else return;
+    if (row < grid.size()-1) traverseIslandDFS(grid, row+1, col);
+    if (row > 0) traverseIslandDFS(grid, row-1, col);
+    if (col < grid[0].size()-1) traverseIslandDFS(grid, row,  col+1);
+    if (col > 0) traverseIslandDFS(grid, row, col-1);
 }
 // ===============================================END HELPER FUNCTIONS==================================================
 
@@ -1051,13 +1038,11 @@ int findPeakElement(std::vector<int> &nums) {
 int numIslands(std::vector<std::vector<char>> &grid) {
     if (grid.empty()) return 0;
     int cnt = 0;
-    bool onLand = false;
     for (int row = 0; row < grid.size(); row++) {
         for (int col = 0; col < grid[0].size(); col++) {
-            if (grid[row][col]=='1' && !onLand) {
-                onLand = true;
+            if (grid[row][col]=='1') {
                 cnt++;
-                // start DFS zero out land pieces
+                std::cout << "\n-----------clearing island!!--------------" << std::endl;
                 traverseIslandDFS(grid, row, col);
             }
         }

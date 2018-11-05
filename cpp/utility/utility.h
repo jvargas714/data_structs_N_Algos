@@ -27,7 +27,7 @@ int* fill_array( uint32_t );
 template <class T>
 void display( const std::vector<T>& vect, uint32_t line_limit=LINE_LIMIT ) {
     int cnt = 0;
-//    std::cout << "size: " << vect.size() << std::endl;
+    std::cout << "size: " << vect.size() << std::endl;
     for( auto& el : vect ) {
         cnt++;
         if(cnt == line_limit) {
@@ -98,6 +98,7 @@ std::string addSpaces(int numSpaces, const T& el) {
 template<class T>
 void displayMatrix(const T& matrix) {
     int numSpaces = getMatrixSpacing(matrix);
+    LOG << matrix.size() << "x" << matrix[0].size() << " matrix" << END;
     for (const auto& row : matrix) {
         for (const auto& el: row) {
             std::cout << el << addSpaces(numSpaces, el);
@@ -184,5 +185,52 @@ T maxElement(RandomAccessIter iter1, RandomAccessIter iter2) {
     }
     return (*iter2 > maxVal) ? *iter2:maxVal;
 }
+
+template<class T>
+void _permute(std::vector<T>& vals, std::vector<std::vector<T>>& result, int i, int len) {
+    if (i == len-1) {
+        result.push_back(vals);
+        return;
+    }
+    for (int ii = i; ii < len; ii++) {
+        swap(vals[ii], vals[i]);
+        _permute(vals, result, i+1, len);
+        swap(vals[ii], vals[i]);
+    }
+}
+
+template<class T>
+void _permute(std::vector<T>& vals, int permLen) {
+
+}
+
+template<class T>
+std::vector<T> findPermutations(std::vector<T>& vals, int permLen) {
+    return {};
+}
+
+template<class T>
+std::vector<std::vector<T>> findPermutations(std::vector<T>& vals) {
+    std::vector<std::vector<T>> result;
+    _permute(vals, result, 0, vals.size());
+    return result;
+}
 #endif //CPP_UTILITY_H
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -105,9 +105,11 @@ struct MyComp {
 
 
 int main() {
-	map<int, vector<int>> mp;
-	mp[0].push_back(0);
-	for (auto entry : mp) cout << entry.first << entry.second[0];
+    vector<int> vals = {1, 2, 3, 4, 5, 6, 7};
+    cout << "finding permutations of ";
+    display(vals);
+    cout << endl;
+    displayMatrix(findPermutations(vals));
 	return 0;
 }
 

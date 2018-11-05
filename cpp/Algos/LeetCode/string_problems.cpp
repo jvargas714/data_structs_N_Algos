@@ -1,11 +1,24 @@
 #include "string_problems.h"
 #include <iostream>
 #include <map>
+#include <queue>
 #include <vector>
 #include <iomanip>
 #include <algorithm>
 #include <cstring>
+#include <unordered_map>
 #include "utility.h"
+
+static const std::unordered_map<char, std::vector<char>> DIAL_PAD = {
+        {'2', {'a','b','c'}},
+        {'3', {'d','e','f'}},
+        {'4', {'g','h','i'}},
+        {'5', {'j','k','l'}},
+        {'6', {'m','n','o'}},
+        {'7', {'p','q','r','s'}},
+        {'8', {'t','u','v'}},
+        {'9', {'w','x','y','z'}}
+};
 
 //============================================helper functions=================================================
 static int _cleanStrToInt(const std::string& val, int pwr, int sign) {
@@ -91,8 +104,37 @@ static bool isSubString(const std::string& base, const std::string& target) {
 	return false;
 }
 
-// ============================================end helper functions============================================
+// generate generate combos (recursive method)
+static void generateT9Combos(const std::string& digits, std::string str,
+        std::vector<std::string>& result, int i, int j) {
+    if (i >= digits.size()) {
+        result.push_back(str);
+        str.clear();
+        return;
+    }
 
+    for (auto dig: digits) {
+        str+=DIAL_PAD.find(digits[i])->second[j];
+        generateT9Combos(digits, str, result, i++, j++);
+    }
+
+
+    generateT9Combos(digits, str, result, i, ++j);
+    str.clear();
+
+}
+
+//// generate T9 combos iterative
+//static void generateT9Combos(const std::string& digits, std::vector<std::string>& result) {
+//    std::string tmp;
+//    for (const auto& digit : digits) {
+//        for (auto ch: DIAL_PAD.find(digit)->second) {
+//            tmp+=
+//        }
+//    }
+//}
+
+// ============================================end helper functions============================================
 
 // best solution
 std::string reverseString(std::string s) {
@@ -610,5 +652,31 @@ int lengthOfLongestSubstringV3(const std::string& str) {
     if (curLen > longest)
         longest = curLen;
     return longest;
+}
+
+// 1:"" 2:"abc" 3:"def" 4:"ghi" 5:"jkl", 6:"mno" 7:"pqrs" 8:"tuv" 9:"wxyz"
+std::vector<std::string> letterCombinations(const std::string& digits) {
+    std::vector<std::string> result;
+    int cnt = 0;
+    std::string allChars;
+    generateT9Combos(digits, "", result, 0, 0);
+    return result;
+
+}
+
+std::vector<std::string> letterCombinationsV2(const std::string& digits) {
+    std::vector<std::string> ans;
+    if(digits.empty()) return ans;
+    static const std::vector<std::string> mapping =
+            {"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    ans.push_back("");
+    while(ans[0].size()!=digits.length()){
+        std::string remove = *ans.erase(ans.begin());
+        std::string mmap = mapping[digits.at(remove.length())-'0'];
+        for(char c: mmap){
+            ans.push_back(remove+c);
+        }
+    }
+    return ans;
 }
 
