@@ -39,25 +39,40 @@ void test_licenseKeyFormatting() {
     FUNCT_END;
 }
 
+// 2:"abc" 3:"def" 4:"ghi" 5:"jkl", 6:"mno" 7:"pqrs" 8:"tuv" 9:"wxyz"
 void test_letterCombinations() {
     FUNCT_HEADER;
-    std::string digitsDialed = "23";
+//    std::string digitsDialed = "279794567654";
+    std::string digitsDialed = "7";
+//    std::string digitsDialed = "529827427";  // jayvargas
+    // expected :: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
     t1_bub = hrc::now();
-    auto result = letterCombinationsV2(digitsDialed);
+    auto result = letterCombinationsV4(digitsDialed);
     t2_bub = hrc::now();
-    cout << "result: \n";
+    LOG << "result: \n";
     display(result);
-    cout << endl;
+    cout << END;
     showExeTime();
     FUNCT_END;
 }
 
-
-
-
+void test_numUniqueEmails() {
+    FUNCT_HEADER;
+    vector<string> input = {"test.email+alex@leetcode.com",
+                            "test.e.mail+bob.cathy@leetcode.com",
+                            "testemail+david@lee.tcode.com"};
+    int expected = 2;
+    t1_bub = hrc::now();
+    auto result = numUniqueEmails(input);
+    t2_bub = hrc::now();
+    LOG << "result: " << result << END;
+    LOG << "expected: " << expected << END;
+    showExeTime();
+    FUNCT_END;
+}
 // run !!!
 int main() {
-	test_letterCombinations();
+    test_numUniqueEmails();
 	return 0;
 }
 

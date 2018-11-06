@@ -6,19 +6,22 @@
 #include <iomanip>
 #include <algorithm>
 #include <cstring>
+#include <set>
 #include <unordered_map>
 #include "utility.h"
 
-static const std::unordered_map<char, std::vector<char>> DIAL_PAD = {
-        {'2', {'a','b','c'}},
-        {'3', {'d','e','f'}},
-        {'4', {'g','h','i'}},
-        {'5', {'j','k','l'}},
-        {'6', {'m','n','o'}},
-        {'7', {'p','q','r','s'}},
-        {'8', {'t','u','v'}},
-        {'9', {'w','x','y','z'}}
+static const std::unordered_map<char, std::string> DIAL_PAD = {
+        {'2', "abc"},
+        {'3', "def"},
+        {'4', "ghi"},
+        {'5', "jkl"},
+        {'6', "mno"},
+        {'7', "pqrs"},
+        {'8', "tuv"},
+        {'9', "wxyz"}
 };
+static const std::vector<std::string> DIAL_MAP =
+        {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
 
 //============================================helper functions=================================================
 static int _cleanStrToInt(const std::string& val, int pwr, int sign) {
@@ -105,35 +108,42 @@ static bool isSubString(const std::string& base, const std::string& target) {
 }
 
 // generate generate combos (recursive method)
-static void generateT9Combos(const std::string& digits, std::string str,
-        std::vector<std::string>& result, int i, int j) {
+// say 27 is pressed
+// 2:"abc" 3:"def" 4:"ghi" 5:"jkl", 6:"mno" 7:"pqrs" 8:"tuv" 9:"wxyz"
+static void generateT9Combos(const std::string& digits, std::vector<std::string>& result, int i) {
     if (i >= digits.size()) {
-        result.push_back(str);
-        str.clear();
         return;
     }
-
-    for (auto dig: digits) {
-        str+=DIAL_PAD.find(digits[i])->second[j];
-        generateT9Combos(digits, str, result, i++, j++);
-    }
-
-
-    generateT9Combos(digits, str, result, i, ++j);
-    str.clear();
-
 }
 
-//// generate T9 combos iterative
-//static void generateT9Combos(const std::string& digits, std::vector<std::string>& result) {
-//    std::string tmp;
-//    for (const auto& digit : digits) {
-//        for (auto ch: DIAL_PAD.find(digit)->second) {
-//            tmp+=
-//        }
-//    }
-//}
+std::vector<std::string> splitStringBy(std::string str, const std::string& delim) {
+    std::vector<std::string> result;
+    auto pos = str.find(delim);
+    if (pos==0) {
+        str.erase(0, 1);
+        pos = str.find(delim);
+    }
+    std::string ss;
+    while (pos != std::string::npos) {
+        // substring up to pos
+        ss = str.substr(0, pos);
+        result.push_back(ss);
+        // remove up to pos
+        str.erase(0, pos+1);
+        LOG << "str: " << str << END;
+        pos = str.find(delim);
+    }
+    if (!str.empty()) result.push_back(str);
+    return result;
+}
 
+void formatEmailUsername(std::string& username) {
+    if (username.find('.') != std::string::npos)
+        username.erase(std::remove(username.begin(), username.end(), '.'));
+    size_t pos = username.find('+');
+    if (pos != std::string::npos)
+        username = username.substr(0, pos);
+}
 // ============================================end helper functions============================================
 
 // best solution
@@ -654,29 +664,107 @@ int lengthOfLongestSubstringV3(const std::string& str) {
     return longest;
 }
 
-// 1:"" 2:"abc" 3:"def" 4:"ghi" 5:"jkl", 6:"mno" 7:"pqrs" 8:"tuv" 9:"wxyz"
+// 2:"abc" 3:"def" 4:"ghi" 5:"jkl", 6:"mno" 7:"pqrs" 8:"tuv" 9:"wxyz"
+// Input: "23"
+//Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]
+// static const std::unordered_map<char, std::string> DIAL_PAD
 std::vector<std::string> letterCombinations(const std::string& digits) {
     std::vector<std::string> result;
-    int cnt = 0;
-    std::string allChars;
-    generateT9Combos(digits, "", result, 0, 0);
-    return result;
 
+
+    // say 2, 7 is pressed
+    for (int i = 0; i < (int)digits.size(); i++) {
+        int cnt = (int)DIAL_PAD.find(digits[i])->second.size();
+        for (int j = 0; j < cnt; j++) {
+            result.push_back(
+                    std::to_string(DIAL_PAD.find(digits[i])->second[j]));  // a, b, c
+        }
+    }
+    return result;
+}
+// 2:"abc" 3:"def" 4:"ghi" 5:"jkl", 6:"mno" 7:"pqrs" 8:"tuv" 9:"wxyz"
+// say 27 is pressed
+std::vector<std::string> letterCombinationsV3(const std::string& digits) {
+    if (digits.empty()) return {};
+    std::vector<std::string> result;
+
+    // initialize result
+    for (auto ch : DIAL_MAP[digits[0]-'0'])
+        result.push_back({ch});
+
+    for (int i = 1; i <digits.size(); i++) {
+        char dig = digits[i];
+        std::string letterGroup = DIAL_MAP[dig-'0'];
+        std::vector<std::string> prevResCpy = result;  // ap bp cp .. .. ..
+        std::vector<std::string> tmp;
+        for (auto letter : letterGroup) // dig = 7, group = pqrs
+            for (auto& entry : prevResCpy) // letter='p'
+                tmp.push_back(entry + letter);
+        result.swap(tmp);  // [ap bp .. .. .. ]
+    }
+    return result;
 }
 
+// a b c
 std::vector<std::string> letterCombinationsV2(const std::string& digits) {
     std::vector<std::string> ans;
     if(digits.empty()) return ans;
-    static const std::vector<std::string> mapping =
-            {"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
-    ans.push_back("");
-    while(ans[0].size()!=digits.length()){
+    while(ans[0].size()!=digits.length()) {
         std::string remove = *ans.erase(ans.begin());
-        std::string mmap = mapping[digits.at(remove.length())-'0'];
-        for(char c: mmap){
+        std::string mmap = DIAL_PAD.find(
+                digits[(remove.empty()) ?
+                '0':remove.size()-1])->second;
+        for(char c: mmap) {
             ans.push_back(remove+c);
         }
     }
     return ans;
 }
+
+// 2:"abc" 3:"def" 4:"ghi" 5:"jkl", 6:"mno" 7:"pqrs" 8:"tuv" 9:"wxyz"
+std::vector<std::string> letterCombinationsV4(const std::string& digits) {
+    if (digits.empty()) return {};
+    std::vector<std::string> result;
+
+    // initialize result
+    for (auto ch : DIAL_MAP[digits[0]-'0'])
+        result.push_back({ch});
+
+    for (int i = 1; i <digits.size(); i++) {
+        std::string letterGroup = DIAL_MAP[digits[i]-'0'];
+        std::vector<std::string> tmp;
+        for (auto letter : letterGroup) // dig = 7, group = pqrs
+            for (auto& entry : result) // letter='p'
+                tmp.push_back(entry + letter);
+        result.swap(tmp);  // [ap bp .. .. .. ]
+    }
+    return result;
+}
+
+// Input: ["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]
+// Output: 2
+//Explanation: "testemail@leetcode.com" and "testemail@lee.tcode.com" actually receive mails
+int numUniqueEmails(std::vector<std::string> &emails) {
+    int cnt = 0;
+    if (emails.empty()) return cnt;
+    // <domainName, std::set<userName>> (converted of course)
+    std::map<std::string, std::set<std::string>> domainMap;
+
+    // populate map first
+    for (const auto& email : emails) {
+        // split string by @ first
+        auto splt = splitStringBy(email, "@");
+        LOG << "split email: \n";
+        display(splt);
+        std::cout << "\n\n" << END;
+        formatEmailUsername(splt[0]);
+        // save entry
+        domainMap[splt[1]].insert(splt[0]);
+    }
+    // iterate through map add all sizes of vectors and return result
+    for (const auto& entry : domainMap)
+        cnt += static_cast<int>(entry.second.size());
+    return cnt;
+}
+
 

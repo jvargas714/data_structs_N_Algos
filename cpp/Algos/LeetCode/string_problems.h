@@ -106,6 +106,27 @@ int lengthLongestPath(const std::string&);
 //Given a non-empty string S and a number K, format the string according to the rules described above.
 std::string licenseKeyFormatting(std::string S, int K);
 
+
+// problem: 929 Unique Email Addresses
+// result: V1(17.35%)
+// Every email consists of a local name and a domain name, separated by the @ sign.
+// For example, in alice@leetcode.com, alice is the local name, and leetcode.com is the domain name.
+// Besides lowercase letters, these emails may contain '.'s or '+'s.
+// If you add periods ('.') between some characters in the local name part of an email address, \
+// mail sent there will be forwarded to the same address without dots in the local name.
+// For example, "alice.z@leetcode.com" and "alicez@leetcode.com" forward to the same email address.
+// (Note that this rule does not apply for domain names.)
+// If you add a plus ('+') in the local name, everything after the first plus sign will be ignored.
+// This allows certain emails to be filtered, for example m.y+name@email.com will be forwarded to my@email.com.
+// (Again, this rule does not apply for domain names.)
+// It is possible to use both of these rules at the same time.
+// Given a list of emails, we send one email to each address in the list.
+// How many different addresses actually receive mails?
+// Input: ["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]
+// Output: 2
+//Explanation: "testemail@leetcode.com" and "testemail@lee.tcode.com" actually receive mails
+int numUniqueEmails(std::vector<std::string>& emails);
+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 // problem: 3
@@ -117,8 +138,8 @@ int lengthOfLongestSubstring(const std::string& str);
 int lengthOfLongestSubstringV2(const std::string& str);
 int lengthOfLongestSubstringV3(const std::string& str);
 
-// problem: 17
-// result:
+// problem: 17 "Letter Combinations of a Phone Number"
+// result: V3(100%) V4(100%) (all others are broken)
 // Given a string containing digits from 2-9 inclusive,
 // return all possible letter combinations that the number could represent.
 //A mapping of digit to letters (just like on the telephone buttons) is given below.
@@ -127,7 +148,8 @@ int lengthOfLongestSubstringV3(const std::string& str);
 // answer can be in any order
 std::vector<std::string> letterCombinations(const std::string& digits);
 std::vector<std::string> letterCombinationsV2(const std::string& digits);
-
+std::vector<std::string> letterCombinationsV3(const std::string& digits);
+std::vector<std::string> letterCombinationsV4(const std::string& digits);
 
 
 #endif  // DATASTRUCTS_N_ALGOS_STRING_PROBLEMS_H
