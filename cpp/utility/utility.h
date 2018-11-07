@@ -16,9 +16,6 @@
 // fill vector from file
 bool fillVectorFromFile(const std::string& fileName, std::vector<int>& vect);
 
-// split string by provided delimiter
-std::vector<std::string> splitBy(std::string&, char delim=',');
-
 std::vector<int> fill_vector( uint32_t n, bool isRand=true);
 int* fill_array( uint32_t );
 

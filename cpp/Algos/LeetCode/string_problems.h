@@ -108,7 +108,7 @@ std::string licenseKeyFormatting(std::string S, int K);
 
 
 // problem: 929 Unique Email Addresses
-// result: V1(17.35%)
+// result: V1(17.35%) 40ms, V2(77.77%) 24 ms
 // Every email consists of a local name and a domain name, separated by the @ sign.
 // For example, in alice@leetcode.com, alice is the local name, and leetcode.com is the domain name.
 // Besides lowercase letters, these emails may contain '.'s or '+'s.
@@ -126,6 +126,9 @@ std::string licenseKeyFormatting(std::string S, int K);
 // Output: 2
 //Explanation: "testemail@leetcode.com" and "testemail@lee.tcode.com" actually receive mails
 int numUniqueEmails(std::vector<std::string>& emails);
+int numUniqueEmailsV2(std::vector<std::string>& emails);
+int numUniqueEmailsV3(const std::vector<std::string>& emails);
+int numUniqueEmailsV4(std::vector<std::string> &emails);
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

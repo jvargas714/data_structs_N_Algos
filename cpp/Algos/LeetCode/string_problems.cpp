@@ -8,6 +8,7 @@
 #include <cstring>
 #include <set>
 #include <unordered_map>
+#include <unordered_set>
 #include "utility.h"
 
 static const std::unordered_map<char, std::string> DIAL_PAD = {
@@ -125,12 +126,9 @@ std::vector<std::string> splitStringBy(std::string str, const std::string& delim
     }
     std::string ss;
     while (pos != std::string::npos) {
-        // substring up to pos
         ss = str.substr(0, pos);
         result.push_back(ss);
-        // remove up to pos
         str.erase(0, pos+1);
-        LOG << "str: " << str << END;
         pos = str.find(delim);
     }
     if (!str.empty()) result.push_back(str);
@@ -741,6 +739,7 @@ std::vector<std::string> letterCombinationsV4(const std::string& digits) {
     return result;
 }
 
+// slow 40 ms
 // Input: ["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]
 // Output: 2
 //Explanation: "testemail@leetcode.com" and "testemail@lee.tcode.com" actually receive mails
@@ -752,13 +751,8 @@ int numUniqueEmails(std::vector<std::string> &emails) {
 
     // populate map first
     for (const auto& email : emails) {
-        // split string by @ first
         auto splt = splitStringBy(email, "@");
-        LOG << "split email: \n";
-        display(splt);
-        std::cout << "\n\n" << END;
         formatEmailUsername(splt[0]);
-        // save entry
         domainMap[splt[1]].insert(splt[0]);
     }
     // iterate through map add all sizes of vectors and return result
@@ -767,4 +761,37 @@ int numUniqueEmails(std::vector<std::string> &emails) {
     return cnt;
 }
 
+// optimized ( split method is faster) 24ms
+int numUniqueEmailsV3(const std::vector<std::string>& emails) {
+    int cnt = 0;
+    if (emails.empty()) return cnt;
+    // <domainName, std::set<userName>> (converted of course)
+    std::map<std::string, std::set<std::string>> domainMap;
+
+    // populate map first
+    for (const auto& email : emails) {
+        std::vector<std::string> splt;
+        split(email, '@', splt);
+        formatEmailUsername(splt[0]);
+        domainMap[splt[1]].insert(splt[0]);
+    }
+    // iterate through map add all sizes of vectors and return result
+    for (const auto& entry : domainMap)
+        cnt += static_cast<int>(entry.second.size());
+    return cnt;
+}
+
+// optimized further
+// build a full string just having the domain and what makes a username unique store in an unordered set
+int numUniqueEmailsV4(std::vector<std::string> &emails) {
+    if (emails.empty()) return 0;
+    std::unordered_set<std::string> acctSet;
+    for (auto acct : emails) {
+        std::vector<std::string> splt;
+        split(acct, '@', splt);
+        formatEmailUsername(splt[0]);
+        acctSet.insert(splt[0]+splt[1]);
+    }
+    return acctSet.size();
+}
 

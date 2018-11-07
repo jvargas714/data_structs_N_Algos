@@ -63,7 +63,7 @@ void test_numUniqueEmails() {
                             "testemail+david@lee.tcode.com"};
     int expected = 2;
     t1_bub = hrc::now();
-    auto result = numUniqueEmails(input);
+    auto result = numUniqueEmailsV3(input);
     t2_bub = hrc::now();
     LOG << "result: " << result << END;
     LOG << "expected: " << expected << END;
