@@ -10,7 +10,17 @@ add_library(leetCode STATIC
         array_problems.cpp
         array_testing.cpp
         other_problems.cpp
-        other_problems.h)
+        other_problems.h
+        sort_search_problems.h
+        sort_search_problems.cpp
+        dynamic_problems.cpp
+        dynamic_problems.h
+        linkedlist_problems.cpp
+        linkedlist_problems.h
+        math_problems.cpp
+        math_problems.h
+        design_problems.cpp
+        design_problems.h)
 
 add_executable(string_testing string_testing.cpp)
 add_executable(binary_tree_testing binary_tree_testing.cpp)

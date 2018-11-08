@@ -68,7 +68,7 @@ std::vector<int> count_bits( int num );
 // title as appear in an Excel sheet.
 std::string excel_column_title( int n );
 
-bool operator > ( envelope& env1, envelope& env2 );
+
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem: 22
@@ -103,5 +103,6 @@ std::vector<int> maxSlidingWindowV3(const std::vector<int> &nums, int k);
 // What is the maximum number of envelopes can you Russian doll? (put one inside other)
 // Note:
 // Rotation is not allowed
+bool operator > ( envelope& env1, envelope& env2 );
 int maxEnvelopes(std::vector<envelope>& envelopes);
 #endif //DATASTRUCTS_N_ALGOS_OTHER_PROBLEMS_H
