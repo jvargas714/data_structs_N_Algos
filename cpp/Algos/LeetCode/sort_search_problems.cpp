@@ -6,6 +6,13 @@
 #include "sort_search_problems.h"
 #include "utility.h"
 
+
+// ---------------------------------------------------Helper-----------------------------------------------------------
+static bool doTimesConflict(const Interval& iv1, const Interval& iv2) {
+    if (iv1.start >= iv2.start && iv1.start < iv2.end) return true;
+    else return iv1.start < iv2.start && iv1.end > iv2.start;
+}
+
 /*
  *
 [0,1,2,8,0,0]
@@ -384,4 +391,59 @@ bool searchSortedRotatedArrayIIV2(std::vector<int> &nums, int target) {
     }
     return false;
 }
+
+/*
+ * [[5,8],[6,8]]
+   Output: 2
+ */
+int minMeetingRooms(std::vector<Interval> &intervals) {
+    if (intervals.empty()) return 0;
+    std::sort(intervals.begin(), intervals.end(),
+              [](const auto& i1, const auto& i2){ return i1.start < i2.start; });
+    if (intervals.size()==2) {
+        const Interval& iv1 = intervals[0];
+        const Interval& iv2 = intervals[1];
+        if ((iv1.start == iv2.start) || (iv2.start < iv1.end)) return 2;
+        else return 1;
+    }
+    int rooms = 0;
+    std::vector<bool> needsRoom(intervals.size(), true);
+//    needsRoom[0] = false;
+    for (int i  = 0; i < intervals.size(); i++) {
+        for (int j = 0; j < intervals.size(); j++) {
+            if (i==j) continue;
+            const Interval& iv1 = intervals[i];
+            const Interval& iv2 = intervals[j];
+
+            if (needsRoom[i] && (iv1.start >= iv2.start) && (iv1.start < iv2.end)) {
+                rooms++;
+                needsRoom[i] = false;
+            } else if (needsRoom[i] && (iv1.start < iv2.end) && (iv1.end > iv2.start)) {
+                rooms++;
+                needsRoom[i] = false;
+            } else if (iv1.start >= iv2.end) {
+//                if (!needsRoom[j]) {
+//                    rooms += (needsRoom[i]) ? -1 : 0;
+                    break;
+//                }
+            }
+        }
+    }
+    return rooms;
+}
+
+int minMeetingRoomsV2(const std::vector<Interval> &intervals) {
+    int rooms = 0;
+    for (int i  = 0; i < intervals.size(); i++) {
+        for (int j = 0; j < intervals.size(); j++) {
+            const Interval iv1 = intervals[i];
+            const Interval iv2 = intervals[j];
+            if (doTimesConflict(iv1, iv2)) {
+                // do something !!
+            }
+        }
+    }
+    return rooms;
+}
+
 

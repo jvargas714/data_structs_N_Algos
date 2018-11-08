@@ -9,8 +9,6 @@
 #include "utility.h"
 
 
-
-
 // displays an array
 void display( const int* ar, size_t num_els )
 {

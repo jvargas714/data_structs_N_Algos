@@ -13,6 +13,7 @@ add_library(leetCode STATIC
         other_problems.h
         sort_search_problems.h
         sort_search_problems.cpp
+        sort_search_testing.cpp
         dynamic_problems.cpp
         dynamic_problems.h
         linkedlist_problems.cpp
@@ -25,8 +26,10 @@ add_library(leetCode STATIC
 add_executable(string_testing string_testing.cpp)
 add_executable(binary_tree_testing binary_tree_testing.cpp)
 add_executable(array_testing array_testing.cpp)
+add_executable(sort_search_testing sort_search_testing.cpp)
 
 target_link_libraries(string_testing leetCode utility)
 target_link_libraries(binary_tree_testing leetCode utility)
 target_link_libraries(array_testing leetCode utility)
+target_link_libraries(sort_search_testing leetCode utility)
 

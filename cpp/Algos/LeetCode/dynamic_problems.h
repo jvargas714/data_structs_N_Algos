@@ -1,13 +1,8 @@
 #ifndef DATASTRUCTS_N_ALGOS_DYNAMIC_PROBLEMS_H
 #define DATASTRUCTS_N_ALGOS_DYNAMIC_PROBLEMS_H
 #include <vector>
+#include "types.h"
 
-struct Interval {
-    int start;
-    int end;
-    Interval() : start(0), end(0) {}
-    Interval(int s, int e) : start(s), end(e) {}
-};
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
