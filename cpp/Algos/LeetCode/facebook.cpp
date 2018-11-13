@@ -1,4 +1,5 @@
 #include <stack>
+#include <algorithm>
 #include "facebook.h"
 
 /*
@@ -87,7 +88,82 @@ std::string addBinary(std::string a, std::string b) {
 	return result;
 }
 
-// optimized
-std::string addBinaryV2(std::string a, std::string b) {
-	return std::string();
+/*
+ optimized solution from V1
+ Example 2:
+	Input: a = "1010", b = "1011"
+	Output: "10101"
+
+  111011  -- b
+    1110  --
+   -----
+
+    Approach:
+        1. reverse both
+        2. find shortest string
+        3. add them up to length of the shortest so we dont go over
+
+    10111
+     1110
+
+     reversed
+
+    11101
+    0111
+    ------
+
+ if (a[ia]=='0' && b[ib]=='0') {
+			if (carry) binStack.push('1');
+			else binStack.push('0');
+			carry = false;
+		} else if (a[ia]=='1' && b[ib]=='1') {
+			if (carry) binStack.push('1');
+			else binStack.push('0');
+			carry = true;
+		} else {  // adding 0 and 1
+			if (carry) binStack.push('0');
+			else binStack.push('1');
+		}
+		ia--;
+		ib--;
+
+    jdebug :: time is much faster but getting incorrect answer
+ */
+std::string addBinaryV2(std::string& a, std::string& b) {
+	std::string result;
+    std::reverse(a.begin(), a.end());
+    std::reverse(b.begin(), b.end());
+    int ia=0, ib=0;
+    bool carry = false;
+
+    while (ia < a.size() && ib < b.size()) {
+        if (a[ia]=='0' && b[ib]=='0') {
+            if (carry) result += '1';
+            else result += '0';
+            carry = false;
+        } else if (a[ia]=='1' && b[ib]=='1') {
+            if (carry) result += '1';
+            else result += '0';
+            carry = true;
+        } else {
+            if (carry) result += '0';
+            else result += '1';
+        }
+        ia++;
+        ib++;
+    }
+
+    // handle if lengths are different
+    if (b.size() != a.size()) {
+        const std::string& longerStr = (a.size()>b.size()) ? a:b;
+        for (const auto& binval : longerStr) {
+            if (carry) {
+                result += (binval == '1') ? '0':'1';
+                carry = (binval == '1');
+            }
+        }
+    } else {
+        if (carry) result += "1";
+    }
+    return result;
 }

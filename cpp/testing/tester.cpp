@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <map>
 #include <queue>
+#include <random>
 #include "../utility/utility.h"
 
 using namespace std;
@@ -105,11 +106,9 @@ struct MyComp {
 
 
 int main() {
-    vector<int> vals = {1, 2, 3, 4, 5, 6, 7};
-    cout << "finding permutations of ";
-    display(vals);
-    cout << endl;
-    displayMatrix(findPermutations(vals));
+    random_device rd;
+    for (int i = 0; i < 100; i++)
+        cout << rd() % 2;
 	return 0;
 }
 

@@ -77,5 +77,6 @@ bool searchSortedRotatedArrayIIV2(std::vector<int> &nums, int target);
 // Input: [[7,10],[2,4]]
 // Output: 1
 int minMeetingRooms(std::vector<Interval>& intervals);
+int minMeetingRoomsV2(std::vector<Interval>& intervals);
 
 #endif //DATASTRUCTS_N_ALGOS_SORT_SEARCH_PROBLEMS_H

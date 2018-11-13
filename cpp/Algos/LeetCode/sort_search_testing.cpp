@@ -28,7 +28,7 @@ void test_minMeetingRooms() {
 //    cout << "input: " << endl;
 //    display(intervals);
     t1_bub = hrc::now();
-    int result = minMeetingRooms(intervals);
+    int result = minMeetingRoomsV2(intervals);
     t2_bub = hrc::now();
     LOG << "expected: 2" << END;
     LOG << "result:   " << result << END;

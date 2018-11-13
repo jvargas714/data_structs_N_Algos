@@ -433,13 +433,23 @@ int minMeetingRooms(std::vector<Interval> &intervals) {
 }
 
 int minMeetingRoomsV2(const std::vector<Interval> &intervals) {
+    if (intervals.empty()) return 0;
+    if (intervals.size()==1) return 1;
+
+    std::vector<bool> needsRoom(intervals.size(), true);
     int rooms = 0;
+
     for (int i  = 0; i < intervals.size(); i++) {
         for (int j = 0; j < intervals.size(); j++) {
             const Interval iv1 = intervals[i];
             const Interval iv2 = intervals[j];
             if (doTimesConflict(iv1, iv2)) {
                 // do something !!
+                if (needsRoom[i]) {
+                    rooms++;
+                    needsRoom[i]=false;
+                    break;
+                }
             }
         }
     }

@@ -26,7 +26,8 @@ void moveZeroes(std::vector<int>& nums);
             V2( %)
  */
 std::string addBinary(std::string a, std::string b);
-std::string addBinaryV2(std::string a, std::string b);
+std::string addBinaryV2(std::string& a, std::string& b);
+
 // =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Linked Lists =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Trees and Graphs =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
