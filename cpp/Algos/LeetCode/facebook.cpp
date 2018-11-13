@@ -165,5 +165,6 @@ std::string addBinaryV2(std::string& a, std::string& b) {
     } else {
         if (carry) result += "1";
     }
+    std::reverse(result.begin(), result.end());
     return result;
 }

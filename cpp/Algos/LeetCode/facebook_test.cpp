@@ -17,30 +17,34 @@ static void showExeTime(const string& label) {
 	std::cout << "+-+-+-+-+-+-+-+-+-+-+" << END;
 }
 
-static string genBinNum(size_t len) {
+string genBinNum(size_t len) {
     string output;
+    char tmp;
     random_device rd;
-    for (int i = 0; i < len; i++)
-        output += rd() % 2;
+    for (int i = 0; i < len; i++) {
+        tmp = ((rd() % 2) == 0 ? '0' : '1');
+        output += tmp;
+    }
     return output;
 }
 
 
 void test_addBinary() {
 	FUNCT_HEADER;
-	string a = genBinNum(10000);
-	string b = genBinNum(34568);
+	string a = genBinNum(100000);
+	string b = genBinNum(100000);
+	LOG << "input a: " << a << "\ninput b: " << b << endl;
 
 	t1_bub = hrc::now();
 	string result = addBinary(a,b);
 	t2_bub = hrc::now();
-	// LOG << "result: " << result << endl;
 	showExeTime("V1");
 
     t1_bub = hrc::now();
     string resultv2 = addBinaryV2(a,b);
     t2_bub = hrc::now();
-    // LOG << "V2 result: " << resultv2 << END;
+    LOG << "V1 result: " << result << endl;
+    LOG << "V2 result: " << resultv2 << END;
     showExeTime("V2");
     LOG << ((result==resultv2) ? ":)":":(") << END;
 	FUNCT_END;
