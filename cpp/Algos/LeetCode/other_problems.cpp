@@ -2,6 +2,7 @@
 #include <map>
 #include <unordered_map>
 #include <stack>
+#include <numeric>
 #include "utility.h"
 #include "other_problems.h"
 

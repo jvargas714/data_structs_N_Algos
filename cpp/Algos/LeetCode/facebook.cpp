@@ -1,5 +1,6 @@
 #include <stack>
 #include <algorithm>
+#include <unordered_map>
 #include "facebook.h"
 
 /*
@@ -99,44 +100,26 @@ std::string addBinary(std::string a, std::string b) {
    -----
 
     Approach:
-        1. reverse both
-        2. find shortest string
-        3. add them up to length of the shortest so we dont go over
+        1. two pointer approach
+        2. add up to the shorter of the two strings (keep track of carries)
+        3. find if they are different lengths or not
+        3a. if they are different lengths get a reference to the longer one and its index (where it left off)
+        3a. add remainder of longer string to the result (consider carry)
+        3b. if not different just check for one more carry and apply it
+        4. check for one more carry
+        5. reverse result
 
     10111
      1110
 
-     reversed
-
-    11101
-    0111
-    ------
-
- if (a[ia]=='0' && b[ib]=='0') {
-			if (carry) binStack.push('1');
-			else binStack.push('0');
-			carry = false;
-		} else if (a[ia]=='1' && b[ib]=='1') {
-			if (carry) binStack.push('1');
-			else binStack.push('0');
-			carry = true;
-		} else {  // adding 0 and 1
-			if (carry) binStack.push('0');
-			else binStack.push('1');
-		}
-		ia--;
-		ib--;
-
-    jdebug :: time is much faster but getting incorrect answer
+ stack --> 11101
  */
 std::string addBinaryV2(std::string& a, std::string& b) {
-	std::string result;
-    std::reverse(a.begin(), a.end());
-    std::reverse(b.begin(), b.end());
-    int ia=0, ib=0;
+    std::string result;
+    int ia=(int)a.size()-1, ib=(int)b.size()-1;
     bool carry = false;
 
-    while (ia < a.size() && ib < b.size()) {
+    while (ia >= 0 && ib >= 0) {
         if (a[ia]=='0' && b[ib]=='0') {
             if (carry) result += '1';
             else result += '0';
@@ -149,22 +132,90 @@ std::string addBinaryV2(std::string& a, std::string& b) {
             if (carry) result += '0';
             else result += '1';
         }
-        ia++;
-        ib++;
+        ia--;
+        ib--;
     }
 
     // handle if lengths are different
     if (b.size() != a.size()) {
-        const std::string& longerStr = (a.size()>b.size()) ? a:b;
-        for (const auto& binval : longerStr) {
+        std::string& tmp = (ia<0)? b:a;
+        int ind = (ia>=0? ia:ib);
+        while (ind >= 0) {
             if (carry) {
-                result += (binval == '1') ? '0':'1';
-                carry = (binval == '1');
-            }
+                result += (tmp[ind] == '1') ? '0':'1';
+                carry = (tmp[ind] == '1');
+            } else
+                result += tmp[ind];
+            --ind;
         }
     } else {
-        if (carry) result += "1";
+        if (carry) result += '1';
+        carry = false;
     }
+    if (carry) result += '1';
     std::reverse(result.begin(), result.end());
+    return result;
+}
+
+/*
+    Example 1:
+    Input: nums1 = [1,2,2,1], nums2 = [2,2]
+    Output: [2,2]
+
+    Example 2:
+    Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+    Output: [4,9]
+
+    complexity:
+        O(n) space
+        O(n) time
+ */
+std::vector<int> intersect(std::vector<int> &nums1, std::vector<int> &nums2) {
+    if (nums1.empty()||nums2.empty()) return {};
+    std::vector<int> result;
+    std::unordered_map<int, int> numsMap;
+    for (const auto& el : nums1)
+        numsMap[el]++;
+
+    for (const auto& el : nums2) {
+        if (numsMap.find(el) != numsMap.end()) {
+            if (numsMap[el] > 0) {
+                result.push_back(el);
+                numsMap[el]--;
+            }
+        }
+    }
+    return result;
+}
+
+/*
+Example:
+    Given array nums = [-1, 0, 1, 2, -1, -4],
+    A solution set is:
+    [
+    [-1, 0, 1],
+    [-1, -1, 2]
+    ]
+ */
+std::vector<std::vector<int>> threeSum(std::vector<int>& nums) {
+    std::unordered_map<int, int> indMap;
+    std::vector<std::vector<int>> result;
+    // fill frequency map
+    int ind = 0;
+    for (const auto& val : nums)
+        indMap[val] = ind++;
+
+    for (int i = 0; i < nums.size(); i++) {
+        for (int j = i+1; nums.size(); j++) {
+            int sum = nums[i] + nums[j];
+            auto entry = indMap.find(-1 * sum);
+            if (entry != indMap.end()) {
+                if (entry->second != i && entry->second != j)
+                    result.push_back(
+                            {nums[i], nums[j], entry->first}
+                            );
+            }
+        }
+    }
     return result;
 }

@@ -28,12 +28,24 @@ string genBinNum(size_t len) {
     return output;
 }
 
-
+/*
+ * "1010"
+"1011"
+ */
 void test_addBinary() {
 	FUNCT_HEADER;
-	string a = genBinNum(100000);
-	string b = genBinNum(100000);
-	LOG << "input a: " << a << "\ninput b: " << b << endl;
+	string a = genBinNum(751230);
+	string b = genBinNum(552340);
+//    string a("1100");
+//    string b("1101");
+//    string a("11");
+//    string b("1");
+//    string a("1010");
+//    string b("1011");
+//    string a("1111");
+//    string b("1111");
+//	LOG << "input a: " << a << END;
+//	LOG << "input b: " << b << END;
 
 	t1_bub = hrc::now();
 	string result = addBinary(a,b);
@@ -43,9 +55,11 @@ void test_addBinary() {
     t1_bub = hrc::now();
     string resultv2 = addBinaryV2(a,b);
     t2_bub = hrc::now();
-    LOG << "V1 result: " << result << endl;
-    LOG << "V2 result: " << resultv2 << END;
+    cout << endl;
+//    LOG << "V1 result: " << result << endl;
+//    LOG << "V2 result: " << resultv3 << END;
     showExeTime("V2");
+    cout << endl;
     LOG << ((result==resultv2) ? ":)":":(") << END;
 	FUNCT_END;
 }
