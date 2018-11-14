@@ -1,6 +1,7 @@
 #include <stack>
 #include <algorithm>
 #include <unordered_map>
+#include <unordered_set>
 #include "facebook.h"
 
 /*
@@ -196,24 +197,31 @@ Example:
     [-1, 0, 1],
     [-1, -1, 2]
     ]
+
+    // this method fails when input is [0,0,0,0]
  */
 std::vector<std::vector<int>> threeSum(std::vector<int>& nums) {
+	if (nums.size() < 3) return {};
     std::unordered_map<int, int> indMap;
     std::vector<std::vector<int>> result;
+    std::unordered_map<int, int> resultMap;
+
     // fill frequency map
     int ind = 0;
     for (const auto& val : nums)
         indMap[val] = ind++;
 
     for (int i = 0; i < nums.size(); i++) {
-        for (int j = i+1; nums.size(); j++) {
+        for (int j = i+1; j < nums.size(); j++) {
             int sum = nums[i] + nums[j];
             auto entry = indMap.find(-1 * sum);
             if (entry != indMap.end()) {
-                if (entry->second != i && entry->second != j)
-                    result.push_back(
-                            {nums[i], nums[j], entry->first}
-                            );
+                if (entry->second != i && entry->second != j) {
+                	if (resultMap.find(i + j + entry->second) == resultMap.end()) {
+		                resultMap[i + j + entry->second] = 1;
+		                result.push_back({nums[i], nums[j], entry->first});
+	                }
+                }
             }
         }
     }
