@@ -1,4 +1,5 @@
 #include "facebook.h"
+#include "types.h"
 #include "utility.h"
 #include <chrono>
 #include <iostream>
@@ -62,6 +63,12 @@ void test_addBinary() {
     cout << endl;
     LOG << ((result==resultv2) ? ":)":":(") << END;
 	FUNCT_END;
+}
+
+void test_3sum() {
+	// result: [-1 0 -1], [-1 -1 2]
+	vector<int> nums = {-1,0,1,2,-1,-4};
+	Matrix result = threeSum(nums);
 }
 
 int main () {

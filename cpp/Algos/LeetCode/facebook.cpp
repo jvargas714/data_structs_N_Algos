@@ -197,33 +197,42 @@ Example:
     [-1, 0, 1],
     [-1, -1, 2]
     ]
-
-    // this method fails when input is [0,0,0,0]
+    loop through nums up to -2 before end
+    set j = i + 1
+        k = nums.len - 1
+		[* * * i j * * * * * k]    --> sorted vector
+		 - j and k will converge towards one another (inner while loop)
+		 - if sum is > 0 we bring k towards j so the sum decreases
+		 - if sum os < 0 we increase the value of j by j++ (since vector is already sorted)
+		 - if sum == 0 then we record that result
  */
 std::vector<std::vector<int>> threeSum(std::vector<int>& nums) {
 	if (nums.size() < 3) return {};
-    std::unordered_map<int, int> indMap;
-    std::vector<std::vector<int>> result;
-    std::unordered_map<int, int> resultMap;
+	std::vector<std::vector<int>> result;
+	std::sort(nums.begin(), nums.end());
 
-    // fill frequency map
-    int ind = 0;
-    for (const auto& val : nums)
-        indMap[val] = ind++;
+	for (int i = 0; i < (int)nums.size() - 2; i++) {
+		/*
+		 * if nums[i] > 0 then there is no way to get it down to zero as the array is sorted and the subsequent
+		 * values will only be greater than or equal nums[i]
+		 */
+		if (nums[i] > 0) break;
+		int j = i + 1;
+		int k = (int)nums.size()-1;
 
-    for (int i = 0; i < nums.size(); i++) {
-        for (int j = i+1; j < nums.size(); j++) {
-            int sum = nums[i] + nums[j];
-            auto entry = indMap.find(-1 * sum);
-            if (entry != indMap.end()) {
-                if (entry->second != i && entry->second != j) {
-                	if (resultMap.find(i + j + entry->second) == resultMap.end()) {
-		                resultMap[i + j + entry->second] = 1;
-		                result.push_back({nums[i], nums[j], entry->first});
-	                }
-                }
-            }
-        }
-    }
-    return result;
+		// we have three pointers at this point [* * * i j * * * * * k]  <-- k will converge into j
+		while ( j < k) {
+			if (i > 0 && nums[i] == nums[i-1]) continue;
+			int sum = nums[i] + nums[j] + nums[k];
+			if (sum < 0) j++;
+			else if (sum > 0) k--;
+			else {
+				result.push_back({nums[i], nums[j], nums[k]});
+				j++;
+				k--;
+			}
+		}
+	}
+	return result;
 }
+
