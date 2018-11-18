@@ -66,9 +66,19 @@ void test_addBinary() {
 }
 
 void test_3sum() {
-	// result: [-1 0 -1], [-1 -1 2]
+	FUNCT_HEADER;
+	// expected result: [-1 0 -1], [-1 -1 2]
 	vector<int> nums = {-1,0,1,2,-1,-4};
-	Matrix result = threeSum(nums);
+
+	t1_bub = hrc::now();
+	vector<vector<int>> result = threeSum(nums);
+	t2_bub = hrc::now();
+
+	showExeTime(__FUNCTION__);
+	cout << endl;
+	LOG << "result: " << END;
+	displayMatrix(result);
+	FUNCT_END;
 }
 
 int main () {
