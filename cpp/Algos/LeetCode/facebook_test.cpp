@@ -52,24 +52,25 @@ void test_addBinary() {
 	string result = addBinary(a,b);
 	t2_bub = hrc::now();
 	showExeTime("V1");
-
-    t1_bub = hrc::now();
-    string resultv2 = addBinaryV2(a,b);
-    t2_bub = hrc::now();
-    cout << endl;
-//    LOG << "V1 result: " << result << endl;
-//    LOG << "V2 result: " << resultv3 << END;
-    showExeTime("V2");
-    cout << endl;
-    LOG << ((result==resultv2) ? ":)":":(") << END;
+    LOG << "V1 result: " << result << endl;
 	FUNCT_END;
 }
 
+/*
+ * Input:
+    [-2,0,0,2,2]
+    Output:
+    [[-2,0,2],[-2,0,2]]
+    Expected:
+    [[-2,0,2]]
+ *
+ */
 void test_3sum() {
 	FUNCT_HEADER;
 	// expected result: [-1 0 -1], [-1 -1 2]
-	vector<int> nums = {-1,0,1,2,-1,-4};
-
+	vector<int> nums = {-2,0,0,2,2};
+    LOG << "input: " << END;
+    display(nums);
 	t1_bub = hrc::now();
 	vector<vector<int>> result = threeSum(nums);
 	t2_bub = hrc::now();
@@ -81,7 +82,37 @@ void test_3sum() {
 	FUNCT_END;
 }
 
+void test_isApalindrome() {
+    FUNCT_HEADER;
+    string input = "A man, a plan, a canal: Panama";
+    string input2 = "0P";
+    LOG << "input ==> " << input << END;
+    t1_bub = hrc::now();
+    bool result = isPalindrome(input);
+    t2_bub = hrc::now();
+
+    LOG << "result: " << (result ? "valid":"invalid") << END;
+    showExeTime(__FUNCTION__);
+    FUNCT_END;
+}
+
+void test_validPalindrome() {
+    FUNCT_HEADER;
+    string input = "ebcbbececabbacecbbcbe";
+    bool expected = true;
+    LOG << "input: " << input << END;
+
+    t1_bub = hrc::now();
+    bool result = validPalindromeV2(input);
+    t2_bub = hrc::now();
+
+    LOG << "result: " << (result ? "valid":"invalid") << END;
+    LOG << "expected: " << (expected ? "valid":"invalid") << END;
+    showExeTime(__FUNCTION__);
+    FUNCT_END;
+}
+
 int main () {
-	test_addBinary();
+    test_validPalindrome();
 	return 0;
 }

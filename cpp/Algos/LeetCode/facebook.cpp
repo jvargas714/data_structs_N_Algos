@@ -5,6 +5,73 @@
 #include "facebook.h"
 
 /*
+ * jdebug :: back up
+ * bool validPalindromeV2(std::string& s) {
+    if (s.size()==1 || s.size()==2) return true;
+    int l = 0, r = (int)s.size()-1, removedInd=-1;
+    bool removedl = false, removedr = false;
+    while (l < r) {
+        if (s[l]!=s[r]) {
+            if (removedl && removedr) return false;
+
+            // determine whether to remove l or r
+            if (r-l == 1) return true;  // by removing one the element left will be the center
+            if (s[r-1] == s[l] && !removedr) { // check removing r first helps the situation
+                s.erase(s.begin()+r);
+                removedr = true;
+            }
+            else if (s[l+1] == s[r] && !removedl) {  // check removing l instead
+                s.erase(s.begin() + l);
+                removedl = true;
+            }
+            else
+                return false;
+            r--;                // length changed
+            continue;
+        }
+        l++;
+        r--;
+    }
+    return true;
+}
+
+
+ *
+ */
+// ================================================ helper functions ===================================================
+// jdebug :: fix me
+bool _validPalindromeRecursive(std::string& orig, std::string& s, bool& removedl, bool& removedr, bool& result) {
+    int l = 0, r = (int)s.size()-1;
+    while (l < r) {
+        if (s[l]!=s[r]) {
+            if (removedl && removedr) return false;
+
+            // determine whether to remove l or r
+            if (r-l == 1) return true;  // by removing one the element left will be the center
+
+            if (s[r-1] == s[l] && !removedr) { // check removing r first helps the situation
+                s.erase(s.begin()+r);
+                removedr = true;
+                _validPalindromeRecursive(orig, s, removedl, removedr, result);
+            }
+            else if (s[l+1] == s[r] && !removedl) {  // check removing l instead
+                s.erase(s.begin() + l);
+                removedl = true;
+                _validPalindromeRecursive(orig, s, removedl, removedr, result);
+            }
+            else
+                return false;
+            r--;                // length changed
+            continue;
+        }
+        l++;
+        r--;
+    }
+    return true;
+}
+// =====================================================================================================================
+
+/*
 	in: [ 0, 1, 0, 3, 12 ]
 	out: [1, 3, 12, 0, 0]
     as we traverse the array j holds the index that will be
@@ -25,73 +92,7 @@ void moveZeroes(std::vector<int> &nums) {
 }
 
 /*
- Example 2:
-	Input: a = "1010", b = "1011"
-	Output: "10101"
-
-    1011  -- b
-    1110  --
-   -----
-
-    stack --> 11001    --> "11001"
-
- */
-std::string addBinary(std::string a, std::string b) {
-	std::string result;
-	std::stack<char> binStack;
-
-	int alen = (int)a.size();
-	int blen = (int)b.size();
-	bool carry = false;
-
-	// add up starting at the least sig fig
-	int ia = alen-1;
-	int ib = blen-1;
-
-	while (ia >= 0 && ib >= 0) {
-		if (a[ia]=='0' && b[ib]=='0') {
-			if (carry) binStack.push('1');
-			else binStack.push('0');
-			carry = false;
-		} else if (a[ia]=='1' && b[ib]=='1') {
-			if (carry) binStack.push('1');
-			else binStack.push('0');
-			carry = true;
-		} else {  // adding 0 and 1
-			if (carry) binStack.push('0');
-			else binStack.push('1');
-		}
-		ia--;
-		ib--;
-	}
-
-	// handle final carry and if strings are different lengths
-	if (alen != blen) {
-		std::string& tmp = (alen > blen) ? a:b;
-		int tmpInd = (ia>=0) ? ia:ib;
-		while (tmpInd >= 0) {
-			char binval = tmp[tmpInd];
-			if (carry) {
-				binStack.push(binval == '1' ? '0' : '1');
-				carry = (binval == '1');
-			}
-			else
-				binStack.push(binval);
-			tmpInd--;
-		}
-	}
-
-	if (carry) binStack.push('1');
-
-	while (!binStack.empty()) {
-		result += binStack.top();
-		binStack.pop();
-	}
-	return result;
-}
-
-/*
- optimized solution from V1
+ optimized solution
  Example 2:
 	Input: a = "1010", b = "1011"
 	Output: "10101"
@@ -115,7 +116,7 @@ std::string addBinary(std::string a, std::string b) {
 
  stack --> 11101
  */
-std::string addBinaryV2(std::string& a, std::string& b) {
+std::string addBinary(std::string& a, std::string& b) {
     std::string result;
     int ia=(int)a.size()-1, ib=(int)b.size()-1;
     bool carry = false;
@@ -210,19 +211,27 @@ std::vector<std::vector<int>> threeSum(std::vector<int>& nums) {
 	if (nums.size() < 3) return {};
 	std::vector<std::vector<int>> result;
 	std::sort(nums.begin(), nums.end());
-
+    int j=0, k=0;
 	for (int i = 0; i < (int)nums.size() - 2; i++) {
 		/*
 		 * if nums[i] > 0 then there is no way to get it down to zero as the array is sorted and the subsequent
 		 * values will only be greater than or equal nums[i]
 		 */
 		if (nums[i] > 0) break;
-		int j = i + 1;
-		int k = (int)nums.size()-1;
+		// skip duplicate scenario was handled previous iteration
+        if (i > 0 && nums[i] == nums[i-1]) continue;
+		j = i + 1;
+		k = (int)nums.size()-1;
 
 		// we have three pointers at this point [* * * i j * * * * * k]  <-- k will converge into j
 		while ( j < k) {
-			if (i > 0 && nums[i] == nums[i-1]) continue;
+		    // skip duplicate case (was previously handled last iteration
+		    if (j > i + 1 && nums[j]==nums[j-1]) {
+		        j++;
+		        continue;
+		    }
+		    // check if sum is already positive if so break out not possible to bring it down to zero
+		    if (nums[i] + nums[j] > 0) break;
 			int sum = nums[i] + nums[j] + nums[k];
 			if (sum < 0) j++;
 			else if (sum > 0) k--;
@@ -234,5 +243,84 @@ std::vector<std::vector<int>> threeSum(std::vector<int>& nums) {
 		}
 	}
 	return result;
+}
+
+// we can ignore white space
+bool isPalindrome(std::string& s) {
+    if (s.empty()) return true;
+    int l = 0, r = (int)s.size()-1;
+    // using transform is much faster than the for_each method
+    std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+
+    while (l < r) {
+        if ((s[l] < 'a' || s[l] > 'z') && (s[l] < '0' || s[l] > '9')) {
+            l++;
+            continue;
+        }
+        if ((s[r] < 'a' || s[r] > 'z') && (s[r] < '0' || s[r] > '9')) {
+            r--;
+            continue;
+        }
+        if (s[l] != s[r]) return false;
+        l++;
+        r--;
+    }
+    return true;
+}
+
+/*
+ * abca -->  we can remove the 'c' to make it valid
+ * Approach:
+ *      1. go through like isAPalindrome
+ *      2. if we have a mismatch we start by removing the l element first
+ *          if that does work try by removing the r element if that also doesnt work then
+ *          return false
+ *
+ *   aabb d eebada
+ */
+bool validPalindrome(std::string& s) {
+    if (s.size()==1 || s.size()==2) return true;
+    int l=0, r=(int)s.size()-1;
+
+    // lambda to check if valid
+    auto _isPalindrome = [](const std::string& s) {
+        int l=0, r=(int)s.size()-1;
+        while (l < r) {
+            if (s[l] != s[r])
+                return false;
+            l++; r--;
+        }
+        return true;
+    };
+
+    while (l < r) {
+        if (s[l]!=s[r]) {
+            std::string tmp(s);
+            s.erase(s.begin()+l);
+            if (_isPalindrome(s)) return true;
+            tmp.erase(tmp.begin()+r);
+            return _isPalindrome(tmp);
+        }
+        l++;
+        r--;
+    }
+    return true;
+}
+
+// optimized solution
+/*
+ *   * * * * * * * * 0 * *
+ *   when processing the mismatch we check if the next element on the left side is
+ *   * * [*] * * [*] r * *  << [*] elements will now be compared, they would have to match,
+ *   we can try this with removing l as well if that doesn't work
+ *
+ *   make recursive when swapping
+ */
+bool validPalindromeV2(std::string& s) {
+    if (s.size()==1 || s.size()==2) return true;
+    bool result = false;
+    bool r = false, l = false;
+    std::string tmp(s);
+    _validPalindromeRecursive(s, tmp, l, r, result);
 }
 

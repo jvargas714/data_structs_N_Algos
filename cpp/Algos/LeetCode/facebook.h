@@ -22,10 +22,8 @@ void moveZeroes(std::vector<int>& nums);
 	Input: a = "1010", b = "1011"
 	Output: "10101"
  */
-// result: V1(51.69%)
-std::string addBinary(std::string a, std::string b);
-// result: V2(100%)
-std::string addBinaryV2(std::string& a, std::string& b);
+// result: V1(100%)
+std::string addBinary(std::string& a, std::string& b);
 
 /*
     Given two arrays, write a function to compute their intersection.
@@ -92,6 +90,7 @@ std::string addBinaryV2(std::string& a, std::string& b);
 
     result: V1(100%)
  */
+// result: V1(100%)
 std::vector<int> intersect(std::vector<int>& nums1, std::vector<int>& nums2);
 
 
@@ -110,7 +109,28 @@ A solution set is:
 [-1, -1, 2]
 ]
  */
+// result: 54% 124ms
 std::vector<std::vector<int>> threeSum(std::vector<int>& nums);
+
+/*
+ * check if a string is a valid palindrome or not
+ */
+// result: 100% 4ms
+bool isPalindrome(std::string& s);
+
+/*
+ * Valid Palindrome II
+ * Given a non-empty string s, you may delete at most one character.
+ * Judge whether you can make it a palindrome.
+ *
+ * Input: "abca"
+ *   Output: True
+ *   Explanation: You could delete the character 'c'
+ * Note: The string will only contain lowercase characters a-z. The maximum length of the string is 50000.
+ */
+// result: 48.57% 88ms
+bool validPalindrome(std::string& s);
+bool validPalindromeV2(std::string& s);
 
 // =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Linked Lists =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
