@@ -130,6 +130,7 @@ bool isPalindrome(std::string& s);
  */
 // result: 48.57% 88ms
 bool validPalindrome(std::string& s);
+// result: 59.22% 84ms 
 bool validPalindromeV2(std::string& s);
 
 // =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Linked Lists =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

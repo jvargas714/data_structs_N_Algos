@@ -1,14 +1,18 @@
 
-Binary Trees ref: https://www.cs.cmu.edu/~adamchik/15-121/lectures/Trees/trees.html
-    A binary tree is made of nodes, where each node contains a "left" reference, a "right" 
-    reference, and a data element. The topmost node in the tree is called the root.
+Binary Trees ref: 
+    https://www.cs.cmu.edu/~adamchik/15-121/lectures/Trees/trees.html
+    https://www.geeksforgeeks.org/bfs-vs-dfs-binary-tree/
 
-    Every node (excluding a root) in a tree is connected by a directed edge from exactly one other 
-    node. This node is called a parent. On the other hand, each node can be connected to arbitrary 
-    number of odes, called children. Nodes with no children are called leaves, or external nodes. 
-    Nodes which are not leaves are called internal nodes. Nodes with the same parent are called 
-    siblings.
+A binary tree is made of nodes, where each node contains a "left" reference, a "right" 
+reference, and a data element. The topmost node in the tree is called the root.
 
+Every node (excluding a root) in a tree is connected by a directed edge from exactly one other 
+node. This node is called a parent. On the other hand, each node can be connected to arbitrary 
+number of odes, called children. Nodes with no children are called leaves, or external nodes. 
+Nodes which are not leaves are called internal nodes. Nodes with the same parent are called 
+siblings.
+
+Traits:
     - The depth of a node is the number of edges from the root to the node.
     - The height of a node is the number of edges from the node to the deepest leaf.
     - The height of a tree is a height of the root.
@@ -16,38 +20,43 @@ Binary Trees ref: https://www.cs.cmu.edu/~adamchik/15-121/lectures/Trees/trees.h
     - A complete binary tree is a binary tree, which is completely filled, with the possible 
         exception of the bottom level, which is filled from left to right.
 
-    A complete binary tree is very special tree, it provides the best possible ratio between the 
-    number of nodes and the height. The height h of a complete binary tree with N nodes is at 
-    most O(log N). We can easily prove this by counting nodes on each level, starting with the root, 
-    assuming that each level has the maximum number of nodes: 
-        n = 1 + 2 + 4 + ... + 2^(h-1) + 2^h = 2^(h+1) - 1
+A complete binary tree is very special tree, it provides the best possible ratio between the 
+number of nodes and the height. The height h of a complete binary tree with N nodes is at 
+most O(log N). We can easily prove this by counting nodes on each level, starting with the root, 
+assuming that each level has the maximum number of nodes: 
+    n = 1 + 2 + 4 + ... + 2^(h-1) + 2^h = 2^(h+1) - 1
 
-    Traversals 
+Traversals 
     How we visit all the nodes in the tree. Since a tree is a non-linear data structure, there is 
     no unique traversal. We can group traversal algorithms in to two kinds. 
 	1. Depth First Traversals
-		As the search tree is deepened as much as possible on each child before going to the next 
-		sibling. 
+		* As the search tree is deepened as much as possible on each child before going to the next 
+		  sibling. 
+        * Starts visiting nodes from Leaves, while BFT (BFS) starts visiting nodes from the root
         * depth-first traversal types
             1. PreOrder Traversal 
             2. InOrder traversal 
             3. PostOrder traversal 
 
-	2. Breadth First Traversal
+	2. Breadth First Traversal (level Order)
 		Trees can also be traversed in level order, where we visit each node on a level before going
 		to a lower level. As the search tree is broadened as much as possible on each depth before 
 		going to the next depth.
         * breadth-first traversal type
             1. Level Order Traversal
-    
-    Difference between binary tree and binary search tree:
-        Is the BST where the left child contains only nodes with values less than the parent node,
-        and where the right child only contains nodes with values greater than or equal to the 
-        parent.
 
-        Nodes are ordered in the following way:
-            * each node contains one key (also known as data)
-            * the keys in the left subtree are less then the key in its parents node, in short L<P
-            * the keys in the right subtree are greater then the key in its parent node, P<R
-            * no duplicate keys
+    When to use different types of traversals ?? 
+        * use Depth First when the target is most likely closer to a leaf 
+        * use Breadth First when the target is most likely closer to the root 
+    
+Difference between binary tree and binary search tree:
+    Is the BST where the left child contains only nodes with values less than the parent node,
+    and where the right child only contains nodes with values greater than or equal to the 
+    parent.
+
+Nodes are ordered in the following way:
+    * each node contains one key (also known as data)
+    * the keys in the left subtree are less then the key in its parents node, in short L<P
+    * the keys in the right subtree are greater then the key in its parent node, P<R
+    * no duplicate keys
 

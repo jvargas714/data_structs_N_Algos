@@ -5,39 +5,22 @@
 #include "facebook.h"
 
 /*
- * jdebug :: back up
- * bool validPalindromeV2(std::string& s) {
-    if (s.size()==1 || s.size()==2) return true;
-    int l = 0, r = (int)s.size()-1, removedInd=-1;
-    bool removedl = false, removedr = false;
-    while (l < r) {
-        if (s[l]!=s[r]) {
-            if (removedl && removedr) return false;
-
-            // determine whether to remove l or r
-            if (r-l == 1) return true;  // by removing one the element left will be the center
-            if (s[r-1] == s[l] && !removedr) { // check removing r first helps the situation
-                s.erase(s.begin()+r);
-                removedr = true;
-            }
-            else if (s[l+1] == s[r] && !removedl) {  // check removing l instead
-                s.erase(s.begin() + l);
-                removedl = true;
-            }
-            else
-                return false;
-            r--;                // length changed
-            continue;
-        }
-        l++;
-        r--;
+jdebug :: great solution --> in java translate to c++ as V3 solution 
+    public boolean validPalindrome(String s) {
+        int l = -1, r = s.length();
+        while (++l < --r) 
+            if (s.charAt(l) != s.charAt(r)) return isPalindromic(s, l, r+1) || isPalindromic(s, l-1, r);
+        return true;
     }
-    return true;
-}
 
+    public boolean isPalindromic(String s, int l, int r) {
+        while (++l < --r) 
+            if (s.charAt(l) != s.charAt(r)) return false;
+        return true;
+    }
 
- *
  */
+
 // ================================================ helper functions ===================================================
 // jdebug :: fix me
 bool _validPalindromeRecursive(std::string& orig, std::string& s, bool& removedl, bool& removedr, bool& result) {
@@ -316,11 +299,61 @@ bool validPalindrome(std::string& s) {
  *
  *   make recursive when swapping
  */
+// bool validPalindromeV2(std::string& s) {
+//     if (s.size()==1 || s.size()==2) return true;
+//     bool result = false;
+//     bool r = false, l = false;
+//     std::string tmp(s);
+//     _validPalindromeRecursive(s, tmp, l, r, result);
+// }
+
 bool validPalindromeV2(std::string& s) {
     if (s.size()==1 || s.size()==2) return true;
-    bool result = false;
-    bool r = false, l = false;
-    std::string tmp(s);
-    _validPalindromeRecursive(s, tmp, l, r, result);
-}
+    int l = 0, r = (int)s.size()-1;
+    char removedChar='0';
+    int removedPos = -1;
+    bool removedl = false, removedr = false;
 
+    while (l < r) {
+        if (s[l]!=s[r]) {
+            cout << "found a mismatch l: " << l << " r: " << r << " " << s[l] << " != " << s[r] << endl;
+            if (removedl && removedr) return false;
+
+            // determine whether to remove l or r
+            if (r-l == 1 && !removedl && !removedr) return true;  // by removing one the element left will be the center
+
+            if (removedl || (s[r-1] == s[l] && !removedr)) {
+                if (removedPos != -1) {
+                    s.insert(s.begin()+removedPos, removedChar);
+                    l = removedPos;
+                    r = s.size() - 1 - l;
+                }
+                cout << "removing r: " << s[r] << " index: " << r << endl;
+                removedChar = s[r];
+                removedPos = r;
+                s.erase(s.begin()+r);
+                removedr = true;
+                r--;
+            }
+            else if (removedr || (s[l+1] == s[r] && !removedl)) { 
+                if (removedr) {
+                    s.insert(s.begin()+removedPos, removedChar);
+                    r = removedPos;
+                    l = s.size() - 1 - r;
+                }
+                cout << "removing l: " << s[l] << " index: " << l << endl;
+                removedChar = s[l];
+                removedPos = l;
+                s.erase(s.begin() + l);
+                removedl = true;
+                r--;
+            }
+            else
+                return false;
+            continue;
+        }
+        l++;
+        r--;
+    }
+    return true;
+}
