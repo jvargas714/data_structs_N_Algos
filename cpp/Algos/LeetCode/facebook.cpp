@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <unordered_set>
+#include <cctype>
 #include "facebook.h"
 
 /*
@@ -22,36 +23,11 @@ jdebug :: great solution --> in java translate to c++ as V3 solution
  */
 
 // ================================================ helper functions ===================================================
-// jdebug :: fix me
-bool _validPalindromeRecursive(std::string& orig, std::string& s, bool& removedl, bool& removedr, bool& result) {
-    int l = 0, r = (int)s.size()-1;
-    while (l < r) {
-        if (s[l]!=s[r]) {
-            if (removedl && removedr) return false;
-
-            // determine whether to remove l or r
-            if (r-l == 1) return true;  // by removing one the element left will be the center
-
-            if (s[r-1] == s[l] && !removedr) { // check removing r first helps the situation
-                s.erase(s.begin()+r);
-                removedr = true;
-                _validPalindromeRecursive(orig, s, removedl, removedr, result);
-            }
-            else if (s[l+1] == s[r] && !removedl) {  // check removing l instead
-                s.erase(s.begin() + l);
-                removedl = true;
-                _validPalindromeRecursive(orig, s, removedl, removedr, result);
-            }
-            else
-                return false;
-            r--;                // length changed
-            continue;
-        }
-        l++;
-        r--;
-    }
-    return true;
+// divide and conquer to find correct sum
+static void _minSubRec(int s, const std::vector<int>& nums, int l, int r) {
+    
 }
+
 // =====================================================================================================================
 
 /*
@@ -436,24 +412,20 @@ bool isNumberV2(std::string s) {
 }
 
 /*
- * size of min array that sums to s, all integers will be positive, go for O(n)
+    size of min array that sums to s, all integers will be positive, go for O(n),
+    array must be contigueous (in a row)
+
     Example:
         Input: s = 7, nums = [2,3,1,2,4,3]
         Output: 2
 
-        [1 2 2 3 3 4]
+    Approach:
+
  */
 int minSubArrayLen(int s, std::vector<int> &nums) {
     if (nums.empty()) return 0;
-    if (nums.size()==1) return nums[0]==s ? 1:0;
-    int res = 0;
-    std::sort(nums.begin(), nums.end());
-    int sum = 0, r=(int)nums.size()-1, l=0;
-    while (r > 0 && nums[r--] > s);
-    if (r >=0 && nums[r]==s) return 1;
+    if (nums.size()==1) return (nums[0]==s ? 1:0);
+    _minSubRec(s, nums, 0, nums.size()-1);
 
-    while () {
-
-    }
 }
 
