@@ -118,7 +118,7 @@ std::vector<std::vector<int>> threeSum(std::vector<int>& nums);
 // result: 100% 4ms
 bool isPalindrome(std::string& s);
 
-/*
+/*EASY
  * Valid Palindrome II
  * Given a non-empty string s, you may delete at most one character.
  * Judge whether you can make it a palindrome.
@@ -130,9 +130,41 @@ bool isPalindrome(std::string& s);
  */
 // result: 48.57% 88ms
 bool validPalindrome(std::string& s);
-// result: 59.22% 84ms 
+// result: 98.69% 76ms (from discussion)
 bool validPalindromeV2(std::string& s);
 
+/*HARD
+ * Validate if a given string can be interpreted as a decimal number
+ *
+ * some rules:
+ * Note: It is intended for the problem statement to be ambiguous.
+ * You should gather all requirements up front before implementing one. However,
+ * here is a list of characters that can be in a valid decimal number:
+    Numbers 0-9
+    Exponent - "e"
+    Positive/negative sign - "+"/"-"
+    Decimal point - "."
+ */
+// result: 47.73% 20ms
+bool isNumber(std::string s);
+
+// best result: 97.65% 16ms (from discussion)
+bool isNumberV2(std::string s);
+
+/*
+ * Given an array of n positive integers and a positive integer s, find the minimal length of a
+ * contiguous subarray of which the sum ≥ s. If there isn't one, return 0 instead.
+
+Example:
+    Input: s = 7, nums = [2,3,1,2,4,3]
+    Output: 2
+    Explanation: the subarray [4,3] has the minimal length under the problem constraint.
+
+Follow up:
+    If you have figured out the O(n) solution,
+    try coding another solution of which the time complexity is O(n log n)
+ */
+int minSubArrayLen(int s, std::vector<int>& nums);
 // =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Linked Lists =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Trees and Graphs =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

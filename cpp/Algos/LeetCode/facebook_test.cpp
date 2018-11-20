@@ -3,6 +3,7 @@
 #include "utility.h"
 #include <chrono>
 #include <iostream>
+#include <map>
 #include <random>
 using namespace std;
 using namespace std::chrono;
@@ -98,8 +99,8 @@ void test_isApalindrome() {
 
 void test_validPalindrome() {
     FUNCT_HEADER;
-    string input = "ebcbbececabbacecbbcbe";
-    bool expected = true;
+    string input = "abc";
+    bool expected = false;
     LOG << "input: " << input << END;
 
     t1_bub = hrc::now();
@@ -112,7 +113,79 @@ void test_validPalindrome() {
     FUNCT_END;
 }
 
+void test_isANumber() {
+    /*
+     * "0" => true
+" 0.1 " => true
+"abc" => false
+"1 a" => false
+"2e10" => true
+" -90e3   " => true
+" 1e" => false
+"e3" => false
+" 6e-1" => true
+" 99e2.5 " => false
+"53.5e93" => true
+" --6 " => false
+"-+3" => false
+"95a54e53" => false
+     */
+    map<string, bool> nums = {
+        {"0", true},
+        {"1 ", true},
+        {" 0.1 ", true},
+        {"abc", false},
+        {"1 a", false},
+        {"2e10", true},
+        {" -90e3   ", true},
+        {" 1e", false},
+        {"e3", false},
+        {" 6e-1", true},
+        {" 99e2.5 ", false},
+        {"53.5e93", true},
+        {" --6 ", false},
+        {"-+3", false},
+        {"95a54e53", false},
+        {".123453564564567 ", true},
+        {".", false},
+        {". ", false},
+        {" . ", false},
+        {" .6 ", true},
+        {" 0 6.5e10          ", false},
+        {".e1", false},
+        {".e-1", false},
+        {".e-", false},
+        {" ", false},
+        {"   -e56", false},
+        {" +-", false},
+        {" -1e56", true},
+        {"  -.5", true},
+        {" -.", false},
+        {" +0e-", false},
+        {"6ee34", false},
+        {"ee4", false},
+        {"e", false},
+        {"4e10e2", false},
+        {" 005047e+6", true}
+    };
+    t1_bub = hrc::now();
+    for (auto entry : nums) {
+        bool res = isNumberV2(entry.first);
+        if ( res == entry.second)
+            LOG << "[" << entry.first << "]" <<
+            " has been categorized correctly, your output => " << (res ? "true":"false") << END;
+        else
+            LOG << "XXXXXX :( " << "[" << entry.first << "]" <<
+            " has been categorized incorrectly, your output => " << (res ? "true":"false") << END;
+    }
+    t2_bub = hrc::now();
+    showExeTime(__FUNCTION__);
+    FUNCT_END;
+}
+
+
+
 int main () {
-    test_validPalindrome();
+    test_isANumber();
 	return 0;
 }

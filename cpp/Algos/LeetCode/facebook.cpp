@@ -290,70 +290,170 @@ bool validPalindrome(std::string& s) {
     return true;
 }
 
-// optimized solution
-/*
- *   * * * * * * * * 0 * *
- *   when processing the mismatch we check if the next element on the left side is
- *   * * [*] * * [*] r * *  << [*] elements will now be compared, they would have to match,
- *   we can try this with removing l as well if that doesn't work
+/* optimized solution from discussion
+ *  essentially this algo checks for a valid palindrome, if we have a mismatch then we need
+ *  to check if removing either the left or right side fixes our issues if not then return false
+ *  [x x l x x r x x]
+ *  isPalindromeFptr(s, l-1, r): sets our palindrome check to [x l x x x r x x] --> then the first check
+ *      ends up being [x x l x r x x x]  --> essentially skips forward the right side by one
  *
- *   make recursive when swapping
- */
-// bool validPalindromeV2(std::string& s) {
-//     if (s.size()==1 || s.size()==2) return true;
-//     bool result = false;
-//     bool r = false, l = false;
-//     std::string tmp(s);
-//     _validPalindromeRecursive(s, tmp, l, r, result);
-// }
-
+ *  where isPalindromeFptr(s, l, r+1): effectively skips the left side forward by 1 (since the while loop is
+ *      using predecrementing/preincrementing
+ * */
 bool validPalindromeV2(std::string& s) {
-    if (s.size()==1 || s.size()==2) return true;
-    int l = 0, r = (int)s.size()-1;
-    char removedChar='0';
-    int removedPos = -1;
-    bool removedl = false, removedr = false;
-
-    while (l < r) {
-        if (s[l]!=s[r]) {
-            cout << "found a mismatch l: " << l << " r: " << r << " " << s[l] << " != " << s[r] << endl;
-            if (removedl && removedr) return false;
-
-            // determine whether to remove l or r
-            if (r-l == 1 && !removedl && !removedr) return true;  // by removing one the element left will be the center
-
-            if (removedl || (s[r-1] == s[l] && !removedr)) {
-                if (removedPos != -1) {
-                    s.insert(s.begin()+removedPos, removedChar);
-                    l = removedPos;
-                    r = s.size() - 1 - l;
-                }
-                cout << "removing r: " << s[r] << " index: " << r << endl;
-                removedChar = s[r];
-                removedPos = r;
-                s.erase(s.begin()+r);
-                removedr = true;
-                r--;
-            }
-            else if (removedr || (s[l+1] == s[r] && !removedl)) { 
-                if (removedr) {
-                    s.insert(s.begin()+removedPos, removedChar);
-                    r = removedPos;
-                    l = s.size() - 1 - r;
-                }
-                cout << "removing l: " << s[l] << " index: " << l << endl;
-                removedChar = s[l];
-                removedPos = l;
-                s.erase(s.begin() + l);
-                removedl = true;
-                r--;
-            }
-            else
-                return false;
-            continue;
-        }
-        l++;
-        r--;
-    }
+    auto isPalindromeFptr = [](std::string str, int l, int r){
+        while (++l < --r)
+            if (str[l] != str[r]) return false;
+        return true;
+    };
+    int l = -1, r = (int)s.size();
+    while (++l < --r)
+        if (s[l] != s[r])
+            return isPalindromeFptr(s, l-1, r) || isPalindromeFptr(s, l, r+1);
     return true;
 }
+
+/*  " .1 " ==> true
+    " 0.1 " => true
+    "abc" => false
+    "1 a" => false
+    "2e10" => true
+
+    rules:
+        Numbers 0-9
+        Exponent - "e"
+        Positive/negative sign - "+"/"-"
+        Decimal point - "."
+ */
+bool isNumber(std::string s) {
+    // gotta process at least one number
+    bool procNum = false;
+
+    // found a decimal pt
+    bool hasDecimalPt = false;
+
+    // there is an exponential symbol
+    bool hasExp = false;
+
+    // minus sign after exponential
+    bool minusExp = false;
+    int i = 0;
+
+    // strip preceeding whitespace
+    while (true) {
+        if (!std::isspace(s[i])) break;
+        else i++;
+    }
+
+    // check first character to be invalid
+    if (s.empty()||s[i]=='e'|| i==s.size()) return false;
+
+    // check if '.' is placed correctly cannot have a space right after a '.'
+    if (s[i] == '.') {
+        if (i == s.size()-1) return false;
+        if (i+1 < s.size() && (std::isspace(s[i+1])||s[i+1]=='e')) return false;
+    }
+
+    // handle sign in front of number if its there
+    if (s[i]=='-'||s[i]=='+') {
+        if (s.size()==1) return false;
+        i++;
+        if (i < s.size()) {
+            if (s[i]=='e') return false;
+        }
+    }
+
+    for (; i < (int)s.size(); i++) {
+        char ch = s[i];
+        if (!std::isdigit(ch)) {
+            if (ch == '.') {
+                if (hasExp || hasDecimalPt) return false;
+                else hasDecimalPt = true;
+            } else if (ch == 'e') {
+                if (hasExp) return false;
+                hasExp = true;
+                procNum = false; // must have a number after 'e'
+            } else if (ch == '-' || ch == '+') {
+                if (i > 0 && s[i-1]!='e') return false;
+            } else if (std::isspace(ch)) {
+                break;
+            } else {
+                    return false;
+            }
+        } else
+            procNum = true;
+    }
+
+    if (!procNum) return false;
+
+    // check if whitespace after 'e'
+    if (i > 0 && s[i-1]=='e') return false;
+
+    // check for chars after whitespace
+    for (; i < s.size(); i++)
+        if (!std::isspace(s[i])) return false;
+    return true;
+}
+
+// optimized solution (kind of a waste of time)
+bool isNumberV2(std::string s) {
+    int i = 0;
+    // skip over whitespace first
+    while(s[i] == ' ') i++;
+
+    // if first char is a sign (+|-) this is valid
+    if(s[i] == '+' || s[i] == '-') i++;
+
+    int n_nm = 0, n_pt = 0;
+
+    // n_nm keeps track of digits counted, n_pt decimal points
+    while(isdigit(s[i]) || s[i] == '.') {
+        s[i] == '.' ? n_pt++ : n_nm++;
+        i++;
+    }
+    // bad case if we have more than one '.' or no numbers
+    if(n_pt > 1 || n_nm < 1) return false;
+
+    // at this point we def have at least one number
+    if(s[i]=='e') {
+        i++;
+        if(s[i] == '+' || s[i] == '-') i++;  // 3e+6 --> would be valid to have a '+' or '-' after 'e'
+        n_nm = 0;
+
+        // count digits after the 'e'
+        while(isdigit(s[i])) {
+            n_nm++;
+            i++;
+        }
+        // if no digits return false
+        if(n_nm < 1) return false;
+    }
+    // blast through whitespace
+    while(s[i] == ' ') i++;
+
+    // returns false if there is still a non whitespace at the end of the string
+    return s[i] == '\0';
+}
+
+/*
+ * size of min array that sums to s, all integers will be positive, go for O(n)
+    Example:
+        Input: s = 7, nums = [2,3,1,2,4,3]
+        Output: 2
+
+        [1 2 2 3 3 4]
+ */
+int minSubArrayLen(int s, std::vector<int> &nums) {
+    if (nums.empty()) return 0;
+    if (nums.size()==1) return nums[0]==s ? 1:0;
+    int res = 0;
+    std::sort(nums.begin(), nums.end());
+    int sum = 0, r=(int)nums.size()-1, l=0;
+    while (r > 0 && nums[r--] > s);
+    if (r >=0 && nums[r]==s) return 1;
+
+    while () {
+
+    }
+}
+
