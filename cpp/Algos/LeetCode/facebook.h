@@ -164,7 +164,10 @@ Follow up:
     If you have figured out the O(n) solution,
     try coding another solution of which the time complexity is O(n log n)
  */
+// result: 4.83% 196ms
 int minSubArrayLen(int s, std::vector<int>& nums);
+int minSubArrayLenV2(int s, std::vector<int>& nums);
+
 // =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Linked Lists =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Trees and Graphs =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

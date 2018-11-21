@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <cctype>
+#include <clocale>
+#include <cstring>
 #include "facebook.h"
 
 /*
@@ -23,10 +25,6 @@ jdebug :: great solution --> in java translate to c++ as V3 solution
  */
 
 // ================================================ helper functions ===================================================
-// divide and conquer to find correct sum
-static void _minSubRec(int s, const std::vector<int>& nums, int l, int r) {
-    
-}
 
 // =====================================================================================================================
 
@@ -209,7 +207,7 @@ bool isPalindrome(std::string& s) {
     if (s.empty()) return true;
     int l = 0, r = (int)s.size()-1;
     // using transform is much faster than the for_each method
-    std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+    std::transform(s.begin(), s.end(), s.begin(), std::tolower);
 
     while (l < r) {
         if ((s[l] < 'a' || s[l] > 'z') && (s[l] < '0' || s[l] > '9')) {
@@ -420,12 +418,40 @@ bool isNumberV2(std::string s) {
         Output: 2
 
     Approach:
-
+        1. dumb bruteforce use two pointers go through
+        2. [i * j * * * * k * *]
  */
 int minSubArrayLen(int s, std::vector<int> &nums) {
-    if (nums.empty()) return 0;
-    if (nums.size()==1) return (nums[0]==s ? 1:0);
-    _minSubRec(s, nums, 0, nums.size()-1);
+	if (nums.empty()) return 0;
+	if (nums.size()==1) return (nums[0]==s ? 1:0);
+	int result = INT_MAX;
+	int len = (int)nums.size();
+
+	for (int i = 0; i < len; i++) {
+		int sum = 0;
+		for (int j = i; j < len; j++) {
+			sum += nums[j];
+			if (nums[j]==s) return 1;
+			if (sum >= s) {
+				result = std::min(result, j-i+1);
+				break;
+			}
+		}
+	}
+	return result;
+}
+
+/*
+ * optimized approach
+ *
+ */
+int minSubArrayLenV2(int s, std::vector<int>& nums) {
 
 }
+
+
+
+
+
+
 

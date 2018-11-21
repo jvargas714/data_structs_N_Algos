@@ -183,9 +183,22 @@ void test_isANumber() {
     FUNCT_END;
 }
 
+void test_minSubArray() {
+	FUNCT_HEADER;
+	std::vector<int> nums = {2,3,1,2,4,3};
+	int target = 7;
+	int expected = 2;
+	t1_bub = hrc::now();
+	int result = minSubArrayLen(target, nums);
+	t2_bub = hrc::now();
 
+	LOG << "expected: " << expected << END;
+	LOG << "result: " << result << END;
+	showExeTime(__FUNCTION__);
+	FUNCT_HEADER;
+}
 
 int main () {
-    test_isANumber();
+    test_minSubArray();
 	return 0;
 }
