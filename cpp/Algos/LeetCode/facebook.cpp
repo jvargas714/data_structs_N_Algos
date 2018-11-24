@@ -3,8 +3,10 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <cctype>
-#include <clocale>
 #include <cstring>
+#include <cstdint>
+#include <climits>
+#include "utility.h"
 #include "facebook.h"
 
 /*
@@ -25,7 +27,6 @@ jdebug :: great solution --> in java translate to c++ as V3 solution
  */
 
 // ================================================ helper functions ===================================================
-
 // =====================================================================================================================
 
 /*
@@ -207,8 +208,7 @@ bool isPalindrome(std::string& s) {
     if (s.empty()) return true;
     int l = 0, r = (int)s.size()-1;
     // using transform is much faster than the for_each method
-    std::transform(s.begin(), s.end(), s.begin(), std::tolower);
-
+    std::transform(s.begin(), s.end(), s.begin(), ::tolower);
     while (l < r) {
         if ((s[l] < 'a' || s[l] > 'z') && (s[l] < '0' || s[l] > '9')) {
             l++;
@@ -441,14 +441,100 @@ int minSubArrayLen(int s, std::vector<int> &nums) {
 	return result;
 }
 
-/*
- * optimized approach
- *
- */
 int minSubArrayLenV2(int s, std::vector<int>& nums) {
+    int n = nums.size();
+    if (n == 0)
+        return 0;
+    int ans = INT_MAX;
+    std::vector<int> sums(n);
+    sums[0] = nums[0];
+    for (int i = 1; i < n; i++)
+        sums[i] = sums[i - 1] + nums[i];
+
+    for (int i = 0; i < n; i++) {
+        for (int j = i; j < n; j++) {
+            int sum = sums[j] - sums[i] + nums[i];
+            if (sum >= s) {
+                ans = std::min(ans, (j - i + 1));
+                break; //Found the smallest subarray with sum>=s starting with index i, hence move to next index
+            }
+        }
+    }
+    return (ans != INT_MAX) ? ans : 0;
 
 }
 
+/*
+ * optimized approach (binary search approach) best solution
+ * Time Complexity: O(nlogn)
+ * Space Complexity: O(n)
+ *
+ * sample data:
+ *  nums: [2, 3, 1, 2, 4, 3]
+ *  s = 10
+ *
+ *  Approach:
+ *      1. create a cumulative sum vector
+ *          - start with sums[i=0]=0
+ *          - end with [0, 2, 5, 6, 8, 12, 15]
+ *      2. use binary search to find i that makes sum >= s
+ *          - iterate to find index that is not lower than s-sums[i] in the sums
+ *          - std::lower_bound function is a binary search sums or we could implement manually
+ */
+int minSubArrayLenV3(int s, std::vector<int>& nums) {
+    if (nums.empty()) return 0;
+    if (nums.size()==1) return (nums[0]==s ? 1:0);
+    int len = (int)nums.size();
+    int result = INT_MAX;
+    std::vector<int> sums(len+1, 0);
+
+    // build cumulative sums vector [0, 2, 5, 6, 8, 12, 15]
+    for (int i = 1; i <= len; i++)
+        sums[i] = sums[i-1] + nums[i-1];
+
+    // say for i = 3
+    for (int i = 1; i <= len; i++) {
+        /*
+         * target = 10 + sums[2] = 10 + 5 = 15
+         * target = 10 + [2, 3, * * * *] --> the stars starts if the range exists
+         *                                      would be the range that we meets out sum requirements
+         */
+        int target = s + sums[i-1];
+        // we search for that target cumlative range
+        if (target > sums[len]) break;
+        auto bound = lower_bound(sums.begin(), sums.end(), target);
+        if (bound != sums.end()) {
+            result = std::min(result, static_cast<int>(bound - (sums.begin() + i - 1)));
+        }
+    }
+    return result != INT_MAX ? result:0;
+}
+
+/*
+ *  similar approach to MinSubArrayLen
+ *  Approach:
+ *      1. create a cumulative sums array
+ */
+int maxSubArrayLen(std::vector<int> &nums, int k) {
+    if (nums.empty()) return 0;
+    if (nums.size()==1) return (nums[0]==k)? 1:0;
+    int len = (int)nums.size();
+    std::vector<int> sums(len+1, 0);
+    int res = INT_MIN;
+    // cumulative sum array
+    for (int i = 1; i <= len; i++)
+        sums[i] = sums[i-1] + nums[i-1];
+
+    // find max sized array that sums to k
+    for (int i = 0; i <= len; i++) {
+        int target = k + sums[i];
+        if (target > sums[len]) continue;
+        int found = binarySearch(sums, target);
+        if (found != ERROR)
+            res = std::max(res, found-i);
+    }
+    return (res==INT_MIN)? 0:res;
+}
 
 
 

@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 
+
 // =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- Arrays and Strings =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 /*
  * move zeros to end of the array
@@ -152,6 +153,7 @@ bool isNumber(std::string s);
 bool isNumberV2(std::string s);
 
 /*
+ * Min size SubArray
  * Given an array of n positive integers and a positive integer s, find the minimal length of a
  * contiguous subarray of which the sum ≥ s. If there isn't one, return 0 instead.
 
@@ -167,7 +169,32 @@ Follow up:
 // result: 4.83% 196ms
 int minSubArrayLen(int s, std::vector<int>& nums);
 int minSubArrayLenV2(int s, std::vector<int>& nums);
+// Runtime: 8 ms, faster than 98.32% (from discussion)
+int minSubArrayLenV3(int s, std::vector<int>& nums);
 
+/*
+ * Maximum Size Subarray Sum Equals k
+ * Given an array nums and a target value k, find the maximum length of a subarray that sums to k.
+ * If there isn't one, return 0 instead.
+
+Note:
+The sum of the entire nums array is guaranteed to fit within the 32-bit signed integer range.
+
+Example 1:
+Input: nums = [1, -1, 5, -2, 3], k = 3
+Output: 4
+Explanation: The subarray [1, -1, 5, -2] sums to 3 and is the longest.
+
+ Example 2:
+Input: nums = [-2, -1, 2, 1], k = 1
+Output: 2
+
+Explanation: The subarray [-1, 2] sums to 1 and is the longest.
+
+ Follow Up:
+    Can you do it in O(n) time?
+ */
+int maxSubArrayLen(std::vector<int>& nums, int k);
 // =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Linked Lists =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Trees and Graphs =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

@@ -5,6 +5,7 @@
 #include <iostream>
 
 #define ASCII_ZERO 48
+#define ERROR -1
 
 struct ListNode {
     int val;

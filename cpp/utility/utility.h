@@ -212,6 +212,37 @@ std::vector<std::vector<T>> findPermutations(std::vector<T>& vals) {
     _permute(vals, result, 0, vals.size());
     return result;
 }
+
+template<typename T>
+int binarySearchLowerBound(const std::vector<T>& vals, const int& target) {
+    int l = 0, r = (int)vals.size()-1;
+    while (l <= r) {
+        int mid = l + (r-l)/2;
+        const T& val = vals[mid];
+        if (val >= target) {  // greater than
+//            r = mid - 1;
+            return mid;
+        } else { // less than
+            l = mid + 1;
+        }
+    }
+    return -1;
+}
+
+template<class T>
+int binarySearch(const std::vector<T>& vals, const int target) {
+    int l =0, r = (int)vals.size()-1;
+    while (l <= r) {
+        int mid = l + (r-l)/2;
+        if (vals[mid] == target) return mid;
+        else if (vals[mid] > target) {
+            r = mid - 1;
+        } else {
+            l = mid + 1;
+        }
+    }
+    return ERROR;
+}
 #endif //CPP_UTILITY_H
 
 

@@ -3,6 +3,7 @@
 #include "utility.h"
 #include <chrono>
 #include <iostream>
+#include <algorithm>
 #include <map>
 #include <random>
 using namespace std;
@@ -185,20 +186,50 @@ void test_isANumber() {
 
 void test_minSubArray() {
 	FUNCT_HEADER;
-	std::vector<int> nums = {2,3,1,2,4,3};
-	int target = 7;
-	int expected = 2;
+	std::vector<int> nums = {2,3,1,1,1,1,1};
+	int target = 5;
 	t1_bub = hrc::now();
-	int result = minSubArrayLen(target, nums);
+	int answerKey = minSubArrayLen(target, nums);
+	int result = minSubArrayLenV3(target, nums);
 	t2_bub = hrc::now();
 
-	LOG << "expected: " << expected << END;
+	LOG << "expected: " << answerKey << END;
 	LOG << "result: " << result << END;
 	showExeTime(__FUNCTION__);
 	FUNCT_HEADER;
 }
 
+void test_maxSubArray() {
+    FUNCT_HEADER;
+    std::vector<int> nums = {0, 0};
+    int target = 0;
+    int expected = 2;
+    LOG << "target: " << target << END;
+    LOG << "input: \n";
+    display(nums);
+    t1_bub = hrc::now();
+    int res = maxSubArrayLen(nums, target);
+    t2_bub = hrc::now();
+    LOG << "expected: " << expected << END;
+    LOG << "result: " << res << END;
+    showExeTime(__FUNCTION__);
+    FUNCT_END;
+}
+
+// should return first element that compares >= target (like lower_bound)
+void test_binarySearchLowerBound() {
+    std::vector<int> nums;
+    for (int i = 0; i < 20; i++)
+        nums.push_back(i);
+    for (int i = 0; i < nums.size(); i++) {
+        LOG << "i=" << i << ", result --> " << binarySearchLowerBound(nums, i) << END;
+        auto exp = std::lower_bound(nums.begin(), nums.end(), i);
+        LOG << "i=" << i << ", expected result --> " << (exp==nums.end()? -1:*exp)  << "\n" << END;
+    }
+    LOG << "result --> " << binarySearchLowerBound(nums, 100) << END;
+}
+
 int main () {
-    test_minSubArray();
+    test_maxSubArray();
 	return 0;
 }
