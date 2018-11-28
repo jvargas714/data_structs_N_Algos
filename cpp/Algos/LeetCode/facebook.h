@@ -194,7 +194,10 @@ Explanation: The subarray [-1, 2] sums to 1 and is the longest.
  Follow Up:
     Can you do it in O(n) time?
  */
+// Runtime: 32 ms, faster than 29.30%
 int maxSubArrayLen(std::vector<int>& nums, int k);
+// Time limit exceeded
+int maxSubArrayLenV2(std::vector<int>& nums, int k);
 // =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Linked Lists =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Trees and Graphs =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

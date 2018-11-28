@@ -9,23 +9,6 @@
 #include "utility.h"
 #include "facebook.h"
 
-/*
-jdebug :: great solution --> in java translate to c++ as V3 solution 
-    public boolean validPalindrome(String s) {
-        int l = -1, r = s.length();
-        while (++l < --r) 
-            if (s.charAt(l) != s.charAt(r)) return isPalindromic(s, l, r+1) || isPalindromic(s, l-1, r);
-        return true;
-    }
-
-    public boolean isPalindromic(String s, int l, int r) {
-        while (++l < --r) 
-            if (s.charAt(l) != s.charAt(r)) return false;
-        return true;
-    }
-
- */
-
 // ================================================ helper functions ===================================================
 // =====================================================================================================================
 
@@ -472,6 +455,7 @@ int minSubArrayLenV2(int s, std::vector<int>& nums) {
  * sample data:
  *  nums: [2, 3, 1, 2, 4, 3]
  *  s = 10
+ *  expect : 5
  *
  *  Approach:
  *      1. create a cumulative sum vector
@@ -479,7 +463,7 @@ int minSubArrayLenV2(int s, std::vector<int>& nums) {
  *          - end with [0, 2, 5, 6, 8, 12, 15]
  *      2. use binary search to find i that makes sum >= s
  *          - iterate to find index that is not lower than s-sums[i] in the sums
- *          - std::lower_bound function is a binary search sums or we could implement manually
+ *          - std::lower_bound function returns first element in range that does not eval less than target
  */
 int minSubArrayLenV3(int s, std::vector<int>& nums) {
     if (nums.empty()) return 0;
@@ -492,16 +476,38 @@ int minSubArrayLenV3(int s, std::vector<int>& nums) {
     for (int i = 1; i <= len; i++)
         sums[i] = sums[i-1] + nums[i-1];
 
-    // say for i = 3
     for (int i = 1; i <= len; i++) {
         /*
          * target = 10 + sums[2] = 10 + 5 = 15
          * target = 10 + [2, 3, * * * *] --> the stars starts if the range exists
          *                                      would be the range that we meets out sum requirements
+         * input: nums: [2, 3, 1, 2, 4, 3]
+         *  s = 10
+         *
+         * iterations:
+         * i=1 :: target = 10 + sums[1-1] = 10 + 0 = 10 --> exactly the single value we look for
+         * lower_bound returns iterator 10 or 5th index of sums
+         * checking result -> 5 - 0 = 5  --> [2, 3, 1, 2, 4, *] add up to 10
+         *
+         * i = 2 :: target = 10 + sums[2-1] = 10 + 2 = 12, same outcome as i=1
+         *
+         * i = 3 :: target = 10 + sums[3-1] = 10 + 5 = 15 --> bound = 15 so [2 3 1 2 4 3], so range is 6 long
+         * i = 4 :: break
+         *
+         *  rationale ::
+         *      target = s + sums[i-1]
+         *      want this to be true --> sum > s, but to consider the offset ie sums in between ends  of the vector
+         *      we can say s < target - sums[i-1], the difference subtracts a portion of the range out of the sum
+         *
+         *      for example :: build cumulative sums vector [0, 2, 5, 6, 8, 12, 15]
+         *          target = 7 + sums[3-1] --> 7 <= target - sums[3-1] = target - sums[2]
+         *          we look at target - sums[i-1] --> for i = 3 its target - sum[2 3]  << sum of first elements of input
+         *          so target = 7 + 5 = 12, we check if s <= target - sums[i-1] --> 7 <= 12 - sums[2] --> 7 <= 7
+         *          --> 12 - sums[2] is the range [* * 1 2 4 *], our len is 3
          */
         int target = s + sums[i-1];
-        // we search for that target cumlative range
         if (target > sums[len]) break;
+        // we search for that target cumlative range that does evaluate
         auto bound = lower_bound(sums.begin(), sums.end(), target);
         if (bound != sums.end()) {
             result = std::min(result, static_cast<int>(bound - (sums.begin() + i - 1)));
@@ -519,21 +525,54 @@ int maxSubArrayLen(std::vector<int> &nums, int k) {
     if (nums.empty()) return 0;
     if (nums.size()==1) return (nums[0]==k)? 1:0;
     int len = (int)nums.size();
-    std::vector<int> sums(len+1, 0);
     int res = INT_MIN;
-    // cumulative sum array
-    for (int i = 1; i <= len; i++)
-        sums[i] = sums[i-1] + nums[i-1];
+    int sum = 0;
+    std::unordered_map<int, int> sums;  // <sum, i>
 
-    // find max sized array that sums to k
-    for (int i = 0; i <= len; i++) {
-        int target = k + sums[i];
-        if (target > sums[len]) continue;
-        int found = binarySearch(sums, target);
-        if (found != ERROR)
-            res = std::max(res, found-i);
+    // cumulative sum array -> [0 1 0 5 3 6]
+    for (int i = 0; i < len; i++) {
+        sum += nums[i];
+        if (sum==k)
+        	res = i + 1;
+        else if (sums.find(sum-k) != sums.end())   //
+        	res = std::max(res, i - sums[sum-k]);
+
+        // add to map if this sum is not already in there
+        if (sums.find(sum) == sums.end())
+        	sums[sum] = i;
     }
-    return (res==INT_MIN)? 0:res;
+    return res == INT_MIN ? 0:res;
+}
+
+/*
+ * obvious straight forward solution (non-optimized)
+ * TIME LIMIT EXCEEDED on large inputs
+ * Approach:
+ *      0. a two pointer solution
+ *      1. a cumulative sums map
+ *      2. loop through get sum ranges check for equivalence
+ *      2a. [* * i * * * * * * j]
+ */
+int maxSubArrayLenV2(std::vector<int>& nums, int k) {
+	if (nums.empty()) return 0;
+	if (nums.size()==1) return (nums[0]==k) ? 1:0;
+	int len = (int)nums.size();
+	std::unordered_map<int, int> sums;  // <index, sum>
+	sums[0] = 0;
+	int res = INT_MIN;
+
+	// 1. cumulative map first index is first index of nums
+	for (int i = 1; i <= len; i++) sums[i] = sums[i-1] + nums[i-1];
+
+	for (int i = 0; i < len; i++) {
+		for (int j = len; j >= i+1; j--) {
+			int sum = sums[j] - sums[i];
+			if (sum == k) {
+				res = std::max(res, j - i);
+			}
+		}
+	}
+	return res==INT_MIN ? 0:res;
 }
 
 

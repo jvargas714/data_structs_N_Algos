@@ -201,9 +201,13 @@ void test_minSubArray() {
 
 void test_maxSubArray() {
     FUNCT_HEADER;
-    std::vector<int> nums = {0, 0};
-    int target = 0;
-    int expected = 2;
+//    std::vector<int> nums = {0, 0, 0};
+//    int target = 0;
+//    int expected = 3;
+    std::vector<int> nums = {1, -1, 5, -2, 3};
+    int target = 3;
+    int expected = 4;
+
     LOG << "target: " << target << END;
     LOG << "input: \n";
     display(nums);
