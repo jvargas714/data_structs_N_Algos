@@ -233,7 +233,16 @@ void test_binarySearchLowerBound() {
     LOG << "result --> " << binarySearchLowerBound(nums, 100) << END;
 }
 
+void test_reverseLinkedList() {
+	FUNCT_HEADER;
+	ListNode* lst = fillListNode({1, 2, 3, 4, 5, 6, 7});
+	ListNode* res = reverseListV2(lst);
+	LOG << "result: " << END;
+	displayListNodes(res);
+	FUNCT_END;
+}
+
 int main () {
-    test_maxSubArray();
+	test_reverseLinkedList();
 	return 0;
 }

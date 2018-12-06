@@ -6,7 +6,6 @@
 #include <cstring>
 #include <cstdint>
 #include <climits>
-#include "utility.h"
 #include "facebook.h"
 
 // ================================================ helper functions ===================================================
@@ -448,6 +447,7 @@ int minSubArrayLenV2(int s, std::vector<int>& nums) {
 }
 
 /*
+ * jdebug :: study this solution
  * optimized approach (binary search approach) best solution
  * Time Complexity: O(nlogn)
  * Space Complexity: O(n)
@@ -507,7 +507,7 @@ int minSubArrayLenV3(int s, std::vector<int>& nums) {
          */
         int target = s + sums[i-1];
         if (target > sums[len]) break;
-        // we search for that target cumlative range that does evaluate
+        // we search for that first target cumlative range that doesn't evaluate to less than target
         auto bound = lower_bound(sums.begin(), sums.end(), target);
         if (bound != sums.end()) {
             result = std::min(result, static_cast<int>(bound - (sums.begin() + i - 1)));
@@ -517,34 +517,49 @@ int minSubArrayLenV3(int s, std::vector<int>& nums) {
 }
 
 /*
+ * optimized :: (from discussion)
  *  similar approach to MinSubArrayLen
  *  Approach:
- *      1. create a cumulative sums array
+ *      1. use an unordered_map<sum, index> sums
+ *      2. add to cumulative sum
+ *      3. check if current sum is k
+ *      4. if not check if sum-k is in the map as well
+ *          this covers subarray where the sum starts from an index > 0
+ *      5. insert current sum to map if it doesnt exists
+ *      6. return answer if not INT_MIN else return 0
  */
-int maxSubArrayLen(std::vector<int> &nums, int k) {
-    if (nums.empty()) return 0;
-    if (nums.size()==1) return (nums[0]==k)? 1:0;
-    int len = (int)nums.size();
-    int res = INT_MIN;
-    int sum = 0;
-    std::unordered_map<int, int> sums;  // <sum, i>
+int maxSubArrayLen(std::vector<int>& nums, int k) {
+	if (nums.empty()) return 0;
+	if (nums.size()==1) return (nums[0]==k)? 1:0;
+	int len = (int)nums.size();
+	int res = INT_MIN;
+	int sum = 0;
+	std::unordered_map<int, int> sums;
 
-    // cumulative sum array -> [0 1 0 5 3 6]
-    for (int i = 0; i < len; i++) {
-        sum += nums[i];
-        if (sum==k)
-        	res = i + 1;
-        else if (sums.find(sum-k) != sums.end())   //
-        	res = std::max(res, i - sums[sum-k]);
+	/*
+	 *  1. add next value to cumulative sum
+	 *  2. check if the current sum adds to k
+	 *  2a. true: update result by the size of the subarray i + 1
+	 *  2b. else if sums[sum-k] exists in the map:
+	 *      # sum-k   [* * * * *] - k ==> would check the subarray for the difference as the sum option
+	 *      # if sum-k already exists in the sum map then that would cover a subarray [* * i * * * j *]
+	 *      i to j where j is the current index
+	 */
+	for (int i = 0; i < len; i++) {
+		sum += nums[i];
+		if (sum==k)
+			res = i + 1;
+		else if (sums.find(sum-k) != sums.end())
+			res = std::max(res, i - sums[sum-k]);  // sub-array not starting from 0-i instead [* * i * * * j *]
 
-        // add to map if this sum is not already in there
-        if (sums.find(sum) == sums.end())
-        	sums[sum] = i;
-    }
-    return res == INT_MIN ? 0:res;
+		// add to map if this sum is not already in there
+		if (sums.find(sum) == sums.end())
+			sums[sum] = i;
+	}
+	return res == INT_MIN ? 0:res;
 }
 
-/*
+/* slow solution O(n^2)
  * obvious straight forward solution (non-optimized)
  * TIME LIMIT EXCEEDED on large inputs
  * Approach:
@@ -575,8 +590,134 @@ int maxSubArrayLenV2(std::vector<int>& nums, int k) {
 	return res==INT_MIN ? 0:res;
 }
 
+/*
+ * Slow Solution O(n)
+    An input string is valid if:
+	Open brackets must be closed by the same type of brackets.
+	Open brackets must be closed in the correct order.
+	Note that an empty string is also considered valid.
 
+	Input: "{[]}"
+	Output: true
 
+    RunTime: O(n)  --> loop through all chars of input string once
+    Space: O(n) --> space allocated for the stack
+ */
+bool isValid(const std::string& s) {
+	if (s.empty()) return true;
+	if (s[0] == ']' || s[0] == '}' || s[0] == ')') return false;
+	std::stack<char> stk;
+	for (const auto& ch : s) {
+		if (ch == '(' || ch == '[' || ch == '{')
+			stk.push(ch);
+		else {
+			if (stk.empty()) return false;
+			switch(ch) {
+				case ']':
+					if (stk.top() != '[') return false;
+					break;
+				case '}':
+					if (stk.top() != '{') return false;
+					break;
+				case ')':
+					if (stk.top() != '(') return false;
+			}
+			stk.pop();
+		}
+	}
+	return stk.empty();
+}
 
+/*
+ * Approach:
+ *  - check for size == 1 case, just return 0
+ *  - use a stack
+ *  - in while loop:
+ *      >> if our stack is empty or the cavity goes deeper
+ *          >>> increase depth by pushing index to stack (a deeper depth)
+ *      >> else top element in the stack would be the bottom
+ *          pop stack, max water at the bottom is  -->
+ *          (std::min(height[stk.top()], height[i]) - height[bottom]) * (height[bottom]) calcuates height
+ *          i - stk.top()-1 calculates the width  for the volume of water trapped
+ *
+ *      RunTime: O(n)  --> one pass through input vector
+ *      Space Complexity: --> use of stack worst case filled with n elements
+ */
+int trap(std::vector<int>& height) {
+	if (height.size()==1 || height.empty()) return 0;
+	std::stack<int> stk;
+	int i = 0, maxWater = 0, maxBotWater = 0;
+	while (i < (int)height.size()) {
+		// push to stack only if current depth is deeper than top of stack or empty
+		if (stk.empty() || height[i] < height[stk.top()]) {
+			stk.push(i++);
+		} else {  // current height is higher altitude then top depth in stack
+			int bottom = stk.top();  // lowest point
+			stk.pop();
+			// calculating volume of water --> height x width
+			maxBotWater = stk.empty() ?
+			              0 :
+			              (std::min(height[stk.top()], height[i]) - height[bottom]) * (i - stk.top()-1);
+			maxWater += maxBotWater;
+		}
+	}
+	return maxWater;
+}
 
+/*
+ * Input: 1->2->3->4->5->NULL
+ * Output: 5->4->3->2->1->NULL
+ * iterative approach
+ * Time: O(n)  --> one pass through list
+ * Space: O(n)  --> fills stack with ints
+ */
+ListNode* reverseList(ListNode* head) {
+	if (!head) return head;
+	ListNode* tmp = head;
+	std::stack<int> stk;
 
+	// find end first
+	while (tmp != NULL) {
+		std::cout << "tmp pushing: " << tmp->val << std::endl;
+		stk.push(tmp->val);
+		tmp = tmp->next;
+	}
+
+	tmp = head;
+	std::cout << "stack size: " << stk.size() << std::endl;
+	std::cout << "tmp points to: " << tmp->val << std::endl;
+
+	while (!stk.empty()) {
+		tmp->val = stk.top();
+		std::cout << "tmp: " << tmp->val << ", popping: " << stk.top() << std::endl;
+		tmp = tmp->next;
+		stk.pop();
+	}
+	return head;
+}
+
+// 1->2->3->4->5->NULL
+static void _revLstRecursive(ListNode* head, ListNode** res) {
+	LOG << "coming in with " << head->val << END;
+	if (head->next == NULL) {
+		(*res)->val = head->val;
+		(*res) = (*res)->next;
+		return;
+	}
+	_revLstRecursive(head->next, res);
+	LOG << "adding " << head->val << " to result" << END;
+	(*res) = new ListNode(head->val);
+	(*res) = (*res)->next;
+}
+
+/*
+ * recursive approach
+ *  1. first traverse list to end of it
+ *  2. then we exiting add to result
+ */
+ListNode* reverseListV2(ListNode* head) {
+	ListNode* tmp = head;
+	ListNode* res = new ListNode(0);
+	_revLstRecursive(tmp, &res);
+	return res;
+}

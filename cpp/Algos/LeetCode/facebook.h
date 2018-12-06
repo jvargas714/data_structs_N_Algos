@@ -2,6 +2,9 @@
 #define DATASTRUCTS_N_ALGOS_FACEBOOK_H
 #include <vector>
 #include <string>
+#include "utility.h"
+
+// =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- Arrays and Strings =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 
 // =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- Arrays and Strings =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -194,12 +197,39 @@ Explanation: The subarray [-1, 2] sums to 1 and is the longest.
  Follow Up:
     Can you do it in O(n) time?
  */
-// Runtime: 32 ms, faster than 29.30%
+// Runtime: 20 ms, faster than 98.30%
 int maxSubArrayLen(std::vector<int>& nums, int k);
 // Time limit exceeded
 int maxSubArrayLenV2(std::vector<int>& nums, int k);
-// =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Linked Lists =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+/*
+  Valid Parentheses
+  Given a string containing just the characters '(', ')', '{', '}', '[' and ']', 
+  determine if the input string is valid.
+
+	An input string is valid if:
+	Open brackets must be closed by the same type of brackets.
+	Open brackets must be closed in the correct order.
+	Note that an empty string is also considered valid.
+ */
+// result: 100% 0ms
+bool isValid(std::string s);
+
+/*
+ * Trapping Water
+*   Given n non-negative integers representing an elevation map where the width of each bar is 1,
+ *   compute how much water it is able to trap after raining.
+ */
+int trap(std::vector<int>* rain);
+
+// =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Linked Lists =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+/*
+	Input: 1->2->3->4->5->NULL
+	Output: 5->4->3->2->1->NULL
+	-- do this both iteratively and recursively
+ */
+ListNode* reverseList(ListNode* head);
+ListNode* reverseListV2(ListNode* head);
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Trees and Graphs =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= BackTracking =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
