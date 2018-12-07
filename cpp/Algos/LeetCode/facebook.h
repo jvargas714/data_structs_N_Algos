@@ -230,6 +230,7 @@ int trap(std::vector<int>* rain);
  */
 ListNode* reverseList(ListNode* head);
 ListNode* reverseListV2(ListNode* head);
+ListNode* reverseListV3(ListNode* head);
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Trees and Graphs =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= BackTracking =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
