@@ -792,6 +792,35 @@ ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
 }
 
 /*
+ * Optimized Iterative Approach
+ * Time O(n)
+ * Space O(1)
+ * [1]->[2]->[3]->[4]->null
+ * Note:
+ *  use a pointer to a pointer when we need change which element the head pointer points to, otherwise we endup
+ *  changing its address and it would no longer be linked to the rest of the list
+ */
+static void _revLLIter(ListNode** head) {
+    if (!head) return;
+    ListNode* prev = nullptr;
+    ListNode* next = nullptr;
+    ListNode* curr = *head;
+    while (curr != nullptr) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    *head  = prev;
+}
+ListNode* reverseListV3(ListNode* head) {
+    _revLLIter(&head);
+    return head;
+}
+
+
+
+/*
  * non optimized solution
  * [* * * * * *]
  *

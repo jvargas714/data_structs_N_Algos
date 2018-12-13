@@ -236,7 +236,7 @@ void test_binarySearchLowerBound() {
 void test_reverseLinkedList() {
 	FUNCT_HEADER;
 	ListNode* lst = fillListNode({1, 2, 3, 4, 5, 6, 7});
-	ListNode* res = reverseListV2(lst);
+	ListNode* res = reverseListV3(lst);
 	LOG << "result: " << END;
 	displayListNodes(res);
 	FUNCT_END;

@@ -230,6 +230,7 @@ int trap(std::vector<int>* rain);
  */
 ListNode* reverseList(ListNode* head);
 ListNode* reverseListV2(ListNode* head);
+ListNode* reverseListV3(ListNode* head);
 
 /*
  * You are given two non-empty linked lists representing two non-negative integers.
