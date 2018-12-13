@@ -255,9 +255,8 @@ ListNode* removeNthFromEnd(ListNode* head, int n);
  * Write a program to find the node at which the intersection of two singly linked lists begins.
  *
  */
-// result: 38.59%, 36ms
+// result: 87.53%, 24ms
 ListNode *getIntersectionNode(ListNode *headA, ListNode *headB);
-ListNode *getIntersectionNodeV2(ListNode *headA, ListNode *headB);
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Trees and Graphs =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
