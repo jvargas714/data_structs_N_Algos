@@ -696,28 +696,194 @@ ListNode* reverseList(ListNode* head) {
 	return head;
 }
 
-// 1->2->3->4->5->NULL
-static void _revLstRecursive(ListNode* head, ListNode** res) {
-	LOG << "coming in with " << head->val << END;
-	if (head->next == NULL) {
-		(*res)->val = head->val;
-		(*res) = (*res)->next;
+//func recursiveReverse(Node**):
+//struct Node* first;
+//struct Node* rest;
+//
+///* empty list */
+//if (*head_ref == NULL)
+//return;
+//
+///* suppose first = {1, 2, 3}, rest = {2, 3} */
+//first = *head_ref;
+//rest  = first->next;
+//
+///* List has only one node */
+//if (rest == NULL)
+//return;
+//
+///* reverse the rest list and put the first element at the end */
+//recursiveReverse(&rest);
+//first->next->next  = first;
+//
+///* tricky step -- see the diagram */
+//first->next  = NULL;
+//
+///* fix the head pointer */
+//*head_ref = rest;
+// [* * * * f r] null
+static void _revLstRecursive(ListNode** head) {
+	if (*head==nullptr)
 		return;
-	}
-	_revLstRecursive(head->next, res);
-	LOG << "adding " << head->val << " to result" << END;
-	(*res) = new ListNode(head->val);
-	(*res) = (*res)->next;
+	ListNode* first = *head;
+	ListNode* rest = first->next;
+	if (rest == nullptr) return;
+	_revLstRecursive(&rest);  //   [* * * * * f *]
+	first->next->next = first;  // [* * * * * * * f]
+	first->next = nullptr;
+	*head = rest;
 }
 
 /*
  * recursive approach
- *  1. first traverse list to end of it
- *  2. then we exiting add to result
  */
 ListNode* reverseListV2(ListNode* head) {
 	ListNode* tmp = head;
-	ListNode* res = new ListNode(0);
-	_revLstRecursive(tmp, &res);
+	_revLstRecursive(&head);
+	return head;
+}
+
+/*
+ * Straight forward solution
+    Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+	Output: 7 -> 0 -> 8
+	Explanation: 342 + 465 = 807
+
+    say val = 12
+    12 % 10 --> 2
+ */
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+	ListNode* tmp1 = l1;
+	ListNode* tmp2 = l2;
+	int carry = 0;
+
+	// init head of list first
+	int val = tmp1->val + tmp2->val;
+	ListNode* res = new ListNode((val)%10);
+	if (val >= 10) carry = 1;
+	ListNode* resTmp = res;
+	tmp1 = tmp1->next;
+	tmp2 = tmp2->next;
+
+	// add rest of number
+	while (tmp1 && tmp2) {
+		val = tmp1->val + tmp2->val + carry;
+		carry = 0;
+		if (val >= 10) carry = 1;
+		else carry = 0;
+		resTmp->next = new ListNode(val%10);
+		resTmp = resTmp->next;
+		tmp1 = tmp1->next;
+		tmp2 = tmp2->next;
+	}
+
+	// check if there is a carry or remaining digits to add
+	ListNode* tmp3 = (tmp1 != nullptr ? tmp1 : (tmp2 != nullptr ? tmp2:nullptr));
+	while (tmp3) {
+		val = tmp3->val + carry;
+		if (val == 10) carry = 1;
+		else carry = 0;
+		resTmp->next = new ListNode(val%10);
+		resTmp = resTmp->next;
+		tmp3 = tmp3->next;
+	}
+	if (carry==1) resTmp->next = new ListNode(1);
 	return res;
+}
+
+/*
+ * non optimized solution
+ * [* * * * * *]
+ *
+ *  Given linked list: 1->2->3->4->5, and n = 2.
+ *	After removing the second node from the end, the linked list becomes 1->2->3->5.
+ *	n always valid
+ *
+ *	Approach:
+ *	1. create a vector of pointers
+ *	2. from there we can find the right index to remove in one pass
+ *
+ * */
+ListNode* removeNthFromEnd(ListNode* head, int n) {
+	ListNode* tmp = head;
+	std::vector<ListNode*> nodes;
+	while(tmp) {
+		nodes.push_back(tmp);
+		tmp = tmp->next;
+	}
+	// [* * * * * (* {*} *) *] if n = 3, len = 9, remove i = 6,
+	// we need to link 5 --> 7
+	int len = (int)nodes.size();
+	if (n==1) {  // remove end
+		if (len == 1 || nodes.empty()) return nullptr;
+		tmp = nodes[len - n - 1];
+		tmp->next = nullptr;
+	} else if (len - n == 0) {  // must remove the first element
+		head = head->next;
+	} else {
+		ListNode* tmp_right = nodes[len-n+1]; // len - 1 - n is the target
+		ListNode* tmp_left = nodes[len-n-1];
+		tmp_left->next = tmp_right;
+	}
+	return head;
+}
+
+/*
+		 A:          a1 → a2
+		                   ↘
+		                     c1 → c2 → c3
+		                   ↗
+		B:     b1 → b2 → b3
+		should run in O(n) time and O(1) space
+ */
+ListNode* getIntersectionNode(ListNode *headA, ListNode *headB) {
+	ListNode* tmpa = headA;
+	ListNode* tmpb = headB;
+	int cnta = 0, cntb = 0;
+
+	// first find the offset between the two lists
+	// [* * *]      --> at 3 we would want to start
+	// [* * * * *]  -->
+	// return incase we find it beforehand
+	while (tmpa||tmpb) {
+		if (tmpa==tmpb) return tmpa;
+		if (tmpa) {
+			cnta++;
+			tmpa = tmpa->next;
+		}
+		if (tmpb) {
+			cntb++;
+			tmpb = tmpb->next;
+		}
+	}
+	// reset pointers
+	tmpa = headA;
+	tmpb = headB;
+
+
+	// offset if neg the cnt b is longer
+	int offset = cnta - cntb;
+
+	// offset the longer list
+	if (offset == 0) {
+		return nullptr;
+	} else if (offset < 0) {
+		for (int i = 0; i < std::abs(offset); i++)
+			tmpb = tmpb->next;
+	} else {
+		for (int i = 0; i < offset; i++)
+			tmpa = tmpa->next;
+	}
+
+	// find intersection
+	while (tmpa && tmpb) {
+		if (tmpa==tmpb) return tmpa;
+		tmpa = tmpa->next;
+		tmpb = tmpb->next;
+	}
+	return nullptr;
+}
+
+ListNode *getIntersectionNodeV2(ListNode *headA, ListNode *headB) {
+
 }

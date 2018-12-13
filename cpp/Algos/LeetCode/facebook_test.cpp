@@ -37,8 +37,8 @@ string genBinNum(size_t len) {
  */
 void test_addBinary() {
 	FUNCT_HEADER;
-	string a = genBinNum(751230);
-	string b = genBinNum(552340);
+	string a = genBinNum(20);
+	string b = genBinNum(15);
 //    string a("1100");
 //    string b("1101");
 //    string a("11");
@@ -242,7 +242,29 @@ void test_reverseLinkedList() {
 	FUNCT_END;
 }
 
+void test_addTwoNumbers() {
+	FUNCT_HEADER;
+	ListNode* l1 = fillListNode({9});
+	ListNode* l2 = fillListNode({5});
+	ListNode* res = addTwoNumbers(l1, l2);
+	LOG << "result: " << END;
+	displayListNodes(res);
+	FUNCT_END;
+}
+
+void test_removeNthFromEnd() {
+	FUNCT_HEADER;
+	ListNode* lst = fillListNode({1});
+	int n = 0;
+	LOG << "input: n=" << n << END;
+	displayListNodes(lst);
+	ListNode* res = removeNthFromEnd(lst, n);
+	LOG << "result: " << END;
+	displayListNodes(res);
+	FUNCT_END;
+}
+
 int main () {
-	test_reverseLinkedList();
+	test_removeNthFromEnd();
 	return 0;
 }

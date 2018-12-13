@@ -217,7 +217,7 @@ bool isValid(std::string s);
 
 /*
  * Trapping Water
-*   Given n non-negative integers representing an elevation map where the width of each bar is 1,
+ *   Given n non-negative integers representing an elevation map where the width of each bar is 1,
  *   compute how much water it is able to trap after raining.
  */
 int trap(std::vector<int>* rain);
@@ -230,6 +230,34 @@ int trap(std::vector<int>* rain);
  */
 ListNode* reverseList(ListNode* head);
 ListNode* reverseListV2(ListNode* head);
+
+/*
+ * You are given two non-empty linked lists representing two non-negative integers.
+ * The digits are stored in reverse order and each of their nodes contain a single digit.
+ * Add the two numbers and return it as a linked list.
+ * You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+ *
+ * Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+ * Output: 7 -> 0 -> 8
+ * Explanation: 342 + 465 = 807.
+ */
+// Your runtime beats 98.57 % of cpp submissions, 48ms
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2);
+
+/*
+ * Given a linked list, remove the n-th node from the end of list and return its head.
+ */
+// result: 100% 4ms
+ListNode* removeNthFromEnd(ListNode* head, int n);
+
+/*
+ * Write a program to find the node at which the intersection of two singly linked lists begins.
+ *
+ */
+// result: 38.59%, 36ms
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB);
+ListNode *getIntersectionNodeV2(ListNode *headA, ListNode *headB);
+
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Trees and Graphs =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= BackTracking =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
