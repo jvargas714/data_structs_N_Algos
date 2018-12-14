@@ -258,6 +258,10 @@ ListNode* removeNthFromEnd(ListNode* head, int n);
 // result: 87.53%, 24ms
 ListNode *getIntersectionNode(ListNode *headA, ListNode *headB);
 
+/*
+    Given a binary tree, flatten it to a linked list in-place
+*/
+void flatten(TreeNode* root);
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Trees and Graphs =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= BackTracking =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

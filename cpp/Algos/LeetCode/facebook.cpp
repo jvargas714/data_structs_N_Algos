@@ -913,6 +913,16 @@ ListNode* getIntersectionNode(ListNode *headA, ListNode *headB) {
 	return nullptr;
 }
 
-ListNode *getIntersectionNodeV2(ListNode *headA, ListNode *headB) {
-
+static TreeNode* _flattenRec(TreeNode* nd, TreeNode* prev) {
+        if (!nd) return prev;
+        prev = _flattenRec(nd->right, prev);
+        prev = _flattenRec(nd->left, prev);
+        nd->right = prev;
+        nd->left = nullptr;
+        prev = nd;
+        return nd;
+    }
+    
+void flatten(TreeNode* root) {
+    _flattenRec(root, nullptr);
 }
