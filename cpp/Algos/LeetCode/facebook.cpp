@@ -914,15 +914,30 @@ ListNode* getIntersectionNode(ListNode *headA, ListNode *headB) {
 }
 
 static TreeNode* _flattenRec(TreeNode* nd, TreeNode* prev) {
-        if (!nd) return prev;
-        prev = _flattenRec(nd->right, prev);
-        prev = _flattenRec(nd->left, prev);
-        nd->right = prev;
-        nd->left = nullptr;
-        prev = nd;
-        return nd;
-    }
+    if (!nd) return prev;
+    prev = _flattenRec(nd->right, prev);
+    prev = _flattenRec(nd->left, prev);
+    nd->right = prev;
+    nd->left = nullptr;
+    prev = nd;
+    return nd;
+}
     
 void flatten(TreeNode* root) {
     _flattenRec(root, nullptr);
+}
+
+
+/*
+    must follow standard BST convention 
+*/
+bool _validateBSTRec(TreeNode* root) {
+    if (!root) return true;
+    if (root->left && root->val <= root->left->val) return false;
+    if (root->right && root->val >= root->right->val) return false;
+    return _validateBSTRec(root->left) && _validateBSTRec(root->right);
+}
+
+bool validateBST(TreeNode* root) {
+    _validateBSTRec(root);
 }
