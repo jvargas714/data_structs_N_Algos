@@ -931,13 +931,22 @@ void flatten(TreeNode* root) {
 /*
     must follow standard BST convention 
 */
-bool _validateBSTRec(TreeNode* root) {
-    if (!root) return true;
-    if (root->left && root->val <= root->left->val) return false;
-    if (root->right && root->val >= root->right->val) return false;
-    return _validateBSTRec(root->left) && _validateBSTRec(root->right);
+bool _validateBSTRec(TreeNode* root, TreeNode* minTree, TreeNode* maxTree) {
+    // condition check :: 
+    if (minTree && (root->val <= minTree->val)) return false;
+
+    // condition check :: 
+    if (maxTree && (maxTree->val <= root->val)) return false;
+
+    // check which side is not null, and traverse down the left side, keeping track of the lowest branch value
+    bool left = root->left != nullptr ? _validateBSTRec(root->left, minTree, root) : true;
+    if (left) {
+        bool right = root->right != nullptr ? _validateBSTRec(root->right, root, maxTree) : true;
+        return right;
+    } else return false;
 }
 
-bool validateBST(TreeNode* root) {
-    _validateBSTRec(root);
+bool isValidBST(TreeNode* root) {
+    if (!root) return true;
+    _validateBSTRec(root, nullptr, nullptr);
 }
