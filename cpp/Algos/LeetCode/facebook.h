@@ -261,6 +261,7 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB);
 /*
     Given a binary tree, flatten it to a linked list in-place
 */
+// result: 100% 4ms
 void flatten(TreeNode* root);
 
 /*
@@ -270,14 +271,25 @@ To represent a cycle in the given linked list, we use an integer pos which repre
  (0-indexed) in the linked list where tail connects to. If pos is -1, then there is no cycle in the linked list.
  */
 bool hasCycle(ListNode *head);
+
+
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Trees and Graphs =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 /*
-    Given two binary trees, write a function to check if they are the same or not.
+ * Given two binary trees, write a function to check if they are the same or not.
 	Two binary trees are considered the same if they are structurally
     identical and the nodes have the same value.
  */
 bool isSameTree(TreeNode* p, TreeNode* q);
 
+/*
+    Given a binary tree, determine if it is a valid binary search tree (BST).
+    Assume a BST is defined as follows:
+        The left subtree of a node contains only nodes with keys less than the node's key.
+        The right subtree of a node contains only nodes with keys greater than the node's key.
+        Both the left and right subtrees must also be binary search trees.
+*/
+// result: 100ms 4ms
+bool isValidBST(TreeNode* root);
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= BackTracking =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- Sorting and Searching =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

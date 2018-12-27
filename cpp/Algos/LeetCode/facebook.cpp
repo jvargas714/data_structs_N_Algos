@@ -821,7 +821,9 @@ ListNode* reverseListV3(ListNode* head) {
 
 
 /*
+ * non optimized solution
  * [* * * * * *]
+ *
  *  Given linked list: 1->2->3->4->5, and n = 2.
  *	After removing the second node from the end, the linked list becomes 1->2->3->5.
  *	n always valid
@@ -911,6 +913,16 @@ ListNode* getIntersectionNode(ListNode *headA, ListNode *headB) {
 	return nullptr;
 }
 
+static TreeNode* _flattenRec(TreeNode* nd, TreeNode* prev) {
+    if (!nd) return prev;
+    prev = _flattenRec(nd->right, prev);
+    prev = _flattenRec(nd->left, prev);
+    nd->right = prev;
+    nd->left = nullptr;
+    prev = nd;
+    return nd;
+}
+    
 /*
     1
    / \
@@ -975,4 +987,27 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 	_preorderTravel(p, p_vect);
 	_preorderTravel(q, q_vect);
 	return p_vect == q_vect;
+}
+
+/*
+    must follow standard BST convention
+*/
+bool _validateBSTRec(TreeNode* root, TreeNode* minTree, TreeNode* maxTree) {
+	// condition check ::
+	if (minTree && (root->val <= minTree->val)) return false;
+
+	// condition check ::
+	if (maxTree && (maxTree->val <= root->val)) return false;
+
+	// check which side is not null, and traverse down the left side, keeping track of the lowest branch value
+	bool left = root->left != nullptr ? _validateBSTRec(root->left, minTree, root) : true;
+	if (left) {
+		bool right = root->right != nullptr ? _validateBSTRec(root->right, root, maxTree) : true;
+		return right;
+	} else return false;
+}
+
+bool isValidBST(TreeNode* root) {
+	if (!root) return true;
+	_validateBSTRec(root, nullptr, nullptr);
 }
