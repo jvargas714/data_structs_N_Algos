@@ -4,8 +4,21 @@
 #include <string>
 #include "utility.h"
 
-// =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- Arrays and Strings =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+// =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- Structs =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+class Node {
+public:
+	int val;
+	Node* left;
+	Node* right;
 
+	Node() {}
+
+	Node(int _val, Node* _left, Node* _right) {
+		val = _val;
+		left = _left;
+		right = _right;
+	}
+};
 
 // =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- Arrays and Strings =-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 /*
@@ -290,6 +303,101 @@ bool isSameTree(TreeNode* p, TreeNode* q);
 */
 // result: 100ms 4ms
 bool isValidBST(TreeNode* root);
+
+/*
+	Given a binary tree, return all root-to-leaf paths.
+	Note: A leaf is a node with no children.
+	Example:
+	Input:
+	   1
+	 /   \
+	2     3
+	 \
+	  5
+	Output: ["1->2->5", "1->3"]
+	Explanation: All root-to-leaf paths are: 1->2->5, 1->3
+ */
+std::vector<std::string> binaryTreePaths(TreeNode* root);
+
+/*
+	Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree
+	is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+
+	Example:
+	Given a binary tree
+	          1
+	         / \
+	        2   3
+	       / \
+	      4   5
+	Return 3, which is the length of the path [4,2,1,3] or [5,2,1,3].
+	Note: The length of path between two nodes is represented by the number of edges between them.
+ */
+int diameterOfBinaryTree(TreeNode* root);
+
+/*
+	 Given a binary tree, return the vertical order traversal of its nodes' values.
+	 (ie, from top to bottom, column by column).
+
+	If two nodes are in the same row and column, the order should be from left to right
+	 Input: [3,9,8,4,0,1,7,null,null,null,2,5] (0's right child is 2 and 1's left child is 5)
+
+	     3
+	    /\
+	   /  \
+	   9   8
+	  /\  /\
+	 /  \/  \
+	 4  01   7
+	    /\
+	   /  \
+	   5   2
+
+	Output:
+
+	[
+	  [4],
+	  [9,5],
+	  [3,0,1],
+	  [8,2],
+	  [7]
+	]
+ */
+std::vector<std::vector<int>> verticalOrder(TreeNode* root);
+
+/*
+ * Given preorder and inorder traversal of a tree, construct the binary tree.
+
+	Note:
+	You may assume that duplicates do not exist in the tree.
+
+	For example, given
+
+	preorder = [3,9,20,15,7]
+	inorder = [9,3,15,20,7]
+	Return the following binary tree:
+
+	    3
+	   / \
+	  9  20
+	    /  \
+	   15   7
+ */
+TreeNode* buildTree(std::vector<int>& preorder, std::vector<int>& inorder);
+
+/*
+ * Convert a BST to a sorted circular doubly-linked list in-place. Think of the left and right
+ * pointers as synonymous to the previous and next pointers in a doubly-linked list.
+
+	We want to transform this BST into a circular doubly linked list. Each node in a doubly linked list has a
+    predecessor and successor. For a circular doubly linked list, the predecessor of the first element is the
+    last element, and the successor of the last element is the first element.
+
+	 Specifically, we want to do the transformation in place. After the transformation, the left pointer of the tree
+	 node should point to its predecessor, and the right pointer should point to its successor. We should return the
+	 pointer to the first element of the linked list.
+ */
+Node* treeToDoublyList(Node* root);
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= BackTracking =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- Sorting and Searching =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
