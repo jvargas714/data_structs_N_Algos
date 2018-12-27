@@ -821,9 +821,7 @@ ListNode* reverseListV3(ListNode* head) {
 
 
 /*
- * non optimized solution
  * [* * * * * *]
- *
  *  Given linked list: 1->2->3->4->5, and n = 2.
  *	After removing the second node from the end, the linked list becomes 1->2->3->5.
  *	n always valid
@@ -913,16 +911,68 @@ ListNode* getIntersectionNode(ListNode *headA, ListNode *headB) {
 	return nullptr;
 }
 
-static TreeNode* _flattenRec(TreeNode* nd, TreeNode* prev) {
-        if (!nd) return prev;
-        prev = _flattenRec(nd->right, prev);
-        prev = _flattenRec(nd->left, prev);
-        nd->right = prev;
-        nd->left = nullptr;
-        prev = nd;
-        return nd;
-    }
-    
+/*
+    1
+   / \
+  2   5
+ / \   \
+3   4   6
+
+1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+*/
+TreeNode* _flattenRec(TreeNode* nd, TreeNode* prev) {
+	if (!nd) return prev;
+	prev = _flattenRec(nd->right, prev);
+	prev = _flattenRec(nd->left, prev);
+	nd->right = prev;
+	nd->left = nullptr;
+	prev = nd;
+	return nd;
+}
+
 void flatten(TreeNode* root) {
-    _flattenRec(root, nullptr);
+	_flattenRec(root, nullptr);
+}
+
+bool hasCycle(ListNode *head) {
+	if (!head||!head->next) return false;
+	ListNode* fast = head;
+	ListNode* slow = head;
+	int cnt = 0;
+	while (fast&&slow&&fast->next) {
+		slow = slow->next;
+		fast = fast->next->next;
+		if ((fast == slow) && (fast)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void _preorderTravel(TreeNode* nd, std::vector<int>& vals) {
+	if (!nd) {
+		vals.push_back(INT_MIN);
+		return;
+	}
+	vals.push_back(nd->val);
+	_preorderTravel(nd->left, vals);
+	_preorderTravel(nd->right, vals);
+}
+
+bool isSameTree(TreeNode* p, TreeNode* q) {
+	if (p==nullptr && q==nullptr) return true;
+	std::vector<int> p_vect, q_vect;
+	_preorderTravel(p, p_vect);
+	_preorderTravel(q, q_vect);
+	return p_vect == q_vect;
 }

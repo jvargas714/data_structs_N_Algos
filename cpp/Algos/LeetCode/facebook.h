@@ -262,7 +262,21 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB);
     Given a binary tree, flatten it to a linked list in-place
 */
 void flatten(TreeNode* root);
+
+/*
+ * Given a linked list, determine if it has a cycle in it.
+
+To represent a cycle in the given linked list, we use an integer pos which represents the position
+ (0-indexed) in the linked list where tail connects to. If pos is -1, then there is no cycle in the linked list.
+ */
+bool hasCycle(ListNode *head);
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Trees and Graphs =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+/*
+    Given two binary trees, write a function to check if they are the same or not.
+	Two binary trees are considered the same if they are structurally
+    identical and the nodes have the same value.
+ */
+bool isSameTree(TreeNode* p, TreeNode* q);
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= BackTracking =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
