@@ -285,6 +285,8 @@ void _fill(const std::vector<int>& data, TreeNode** node, int i) {
    2    3
   /\   /\
  4 5  6 7
+
+ todo :: write subroutine to this function to search for INT_MIN and replace that node with a null
 */
 TreeNode* allocateBinTreeFromVect(const std::vector<int>& data) {
     if ( data.empty() ) return nullptr;

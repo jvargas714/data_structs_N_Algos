@@ -264,7 +264,26 @@ void test_removeNthFromEnd() {
 	FUNCT_END;
 }
 
+void test_binaryTreePaths() {
+    FUNCT_HEADER;
+    TreeNode* root = allocateBinTreeFromVect({1, 2, 3, INT32_MIN, 5, 6});
+    vector<string> result = binaryTreePaths(root);
+    LOG << "result: " << END;
+    display(result);
+    FUNCT_END;
+}
+
+void test_diameterOfBinaryTree() {
+    FUNCT_HEADER;
+    TreeNode* root = allocateBinTreeFromVect({1, 2, 3, 4, 5});
+    int result = diameterOfBinaryTree(root);
+    LOG << "result: " << result << END;
+    FUNCT_END;
+
+}
+
 int main () {
-	test_removeNthFromEnd();
+    test_diameterOfBinaryTree();
 	return 0;
 }
+

@@ -913,16 +913,6 @@ ListNode* getIntersectionNode(ListNode *headA, ListNode *headB) {
 	return nullptr;
 }
 
-static TreeNode* _flattenRec(TreeNode* nd, TreeNode* prev) {
-    if (!nd) return prev;
-    prev = _flattenRec(nd->right, prev);
-    prev = _flattenRec(nd->left, prev);
-    nd->right = prev;
-    nd->left = nullptr;
-    prev = nd;
-    return nd;
-}
-    
 /*
     1
    / \
@@ -942,7 +932,7 @@ static TreeNode* _flattenRec(TreeNode* nd, TreeNode* prev) {
          \
           6
 */
-TreeNode* _flattenRec(TreeNode* nd, TreeNode* prev) {
+static TreeNode* _flattenRec(TreeNode* nd, TreeNode* prev) {
 	if (!nd) return prev;
 	prev = _flattenRec(nd->right, prev);
 	prev = _flattenRec(nd->left, prev);
@@ -991,6 +981,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 /*
     must follow standard BST convention
+    todo :: study this solution more
 */
 bool _validateBSTRec(TreeNode* root, TreeNode* minTree, TreeNode* maxTree) {
 	// condition check ::
@@ -1011,3 +1002,53 @@ bool isValidBST(TreeNode* root) {
 	if (!root) return true;
 	_validateBSTRec(root, nullptr, nullptr);
 }
+
+static void _travelBstV2(TreeNode* nd, std::vector<std::string>& res, std::string entry) {
+    if (!nd) return;
+    if ( !(nd->left||nd->right) ) {
+        res.push_back(
+                entry + (entry.empty() ?
+                std::to_string(nd->val)
+                : ("->" + std::to_string(nd->val)))
+        );
+        return;
+    }
+    entry += (entry.empty() ? "" : ("->" + std::to_string(nd->val)));
+    _travelBstV2(nd->left, res, entry);
+    _travelBstV2(nd->right, res, entry);
+}
+
+std::vector<std::string> binaryTreePaths(TreeNode* root) {
+    if (!root) return {};
+    std::vector<std::string> result;
+    _travelBstV2(root, result, "");
+    return result;
+}
+
+// travel to find diameter
+static void _travDiameter(TreeNode* nd, int& cnt, int& maxCnt) {
+    if (!nd) return;
+    int branchCnt = 0;
+    bool X = (nd->left && nd->right);
+    _travDiameter(nd->left, cnt, maxCnt);
+    // if an intersection node
+    if (X) {
+        branchCnt = cnt;
+        cnt = 0;
+    }
+    _travDiameter(nd->right, cnt, maxCnt);
+
+    maxCnt = std::max(branchCnt + cnt, maxCnt);
+    cnt = std::max(cnt, branchCnt);
+    cnt++;
+
+}
+
+int diameterOfBinaryTree(TreeNode* root) {
+    if (!root) return 0;
+    int maxCnt = 0;
+    int cnt = 0;
+    _travDiameter(root, cnt, maxCnt);
+    return maxCnt;
+}
+

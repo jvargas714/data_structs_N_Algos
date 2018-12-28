@@ -317,6 +317,7 @@ bool isValidBST(TreeNode* root);
 	Output: ["1->2->5", "1->3"]
 	Explanation: All root-to-leaf paths are: 1->2->5, 1->3
  */
+// 99.32% 4ms
 std::vector<std::string> binaryTreePaths(TreeNode* root);
 
 /*
@@ -333,6 +334,8 @@ std::vector<std::string> binaryTreePaths(TreeNode* root);
 	Return 3, which is the length of the path [4,2,1,3] or [5,2,1,3].
 	Note: The length of path between two nodes is represented by the number of edges between them.
  */
+// result: %54.63 8ms
+// todo :: optimize solution
 int diameterOfBinaryTree(TreeNode* root);
 
 /*
