@@ -1,4 +1,5 @@
 #include <stack>
+#include <map>
 #include <algorithm>
 #include <unordered_map>
 #include <unordered_set>
@@ -6,6 +7,7 @@
 #include <cstring>
 #include <cstdint>
 #include <climits>
+#include <queue>
 #include "facebook.h"
 
 // ================================================ helper functions ===================================================
@@ -1052,3 +1054,75 @@ int diameterOfBinaryTree(TreeNode* root) {
     return maxCnt;
 }
 
+/*
+	Output:                      	      3
+ 									     /\
+									    /  \
+									   9   8
+									  /\  /\
+									 /  \/  \
+								     4  01   7
+									    /\
+									   /  \
+                                       5   2
+	[
+	  [4],
+	  [9,5],
+	  [3,0,1],
+	  [8,2],
+	  [7]
+	]
+
+ Approach:
+    1. come up with a label for each column, we can say that the center is column
+    1a. get node at the front of the queue and add to map, create if not exist
+    2. when going left we decrease the column number add to back of queue
+    3. when going right we increase the column number add to back of queue
+    4. build result by looping from min to max inclusive
+ */
+std::vector<std::vector<int>> verticalOrder(TreeNode* root) {
+	if (!root) return {};
+	std::queue<TreeNode*> colQ;
+	std::queue<int> colIndexQ;
+	std::map<int, std::vector<int>> colMap;
+	int min=0, max=0;
+
+	colQ.push(root);
+	colIndexQ.push(0);
+
+	while (!colQ.empty()) {
+		// current column
+		int col = colIndexQ.front();
+		colIndexQ.pop();
+
+		TreeNode* tmp = colQ.front();
+		colQ.pop();
+
+		// add map entry if not already exist
+		if (colMap.find(col) == colMap.end()) colMap[col] = std::vector<int>();
+
+		// add current node to map
+		colMap[col].push_back(tmp->val);
+
+		// find next node to the left
+		if (tmp->left) {
+			int nxtCol = col-1;
+			colIndexQ.push(nxtCol);
+			colQ.push(tmp->left);
+			min = std::min(nxtCol, min);
+		}
+
+		// find next node to the right
+		if (tmp->right) {
+			int nxtCol = col+1;
+			colIndexQ.push(nxtCol);
+			colQ.push(tmp->right);
+			max = std::max(max, nxtCol);
+		}
+	}
+
+	// fill in answer
+	std::vector<std::vector<int>> res;
+	for (int i = min; i <= max; i++) res.push_back( colMap[i] );
+	return res;
+}

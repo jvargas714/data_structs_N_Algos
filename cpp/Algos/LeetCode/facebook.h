@@ -334,7 +334,7 @@ std::vector<std::string> binaryTreePaths(TreeNode* root);
 	Return 3, which is the length of the path [4,2,1,3] or [5,2,1,3].
 	Note: The length of path between two nodes is represented by the number of edges between them.
  */
-// result: %54.63 8ms
+// result: %97.17 4ms
 // todo :: optimize solution
 int diameterOfBinaryTree(TreeNode* root);
 
@@ -366,6 +366,7 @@ int diameterOfBinaryTree(TreeNode* root);
 	  [7]
 	]
  */
+// result: %99.24
 std::vector<std::vector<int>> verticalOrder(TreeNode* root);
 
 /*
