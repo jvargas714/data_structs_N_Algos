@@ -1126,3 +1126,70 @@ std::vector<std::vector<int>> verticalOrder(TreeNode* root) {
 	for (int i = min; i <= max; i++) res.push_back( colMap[i] );
 	return res;
 }
+
+/*
+ * preorder = [3,9,20,15,7]
+	inorder = [9,3,15,20,7]
+	Return the following binary tree:
+
+	    3
+	   / \
+	  9  20
+	    /  \
+	   15   7
+ */
+
+static int _partitionTree(TreeNode** root,
+	std::vector<int>& preorder,
+	const std::map<int, int>& inorderMap,
+	int preInd,
+	int leftInd,
+	int rightInd) {
+	// condition when done
+	if (preInd >= preorder.size() || leftInd < 0) return preInd;
+
+	// allocate
+	*root = new TreeNode(preorder[preInd]);
+
+	// split inorder vector
+	int centerInd = inorderMap.find(preorder[preInd])->second;
+	int ll, lr, rl, rr;
+	if (centerInd == leftInd && centerInd == rightInd) {  // leaf found
+		ll = -1;
+		lr = -1;
+		rr = -1;
+		rl = -1;
+	} else if (centerInd == leftInd) {  // no left sub tree
+		ll = -1;
+		lr = -1;
+		rl = centerInd+1;
+		rr = rightInd;
+	} else if (centerInd == rightInd) {  // no right sub tree
+		ll = leftInd;
+		lr = centerInd - 1;
+		rl = -1;
+		rr = -1;
+	} else {  // we have left and right sub tree
+		ll = leftInd;
+		lr = centerInd - 1;
+		rl = centerInd + 1;
+		rr = rightInd;
+	}
+
+	// we build the left side first
+	preInd = _partitionTree(&(*root)->left, preorder, inorderMap, ++preInd, ll, lr);
+
+	// build the right side next
+	return _partitionTree(&(*root)->right, preorder, inorderMap, ++preInd, rl, rr);
+}
+
+TreeNode *buildTree(std::vector<int> &preorder, std::vector<int> &inorder) {
+	if (preorder.empty()||inorder.empty()) return nullptr;
+	TreeNode* root;
+	int i = 0;
+	std::map<int, int> inorderMap;   // <value, index>
+	for (auto& el : inorder) inorderMap[el] = i++;
+	_partitionTree(&root, preorder, inorderMap, 0, 0, (int)inorder.size()-1);
+	return root;
+}
+

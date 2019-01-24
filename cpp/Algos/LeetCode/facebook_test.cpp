@@ -282,8 +282,16 @@ void test_diameterOfBinaryTree() {
 
 }
 
+void test_buildTree() {
+	FUNCT_HEADER;
+	std::vector<int> pre = {3,9,10,7,13,5,4,1};
+	std::vector<int> ino = {10,7,9,3,5,13,4,1};
+	TreeNode* root = buildTree(pre, ino);
+	FUNCT_END;
+}
+
 int main () {
-    test_diameterOfBinaryTree();
+    test_buildTree();
 	return 0;
 }
 
