@@ -387,7 +387,10 @@ std::vector<std::vector<int>> verticalOrder(TreeNode* root);
 	    /  \
 	   15   7
  */
+// 20% 32ms
 TreeNode* buildTree(std::vector<int>& preorder, std::vector<int>& inorder);
+// 44.94% 12ms
+TreeNode* buildTreeV2(std::vector<int>& preorder, std::vector<int>& inorder);
 
 /*
  * Convert a BST to a sorted circular doubly-linked list in-place. Think of the left and right

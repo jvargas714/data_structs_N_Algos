@@ -1127,8 +1127,21 @@ std::vector<std::vector<int>> verticalOrder(TreeNode* root) {
 	return res;
 }
 
+// [ 1 2 3 4 (5) 6 7 8 9 ]
+void _splitVector(std::vector<int>& vect, std::vector<int>& leftSide, std::vector<int>& rightSide, int pivotPoint) {
+	bool goingLeft = true;
+	for (auto el: vect) {
+		if (el == pivotPoint) {
+			goingLeft = false;
+			continue;
+		}
+		if (goingLeft) leftSide.push_back(el);
+		else rightSide.push_back(el);
+	}
+}
+
 /*
- * preorder = [3,9,20,15,7]
+ *  preorder = [3,9,20,15,7]
 	inorder = [9,3,15,20,7]
 	Return the following binary tree:
 
@@ -1138,58 +1151,49 @@ std::vector<std::vector<int>> verticalOrder(TreeNode* root) {
 	    /  \
 	   15   7
  */
+static void _partitionTree(TreeNode** res, std::vector<int>& preorder, std::vector<int>& inorder) {
+	if (inorder.empty()) return;
 
-static int _partitionTree(TreeNode** root,
-	std::vector<int>& preorder,
-	const std::map<int, int>& inorderMap,
-	int preInd,
-	int leftInd,
-	int rightInd) {
-	// condition when done
-	if (preInd >= preorder.size() || leftInd < 0) return preInd;
+	// allocate new node
+	int currentRoot = preorder[0];
+	*res = new TreeNode(currentRoot);
+	preorder.erase(preorder.begin());
 
-	// allocate
-	*root = new TreeNode(preorder[preInd]);
+	// split vector in to left and right side around current root
+	std::vector<int> lvect, rvect;
+	_splitVector(inorder, lvect, rvect, currentRoot);
 
-	// split inorder vector
-	int centerInd = inorderMap.find(preorder[preInd])->second;
-	int ll, lr, rl, rr;
-	if (centerInd == leftInd && centerInd == rightInd) {  // leaf found
-		ll = -1;
-		lr = -1;
-		rr = -1;
-		rl = -1;
-	} else if (centerInd == leftInd) {  // no left sub tree
-		ll = -1;
-		lr = -1;
-		rl = centerInd+1;
-		rr = rightInd;
-	} else if (centerInd == rightInd) {  // no right sub tree
-		ll = leftInd;
-		lr = centerInd - 1;
-		rl = -1;
-		rr = -1;
-	} else {  // we have left and right sub tree
-		ll = leftInd;
-		lr = centerInd - 1;
-		rl = centerInd + 1;
-		rr = rightInd;
-	}
-
-	// we build the left side first
-	preInd = _partitionTree(&(*root)->left, preorder, inorderMap, ++preInd, ll, lr);
-
-	// build the right side next
-	return _partitionTree(&(*root)->right, preorder, inorderMap, ++preInd, rl, rr);
+	// go left or right !
+	_partitionTree(&(*res)->left, preorder, lvect);
+	_partitionTree(&(*res)->right, preorder, rvect);
 }
 
 TreeNode *buildTree(std::vector<int> &preorder, std::vector<int> &inorder) {
 	if (preorder.empty()||inorder.empty()) return nullptr;
 	TreeNode* root;
-	int i = 0;
-	std::map<int, int> inorderMap;   // <value, index>
-	for (auto& el : inorder) inorderMap[el] = i++;
-	_partitionTree(&root, preorder, inorderMap, 0, 0, (int)inorder.size()-1);
+	_partitionTree(&root, preorder, inorder);
 	return root;
 }
 
+TreeNode* _partitionTreeV2(std::vector<int>& preorder, int i, int j, std::vector<int>& inorder,int ii,int jj)
+{
+	// tree        8 4 5 3 7 3
+	// preorder    8 [4 3 3 7] [5]
+	// inorder     [3 3 4 7] 8 [5]
+	if(i >= j || ii >= j) return NULL;
+
+	int mid = preorder[i];
+	auto f = std::find(inorder.begin() + ii, inorder.begin() + jj, mid);
+
+	int dis = f - inorder.begin() - ii;
+
+	TreeNode* root = new TreeNode(mid);
+	root -> left = _partitionTreeV2(preorder,i + 1,i + 1 + dis,inorder,ii,ii + dis);
+	root -> right = _partitionTreeV2(preorder,i + 1 + dis,j,inorder,ii + dis + 1,jj);
+	return root;
+}
+
+/* from Preorder and Inorder Traversal */
+TreeNode* buildTreeV2(std::vector<int>& preorder, std::vector<int>& inorder) {
+	return _partitionTreeV2(preorder,0,preorder.size(),inorder,0,inorder.size());
+}
