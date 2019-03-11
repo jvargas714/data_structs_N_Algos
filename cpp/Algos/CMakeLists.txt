@@ -6,7 +6,7 @@ add_library(myAlgos STATIC
         algos.h
         intzip.cpp
         intzip.h
-        ../utility/types.h)
+        ../utility/types.h generalAlgos/kmp.cpp)
 
 target_link_libraries(myAlgos utility)
 
@@ -15,3 +15,4 @@ add_subdirectory(./bitBanger)
 add_subdirectory(./spoj)
 add_subdirectory(./cracking)
 add_subdirectory(./LeetCode)
+add_subdirectory(./generalAlgos)

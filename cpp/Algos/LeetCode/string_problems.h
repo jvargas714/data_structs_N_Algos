@@ -61,7 +61,7 @@ std::string longestCommonSubString(std::string& str1, std::string& str2);
 
 
 // problem: 686
-// result: 85.99% 8ms
+// result: 39% 76ms
 /*
 Given two strings A and B, find the minimum number of times A has to be
 repeated such that B is a substring of it. If no such solution, return -1.
@@ -70,8 +70,10 @@ Return 3, because by repeating A three times (“abcdabcdabcd”),
 B is a substring of it; and B is not a substring of A repeated two times ("abcdabcd").
 Note:
 The length of A and B will be between 1 and 10000.
+collection:: google
  */
 int repeatedStringMatch(std::string A, std::string B);
+int repeatedStringMatchV2(std::string A, std::string B);
 
 // problem: 388
 // result: 0ms 100%

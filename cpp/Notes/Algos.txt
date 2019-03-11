@@ -1,4 +1,4 @@
-Algorithm Paradigms 
+Algorithm Paradigms
 	Backtracking:  https://www.geeksforgeeks.org/backtracking-introduction/
 		- Algorithmic technique for solving problems recursively by trying to build a solution incrementally
 		- when a solution is found to not satisfy the constraints we ditch that solution (backtrack)
@@ -8,12 +8,75 @@ Algorithm Paradigms
 			- when searching for every possible combination in order to solve an optimization problem
 			- when solving a constraint satisfaction problem (CSPs)
 				* CSPs are mathematical questions defined as a set of objects whose state must satisfy a number of
-					constraints or limitations. 
-				* examples: 
-					1. Sudoku solving algorithm 
-					2. Eight queen puzzle 
+					constraints or limitations.
+				* examples:
+					1. Sudoku solving algorithm
+					2. Eight queen puzzle
 					3. Crosswords
 					4. Futoshiki
-			- well defined constraints 
-			- 
-			
+			- well defined constraints
+			-
+
+Algorithm Descriptions
+    KMP (Knuth Morris Pratt) Algorithm: https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/
+        - pattern search algorithm that finds all occurences of pat[] in txt[] you may assume n > m where n is length of
+            n is len of txt
+        Example:
+            Input:  txt[] =  "AABAACAADAABAABA"
+                    pat[] =  "AABA"
+            Output: Pattern found at index 0
+                    Pattern found at index 9
+                    Pattern found at index 12
+
+        - time complexity of KMP is O(n) in the worst case
+        - uses degenerating property (pattern having same sub-patterns appearing more than once in the pattern)
+            of the pattern and improves the worst case complexity to O(n)
+        - basic idea behind KMP is:
+            a. whenever a mismatch is detected (after some matches) we already know some of the characters
+                in the text of the next window. We can take advantage of this information to avoid matching the
+                characters that already know will already match.
+
+        Explanation:
+	        Matching Overview
+			txt = "AAAAABAAABA"
+			pat = "AAAA"
+
+			We compare first window of txt with pat
+			txt = "AAAAABAAABA"
+			pat = "AAAA"  [Initial position]
+			We find a match. This is same as Naive String Matching.
+
+			In the next step, we compare next window of txt with pat.
+			txt = "AAAAABAAABA"
+			pat =  "AAAA" [Pattern shifted one position]
+
+			Normally when implementing the naive solution the next step would be to compare the next substring with
+			i = 1 and j = 0, where i is the txt index and j is the pattern index.
+
+			This is where KMP does optimization over Naive. In this
+			second window, we only compare fourth A of pattern
+			with fourth character of current window of text to decide
+			whether current window matches or not. Since we know
+			first three characters will anyway match, we skipped
+			matching first three characters.
+
+			Need of Preprocessing?
+				An important question arises from the above explanation,
+				how to know how many characters to be skipped. To know this,
+				we pre-process pattern and prepare an integer array
+				lps[] that tells us the count of characters to be skipped.
+
+	Preprocessing Overview:
+		KMP algorithm preprocesses pat[] and constructs an auxiliary lps[] of size m (same as size of pattern) which is
+		used to skip characters while matching.
+		name lps indicates longest proper prefix which is also suffix.. A proper prefix is prefix with whole string not
+		allowed. For example, prefixes of “ABC” are “”, “A”, “AB” and “ABC”. Proper prefixes are “”, “A” and “AB”.
+		Suffixes of the string are “”, “C”, “BC” and “ABC”.
+
+		We search for lps in sub-patterns. More clearly we focus on sub-strings of patterns that are either prefix and
+		suffix.
+
+		For each sub-pattern pat[0..i] where i = 0 to m-1, lps[i] stores length of the maximum matching proper prefix
+		which is also a suffix of the sub-pattern pat[0..i]
+		   lps[i] = the longest proper prefix of pat[0..i]
+		              which is also a suffix of pat[0..i]

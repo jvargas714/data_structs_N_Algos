@@ -12,8 +12,6 @@
 #include "utility.h"
 #include "facebook.h"
 
-//#include "facebook.h"
-
 
 static const std::unordered_map<char, std::string> DIAL_PAD = {
         {'2', "abc"},
@@ -139,7 +137,7 @@ std::vector<std::string> splitStringBy(std::string str, const std::string& delim
     return result;
 }
 
-void formatEmailUsername(std::string& username) {
+void reeformatEmailUsername(std::string& username) {
     if (username.find('.') != std::string::npos)
         username.erase(std::remove(username.begin(), username.end(), '.'));
     size_t pos = username.find('+');
@@ -461,7 +459,6 @@ std::string longestPalindromeV2(std::string &s) {
 }
 
 /*
- *  TODO :: did not work
 Given two strings A and B, find the minimum number of times A has to be
 repeated such that B is a substring of it.
     "aa"
@@ -498,6 +495,45 @@ int repeatedStringMatch(std::string a, std::string b) {
 		}
 	}
 	return -1;
+}
+
+/*
+ * Optimized solution take from discussion
+ * time: O(m+n) :
+ * space: O(n) : n extra memory for prefix table
+ * Approach:
+ *  1. a prefix table is built to keep track of sub string matches
+ */
+int repeatedStringMatchV2(std::string a, std::string b) {
+    std::vector<int> prefTable(b.size() + 1);   // 1 based to avoid checks
+    int sp = 1, pp = 0;
+    // build kmp prefix table
+    while (sp < b.size()) {
+        if (b[pp] == b[sp])
+            prefTable[++sp] = ++pp;
+        else if (pp == 0)
+            prefTable[++sp] = pp;
+        else
+            pp = prefTable[pp];
+    }
+    int i = 0, j = 0;
+    while ( i < a.size()) {
+        // the % ensures we rotate around the a string
+        // therefore we dont have to make a copy
+        // we go till a mismatch
+        while (j < b.size() && a[(i+j) % a.size()] == b[j]) ++j;
+
+        // check for a solution
+        if (j == b.size()) {  // entire substring b has been matched
+            return (
+                    (i + j) / (int) a.size() + ((i + j) % a.size() != 0 ? 1 : 0)
+            );
+        }
+
+        // increment stuff (here for some readability)
+        i += std::max(1, j - prefTable[j]);
+        j = prefTable[j];
+    }
 }
 
 int lengthLongestPath(const std::string& dirTree) {
