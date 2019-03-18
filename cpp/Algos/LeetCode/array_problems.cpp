@@ -1051,3 +1051,45 @@ int numIslands(std::vector<std::vector<char>> &grid) {
     }
     return cnt;
 }
+
+
+/*
+ * Also given an integer k, you need to output in which day there exists two flowers in the status of blooming,
+ * and also the number of flowers between them is k and these flowers are not blooming
+ *
+ [5,4,1,3]
+ 2
+ expected answer is day 3.
+ Explanation:
+    day 3 corresponds to flower in position 1, previous flower in position 4 bloomed
+    what that means is positions 2 and 3 dont have flowers yet, since k = 2 and there are
+    also 2 flowers between 4 and 1 that have not bloomed yet that is our answer
+
+ fail cases to check:
+    - k > flowers.size()-2   --> for garden size of 3 k at most can only be 1 ==> 3-2 = 1
+
+ approach:
+    - 2 based indexing
+    - create map, for each index we indicate how many had bloomed at that boomed
+    for garden --> [5,4,1,3,2]
+    {1: 0, 2: 0, 3: 2, }
+
+    dumb question, worded unclearly skipping
+*/
+int kEmptySlots(std::vector<int>& flowers, int k) {
+	if (k > flowers.size() - 2) return -1;
+	for (int i = 1; i < flowers.size(); i++) {
+		if (std::abs(flowers[i] - flowers[i-1]) - 1 == k) {
+			// k flowers in future days should be in positions between i and i-1
+			int cnt = 0;
+			int maxpos = std::max(flowers[i], flowers[i-1]);
+			int minpos = std::min(flowers[i], flowers[i-1]);
+			for (int j = i+1; j < flowers.size(); j++) {
+				if (flowers[j] < maxpos && flowers[j] > minpos) cnt++;
+				else break;
+				if (cnt == k) return i+1;
+			}
+		}
+	}
+	return -1;
+}

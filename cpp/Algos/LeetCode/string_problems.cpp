@@ -497,43 +497,48 @@ int repeatedStringMatch(std::string a, std::string b) {
 	return -1;
 }
 
+
 /*
- * Optimized solution take from discussion
- * time: O(m+n) :
- * space: O(n) : n extra memory for prefix table
- * Approach:
- *  1. a prefix table is built to keep track of sub string matches
+ * Optimized version using KMP algo
+ * runtime: O(alen + blen)
+ * space: O(blen) for prefix table
  */
 int repeatedStringMatchV2(std::string a, std::string b) {
-    std::vector<int> prefTable(b.size() + 1);   // 1 based to avoid checks
-    int sp = 1, pp = 0;
-    // build kmp prefix table
-    while (sp < b.size()) {
-        if (b[pp] == b[sp])
-            prefTable[++sp] = ++pp;
-        else if (pp == 0)
-            prefTable[++sp] = pp;
-        else
-            pp = prefTable[pp];
-    }
-    int i = 0, j = 0;
-    while ( i < a.size()) {
-        // the % ensures we rotate around the a string
-        // therefore we dont have to make a copy
-        // we go till a mismatch
-        while (j < b.size() && a[(i+j) % a.size()] == b[j]) ++j;
+	using namespace std;
+	int i = 1, j = 0, len = 0;
+	int blen = (int) b.size();
+	int alen = (int) a.size();
+	vector<int> lps(blen, 0);
 
-        // check for a solution
-        if (j == b.size()) {  // entire substring b has been matched
-            return (
-                    (i + j) / (int) a.size() + ((i + j) % a.size() != 0 ? 1 : 0)
-            );
-        }
-
-        // increment stuff (here for some readability)
-        i += std::max(1, j - prefTable[j]);
-        j = prefTable[j];
-    }
+// build prefix/suffix table to avoid extra comparisons in the next part
+	while (i < blen) {
+		if (b[i] == b[len]) {
+			lps[i++] = ++len;
+		} else {
+			if (len != 0)
+				len = lps[len - 1];
+			else
+				lps[i++] = 0;
+		}
+	}
+	i = 0;
+	// find b as a substring within a (repeated)
+	while (i < alen) {
+		while (j < blen && a[(i + j) % alen] == b[j]) ++j;
+		if (j == blen) {
+			return (
+				(i + j) / alen + ((i + j) % alen != 0 ? 1 : 0)
+			);
+		}
+		// increment stuff
+		if (j > 0) {
+		i += max(1, j - lps[j-1]);
+		j = lps[j-1];
+		} else {
+			i++;
+		}
+	}
+	return -1;
 }
 
 int lengthLongestPath(const std::string& dirTree) {
@@ -792,7 +797,7 @@ int numUniqueEmails(std::vector<std::string> &emails) {
     // populate map first
     for (const auto& email : emails) {
         auto splt = splitStringBy(email, "@");
-        formatEmailUsername(splt[0]);
+	    reeformatEmailUsername(splt[0]);
         domainMap[splt[1]].insert(splt[0]);
     }
     // iterate through map add all sizes of vectors and return result
@@ -812,7 +817,7 @@ int numUniqueEmailsV3(const std::vector<std::string>& emails) {
     for (const auto& email : emails) {
         std::vector<std::string> splt;
         split(email, '@', splt);
-        formatEmailUsername(splt[0]);
+	    reeformatEmailUsername(splt[0]);
         domainMap[splt[1]].insert(splt[0]);
     }
     // iterate through map add all sizes of vectors and return result
@@ -829,9 +834,8 @@ int numUniqueEmailsV4(std::vector<std::string> &emails) {
     for (auto acct : emails) {
         std::vector<std::string> splt;
         split(acct, '@', splt);
-        formatEmailUsername(splt[0]);
+	    reeformatEmailUsername(splt[0]);
         acctSet.insert(splt[0]+splt[1]);
     }
     return acctSet.size();
 }
-

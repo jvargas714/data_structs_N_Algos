@@ -70,13 +70,24 @@ void test_numUniqueEmails() {
     showExeTime();
     FUNCT_END;
 }
-// run !!!
-int main() {
-    test_numUniqueEmails();
-	return 0;
+
+void test_repeatedStringMatching() {
+    FUNCT_HEADER;
+    string a = "aaac";
+    string b = "aac";
+    int expected = 1;
+    int res = repeatedStringMatchV2(a, b);
+    LOG << "result: " << res << END;
+    LOG << "you got this answer ==> " << (res==expected?"CORRECT":"WRONG") << END;
+    FUNCT_END;
 }
 
 
+// run !!!
+int main() {
+    test_repeatedStringMatching();
+	return 0;
+}
 
 
 

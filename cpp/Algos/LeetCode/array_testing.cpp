@@ -103,10 +103,20 @@ void test_numOfIslands() {
     END_PROBLEM;
 }
 
+void test_kemptySlots() {
+    FUNCT_HEADER;
+    vector<int> flowers = {6,5,8,9,7,1,10,2,3,4};
+    int k = 2;
+    int res = kEmptySlots(flowers, k);
+    int expected = 8;
+    LOG << "result: " << res << END;
+    LOG << "you got this answer ==> " << (res==expected?"CORRECT":"WRONG") << END;
+    FUNCT_END;
+}
+
+
 int main() {
-    test_dailyTemperatures();
-    test_reconstructTheQueue();
-    test_numOfIslands();
+    test_kemptySlots();
     return 0;
 }
 
