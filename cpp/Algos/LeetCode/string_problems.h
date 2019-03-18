@@ -61,7 +61,6 @@ std::string longestCommonSubString(std::string& str1, std::string& str2);
 
 
 // problem: 686
-// result: 39% 76ms
 /*
 Given two strings A and B, find the minimum number of times A has to be
 repeated such that B is a substring of it. If no such solution, return -1.
@@ -72,7 +71,9 @@ Note:
 The length of A and B will be between 1 and 10000.
 collection:: google
  */
+// result: 39% 76ms
 int repeatedStringMatch(std::string A, std::string B);
+// result: 98.09% 8ms 9.2MB
 int repeatedStringMatchV2(std::string A, std::string B);
 
 // problem: 388
@@ -155,6 +156,9 @@ std::vector<std::string> letterCombinations(const std::string& digits);
 std::vector<std::string> letterCombinationsV2(const std::string& digits);
 std::vector<std::string> letterCombinationsV3(const std::string& digits);
 std::vector<std::string> letterCombinationsV4(const std::string& digits);
+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%HARD%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 
 #endif  // DATASTRUCTS_N_ALGOS_STRING_PROBLEMS_H

@@ -15,7 +15,7 @@ typedef std::vector<char> SudokuRow;
 typedef std::map<int, SudokuRow> SudokuColumns;
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+arrays=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EASY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem:
 // result:
 // rotate array by k places 
@@ -68,7 +68,7 @@ void rotateV2(IntMatrix& matrix);
 //
 int removeElement(std::vector<int>& nums, int val);
 
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem: 15  
 // result: 63.34% 118ms 
 // Given an array nums of n integers, are there elements a, b, c in nums
@@ -149,7 +149,7 @@ std::vector<std::pair<int, int>> reconstructQueue(std::vector<std::pair<int, int
 
 // problem: 739
 // result: V1(3.51%), V2(96.56%)
-// V2: concept was taken from discussion implementation was mine
+// V2: concept was takeOn from discussion implementation was mine
 //Given a list of daily temperatures T, return a list such that, for each day in the input,
 // tells you how many days you would have to wait until a warmer temperature.
 // If there is no future day for which this is possible, put 0 instead.
@@ -184,4 +184,29 @@ int findPeakElement(std::vector<int>& nums);
 //Output: 1
 int numIslands(std::vector<std::vector<char>>& grid);
 
+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%HARD%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/*
+ * There is a garden with N slots. In each slot, there is a flower. The N flowers will bloom one by one in N days.
+ * In each day, there will be exactly one flower blooming and it will be in the status of blooming since then.
+
+Given an array flowers consists of number from 1 to N. Each number in the array represents
+ the place where the flower will open in that day.
+
+For example, flowers[i] = x means that the unique flower that blooms at day i
+ will be at position x, where i and x will be in the range from 1 to N.
+
+Also given an integer k, you need to output in which day there exists two
+ flowers in the status of blooming, and also the number of flowers between them is k
+ and these flowers are not blooming.
+
+If there isn't such day, output -1.
+   Also given an integer k, you need to output in which day there exists two flowers in the status of blooming,
+   and also the number of flowers between them is k and these flowers are not blooming.
+   example: (expected answer=3)
+   [5,4,1,3]
+	2
+*/
+int kEmptySlots(std::vector<int>& flowers, int k);
 #endif // DATASTRUCTS_N_ALGOS_ARRAY_PROBLEMS_H
