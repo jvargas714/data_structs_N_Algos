@@ -35,6 +35,8 @@ std::vector<int> productExceptSelf(std::vector<int>& nums);
 
 // problem: 866 
 // Find the smallest prime palindrome greater than or equal to N.
+// Runtime: 80 ms, faster than 55.30%
+// Memory Usage: 8.6 MB, less than 30.77%
 int primePalindrome(int N);
 
 #endif //DATASTRUCTS_N_ALGOS_MATH_PROBLEMS_H

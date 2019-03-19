@@ -1,4 +1,5 @@
 #include <map>
+#include <cmath>
 #include "math_problems.h"
 #include "utility.h"
 
@@ -172,11 +173,27 @@ static bool isPalindrome(int n) {
         !(isPrime(N) && isPalindrome(N))
     discussion solution ==> https://leetcode.com/articles/prime-palindrome/
 */
+// generate palindromes of even and odd length palindromes and check
+// if prime and >= N 
+// see https://leetcode.com/articles/prime-palindrome/
 int primePalindrome(int N) {
-    if (!(N&1)) N++; // make odd if even 
-    while (true) {
-        
-        N+=2;
+    for (int L = 1; L <= 5; ++L) { // loop through length of palindrome to be generated 
+        // check for odd length palindromes
+        for (int root = std::pow(10, L-1); root < std::pow(10, L); root++) {
+            std::string tmp(std::to_string(root));
+            for (int k = L-2; k >= 0; k--) tmp.append(1, tmp.at(k));
+            int val = atoi(tmp.c_str());
+            if (val >= N && isPrime(val)) return val;
+
+        }
+
+        // check for even length palindromes 
+        for (int root = std::pow(10, L-1); root < std::pow(10, L); root++) {
+            std::string tmp(std::to_string(root));
+            for (int k = L-1; k >= 0; k--) tmp.append(1, tmp.at(k));
+            int val = atoi(tmp.c_str());
+            if (val >= N && isPrime(val)) return val;
+        }
     }
-    return N;
+    return -1;
 }
