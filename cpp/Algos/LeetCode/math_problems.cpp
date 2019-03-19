@@ -145,4 +145,38 @@ std::vector<int> productExceptSelf(std::vector<int> &nums) {
         result[i] = fromLeft[i]*fromRight[i];
     return result;
 }
+// 0 1 10 11 100
+static bool isPrime(int n) {
+    if (n <= 3) return n > 1;
+    if (!(n&1) || !(n%3)) return false;
+    for (int i = 5; i*i <= n; i+=6)
+        if (!(n%i) || !(n%(i+2))) return false;
+    return true;
+}
 
+static bool isPalindrome(int n) {
+    using namespace std;
+    if (n < 10) return true;
+    int orig=n, reversedInteger=0;
+    while (n>0) {
+        reversedInteger = reversedInteger*10 + n%10;
+        n/=10;
+    }
+    return reversedInteger==orig;
+}
+/*
+    Note:
+        - all palindromes with an even number of digits are divisible by 11, 
+            and are therefore not prime! (Except for 11.)
+        - therefore all palandromic primes have odd number of digits 
+        !(isPrime(N) && isPalindrome(N))
+    discussion solution ==> https://leetcode.com/articles/prime-palindrome/
+*/
+int primePalindrome(int N) {
+    if (!(N&1)) N++; // make odd if even 
+    while (true) {
+        
+        N+=2;
+    }
+    return N;
+}

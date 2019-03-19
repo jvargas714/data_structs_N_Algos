@@ -31,4 +31,10 @@ int mySqrt(int x);
 // product of all the elements of nums except nums[i].
 std::vector<int> productExceptSelf(std::vector<int>& nums);
 
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+// problem: 866 
+// Find the smallest prime palindrome greater than or equal to N.
+int primePalindrome(int N);
+
 #endif //DATASTRUCTS_N_ALGOS_MATH_PROBLEMS_H

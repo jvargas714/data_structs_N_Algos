@@ -62,7 +62,10 @@
             "name": "Win32",
             "includePath": [
                 "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include",
-                "${workspaceFolder}"
+                "${workspaceFolder}",
+                "${workspaceFolder}/cpp/utility",
+                "${workspaceFolder}/cpp/Algos/LeetCode",
+                "${workspaceFolder}/cpp"
             ],
             "defines": [
                 "_DEBUG",
@@ -73,7 +76,9 @@
             "browse": {
                 "path": [
                     "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
-                    "${workspaceFolder}"
+                    "${workspaceFolder}/cpp/utility",
+                    "${workspaceFolder}/cpp/Algos/Leetcode",
+                    "${workspaceFolder}/cpp"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
