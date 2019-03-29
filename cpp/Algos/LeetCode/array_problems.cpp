@@ -1093,3 +1093,23 @@ int kEmptySlots(std::vector<int>& flowers, int k) {
 	}
 	return -1;
 }
+
+// time: O(n) 
+// space: O(n)
+// approach: fill even values first then odd 
+std::vector<int> sortArrayByParity(std::vector<int>& A) {
+    std::vector<int> result;
+    for (auto el: A) if ((el&1)==0) result.push_back(el);  // even
+    for (auto el: A) if ((el&1)!=0) result.push_back(el);  // odd
+    return result;
+}
+
+// time: O(n)
+// space: O(1)
+// approach: inplace swapping method, using two pointers 
+std::vector<int> sortArrayByParityV2(std::vector<int>& A) {
+    int i = 0;
+    for (int j = 0; j < A.size(); j++)
+        if ((A[j]&1)==0) swap(A[i++], A[j]);
+    return A;
+}

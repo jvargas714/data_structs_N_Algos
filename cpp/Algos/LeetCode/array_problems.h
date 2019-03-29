@@ -68,6 +68,11 @@ void rotateV2(IntMatrix& matrix);
 //
 int removeElement(std::vector<int>& nums, int val);
 
+// problem: #905 Sort Array By Parity 
+// result: 28 ms faster than 98.86%, Mem: 8.6 MB less than 99.68% 
+std::vector<int> sortArrayByParity(std::vector<int>& A);
+std::vector<int> sortArrayByParityV2(std::vector<int>& A);
+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem: 15  
 // result: 63.34% 118ms 
