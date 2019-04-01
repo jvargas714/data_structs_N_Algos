@@ -1,4 +1,5 @@
 #include "binary_tree_problems.h"
+#include "utility.h"
 #include <iostream>
 #include <queue>
 #include <stack>
@@ -54,6 +55,24 @@ static double calcEquation_dfs(const std::string& start,
 	}
 	alreadyVisited.erase(start);
 	return tmp;
+}
+
+// finds longest univalued leg in a binary tree
+void helper_findUnivaluedPath(TreeNode* root, int currentVal, int& cnt, int& longest) {
+    if (!root) return;
+    LOG << "current node: " << root->val << ", currentVal: "
+    << currentVal << ", cnt: " << cnt << ", longest: " << longest << END;
+    if (currentVal == root->val) {
+        LOG << "incrementing cnt to " << (cnt+1) << END;
+        cnt++;
+    } else {
+        LOG << "current val changing to " << root->val << END;
+        currentVal = root->val;
+        cnt = 0;
+    }
+    if (cnt > longest) longest = cnt;
+    helper_findUnivaluedPath(root->left, currentVal, cnt, longest);
+    helper_findUnivaluedPath(root->right, currentVal, cnt, longest);
 }
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END helper functions%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -300,7 +319,11 @@ std::vector<int> inorderTraversal(TreeNode* root) {
 }
 
 int longestUnivaluePath(TreeNode *root) {
-
+    if (!root) return -1;
+    int longestPath = 0;
+    int tmp = 0;
+    helper_findUnivaluedPath(root, root->val, tmp, longestPath);
+    return longestPath;
 }
 
 /*

@@ -106,9 +106,9 @@ struct MyComp {
 
 
 int main() {
-    random_device rd;
-    for (int i = 0; i < 100; i++)
-        cout << rd() % 2;
+    string val = "hello world";
+    val[6] = '%';
+    cout << val << endl;
 	return 0;
 }
 

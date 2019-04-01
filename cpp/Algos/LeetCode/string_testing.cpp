@@ -82,10 +82,23 @@ void test_repeatedStringMatching() {
     FUNCT_END;
 }
 
+void test_nextClosestTime(string input, string expected) {
+    FUNCT_HEADER;
+    string tmp = input;
+    string res = nextClosestTime(input);
+    cout << "\n";
+    LOG << "input: " << tmp << "\nresult: " << res <<
+    ( res == expected ? " is correct":" is incorrect expected: " + expected) << "\n" << endl;
+    FUNCT_END;
+}
 
 // run !!!
 int main() {
-    test_repeatedStringMatching();
+    test_nextClosestTime("17:38", "18:11");
+    test_nextClosestTime("23:59", "22:22");
+    test_nextClosestTime("00:01", "00:10");
+    test_nextClosestTime("00:00", "00:00");
+    test_nextClosestTime("00:43", "00:44");
 	return 0;
 }
 

@@ -144,6 +144,14 @@ void reeformatEmailUsername(std::string& username) {
     if (pos != std::string::npos)
         username = username.substr(0, pos);
 }
+
+bool isValidTime(std::string tm) {
+    tm.erase(tm.begin() + tm.find(':'));
+    int hr = std::strtol(&tm[0], 0, 10)*10 + std::strtol(&tm[1], 0, 10);
+    int min = std::strtol(&tm[2], 0, 10)*10 + std::strtol(&tm[3], 0, 10);
+    if (hr > 24 || min > 60) return false;
+    else return true;
+}
 // ============================================end helper functions============================================
 
 // best solution
@@ -838,4 +846,51 @@ int numUniqueEmailsV4(std::vector<std::string> &emails) {
         acctSet.insert(splt[0]+splt[1]);
     }
     return acctSet.size();
+}
+
+/*
+Given a time represented in the format "HH:MM", form the next closest time by reusing the current digits. There is no
+ limit on how many times a digit can be reused.
+You may assume the given input string is always valid. For example, "01:34", "12:09" are all valid.
+ "1:34", "12:9" are all invalid.
+
+Example 1:
+
+Input: "19:34"
+Output: "19:39"
+Explanation: The next closest time choosing from digits 1, 9, 3, 4, is 19:39,
+ which occurs 5 minutes later.  It is not 19:33, because this occurs 23 hours and 59 minutes later.
+ * problem: Next Closest Time #681
+ * result:
+ */
+std::string nextClosestTime(std::string &tm) {
+    std::string result;
+    std::string tmCpy = tm;
+    std::sort(tmCpy.begin(), tmCpy.end());
+    int j = 4;
+    bool tmMod = false;
+    while (j >= 0) {
+        if (tm[j] == ':') j--;
+        for (int i = 0; i < tm.size()-1; i++) {
+            if ((tmCpy[i] - '0') > (tm[j] - '0')) {
+                if ( (j == 3 && tmCpy[i] - '0' > 5)
+                || (j == 0 && tmCpy[i] - '0' > 2) ||
+                (j == 1 && tm[0]=='2' && tmCpy[i] - '0' > 3)) {
+                    continue;
+                }
+                tm[j] = tmCpy[i];
+                tmMod = true;
+                break;
+            }
+        }
+        if (tmMod) break;
+        j--;
+    }
+
+    j++;
+    while (j < tm.size()) {
+        if (tm[j]==':') j++;
+        tm[j++] = tmCpy[0];
+    }
+    return tm;
 }

@@ -147,7 +147,7 @@ std::vector<int> productExceptSelf(std::vector<int> &nums) {
     return result;
 }
 // 0 1 10 11 100
-static bool isPrime(int n) {
+static bool is_prime(int n) {
     if (n <= 3) return n > 1;
     if (!(n&1) || !(n%3)) return false;
     for (int i = 5; i*i <= n; i+=6)
@@ -183,7 +183,7 @@ int primePalindrome(int N) {
             std::string tmp(std::to_string(root));
             for (int k = L-2; k >= 0; k--) tmp.append(1, tmp.at(k));
             int val = atoi(tmp.c_str());
-            if (val >= N && isPrime(val)) return val;
+            if (val >= N && is_prime(val)) return val;
 
         }
 
@@ -192,7 +192,7 @@ int primePalindrome(int N) {
             std::string tmp(std::to_string(root));
             for (int k = L-1; k >= 0; k--) tmp.append(1, tmp.at(k));
             int val = atoi(tmp.c_str());
-            if (val >= N && isPrime(val)) return val;
+            if (val >= N && is_prime(val)) return val;
         }
     }
     return -1;
