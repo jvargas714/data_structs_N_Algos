@@ -10,10 +10,8 @@
 
 
 // displays an array
-void display( const int* ar, size_t num_els )
-{
-    for( uint i = 0; i < num_els; i++ )
-    {
+void display( const int* ar, size_t num_els ) {
+    for( uint i = 0; i < num_els; i++ ) {
         std::cout << ar[i] << " ";
     }
     std::cout << std::endl;
@@ -30,14 +28,11 @@ void display( const int* ar, size_t num_els )
     Data is split like this: 0....divPt ; divPt+1....n
     Worst Case: O(n)
 */
-int partition( std::vector<int>& data, int low, int high )
-{
+int partition( std::vector<int>& data, int low, int high ) {
     int pivot   = data[high];   // typically pivot point is at end of std::vector
     int i       = (low - 1);    // index where smaller element exists
-    for( int j = low; j <= high-1; j++ )
-    {
-        if( data[j] <= pivot )
-        {
+    for( int j = low; j <= high-1; j++ ) {
+        if( data[j] <= pivot ) {
             i++;
             swap_el( &data[i], &data[j] );
         }
@@ -419,27 +414,27 @@ bool isPrime(int n) {
 }
 
 /*
-Optimized School Method 
+Optimized School Method
 We can do following optimizations:
 
-Instead of checking till n, we can check till √n because a larger factor of n must be a 
+Instead of checking till n, we can check till √n because a larger factor of n must be a
 multiple of smaller factor that has been already checked.
-The algorithm can be improved further by observing that all 
-primes are of the form 6k ± 1, with the exception of 2 and 3. 
-This is because all integers can be expressed as (6k + i) 
-for some integer k and for i = -1, 0, 1, 2, 3, or 4; 2 divides (6k + 0), (6k + 2), (6k + 4); 
-and 3 divides (6k + 3). So a more efficient method is to test if n is divisible by 2 or 3, 
+The algorithm can be improved further by observing that all
+primes are of the form 6k ± 1, with the exception of 2 and 3.
+This is because all integers can be expressed as (6k + i)
+for some integer k and for i = -1, 0, 1, 2, 3, or 4; 2 divides (6k + 0), (6k + 2), (6k + 4);
+and 3 divides (6k + 3). So a more efficient method is to test if n is divisible by 2 or 3,
 then to check through all the numbers of form 6k ± 1.
 Source :: https://en.wikipedia.org/wiki/Primality_test#Simple_method
 */
-// check if prime or not 
+// check if prime or not
 bool is_prime(const uint32_t& x) {
-    // check for fact or 3 
+    // check for fact or 3
     if (x <= 3) return x > 1;
 
     // check if a factor of 2 or 3
     if (!(x & 1) || !(x % 3)) return false;
-    
+
     // incrementing by 6 skips over multiples of 2 and 3
     // 6k + i or 6k - i
     for (uint32_t i = 5; i*i <= x; i += 6) {
