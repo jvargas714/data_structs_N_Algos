@@ -25,3 +25,6 @@ build
 Makefile
 CMakeFiles
 CMakeCache.txtcpp/.DS_Store
+*.code-workspace
+*.bin
+*.cpython*
