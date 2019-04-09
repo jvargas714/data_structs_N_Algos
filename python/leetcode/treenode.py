@@ -3,3 +3,9 @@ class TreeNode:
 		self.val = x
 		self.left = None
 		self.right = None
+
+	def __repr__(self):
+		return f'val: {self.val}'
+
+
+

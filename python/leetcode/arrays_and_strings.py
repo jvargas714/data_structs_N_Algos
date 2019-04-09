@@ -2,18 +2,37 @@ import sys
 sys.path.append('..')
 import utility as ut
 
-# start at i = 0 work to len - 1
-# for each i slice to get the sub_range, 
-# from there get the min and max, check if they are 1 apart 
-# if that dont work remove either min or max try again 
-def findLHS(nums: list) -> int:
-	for i in range(len(nums)):
-		sub_range = nums[i:]
-		mn = min(sub_range)
-		mx = max(sub_range)
-		if mx - mn <= 1:
-			return len(sub_range)
-		nums.remove(mn)
+# =============================================== HELPER FUNCTIONS =====================================================
+def generatePascalTriangle(n):
+	''' generates pascals triangle up to the nth row'''
+	res = [[1], [1, 1]]
+	if n == 0:
+		return [[1]]
+	elif n == 1:
+		return [[1], [1, 1]]
+	i = 2
+	tmp = [1]
+	for i_a in range(len(res[-1])-1):
+		i_b = i_a + 1
+		tmp.append(res[i_a] + res[i_b])
+	tmp.append(1)
+	res.append(tmp)
+
+# =============================================== PROBLEMS =============================================================
+# ----------------------------------------------- Problem #  119-------------------------------------------------------
+'''
+	Given a non-negative index k where k ≤ 33, return the kth index row of the Pascal's triangle.
+	Note that the row index starts from 0.
+'''
+def getRow(rowIndex):
+        """
+        :type rowIndex: int
+        :rtype: List[int]
+        """
+        return generatePascalTriangle(rowIndex)[-1]
+# =============================================== TEST FUNCTIONS =======================================================
+	
+
 
 
 
