@@ -38,7 +38,7 @@ def swap(arr, i, j):
 	arr[i] = arr[j]
 	arr[j] = tmp
 
-def time_execution(func_obj, args=None):
+def time_execution(func_obj, *args):
 	'''
 		times execution of provided function
 		args would be a tuple of the arguments that would be used for the function
