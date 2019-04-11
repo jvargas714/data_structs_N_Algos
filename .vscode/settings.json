@@ -36,5 +36,11 @@
         "typeinfo": "cpp",
         "utility": "cpp",
         "algorithm": "cpp"
-    }
+    },
+    "python.linting.mypyArgs": [
+        "--ignore-missing-imports",
+        "--follow-imports=silent",
+        "--show-column-numbers"
+    ],
+    "python.linting."
 }

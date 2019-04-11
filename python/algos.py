@@ -321,3 +321,21 @@ if __name__ == '__main__':
 		print(permu)
 	print(f'RESULT size: {len(res)}\n')
 
+
+
+
+# ==================================================== NOTES ===========================================================
+""" PYTHON STRING CONCATTING Complexity 
+word = ""
+for i in range(m):
+    word = char_value + word
+return word
+The total time complexity should be:
+(0+1) + (1+1) +...+ m = m(m+1)/2 = O(m^2)
+
+string concatenation requires all characters to be copied, this is a O(N+M) operation 
+(where N and M are the sizes of the input strings). M appends of the same word will trend to O(M^2) time therefor.
+
+ To avoid this best to use ''.join() which gives us O(n) complexity where n is the length of the output string 
+"""
+

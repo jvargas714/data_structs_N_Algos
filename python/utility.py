@@ -1,5 +1,5 @@
 import random as rd
-import time
+import time, sys
 from leetcode.treenode import TreeNode
 
 LINE_LIMIT = 25
@@ -54,7 +54,8 @@ def time_execution(func_obj, *args):
 			t1 = time.clock()
 	except Exception as e:
 		print(f'Error executing function object.\n\ntype: \
-			      	{exc_info()[0]}, \n\nvalue:{exc_info()[1]}')
+			      	{sys.exc_info()[0]}, \n\nvalue:{sys.exc_info()[1]}')
+		return
 	return str(f'Time of Execution: {round((t1-t0)*1000, 3)}msecs\n')
 
 def generate_random_matrix(m, n, max_val):
@@ -102,4 +103,11 @@ def logical_right_shift(arr, n):
 			arr[i] = arr[i-1 ]
 		arr[0] = 0
 		print(arr)
+
+# not efficient 
+def matrixToString(matrix):
+	res = ''
+	for row in matrix:
+		res = res + "\n" + str(row)
+	return res
 
