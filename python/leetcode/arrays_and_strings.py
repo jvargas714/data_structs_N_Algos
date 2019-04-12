@@ -147,10 +147,10 @@ def getRowV4(rowIndex):
 def updateMatrix(matrix: List[List[int]]) -> List[List[int]]:
 	pts_0 = []
 	pts_1 = []
-	# init matrix with zeros 
+	# init matrix with zeros O(n*m) where n = num of rows and m is the num of cols
 	res = [ [0] * len(matrix[0]) for _ in range(len(matrix)) ]
 
-	# collect zero pts and one pts 
+	# collect zero pts and one pts O(n*m)
 	for row_ind in range(len(matrix)):
 		for col_ind in range(len(matrix[0])):
 			if matrix[row_ind][col_ind] == 0:
@@ -170,6 +170,13 @@ def updateMatrix(matrix: List[List[int]]) -> List[List[int]]:
 		res[pt[0]][pt[1]] = min_dist
 	return res
 
+'''
+	Optimization attempt
+	Approach:
+		1. try to modify matrix in place instead
+'''
+def updateMatrixV2(matrix: List[List[int]]) -> List[List[int]]:
+	pass
 
 # =============================================== TEST FUNCTIONS =======================================================
 	

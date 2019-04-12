@@ -42,5 +42,5 @@
         "--follow-imports=silent",
         "--show-column-numbers"
     ],
-    "python.linting."
+    "python.pythonPath": "C:\\Users\\Jay.Vargas\\AppData\\Local\\Programs\\Python\\Python36\\python.exe",
 }
