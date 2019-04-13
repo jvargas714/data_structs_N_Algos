@@ -104,11 +104,50 @@ struct MyComp {
 	}
 };
 
+// when swapping pointer from a string we must deref them for the swap to work
+void mySwap(char* ch1, char* ch2) {
+    char tmp = *ch1;
+    *ch1 = *ch2;
+    *ch2 = tmp;
+}
+
+// using pointers space : O(1), time: O(n)
+void reverseString(std::string& str) {
+    // of course there is std::reverse(str.begin(), str.end());
+    for (int i = 0, j = str.length()-1; i < str.size()/2; i++, j--) {
+        mySwap(&str[i], &str[j]);
+    }
+    std::cout << "result: " << str << std::endl;
+}
+
+// using map O(n) time and space :( where n is the size of the larger vector
+int find_missing(const std::vector<int>& vect1, const std::vector<int>& vect2) {
+    const std::vector<int>& larger = (vect1.size() > vect2.size() ? vect1:vect2);
+    const std::vector<int>& smaller = (vect1.size() < vect2.size() ? vect1:vect2);
+    std::map<int, int> valMap;
+    for (const auto& el : smaller) valMap[el]++;
+    for (const auto& el : larger)
+        if (valMap.find(el) == valMap.end()) return el;
+    return -1;
+}
+
+// xor verison time O(1), space O(n)
+int find_missingV2(const std::vector<int>& vect1, const std::vector<int>& vect2) {
+    const std::vector<int>& larger = (vect1.size() > vect2.size() ? vect1:vect2);
+    const std::vector<int>& smaller = (vect1.size() < vect2.size() ? vect1:vect2);
+    int res = 0;
+    for (int i = 0; i < larger.size(); i++) {
+        res ^= larger[i];
+        if (i < smaller.size())
+            res ^= smaller[i];
+    }
+    return res;
+}
 
 int main() {
-    string val = "hello world";
-    val[6] = '%';
-    cout << val << endl;
+    vector<int> vals = {1, 2, 3, 4, 5};
+    vector<int> vals2 = {5, 4, 99, 3, 2, 1};
+    cout << "result: " << find_missingV2(vals, vals2) << endl;
 	return 0;
 }
 

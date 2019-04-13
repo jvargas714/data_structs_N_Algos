@@ -1,9 +1,7 @@
-import sys, time
-sys.path.extend(['python', 'leetcode'])
-import sys, os
-from typing import List
-
+import sys, time, os
 print("\nCWD: ", os.getcwd())
+sys.path.extend(['.'])
+from typing import List
 import utility as ut
 
 # =============================================== HELPER FUNCTIONS =====================================================
@@ -15,7 +13,7 @@ def generatePascalTriangle(n):
 		return [[1]]
 	elif n == 1:
 		return res
-	
+
 	i = 1
 	row = 1
 
@@ -30,7 +28,7 @@ def generatePascalTriangle(n):
 		res.append(tmp)
 	return res
 
-# use only one row at a time to save memory usage 
+# use only one row at a time to save memory usage
 def generatePascalTriangleV2(n):
 	''' generates pascals triangle up to the nth row'''
 	if n == 0:
@@ -49,10 +47,10 @@ def generatePascalTriangleV2(n):
 		prevRow = tmp
 	return prevRow
 
-# O(1) operation space and time 
+# O(1) operation space and time
 def cellInDirection(matrix: List[List[int]], currentPt: tuple, dir: str) -> int:
 	''' traverse matrix by one cell in the direction specified from provided point (row, col)
-		values increase going right and down 
+		values increase going right and down
 	'''
 
 	col_limit = len(matrix[0]) # [ --> ]
@@ -104,7 +102,7 @@ def getRowV2(rowIndex):
 	return generatePascalTriangleV2(rowIndex)
 
 '''
-Solution From Discussion 
+Solution From Discussion
 say we get row = [1, 2, 1] from last iteration.
 [0]+row gives us [0, 1, 2, 1] (appending 0 to the head); row+[0] gives us [1, 2, 1, 0].
 Then we need to do the element-wise addition of the 2 lists.
@@ -119,15 +117,15 @@ def getRowV3(rowIndex):
 		row = [x + y for x, y in zip([0]+row, row+[0])]
 	return row
 
-# fastest solution (not mine) 
-# didnt make much of a difference in terms of execution speed 
+# fastest solution (not mine)
+# didnt make much of a difference in terms of execution speed
 def getRowV4(rowIndex):
 	ans=[1 for i in range(rowIndex+1)]
 	for i in range(1,(rowIndex)//2+1):
 		ans[i]=ans[i-1]*(rowIndex+1-i)//i
 		ans[rowIndex-i]=ans[i]
 	return ans
-	
+
 # ----------------------------------------------- Problem #542 -------------------------------------------------------
 '''
 	01 Matrix
@@ -140,10 +138,10 @@ def getRowV4(rowIndex):
 		The cells are adjacent in only four directions: up, down, left and right.
 
 	Idea 1:
-		1. first find zero pts 
+		1. first find zero pts
 		2. for each 1 pt find distance to each zero pt, take shortest distance
 '''
-# logic is good, just too slow. Time limit exceeded 
+# logic is good, just too slow. Time limit exceeded
 def updateMatrix(matrix: List[List[int]]) -> List[List[int]]:
 	pts_0 = []
 	pts_1 = []
@@ -157,10 +155,10 @@ def updateMatrix(matrix: List[List[int]]) -> List[List[int]]:
 				pts_0.append((row_ind, col_ind))
 			else:
 				pts_1.append((row_ind, col_ind))
-	
-	# determine distances for none zero pts 
+
+	# determine distances for none zero pts
 	for pt in pts_1:
-		min_dist = 150000  # impossible to reach this as there are only 10000 elements at most in the matrix 
+		min_dist = 150000  # impossible to reach this as there are only 10000 elements at most in the matrix
 		for zpt in pts_0:
 			dst = calcDist(pt, zpt)
 			if dst == 1:
@@ -170,16 +168,103 @@ def updateMatrix(matrix: List[List[int]]) -> List[List[int]]:
 		res[pt[0]][pt[1]] = min_dist
 	return res
 
+# ----------------------------------------------- Problem #340 -------------------------------------------------------
 '''
-	Optimization attempt
-	Approach:
-		1. try to modify matrix in place instead
+Given a string, find the length of the longest substring T that contains at most k distinct characters.
+
+Example 1:
+
+Input: s = "eceba", k = 2
+Output: 3
+Explanation: T is "ece" which its length is 3.
+Example 2:
+
+Input: s = "aa", k = 1
+Output: 2
+Explanation: T is "aa" which its length is 2.
 '''
-def updateMatrixV2(matrix: List[List[int]]) -> List[List[int]]:
-	pass
+def windower(s: str, k: int, begin: int, end: int, res: int):
+	if end == len(s)-1:
+		windower(s, k, begin+1, end, res)
+	elif begin == end:
+		return
+
+	char_map = {}
+	i = begin
+	j = end
+	while len(char_map) < k and i < len(s):
+		ch = s[i]
+		i += 1
+		if ch not in char_map:
+			char_map[ch] = 0
+		else:
+			char_map[ch] += 1
+
+		if len(char_map) > k:
+			windower(s, k, begin+1, end+1, res)
+
+def get_substr_len(char_map: dict):
+	result = 0
+	for k in char_map:
+		result += char_map[k]
+	return result
+
+# edge cases --> k > len(s), k == len(s)
+# logic seems good, but timelimit exceeded
+def lengthOfLongestSubstringKDistinct(s: str, k: int) -> int:
+	# return windower(s, k, 0, k if k < len(s) else len(s) - 1, res)
+	char_map = {}
+	result = 0
+	i = 0
+	begin = i
+	while i < len(s):
+		ch = s[i]
+		i += 1
+		if ch not in char_map:
+			char_map[ch] = 1
+		else:
+			char_map[ch] += 1
+
+		if len(char_map) > k:
+			char_map[ch] = 0
+			i = begin + 1
+			begin = i
+			tmp = sum([char_map[k] for k in char_map])
+			result = max(tmp, result)
+			char_map.clear()
+	return max(result, sum([char_map[k] for k in char_map]))
+
+
+def lengthOfLongestSubstringKDistinctV2(s: str, k: int) -> int:
+	char_map = {}
+	result = 0
+	i = 0
+	window_begin = i
+	while i < len(s):
+		ch = s[i]
+		i += 1
+		if ch not in char_map:
+			char_map[ch] = 1
+		else:
+			char_map[ch] += 1
+
+		if len(char_map) > k:
+			char_map[ch] = 0
+			tmp = sum([char_map[k] for k in char_map])
+			char_map[ch] = 1
+			char_map[s[window_begin]] -= 1
+			if char_map[s[window_begin]] == 0:
+				char_map.pop(s[window_begin])
+			window_begin += 1
+			result = max(tmp, result)
+	return max(result, sum([char_map[k] for k in char_map]))
+
+
+
+
 
 # =============================================== TEST FUNCTIONS =======================================================
-	
+
 def test_getRow(versionNum=1):
 	expected = [1,25,300,2300,12650,53130,177100,480700,1081575,2042975,3268760,
 					4457400,5200300,5200300,4457400,3268760,2042975,1081575,480700,177100,
@@ -210,6 +295,14 @@ def test_updateMatrix(versionNum=1):
 		res = updateMatrix(inMatrix)
 		print(f'\n\nresult: {res}, \nexpected: {expected},\nthis result is {"CORRECT" if res == expected else "WRONG"}')
 
+
+def test_lengthOfLongestSubstringKDistinct():
+	expected = 7
+	k = 5
+	in_str = 'jayisatoolwhosucks'
+	res = lengthOfLongestSubstringKDistinctV2(in_str, k)
+	print(f'your answer: {res}, your result is {"CORRECT" if expected == res else "WRONG"}')
+
 # ====================================================MAIN =============================================================
 if __name__ == '__main__':
-	print ( ut.time_execution(test_updateMatrix, 1) )
+	print ( ut.time_execution(test_lengthOfLongestSubstringKDistinct) )
