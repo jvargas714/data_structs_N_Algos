@@ -69,18 +69,25 @@ This is because all integers can be expressed as (6k + i)
 for some integer k and for i = -1, 0, 1, 2, 3, or 4; 2 divides (6k + 0), (6k + 2), (6k + 4); 
 and 3 divides (6k + 3). So a more efficient method is to test if n is divisible by 2 or 3, 
 then to check through all the numbers of form 6k ± 1. (Source: wikipedia)
+ https://en.wikipedia.org/wiki/Primality_test
 */
-// check if prime or not 
 bool is_prime(const uint32_t& x) {
 	// check for fact or 3 
 	if (x <= 3) return x > 1;
 
-	// checked to skip middle five numbers in below loop 
+	// check if a factor of 2 or 3
 	if (!(x & 1) || !(x % 3)) return false;
 	
 	// incrementing by 6 skips over multiples of 2 and 3
+	// all primes fall in the form n = 6k ± 1 for
+	// we start i at 5 because it cant be a factor of 2 or 3, 4 is even, so start at 5
+	// we go to sqrt of x hence i*i <= x which is the same as i <= sqrt(x)
+	// here we go from
+	// i = 6k - 1
+	// 5 = 6k - 1 ==> 11 = 6k - 1 ==> 17 = 6k - 1
 	for (uint32_t i = 5; i*i <= x; i += 6) {
-		if ( !(x%i) || !(x%(i+2)) )
+		// here check if x is divisible by 6k-1 or 6k+1
+		if ( !(x%i) || !(x%(i+2)) )  // i = 6k - 1, so i+2 = 6k + 1
 			return false;
 	}
 	return true;

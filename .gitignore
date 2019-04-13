@@ -28,3 +28,6 @@ CMakeCache.txtcpp/.DS_Store
 *.code-workspace
 *.bin
 *.cpython*
+.DS_Store
+tester.dSYM
+
