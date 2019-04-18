@@ -246,6 +246,11 @@ int binarySearch(const std::vector<T>& vals, const int target) {
     }
     return ERROR;
 }
+
+// returns vector indicating which bit positions have a 1 bit flipped, first bit is mapped to 0
+std::vector<int> findBitPositions(uint64_t val);
+
+
 #endif //CPP_UTILITY_H
 
 

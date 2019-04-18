@@ -157,11 +157,9 @@ std::vector<int> findBitPositions(T val) {
 	T mask = 1;
 	std::vector<int> res;
 	for (int shiftBy = 0; shiftBy < sizeof(T)*8; shiftBy++) {
-		mask <<= 1;
 		if ((val & mask) > 0) res.push_back(shiftBy);
-		cout << mask << " ";
+        mask <<= 1;
 	}
-	cout << endl;
 	return res;
 }
 
@@ -172,18 +170,19 @@ std::vector<int> findBitPositions(T val) {
  *  so if n=3 then indices in the combinations will range between 0-2
  */
 std::vector<std::vector<int>> combinationsBinCnt(int n) {
-	if (n > 64) return {{}};
+	if (n > 64) return {};
 	std::vector<std::vector<int>> combos;
-	uint64_t binary = 1;    // max n can be 64 bits
-	uint64_t mask = 1;
-	uint64_t numCombos = 0;
-
+	uint64_t binary = 0;    // max n can be 64 bits
+	const uint64_t numSubSets = (uint64_t) std::pow(2, n);
+	for (uint64_t cnt = 0; cnt < numSubSets; cnt++) combos.push_back( findBitPositions(binary++) );
+    return combos;
 }
 
 int main() {
-	int n = 5;
-	vector<int> res = findBitPositions(n);
-	display(res);
+	uint64_t n = 5;
+    auto res = combinationsBinCnt(n);
+
+    for (auto row : res) display(row);
 	return 0;
 }
 

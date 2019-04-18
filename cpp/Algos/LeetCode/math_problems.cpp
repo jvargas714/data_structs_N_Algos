@@ -3,6 +3,40 @@
 #include "math_problems.h"
 #include "utility.h"
 
+// ====================================================== HELPERS ========================================================================
+/*
+        recursive helper:
+            when building the powerset we can either add or remove an element from
+            the set. there we only have two choices to make each recursion
+            Each index i represents a point in the input nums where we decide whether 
+            to add or remove it from the selected set, once each element has been
+            visited we add the built set. this particular solution does not consider 
+            duplicate values in the set!
+            
+            O(n decisions) * O(2^n)  << each call spawns 2 more decisions and 
+            those 2 spawn two more and so on, hence the exponent
+            
+            time: O(n*2^n), 
+                where n is the size of nums
+    */
+    static void open_sets(std::vector<int>& nums, int i, std::vector<int>& selected, std::vector<std::vector<int>>& powerset) {
+        if (nums.size() == i) {
+            powerset.push_back(selected);
+            return;
+        }
+        // start by the adding decision first
+        selected.push_back(nums[i]);
+        open_sets(nums, i+1, selected, powerset);
+        
+        // next we remove from the set 
+        selected.erase(selected.end()-1);
+        open_sets(nums, i+1, selected, powerset);
+        
+        // at the end of this call each element would have been added and removed from set 
+    }
+
+// ====================================================== Problems ================================================================
+
 // counts the number of prime numbers less than n
 int countPrimes(int n) {
     std::vector<bool> notPrime(static_cast<size_t>(n), false);
@@ -198,6 +232,47 @@ int primePalindrome(int N) {
     return -1;
 }
 
-std::vector<std::vector<int>> subsets(std::vector<int> &nums) {
-    
+/*
+ *  returns all combinations of a set of size n where vector maps to indices in a vector -->
+ *  if n = 4 then we return subset combinations of [0, 1, 2, 3]
+ *  n <= 64
+ *  generates indexes from 0 - n-1
+ *  so if n=3 then indices in the combinations will range between 0-2
+ */
+std::vector<std::vector<int>> combinationsBinCnt(int n) {
+    if (n > 64) return {};
+    std::vector<std::vector<int>> combos;
+    uint64_t binary = 0;    // max n can be 64 bits
+    const uint64_t numSubSets = (uint64_t) std::pow(2, n);
+    for (uint64_t cnt = 0; cnt < numSubSets; cnt++)
+        combos.push_back( findBitPositions(binary++) );
+    return combos;
 }
+
+std::vector<int> buildSolutionVect(const std::vector<int>& indMap,
+                                   const std::vector<int>& data) {
+    if (indMap.size() > data.size())
+        return {};
+    std::vector<int> res;
+    for (auto ind : indMap) res.push_back(data[ind]);
+    return res;
+}
+
+std::vector<std::vector<int>> subsets(std::vector<int>& nums) {
+    std::vector<std::vector<int>> res;
+    int n = (int)nums.size();
+    std::vector<std::vector<int>> indexMaps = combinationsBinCnt(n);
+
+    // build solution vectors
+    for (auto indMapping: indexMaps) res.push_back(buildSolutionVect(indMapping, nums));
+    return res;
+}
+
+// for good video see --> https://www.youtube.com/watch?time_continue=2&v=3dEVYiyFKac
+std::vector<std::vector<int>> subsetsV2(std::vector<int>& nums) {
+    std::vector<std::vector<int>> powerset;
+    std::vector<int> selected;
+    open_sets(nums, 0, selected, powerset);
+    return powerset;
+}
+

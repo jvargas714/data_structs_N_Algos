@@ -469,3 +469,13 @@ bool fillVectorFromFile(const std::string& fileName, std::vector<int>& vect) {
     return true;
 }
 
+
+std::vector<int> findBitPositions(uint64_t val) {
+    uint64_t mask = 1;
+    std::vector<int> res;
+    for (int shiftBy = 0; shiftBy < sizeof(uint64_t)*8; shiftBy++) {
+        if ((val & mask) > 0) res.push_back(shiftBy);
+        mask <<= 1;
+    }
+    return res;
+}

@@ -40,6 +40,7 @@ std::vector<int> productExceptSelf(std::vector<int>& nums);
 int primePalindrome(int N);
 
 /*
+problem: 78 Subsets
 Input: nums = [1,2,3]
 Output:
 [
@@ -52,15 +53,24 @@ Output:
   [1,2],
   []
 ]
-
+  todo :: optimize this 
  Approach:
-    - brute force approach --> first get different permutations of subsets by index -->
-        * 1 element (n choose 1)
-        *  [0], [1], [2], ... [n-1]
-        * the 2 elements (n choose 2)
-        * [0, 1]
+  - binary counting subset generation (please refer to section 14.5 in Skiena Algorithm Design
+  result:
+    Runtime: 12 ms, faster than 32.24%
+    Memory Usage: 9.4 MB, less than 32.31%
+  
+  Optimization from discussion ==> https://leetcode.com/problems/subsets/discuss/122645/3ms-easiest-solution-no-backtracking-no-bit-manipulation-no-dfs-no-bullshit
  */
-
-//
 std::vector<std::vector<int>> subsets(std::vector<int> &nums);
+
+/*
+  todo :: optimize this 
+  Approach:
+    - recursive approach
+  result:
+    Runtime: 12 ms, faster than 32.24% 
+    Memory Usage: 12.5 MB, less than 17.27%
+*/
+std::vector<std::vector<int>> subsetsV2(std::vector<int> &nums);
 #endif //DATASTRUCTS_N_ALGOS_MATH_PROBLEMS_H
