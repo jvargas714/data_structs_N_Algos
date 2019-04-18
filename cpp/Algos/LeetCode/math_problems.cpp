@@ -197,3 +197,7 @@ int primePalindrome(int N) {
     }
     return -1;
 }
+
+std::vector<std::vector<int>> subsets(std::vector<int> &nums) {
+    
+}

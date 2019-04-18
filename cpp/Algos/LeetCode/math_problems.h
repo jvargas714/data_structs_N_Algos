@@ -39,4 +39,28 @@ std::vector<int> productExceptSelf(std::vector<int>& nums);
 // Memory Usage: 8.6 MB, less than 30.77%
 int primePalindrome(int N);
 
+/*
+Input: nums = [1,2,3]
+Output:
+[
+  [3],
+  [1],
+  [2],
+  [1,2,3],
+  [1,3],
+  [2,3],
+  [1,2],
+  []
+]
+
+ Approach:
+    - brute force approach --> first get different permutations of subsets by index -->
+        * 1 element (n choose 1)
+        *  [0], [1], [2], ... [n-1]
+        * the 2 elements (n choose 2)
+        * [0, 1]
+ */
+
+//
+std::vector<std::vector<int>> subsets(std::vector<int> &nums);
 #endif //DATASTRUCTS_N_ALGOS_MATH_PROBLEMS_H

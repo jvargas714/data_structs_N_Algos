@@ -144,10 +144,46 @@ int find_missingV2(const std::vector<int>& vect1, const std::vector<int>& vect2)
     return res;
 }
 
+uint64_t fact(int n) {
+	uint64_t res = 1;
+	for (int i = 2; i <= n; i++) res *= i;
+	return res;
+}
+
+// * * * *  * * * *
+// returns vector indicating which bit positions have a 1 bit flipped
+template<typename T>
+std::vector<int> findBitPositions(T val) {
+	T mask = 1;
+	std::vector<int> res;
+	for (int shiftBy = 0; shiftBy < sizeof(T)*8; shiftBy++) {
+		mask <<= 1;
+		if ((val & mask) > 0) res.push_back(shiftBy);
+		cout << mask << " ";
+	}
+	cout << endl;
+	return res;
+}
+
+/*
+ *  returns all combinations of a set of size n
+ *  n <= 64
+ *  generates indexes from 0 - n-1
+ *  so if n=3 then indices in the combinations will range between 0-2
+ */
+std::vector<std::vector<int>> combinationsBinCnt(int n) {
+	if (n > 64) return {{}};
+	std::vector<std::vector<int>> combos;
+	uint64_t binary = 1;    // max n can be 64 bits
+	uint64_t mask = 1;
+	uint64_t numCombos = 0;
+
+}
+
 int main() {
-    vector<int> vals = {1, 2, 3, 4, 5};
-    vector<int> vals2 = {5, 4, 99, 3, 2, 1};
-    cout << "result: " << find_missingV2(vals, vals2) << endl;
+	int n = 5;
+	vector<int> res = findBitPositions(n);
+	display(res);
 	return 0;
 }
 

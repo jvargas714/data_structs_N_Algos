@@ -235,6 +235,7 @@ def lengthOfLongestSubstringKDistinct(s: str, k: int) -> int:
 	return max(result, sum([char_map[k] for k in char_map]))
 
 
+# jayisatoolwhosucks
 def lengthOfLongestSubstringKDistinctV2(s: str, k: int) -> int:
 	char_map = {}
 	result = 0

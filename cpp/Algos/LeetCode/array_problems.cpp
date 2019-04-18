@@ -1114,30 +1114,3 @@ std::vector<int> sortArrayByParityV2(std::vector<int>& A) {
     return A;
 }
 
-/*
-Input: nums = [1,2,3]
-Output:
-[
-  [3],
-  [1],
-  [2],
-  [1,2,3],
-  [1,3],
-  [2,3],
-  [1,2],
-  []
-]
-
- Approach:
-    - brute force approach --> first get different permutations of subsets by index -->
-        * 1 element (n choose 1)
-        *  [0], [1], [2], ... [n-1]
-        * the 2 elements (n choose 2)
-        * [0, 1]
- */
-
-//
-std::vector<std::vector<int>> subsets(std::vector<int> &nums) {
-    std::vector<std::vector<int>> res = {{}};
-
-}
