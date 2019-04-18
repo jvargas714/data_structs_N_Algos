@@ -189,7 +189,12 @@ int findPeakElement(std::vector<int>& nums);
 //Output: 1
 int numIslands(std::vector<std::vector<char>>& grid);
 
-
+// problem: 78
+// result:
+//Given a set of distinct integers, nums, return all possible subsets (the power set).
+//Note: The solution set must not contain duplicate subsets.
+// hint: backtracking problem type
+std::vector<std::vector<int>> subsets(std::vector<int>& nums);
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%HARD%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 /*
