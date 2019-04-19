@@ -272,10 +272,22 @@ std::vector<std::vector<int>> subsets(std::vector<int>& nums) {
 }
 
 // for good video see --> https://www.youtube.com/watch?time_continue=2&v=3dEVYiyFKac
+// recursive solution
 std::vector<std::vector<int>> subsetsV2(std::vector<int>& nums) {
     std::vector<std::vector<int>> powerset;
     std::vector<int> selected;
     open_sets(nums, 0, selected, powerset);
     return powerset;
+}
+
+/*
+ * Approach:
+ *  1. iterative solution
+ *  2. start with empty set [[]]
+ *  3.
+ */
+std::vector<std::vector<int>> subsetsV3(std::vector<int> &nums) {
+    std::vector<std::vector<int>> res({});
+
 }
 
