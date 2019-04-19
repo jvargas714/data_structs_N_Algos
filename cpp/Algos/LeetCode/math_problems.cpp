@@ -258,6 +258,9 @@ std::vector<int> buildSolutionVect(const std::vector<int>& indMap,
     return res;
 }
 
+// using binary counting method
+// time compexity: O(n2^n)
+// space complexity: O(
 std::vector<std::vector<int>> subsets(std::vector<int>& nums) {
     std::vector<std::vector<int>> res;
     int n = (int)nums.size();
