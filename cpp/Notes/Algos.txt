@@ -285,3 +285,14 @@ ________________________________________________Algorithm Descriptions__________
 
 
 	Permutations (order matters)
+
+________________________________________________Trees and Graphs________________________________________________
+Depth First Search (DFS):
+	- traverse or searching a tree or graph data structures
+	- starts at root node
+	- explores as far as possible along each branch before backtracking 
+
+Breadth First Search (BFS):
+	- traverse or search a tree or graph data structures 
+	- starts at root node
+	- explores all neighbor nodes at the present depth 

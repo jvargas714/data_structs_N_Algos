@@ -133,6 +133,14 @@ int numUniqueEmailsV2(std::vector<std::string>& emails);
 int numUniqueEmailsV3(const std::vector<std::string>& emails);
 int numUniqueEmailsV4(std::vector<std::string> &emails);
 
+/*
+problem: #917 Reverse Only Letters 
+Given a string S, return the "reversed" string where all characters that are not a 
+letter stay in the same place, and all letters reverse their positions.
+*/
+// Runtime: 12 ms, faster than 20.81%
+// Memory Usage: 8.4 MB, less than 96.67%
+std::string reverseOnlyLetters(std::string S);
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 // problem: 3
