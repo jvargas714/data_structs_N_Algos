@@ -65,12 +65,18 @@ Output:
 std::vector<std::vector<int>> subsets(std::vector<int> &nums);
 
 /*
-  todo :: optimize this 
+  todo :: optimize this
   Approach:
     - recursive approach
   result:
-    Runtime: 12 ms, faster than 32.24% 
+    Runtime: 12 ms, faster than 32.24%
     Memory Usage: 12.5 MB, less than 17.27%
 */
 std::vector<std::vector<int>> subsetsV2(std::vector<int> &nums);
+
+/*
+ * iterative solution
+ */
+std::vector<std::vector<int>> subsetsV3(std::vector<int> &nums);
+
 #endif //DATASTRUCTS_N_ALGOS_MATH_PROBLEMS_H
