@@ -21,7 +21,8 @@
             "macFrameworkPath": [
                 "/System/Library/Frameworks",
                 "/Library/Frameworks"
-            ]
+            ],
+            "configurationProvider": "vector-of-bool.cmake-tools"
         },
         {
             "name": "Linux",
