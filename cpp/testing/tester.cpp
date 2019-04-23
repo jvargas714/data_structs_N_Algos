@@ -14,6 +14,19 @@
 #include "../utility/utility.h"
 
 using namespace std;
+using namespace std::chrono;
+typedef high_resolution_clock hrc;
+typedef hrc::time_point t_point;
+t_point t1_bub, t2_bub;
+
+
+static void showExeTime(const string& label) {
+	std::cout << "\n+-+-+-+-+-+-+-+-+-+-+" << END;
+	auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+	auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+	std::cout << label << " time of execution -->\n" << milli_sec << "msec\n" << micro_sec << "usec" << END;
+	std::cout << "+-+-+-+-+-+-+-+-+-+-+" << END;
+}
 
 // A utility funtion to find maximum of two integers
 int max(int a, int b) { return (a > b)? a : b; }
@@ -178,11 +191,26 @@ std::vector<std::vector<int>> combinationsBinCnt(int n) {
     return combos;
 }
 
-int main() {
-	uint64_t n = 5;
-    auto res = combinationsBinCnt(n);
+void test_primeGeneration(uint64_t numPrimes) {
+	// generate 50k prime numbers
+	t1_bub = hrc::now();
+	std::vector<uint64_t> primes2 = genPrimesV2(numPrimes);
+	t2_bub = hrc::now();
+	showExeTime("PrimeGenV2");
 
-    for (auto row : res) display(row);
+	LOG << "V1: output\n";
+	display(primes2);
+}
+
+int main(int argc, char* argv[]) {
+	if (argc != 2) {
+		cout << "please input desired amount of primes to generate. Exiting now..." << endl;
+		return -1;
+	}
+	uint64_t numArgs = atoi(argv[1]);
+	cout << "you entered " << numArgs << endl;
+
+	test_primeGeneration(numArgs);
 	return 0;
 }
 

@@ -347,22 +347,26 @@ std::vector<int> postOrderTraversal(const TreeNode* root) {
     return result;
 }
 
-// generate prime numbers using Sieve of Eratosthenes Algorithm
+static bool saveToFile() {
+
+}
 /*
- * 1. Create a list of consecutive integers from 2 through n: (2, 3, 4, ..., n).
-Initially, let p equal 2, the smallest prime number.
-2. Enumerate the multiples of p by counting to n from 2p in increments of p, and mark them in the list
- (these will be 2p, 3p, 4p, ...; the p itself should not be marked).
-3. Find the first number greater than p in the list that is not marked. If there was no such number, stop. Otherwise,
- let p now equal this new number (which is the next prime), and repeat from step 3.
-When the algorithm terminates, the numbers remaining not marked in the list are all the primes below n.
+   -- generate prime numbers using Sieve of Eratosthenes Algorithm --
+	1. Create a list of consecutive integers from 2 through n: (2, 3, 4, ..., n).
+		Initially, let p equal 2, the smallest prime number.
+	2. Enumerate the multiples of p by counting to n from 2p in increments of p, and mark them in the list
+	    (these will be 2p, 3p, 4p, ...; the p itself should not be marked).
+	3. Find the first number greater than p in the list that is not marked. If there was no such number, stop. Otherwise,
+		let p now equal this new number (which is the next prime), and repeat from step 3.
+		When the algorithm terminates, the numbers remaining not marked in the list are all the primes below n.
  */
 std::vector<uint64_t> genPrimes(const uint64_t n) {
-    std::vector<uint64_t> primes;
+    std::vector<uint64_t> primes = {2};
     std::map<uint64_t, bool> primeMap;
     uint64_t val, i;
     uint64_t p = 2;
 
+    // init map
     for (i = 2; i < n; i++)
         primeMap[i] = true;
 
