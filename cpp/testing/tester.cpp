@@ -11,6 +11,7 @@
 #include <map>
 #include <queue>
 #include <random>
+#include <chrono>
 #include "../utility/utility.h"
 
 using namespace std;
@@ -203,14 +204,7 @@ void test_primeGeneration(uint64_t numPrimes) {
 }
 
 int main(int argc, char* argv[]) {
-	if (argc != 2) {
-		cout << "please input desired amount of primes to generate. Exiting now..." << endl;
-		return -1;
-	}
-	uint64_t numArgs = atoi(argv[1]);
-	cout << "you entered " << numArgs << endl;
 
-	test_primeGeneration(numArgs);
 	return 0;
 }
 
