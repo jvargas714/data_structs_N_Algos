@@ -15,5 +15,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_SOURCE_DIR}/bin)
 add_subdirectory(./utility)
 add_subdirectory(./Algos)
 add_subdirectory(./data_structs)
+add_subdirectory(./EPIJudge/epi_judge_cpp)
+
 # add_subdirectory(./driver)
 add_subdirectory(./testing)
