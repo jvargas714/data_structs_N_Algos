@@ -74,6 +74,18 @@ void helper_findUnivaluedPath(TreeNode* root, int currentVal, int& cnt, int& lon
     helper_findUnivaluedPath(root->left, currentVal, cnt, longest);
     helper_findUnivaluedPath(root->right, currentVal, cnt, longest);
 }
+
+void inorderTravel(TreeNode* root, std::vector<int>& res) {
+    if (!root) return;
+    inorderTravel(root->left, res);
+    res.push_back(root->val);
+    inorderTravel(root->right, res);
+}
+
+int inorderTravel(TreeNode* root) {
+    if (!root) return INT32_MAX;
+
+}
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END helper functions%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 int maxDepth(TreeNode* root) {
@@ -368,25 +380,27 @@ calcEquation(std::vector<std::pair<std::string, std::string>> equations,
 	return result;
 }
 
-/*
-static double calcEquation_dfs(const std::string& start,
-	const std::string& end,
-	std::unordered_map<std::string, std::vector<std::string>>& pairs,
-	std::unordered_map<std::string, std::vector<double>>& values,
-	std::set<std::string>& alreadyVisited,
-	double value) {
-	if (alreadyVisited.find(start)==alreadyVisited.end()) return 0.0;
-	if (pairs.find(start)==pairs.end()) return 0.0;
-	if (start==end) return value;
-	alreadyVisited.insert(start);
-	std::vector<std::string> strVect = pairs.find(start)->second;
-	std::vector<double> valVect = values.find(start)->second;
-	double tmp = 0.0;
-	for (int i = 0; i < strVect.size(); i++) {
-		tmp = calcEquation_dfs(strVect[i], end, pairs, values, alreadyVisited, value * valVect[i]);
-		if (tmp != 0.0) break;
-	}
-	alreadyVisited.erase(start);
-	return tmp;
+// Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
+// O(n) time and space
+int kthSmallest(TreeNode* root, int k) {
+    if (!root) return -1;
+    std::vector<int> binTree;
+    inorderTravel(root, binTree);
+    return binTree[k-1];
 }
-*/
+
+// attempt to optimize space usage
+int kthSmallestV2(TreeNode* root, int k) {
+    return inorderTravel(root);
+}
+
+
+
+
+
+
+
+
+
+
+
