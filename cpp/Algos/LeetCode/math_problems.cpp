@@ -260,7 +260,7 @@ std::vector<int> buildSolutionVect(const std::vector<int>& indMap,
 
 // using binary counting method
 // time compexity: O(n2^n)
-// space complexity: O(
+// space complexity: O(n2^n)
 std::vector<std::vector<int>> subsets(std::vector<int>& nums) {
     std::vector<std::vector<int>> res;
     int n = (int)nums.size();
@@ -281,13 +281,73 @@ std::vector<std::vector<int>> subsetsV2(std::vector<int>& nums) {
 }
 
 /*
+ * We start with an empty set in our result. Then we loop through each set that is
+ * currently in the result set. We add the current value nums[i] to the current selected subset.
+ * By accessing each subset in the inner loop we get the opportunity to add the value
+ * at nums[i], where the previous iteration added the subset WITHOUT it. We end up
+ * handling each case WITH and WITHOUT nums[i] for each subset. Basically, each
+ * value in the subset is either WITH nums[i] or WITHOUT nums[i]. for [1,2,3] iterations goes as such
+ * []
+ *
+ * -- i=0 -- (adding val = 1, to previous sets that do not have 1)
+ * tmpsize = 1
+ *  j=0 :
+ *      res: [ [], [1] ]
+ * -- i=1 --  (adding val = 2, to previous sets that do not have 2)
+ * t    tmpsize = 2
+ *      j = 0 :
+ *          res = [ [], [1], [2] ]
+ *      j = 1 :
+ *          res: [ [], [1], [2], [1, 2] ]
+ *
+ * -- i=2 --  (adding val = 2, to previous sets that do not have 2)
+ *      tmpsize = 4
+ *      j = 0 :
+ *          res = [ [], [1], [2], [1, 2], [3] ]   // added 3 to []
+ *      j = 1 :
+ *          res = [ [], [1], [2], [1, 2], [3], [1, 3]   // added 3 to [1]
+ *      j = 2 :
+ *          res = [ [], [1], [2], [1, 2], [3], [1, 3], [2, 3] ] // added 3 to [2]
+ *      j = 3 "
+ *          res = [ [], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3] ]  // added 3 to [1, 2]
+ * Done
+ *
+ * Analysis:
+ *      outter loop contribution:
+ *          from above we can see that the outer loop goes through each element once so outer loop
+ *          contribuition is O(n)
+ *
+ *      Inner loop contribution:
+ *          from the inner loop we can see that for each iteration tmpsize grows by a power of 2 each time
+ *          1, 2, 4, and 8 so that means inner loop grows proportionate to n by 2^n.
+ *          In this case n = 3, which means
+ *
+ *      Putting it together we have worst case run time:
+ *          time: O(n*2^n)   --> see above for time Analysis
+ *          space: O(n*2^n)  --> each complete inner loop cycle result grows by 2x this occurs n times
+ *
  * Approach:
- *  1. iterative solution
- *  2. start with empty set [[]]
- *  3.
+ *  1. start with empty set [[]]
+ *  2. for number in nums (outter loop)
+ *  3. get current size of res
+ *  4. for 0 to size of res
+ *  5. we get the result set at index j make a copy (tmp)
+ *  6. add nums[i] to tmp
+ *  7. add this to the result
+ *  [1, 2, 3]
  */
 std::vector<std::vector<int>> subsetsV3(std::vector<int> &nums) {
-    std::vector<std::vector<int>> res({});
-
+    std::vector<std::vector<int>> res({{}});
+    size_t i = 0;
+    while (i < nums.size()) {
+        int tmpSize = (int)res.size();
+        for (size_t j = 0; j < tmpSize; j++) {
+            std::vector<int> tmp = res[j];
+            tmp.push_back(nums[i]);
+            res.push_back(tmp);
+        }
+        i++;
+    }
+    return res;
 }
 

@@ -21,7 +21,7 @@ add_library(leetCode STATIC
         math_problems.cpp
         math_problems.h
         design_problems.cpp
-        design_problems.h)
+        design_problems.h math_testing.cpp)
 
 add_library(facebook STATIC
         facebook.cpp
@@ -32,10 +32,12 @@ add_executable(binary_tree_testing binary_tree_testing.cpp)
 add_executable(array_testing array_testing.cpp)
 add_executable(sort_search_testing sort_search_testing.cpp)
 add_executable(facebook_test facebook_test.cpp)
+add_executable(math_test math_testing.cpp)
 
 target_link_libraries(string_testing leetCode utility)
 target_link_libraries(binary_tree_testing leetCode utility)
 target_link_libraries(array_testing leetCode utility)
 target_link_libraries(sort_search_testing leetCode utility)
 target_link_libraries(facebook_test facebook utility)
+target_link_libraries(math_test leetCode utility)
 

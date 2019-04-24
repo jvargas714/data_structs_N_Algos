@@ -76,6 +76,9 @@ std::vector<std::vector<int>> subsetsV2(std::vector<int> &nums);
 
 /*
  * iterative solution
+ * result:
+ *      Runtime: 12 ms, faster than 32.28%
+ *      Memory Usage: 8.9 MB, less than 99.19%
  */
 std::vector<std::vector<int>> subsetsV3(std::vector<int> &nums);
 
