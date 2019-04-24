@@ -54,7 +54,6 @@ bool isSameTree(TreeNode* p, TreeNode* q);
 
 // problem: 669
 // result: 97.28 % 12ms
-//
 TreeNode* trimBST(TreeNode* root, int L, int R);
 
 // problem:
@@ -64,6 +63,16 @@ TreeNode* trimBST(TreeNode* root, int L, int R);
 // Note: The length of path between two nodes is represented by the number of edges between them
 // google
 int longestUnivaluePath(TreeNode* root);
+
+// problem 226 Invert Binary Tree 
+// result: 
+//      Runtime: 4 ms, faster than 100.00% 
+//      Memory Usage: 9.1 MB, less than 89.26%
+TreeNode* invertTree(TreeNode* root);
+
+// Runtime: 4 ms, faster than 100.00% 
+// Memory Usage: 9.3 MB, less than 25.15%
+TreeNode* invertTreeV2(TreeNode* root);
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // problem:

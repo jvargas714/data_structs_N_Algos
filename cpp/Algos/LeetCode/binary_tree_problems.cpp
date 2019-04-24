@@ -392,6 +392,32 @@ int kthSmallest(TreeNode* root, int k) {
 // attempt to optimize space usage
 int kthSmallestV2(TreeNode* root, int k) {
     return inorderTravel(root);
+/*
+	Input:
+
+		   4
+		/   \
+	   2     7
+	  / \   / \
+	1   3  6   9
+
+	Output:
+
+		4
+	  /   \
+	 7     2
+    / \   / \
+   9   6 3   1
+	 time: O(n)
+	 space: O(h)  where h is depth of tree, each function call stores a node
+*/
+TreeNode* invertTree(TreeNode* root) {
+	if (!root) return nullptr;
+	TreeNode* left = invertTree(root->left);
+	TreeNode* right = invertTree(root->right);
+	root->left = right;
+	root->right = left;
+	return root;
 }
 
 
@@ -404,3 +430,28 @@ int kthSmallestV2(TreeNode* root, int k) {
 
 
 
+
+
+/*
+	Iterative solution using queue
+	Approach:
+		swap the left and right child of all nodes in the tree. We use a queue to store nodes
+		whose left and right child have not been swapped yet. Null nodes are not added to
+		the queue. Eventually the queue will be empty and all children have been swapped
+	time complexity: O(n)
+	space complexity: O(n)
+*/
+TreeNode* invertTreeV2(TreeNode* root) {
+	if (!root) return nullptr;
+	std::queue<TreeNode*> ndQ;
+	ndQ.push(root);
+	while (!ndQ.empty()) {
+		TreeNode* curr = ndQ.front();
+		TreeNode* tmp = curr->left;
+		curr->left = curr->right;
+		curr->right = tmp;
+		if (curr->left) ndQ.push(curr->left);
+		if (curr->right) ndQ.push(curr->right);
+	}
+	return root;
+}
