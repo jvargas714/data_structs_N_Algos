@@ -6,6 +6,7 @@
  * res: 1 --> 10
  * res:
  */
+// runtime:
 unsigned long long ReverseBits(unsigned long long x) {
     unsigned long long res = 0;
     for (int i = 1; i < sizeof(unsigned long long)*8; i++) {
@@ -15,9 +16,6 @@ unsigned long long ReverseBits(unsigned long long x) {
     }
     return res;
 }
-
-unsigned long long ReverseBits_solution(unsigned long long x) {
-
 
 int main(int argc, char* argv[]) {
   std::vector<std::string> args{argv + 1, argv + argc};
