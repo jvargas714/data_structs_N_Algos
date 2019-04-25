@@ -1,26 +1,27 @@
-cwd: /home/jay/data_structs_N_Algos/cpp/EPIJudge
+cwd:
+	/home/jay/data_structs_N_Algos/cpp/EPIJudge
 
 ============================================= Study Plan ===============================================================
 	Sections:
 	Write and Test:
 		Primitives:
 			4.1 count_bits, parity  << complete
-			4.7 compute pow(x,y)
-			4.8
+			4.3 reverse_bits    << complete
+			4.7 compute pow(x,y)    << complete
+			4.8 reverse digits    << complete
+            4.11 rectangle intersection
 
 		Arrays:
 			5.1
 			5.2
+			5.5
 			5.6
+			5.9
 			5.12
 			5.17
 			5.18
 
 	Pseudo Code (whiteboard):
-		4.3 reverse_bits
-		4.11
-		5.5
-		5.9
 		6.7
 		7.10
 		8.3

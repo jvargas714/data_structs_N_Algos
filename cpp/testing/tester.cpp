@@ -224,11 +224,52 @@ unsigned long long ReverseBits(unsigned long long x) {
     return res;
 }
 
+double Power(double x, int y) {
+    if (y == 0) return 1;
+    x = y < 0 ? 1/x:x;
+    double res = x;
+    bool odd = false;
+    y = abs(y);
+
+    if (y % 2 == 0) {
+        y /= 2;
+    } else {
+        y--;
+        y /= 2;
+        odd = true;
+    }
+    res = x*x;
+    while (y > 1) {
+//        cout << "res: " << res << " y: " << y << endl;
+        res *= (x*x);
+        y-=1;
+    }
+    res *= (odd?x:1);
+    return res;
+}
+
+long long Reverse(int x) {
+    long long res = 0;
+    long long dig;
+    bool neg = x < 0;
+    x = std::abs(x);
+
+    // get how many places our number will be
+    int pwr = std::pow(10, static_cast<int>(std::log10(x)));
+    cout << "pwr: " << pwr << endl;
+    while (pwr) {
+        dig = x % 10;
+        x /= 10;
+        res += pwr * dig;
+        pwr /= 10;
+    }
+    return res * (neg ? -1:1);
+}
+
 
 int main(int argc, char* argv[]) {
     // 10e --> 0001 0000 1110
-    unsigned long long val = 0b10011101010101100010011000100010110100000;
-    cout << ReverseBits(val) << endl;
+    cout << Reverse(-0123345567) << endl;
 	return 0;
 }
 
