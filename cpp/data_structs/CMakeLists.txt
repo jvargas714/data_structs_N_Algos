@@ -1,6 +1,8 @@
 project(data_structs)
 include_directories(../utility)
 
+# add_compile_definitions(TESTING_HASHTABLE)
+
 add_library(datastructs STATIC
         binary_tree.h
         heap.cpp
@@ -16,5 +18,6 @@ add_library(datastructs STATIC
         stack.h
         trie.cpp
         trie.h
-        hash_table.cpp hash_table.h)
+        hash_table.cpp hash_table.h test_hashtable.cpp)
 target_link_libraries(datastructs utility)
+add_executable(test_hash_table test_hashtable.cpp)

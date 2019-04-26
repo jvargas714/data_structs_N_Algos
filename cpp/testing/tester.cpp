@@ -13,6 +13,7 @@
 #include <queue>
 #include <random>
 #include <chrono>
+#include <array>
 #include "../utility/utility.h"
 
 using namespace std;
@@ -283,8 +284,7 @@ void forwarding( t && arg ) {
 }
 
 int main() {
-	std::string x("hello");
-	forwarding(234);
-	cout << x << endl;
+	std::array<int, 10> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	std::array<int, 15> arr2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 	return 0;
 }

@@ -1,9 +1,10 @@
 #ifndef DATASTRUCTS_N_ALGOS_HASH_TABLE_H
 #define DATASTRUCTS_N_ALGOS_HASH_TABLE_H
-#include <memory>
-#include <vector>
-#include <utility>
+#include <array>
 #include <iostream>
+#include <memory>
+#include <utility>
+#include <sstream>
 
 #define LOG std::cout << __FUNCTION__ << "(): "
 #define END std::endl
@@ -77,24 +78,41 @@ struct HashTableNode {
 	KeyType key;
 	std::shared_ptr<DataType> next;
 
-	HashTableNode(): next(nullptr){}
+	HashTableNode(): next(nullptr) {
+#ifdef TESTING_HASHTABLE
+		LOG << "def ctor called" << END;
+#endif
+	}
 
 	HashTableNode(KeyType key, const DataType& data)
-	: data(data), key(key), next(nullptr) { }
+	: data(data), key(key), next(nullptr) {
+#ifdef TESTING_HASHTABLE
+		LOG << "ctor called" << END;
+#endif
+	}
 
 	// cpy ctor
 	HashTableNode(const HashTableNode& nd): {
+#ifdef TESTING_HASHTABLE
+		LOG << "cpy ctor called, val: " << nd.data << END;
+#endif
 		*this = nd;
 	}
 
 	// mv ctor
 	HashTableNode(HashTableNode&& nd) noexcept {
+#ifdef TESTING_HASHTABLE
+		LOG << "mv ctor called val: " << nd.data << END;
+#endif
 		// invoke move assignment operator
 		*this = std::move(nd);
 	}
 
 	// cpy operator
 	HashTableNode& operator = (const HashTableNode& nd) {
+#ifdef TESTING_HASHTABLE
+	LOG << "cpy operator called val: " << nd.val << END;
+#endif
 		this->key = nd.key;
 		this->data = nd.data;
 		// jdebug :: can this be recursive
@@ -106,6 +124,9 @@ struct HashTableNode {
 
 	// mv assignment operator
 	HashTableNode& operator = (HashTableNode&& nd) {
+#ifdef TESTING_HASHTABLE
+		LOG << "mv assignment operator called, val " << nd.data << END;
+#endif
 		this->key = std::move(nd.key);
 		this->data = std::move(nd.data);
 		if (nd.next)
@@ -115,23 +136,31 @@ struct HashTableNode {
 	}
 };
 
+/*
+ * todo:
+ *  - define iterator support *iter ==, ++, --, operators, begin(), end(), etc etc
+ *  - implement to_string method
+ *  - implement resize method
+ */
 template<typename KeyType, typename DataType>
-class hash_table {
+class HashTable {
 	using NodePtr = std::shared_ptr<HashTableNode<KeyType, DataType>>;
-	std::vector<NodePtr> buckets;
-	size_t n, k;
+	std::array<NodePtr, DEFAULT_BUCKET_CNT>* buckets;
+	size_t n, k, arr_size;
+	double maxLoadFactor;
 
 public:
-	hash_table(): k(DEFAULT_BUCKET_CNT) {
-		buckets.resize(k);
-	}
+	HashTable():
+	k(DEFAULT_BUCKET_CNT),
+	maxLoadFactor(MAX_LOAD_FACTOR),
+	arr_size(DEFAULT_BUCKET_CNT) { }
 
-	explicit hash_table(size_t bktCnt)
-	: k(bktCnt) {
-		buckets.resize(k);
-	}
+	explicit HashTable(size_t bktCnt)
+	: k(bktCnt),
+	  arr_size(DEFAULT_BUCKET_CNT),
+	  maxLoadFactor(MAX_LOAD_FACTOR) { }
 
-	~hash_table()= default;
+	~HashTable()= default;
 
 	// [{()->()->()}, {()->()}, {()}, {()->()}]  << each {} is an entry , each entry contains a linked list of elements
 	// R-Value data overload
@@ -142,13 +171,27 @@ public:
 		if (!entry) {  // new entry
 			entry = std::make_shared<HashTableNode<KeyType, DataType>>(key, std::forward<DataType>(data));
 			n++;
-			return;
-		}
-		handleCollision(key, std::forward<DataType>(data));
+		} else
+			handleCollision(key, std::forward<DataType>(data));
+			if (getLoadFactor() > MAX_LOAD_FACTOR)
+				resize();
 	}
 
 	inline size_t size() const { return n; }
 
+	inline void setMaxLoadFactor(double val) { maxLoadFactor = val; }
+
+	std::string toString() const {
+		std::stringstream ss;
+		ss << "size: " << table.size() << "\n";
+		ss << "TODO :: IMPLEMENT ME PLEASE" << END;
+		return ss.str();
+	}
+
+	friend std::ostream& operator << (const std::ostream& os, HashTable<KeyType, DataType>& table);
+
+//	iterator begin() {  }
+//  iterator end() { }
 private:
 	// L-val
 	void handleCollision(uint64_t bktInd, KeyType&& key, const DataType& data) {
@@ -184,8 +227,25 @@ private:
 		n++;
 	}
 
-	inline float getLoadFactor() const { return n/k; }
+	inline float getLoadFactor() const {
+#ifdef TESTING_HASHTABLE
+		LOG << "current load factor: " << n/k << END;
+#endif
+		return n/k;
+	}
+
+	// resizes map when load factor exceeds max allowed value
+	void resize() {
+		LOG << "TODO :: implement me" << END;
+	}
 };
+
+// misc overloads
+template<class KeyType, class DataType>
+std::ostream& operator << (const std::ostream& os, HashTable<KeyType, DataType>& table) {
+	os << table.toString();
+	return os;
+}
 
 
 /*
