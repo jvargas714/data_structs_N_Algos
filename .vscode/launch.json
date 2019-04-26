@@ -2,15 +2,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "epi_bst_merge",
+            "name": "epi_run",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/bst_merge",
+            "program": "${workspaceFolder}/bin/sunset_view",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/cpp/EPIJudge",
             "environment": [],
-            "externalConsole": false,
+            "externalConsole": true,
             "MIMode": "lldb"
         },
         {
