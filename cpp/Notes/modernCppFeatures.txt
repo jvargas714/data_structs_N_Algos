@@ -1,0 +1,21 @@
+
+The first of the remaining two rules for rvalue references affects old-style lvalue references as well. 
+Recall that in pre-11 C++, it was not allowed to take a reference to a reference: something 
+like A& & would cause a compile error. C++11, by contrast, introduces the following reference collapsing rules1:
+    A& & becomes A&
+    A& && becomes A&
+    A&& & becomes A&
+    A&& && becomes A&&
+
+
+Secondly, there is a special template argument deduction rule for function templates that take an argument by 
+rvalue reference to a template argument:
+template<typename T>
+void foo(T&&);
+
+Here, the following apply:
+  1. When foo is called on an lvalue of type A, then T resolves to A& and hence, by the reference collapsing rules above, 
+  the argument type effectively becomes A&.
+  2. When foo is called on an rvalue of type A, then T resolves to A, and hence the argument type becomes A&&.
+
+  
