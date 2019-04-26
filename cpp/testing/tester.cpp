@@ -267,10 +267,33 @@ long long Reverse(int x) {
     return res * (neg ? -1:1);
 }
 
+void EvenOdd(vector<int> *A_Ptr) {
+	std::vector<int>& nums = *A_Ptr;
+	if (nums.size() == 1)
+		return;
+	uint64_t i = 0, j = 1;
+	while (i < nums.size() && j < nums.size()) {
+		// find first odd in the array
+		if (nums[i] % 2 == 0) {
+			i++;
+			j = (i == j) ? j + 1 : j;
+			continue;
+		}
+		//
+		if (nums[j] % 2 == 0)
+			std::swap(nums[i++], nums[j]);
+		j++;
+	}
+}
+
 
 int main(int argc, char* argv[]) {
-    // 10e --> 0001 0000 1110
-    cout << Reverse(-0123345567) << endl;
+	std::vector<int> nums = { 2, 2, 2, 2, 2, 2, 2 };
+	cout << "before: ";
+	display(nums);
+	EvenOdd(&nums);
+	cout << "after: ";
+	display(nums);
 	return 0;
 }
 
