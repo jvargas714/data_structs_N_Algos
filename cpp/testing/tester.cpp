@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <memory>
 #include <iostream>
 #include <cstdio>
 #include <cfloat>
@@ -11,6 +12,7 @@
 #include <map>
 #include <queue>
 #include <random>
+#include <chrono>
 #include "../utility/utility.h"
 
 using namespace std;
@@ -77,8 +79,8 @@ int maxSubArraySum(int arr[], int l, int h) {
        b) Maximum subarray sum in right half
        c) Maximum subarray sum such that the subarray crosses the midpoint */
 	return max(maxSubArraySum(arr, l, m),
-			   maxSubArraySum(arr, m+1, h),
-			   maxCrossingSum(arr, l, m, h));
+	           maxSubArraySum(arr, m+1, h),
+	           maxCrossingSum(arr, l, m, h));
 }
 
 size_t removeDups(std::vector<int>& nums) {
@@ -119,42 +121,42 @@ struct MyComp {
 
 // when swapping pointer from a string we must deref them for the swap to work
 void mySwap(char* ch1, char* ch2) {
-    char tmp = *ch1;
-    *ch1 = *ch2;
-    *ch2 = tmp;
+	char tmp = *ch1;
+	*ch1 = *ch2;
+	*ch2 = tmp;
 }
 
 // using pointers space : O(1), time: O(n)
 void reverseString(std::string& str) {
-    // of course there is std::reverse(str.begin(), str.end());
-    for (int i = 0, j = str.length()-1; i < str.size()/2; i++, j--) {
-        mySwap(&str[i], &str[j]);
-    }
-    std::cout << "result: " << str << std::endl;
+	// of course there is std::reverse(str.begin(), str.end());
+	for (int i = 0, j = str.length()-1; i < str.size()/2; i++, j--) {
+		mySwap(&str[i], &str[j]);
+	}
+	std::cout << "result: " << str << std::endl;
 }
 
 // using map O(n) time and space :( where n is the size of the larger vector
 int find_missing(const std::vector<int>& vect1, const std::vector<int>& vect2) {
-    const std::vector<int>& larger = (vect1.size() > vect2.size() ? vect1:vect2);
-    const std::vector<int>& smaller = (vect1.size() < vect2.size() ? vect1:vect2);
-    std::map<int, int> valMap;
-    for (const auto& el : smaller) valMap[el]++;
-    for (const auto& el : larger)
-        if (valMap.find(el) == valMap.end()) return el;
-    return -1;
+	const std::vector<int>& larger = (vect1.size() > vect2.size() ? vect1:vect2);
+	const std::vector<int>& smaller = (vect1.size() < vect2.size() ? vect1:vect2);
+	std::map<int, int> valMap;
+	for (const auto& el : smaller) valMap[el]++;
+	for (const auto& el : larger)
+		if (valMap.find(el) == valMap.end()) return el;
+	return -1;
 }
 
 // xor verison time O(1), space O(n)
 int find_missingV2(const std::vector<int>& vect1, const std::vector<int>& vect2) {
-    const std::vector<int>& larger = (vect1.size() > vect2.size() ? vect1:vect2);
-    const std::vector<int>& smaller = (vect1.size() < vect2.size() ? vect1:vect2);
-    int res = 0;
-    for (int i = 0; i < larger.size(); i++) {
-        res ^= larger[i];
-        if (i < smaller.size())
-            res ^= smaller[i];
-    }
-    return res;
+	const std::vector<int>& larger = (vect1.size() > vect2.size() ? vect1:vect2);
+	const std::vector<int>& smaller = (vect1.size() < vect2.size() ? vect1:vect2);
+	int res = 0;
+	for (int i = 0; i < larger.size(); i++) {
+		res ^= larger[i];
+		if (i < smaller.size())
+			res ^= smaller[i];
+	}
+	return res;
 }
 
 uint64_t fact(int n) {
@@ -171,7 +173,7 @@ std::vector<int> findBitPositions(T val) {
 	std::vector<int> res;
 	for (int shiftBy = 0; shiftBy < sizeof(T)*8; shiftBy++) {
 		if ((val & mask) > 0) res.push_back(shiftBy);
-        mask <<= 1;
+		mask <<= 1;
 	}
 	return res;
 }
@@ -188,7 +190,7 @@ std::vector<std::vector<int>> combinationsBinCnt(int n) {
 	uint64_t binary = 0;    // max n can be 64 bits
 	const uint64_t numSubSets = (uint64_t) std::pow(2, n);
 	for (uint64_t cnt = 0; cnt < numSubSets; cnt++) combos.push_back( findBitPositions(binary++) );
-    return combos;
+	return combos;
 }
 
 void test_primeGeneration(uint64_t numPrimes) {
@@ -202,15 +204,73 @@ void test_primeGeneration(uint64_t numPrimes) {
 	display(primes2);
 }
 
-int main(int argc, char* argv[]) {
-	if (argc != 2) {
-		cout << "please input desired amount of primes to generate. Exiting now..." << endl;
-		return -1;
-	}
-	uint64_t numArgs = atoi(argv[1]);
-	cout << "you entered " << numArgs << endl;
+/*
+ * write a program that takes a 64 bit unsigned int and returns its bits reversed
+ * 0b10011101010101100010011000100010110100000 output should be
+ * 0b10110100010001100100011010101011100100000000000000000000000
+ * 0b10110100010001100100011010101011100100000000000000000000000
 
-	test_primeGeneration(numArgs);
+
+ * res: 1 --> 10
+ * res:
+ */
+unsigned long long ReverseBits(unsigned long long x) {
+    unsigned long long res = 0;
+    for (int i = 1; i < sizeof(unsigned long long)*8; i++) {
+        res |= (x&1);
+        res <<= 1;
+        x >>=1;
+    }
+    std::cout << "my output: " << res << std::endl;
+    return res;
+}
+
+double Power(double x, int y) {
+    if (y == 0) return 1;
+    x = y < 0 ? 1/x:x;
+    double res = x;
+    bool odd = false;
+    y = abs(y);
+
+    if (y % 2 == 0) {
+        y /= 2;
+    } else {
+        y--;
+        y /= 2;
+        odd = true;
+    }
+    res = x*x;
+    while (y > 1) {
+//        cout << "res: " << res << " y: " << y << endl;
+        res *= (x*x);
+        y-=1;
+    }
+    res *= (odd?x:1);
+    return res;
+}
+
+long long Reverse(int x) {
+    long long res = 0;
+    long long dig;
+    bool neg = x < 0;
+    x = std::abs(x);
+
+    // get how many places our number will be
+    int pwr = std::pow(10, static_cast<int>(std::log10(x)));
+    cout << "pwr: " << pwr << endl;
+    while (pwr) {
+        dig = x % 10;
+        x /= 10;
+        res += pwr * dig;
+        pwr /= 10;
+    }
+    return res * (neg ? -1:1);
+}
+
+
+int main(int argc, char* argv[]) {
+    // 10e --> 0001 0000 1110
+    cout << Reverse(-0123345567) << endl;
 	return 0;
 }
 

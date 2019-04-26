@@ -894,3 +894,90 @@ std::string nextClosestTime(std::string &tm) {
     }
     return tm;
 }
+
+/*
+	Approach:
+		1. use a map to store all non alpha chars by {index : char}
+		2. iterate through chars of S check to see if current index is a non alpha
+			- if so loop through starting from that i and add to result 
+		3. add alpha char to result increment i 
+	
+	issue: 
+		this can be optimized as we pass through non alpha chars more than once one using the iterator and one 
+		in the inner loop, this slows down our runtime
+	
+	runtime: O(n)
+	space time: O(n)
+*/
+std::string reverseOnlyLetters(std::string S) {
+	if (S.empty()) return "";
+	std::map<int, char> charMap;
+	std::string result;
+	int i = 0;
+	for (auto ch: S) {
+		if ( !isalpha(ch) ) {
+			charMap[i] = ch;
+		}
+		i++;
+	}
+	i = 0;
+	for (auto it = S.rbegin(); it != S.rend(); it++) {
+		while (charMap.find(i) != charMap.end()) {
+			result += charMap[i++];
+		}
+		if (isalpha(*it)) {
+			result += *it;
+			i++;
+		}
+	}
+	while (charMap.find(i) != charMap.end())
+			result += charMap[i++];
+	return result;
+}
+
+
+/*
+	Optimized Solution:
+	Approach:
+		1. use a direct access array to keep track of non alpha character frequencies, by index
+		2. keep two pointers 
+			i: current character to build result (starts at end of string)
+			j: current index of result 
+		3. we can use j to detect when we reach an index that is supposed to have a non alpha character
+			- if it a spot for a non-alpha character we append to result and decrement the cnt down 
+				(wont matter since the map is by index)
+			- increment j as result is built, keeps track of current index of result
+		4. after main loop ends we check for non-alpha chars at the end of the string using j
+		5. deallocate charFreq 
+	runtime: O(n) << inner loop condition is the same as the outer
+	space time: O(n)
+*/
+std::string reverseOnlyLettersV2(const std::string& S) {
+        if (S.empty()) return "";
+        int* charFreq = new int[S.length()];
+        memset(charFreq, 0, sizeof(int)*S.length());
+        std::string result;
+        
+        for (int i = 0; i < S.length(); i++)
+            if (!isalpha(S[i]))
+                charFreq[i]++;
+        
+        int i = S.length()-1;
+        int j = 0;
+        
+        while (i>=0 && j<S.length()) {
+            char ch = S[i];
+            while (j<S.length() && charFreq[j]-- > 0) {
+                result += S[j++];
+            }
+            if (isalpha(ch)) {
+                result += ch;
+                j++;
+            }
+            i--;
+        }
+        while (j < S.length())
+            result += S[j++];
+        delete[] charFreq;
+        return result;
+    }

@@ -99,4 +99,14 @@ std::vector<double> calcEquation(std::vector<std::pair<std::string, std::string>
                                     std::vector<std::pair<std::string,
                                     std::string>> queries);
 
+/*
+ *
+ * Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
+ *
+ * Note:
+ * You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
+ */
+int kthSmallest(TreeNode* root, int k);
+int kthSmallestV2(TreeNode* root, int k);
+
 #endif //DATASTRUCTS_N_ALGOS_BINARY_TREE_PROBLEMS_H

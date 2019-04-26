@@ -95,7 +95,7 @@ std::string addSpaces(int numSpaces, const T& el) {
 template<class T>
 void displayMatrix(const T& matrix) {
     int numSpaces = getMatrixSpacing(matrix);
-    LOG << matrix.size() << "x" << matrix[0].size() << " matrix" << END;
+    LOG << matrix.size() << "x" << matrix[0].size()+1 << " matrix" << END;
     for (const auto& row : matrix) {
         for (const auto& el: row) {
             std::cout << el << addSpaces(numSpaces, el);
@@ -245,6 +245,26 @@ int binarySearch(const std::vector<T>& vals, const int target) {
         }
     }
     return ERROR;
+}
+
+/*
+ * enumerates container (just like python method)
+ * input: [45, 77, 99, 100]
+ *
+ * output: [
+ * (0, 45),
+ * (1, 77),
+ * (2, 99),
+ * (3, 100)
+ * ]
+ */
+template<typename T>
+std::vector<std::pair<size_t, T>> enumerateContainer(const T& container) {
+    size_t i = 0;
+    std::vector<std::pair<size_t, T>> result;
+    for (auto& el: container)
+        result.push_back({i++, el});
+    return result;
 }
 
 // returns vector indicating which bit positions have a 1 bit flipped, first bit is mapped to 0

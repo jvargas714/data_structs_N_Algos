@@ -74,6 +74,18 @@ void helper_findUnivaluedPath(TreeNode* root, int currentVal, int& cnt, int& lon
     helper_findUnivaluedPath(root->left, currentVal, cnt, longest);
     helper_findUnivaluedPath(root->right, currentVal, cnt, longest);
 }
+
+void inorderTravel(TreeNode* root, std::vector<int>& res) {
+    if (!root) return;
+    inorderTravel(root->left, res);
+    res.push_back(root->val);
+    inorderTravel(root->right, res);
+}
+
+int inorderTravel(TreeNode* root) {
+    if (!root) return INT32_MAX;
+
+}
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END helper functions%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 int maxDepth(TreeNode* root) {
@@ -368,6 +380,18 @@ calcEquation(std::vector<std::pair<std::string, std::string>> equations,
 	return result;
 }
 
+// Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
+// O(n) time and space
+int kthSmallest(TreeNode* root, int k) {
+    if (!root) return -1;
+    std::vector<int> binTree;
+    inorderTravel(root, binTree);
+    return binTree[k-1];
+}
+
+// attempt to optimize space usage
+int kthSmallestV2(TreeNode* root, int k) {
+    return inorderTravel(root);
 /*
 	Input:
 
@@ -376,7 +400,7 @@ calcEquation(std::vector<std::pair<std::string, std::string>> equations,
 	   2     7
 	  / \   / \
 	1   3  6   9
-	
+
 	Output:
 
 		4
@@ -385,7 +409,7 @@ calcEquation(std::vector<std::pair<std::string, std::string>> equations,
     / \   / \
    9   6 3   1
 	 time: O(n)
-	 space: O(h)  where h is depth of tree, each function call stores a node 
+	 space: O(h)  where h is depth of tree, each function call stores a node
 */
 TreeNode* invertTree(TreeNode* root) {
 	if (!root) return nullptr;
@@ -396,13 +420,25 @@ TreeNode* invertTree(TreeNode* root) {
 	return root;
 }
 
-/* 
-	Iterative solution using queue 
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+	Iterative solution using queue
 	Approach:
-		swap the left and right child of all nodes in the tree. We use a queue to store nodes 
-		whose left and right child have not been swapped yet. Null nodes are not added to 
-		the queue. Eventually the queue will be empty and all children have been swapped 
-	time complexity: O(n) 
+		swap the left and right child of all nodes in the tree. We use a queue to store nodes
+		whose left and right child have not been swapped yet. Null nodes are not added to
+		the queue. Eventually the queue will be empty and all children have been swapped
+	time complexity: O(n)
 	space complexity: O(n)
 */
 TreeNode* invertTreeV2(TreeNode* root) {

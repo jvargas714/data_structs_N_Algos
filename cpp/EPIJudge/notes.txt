@@ -1,0 +1,63 @@
+cwd:
+	/home/jay/data_structs_N_Algos/cpp/EPIJudge
+
+============================================= Study Plan ===============================================================
+	Sections:
+	Write and Test:
+		Primitives:
+			4.1 count_bits, parity  << complete
+			4.3 reverse_bits    << complete
+			4.7 compute pow(x,y)    << complete
+			4.8 reverse digits    << complete
+            4.11 rectangle intersection
+
+		Arrays:
+			5.1
+			5.2
+			5.5
+			5.6
+			5.9
+			5.12
+			5.17
+			5.18
+
+	Pseudo Code (whiteboard):
+		6.7
+		7.10
+		8.3
+		8.8
+		9.10
+		10.5
+		11.5
+		11.10
+		12.4
+		12.6
+		13.8
+		13.11
+		14.5
+		14.8
+		15.5
+		15.10
+		16.5
+		16.7
+		17.7
+		18.3
+		19.9
+		20.1
+
+================================================Notes ==================================================================
+section 4.1:
+    - know cmath utility functions for primitives very well
+    - key functions
+        * abs()
+        * fabs()
+        * ceil()
+        * floor()
+        * min()
+        * max()
+        * pow(2.71, 3.15)
+        * log(7.12)
+        * sqrt(225)
+    - std::string std::to_string(numerical_type) --> <string>
+    - use std::swap(x,y) to exchange values, works with complex types like vector
+        * defined in <utility> and <algorithm>

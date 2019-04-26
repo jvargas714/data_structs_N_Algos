@@ -138,9 +138,14 @@ problem: #917 Reverse Only Letters
 Given a string S, return the "reversed" string where all characters that are not a 
 letter stay in the same place, and all letters reverse their positions.
 */
-// Runtime: 12 ms, faster than 20.81%
+// Runtime: 4 ms, faster than 100.00%
 // Memory Usage: 8.4 MB, less than 96.67%
 std::string reverseOnlyLetters(std::string S);
+
+// optimized direct access character frequency Map 
+// Runtime: 4 ms, faster than 100.00%
+// Memory Usage: 8.3 MB, less than 100.00% 
+std::string reverseOnlyLettersV2(std::string S);
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MEDIUM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 // problem: 3
