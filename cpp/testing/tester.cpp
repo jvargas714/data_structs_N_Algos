@@ -288,23 +288,34 @@ void forwarding( t && arg ) {
 	overloaded( arg );
 }
 
-// save space solution at the expense of time
+/*
+ * Approach:
+ *      1. first start by placing elements smaller than the pivot in the front of the array
+ *      2.
+ */
 void DutchFlagPartition(int pivot_index, vector<int> *A_ptr) {
-	auto& nums = *A_ptr;
-	int pivot = nums[pivot_index];
-	LOG << "PIVOT: " << pivot << END;
-	for (int i = 0; i < nums.size(); i++) {
-		for (int j = i + 1; j < nums.size(); j++) {
-
-		}
-	}
-
+    auto& nums = *A_ptr;
+    int pivot = nums[pivot_index];
+    int smaller=0, unclass=0, larger=nums.size()-1;
+    while (unclass < larger) {
+        if (nums[unclass] > pivot) {
+            swap(nums[unclass++], nums[larger--]);
+        } else if (nums[unclass] == pivot) {
+            unclass++;
+        } else {
+            swap(nums[unclass++], nums[smaller]);
+        }
+    }
 }
 
-
 int main() {
-	std::vector<int> nums = {1, 0, 2, 0, 2, 1, 2, 1, 2, 0, 0, 0, 1, 0, 2, 1, 0, 2, 0, 1, 0, 2, 1, 0, 2, 1, 2, 0, 2};
-	DutchFlagPartition(5, &nums);
+	std::vector<int> nums = {0, 1, 1, 2};
+    int pivot_ind = 2;
+	LOG << "input: ";
+
 	display(nums);
+	DutchFlagPartition(pivot_ind, &nums);
+	display(nums);
+
 	return 0;
 }
