@@ -115,7 +115,7 @@ struct HashTableNode {
 #endif
 		this->key = nd.key;
 		this->data = nd.data;
-		// jdebug :: can this be recursive
+		// jdebug :: can this be recursive, will it recurse forever
 		if (nd.next)
 			this->next = nd.next;
 		else
@@ -145,19 +145,24 @@ struct HashTableNode {
 template<typename KeyType, typename DataType>
 class HashTable {
 	using NodePtr = std::shared_ptr<HashTableNode<KeyType, DataType>>;
-	std::array<NodePtr, DEFAULT_BUCKET_CNT>* buckets;
-	size_t n, k, arr_size;
+//	std::array<NodePtr, DEFAULT_BUCKET_CNT>* buckets;
+	std::unique_ptr<NodePtr> buckets;
+	size_t n, k, bkt_size;
 	double maxLoadFactor;
 
 public:
 	HashTable():
 	k(DEFAULT_BUCKET_CNT),
 	maxLoadFactor(MAX_LOAD_FACTOR),
-	arr_size(DEFAULT_BUCKET_CNT) { }
+	bkt_size(DEFAULT_BUCKET_CNT) {
+		buckets = std::move(
+			std::unique_ptr<NodePtr[]>(new NodePtr[bkt_size])
+			    );
+	}
 
 	explicit HashTable(size_t bktCnt)
 	: k(bktCnt),
-	  arr_size(DEFAULT_BUCKET_CNT),
+	  bkt_size(DEFAULT_BUCKET_CNT),
 	  maxLoadFactor(MAX_LOAD_FACTOR) { }
 
 	~HashTable()= default;
@@ -172,7 +177,7 @@ public:
 			entry = std::make_shared<HashTableNode<KeyType, DataType>>(key, std::forward<DataType>(data));
 			n++;
 		} else
-			handleCollision(key, std::forward<DataType>(data));
+			handleCollision(bktInd, key, std::forward<DataType>(data));
 			if (getLoadFactor() > MAX_LOAD_FACTOR)
 				resize();
 	}
@@ -183,12 +188,12 @@ public:
 
 	std::string toString() const {
 		std::stringstream ss;
-		ss << "size: " << table.size() << "\n";
+		ss << "size: " << size() << "\n";
 		ss << "TODO :: IMPLEMENT ME PLEASE" << END;
 		return ss.str();
 	}
 
-	friend std::ostream& operator << (const std::ostream& os, HashTable<KeyType, DataType>& table);
+	friend std::ostream& operator << (std::ostream& os, HashTable<KeyType, DataType>& table);
 
 //	iterator begin() {  }
 //  iterator end() { }
@@ -211,7 +216,7 @@ private:
 	}
 
 	// R-val
-	void handleCollision(KeyType&& key, const DataType&& data) {
+	void handleCollision(uint64_t bktInd, KeyType&& key, const DataType&& data) {
 		LOG << __FUNCTION__ << "(): calling r-value form" << END;
 		NodePtr& entry = buckets[bktInd];
 		NodePtr& tmp = entry;
@@ -242,7 +247,7 @@ private:
 
 // misc overloads
 template<class KeyType, class DataType>
-std::ostream& operator << (const std::ostream& os, HashTable<KeyType, DataType>& table) {
+std::ostream& operator << (std::ostream& os, HashTable<KeyType, DataType>& table) {
 	os << table.toString();
 	return os;
 }
