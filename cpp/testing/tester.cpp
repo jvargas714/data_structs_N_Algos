@@ -22,6 +22,11 @@ typedef high_resolution_clock hrc;
 typedef hrc::time_point t_point;
 t_point t1_bub, t2_bub;
 
+using std::vector;
+typedef enum {
+	kRed, kWhite, kBlue
+} Color;
+
 
 static void showExeTime(const string& label) {
 	std::cout << "\n+-+-+-+-+-+-+-+-+-+-+" << END;
@@ -283,8 +288,23 @@ void forwarding( t && arg ) {
 	overloaded( arg );
 }
 
+// save space solution at the expense of time
+void DutchFlagPartition(int pivot_index, vector<int> *A_ptr) {
+	auto& nums = *A_ptr;
+	int pivot = nums[pivot_index];
+	LOG << "PIVOT: " << pivot << END;
+	for (int i = 0; i < nums.size(); i++) {
+		for (int j = i + 1; j < nums.size(); j++) {
+
+		}
+	}
+
+}
+
+
 int main() {
-	std::array<int, 10> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::array<int, 15> arr2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+	std::vector<int> nums = {1, 0, 2, 0, 2, 1, 2, 1, 2, 0, 0, 0, 1, 0, 2, 1, 0, 2, 0, 1, 0, 2, 1, 0, 2, 1, 2, 0, 2};
+	DutchFlagPartition(5, &nums);
+	display(nums);
 	return 0;
 }

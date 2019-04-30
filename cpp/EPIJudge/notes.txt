@@ -1,5 +1,6 @@
 cwd:
-	/home/jay/data_structs_N_Algos/cpp/EPIJudge
+	NIX: /home/jay/data_structs_N_Algos/cpp/EPIJudge
+	OX:
 
 ============================================= Study Plan ===============================================================
 	Sections:
@@ -12,7 +13,8 @@ cwd:
             4.11 rectangle intersection
 
 		Arrays:
-			5.1 Even Odd
+		    5.0 Even Odd
+			5.1 dutch_national_flag Problem
 			5.2
 			5.5
 			5.6

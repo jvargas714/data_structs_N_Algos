@@ -12,10 +12,12 @@ using std::vector;
  * complexity must be O(1)
  *
  * [5 2 4 7 10 11]
- * 
+ *
  * [5 3 6 8 7 10 11]
- * Approach:
- * 
+ *  Average running time:    3 us
+	Median running time:     1 us
+    Runtime: O(n)
+    Space: O(1)  << inplace swapping done
  */
 void EvenOdd(vector<int> *A_Ptr) {
 	std::vector<int>& nums = *A_Ptr;
@@ -32,6 +34,33 @@ void EvenOdd(vector<int> *A_Ptr) {
 		if (nums[j] % 2 == 0)
 			std::swap(nums[i++], nums[j]);
 		j++;
+	}
+}
+
+/*
+ * Approach:
+ *      we go with a 2 ptr approach. The idea to minimize the amount of iterations is we target an odd number
+ *      in the target even region by incrementing i if nums[i] is already an even number.
+ *      After that the goal is to find the next even number in the target odd region which is controlled by
+ *      pointer j. Once that even value is found we simply perform the swap and decrement j.
+ *      i and j converge as iterations pass.
+ *  Average running time:    2 us
+	Median running time:     1 us
+    Runtime: O(n) for an array where have all od numbers
+    Space: O(1), we swap inplace, no space needed
+ */
+void EvenOdd_mysolv2(vector<int>* A_Ptr) {
+	std::vector<int>& nums = *A_Ptr;
+	if (nums.size() == 1) return;
+	size_t i = 0, j = nums.size()-1;
+	while (i < j) {
+		if ((nums[i] & 1) == 0) {  // if i even incr to next even
+			i++;
+		}
+		else if ((nums[j] & 1) == 0) {  // if j is even we swap
+			std::swap(nums[i++], nums[j--]);
+		} else
+			j--;
 	}
 }
 
