@@ -18,6 +18,8 @@
 
 using namespace std;
 using namespace std::chrono;
+using std::map;
+using std::unordered_map;
 typedef high_resolution_clock hrc;
 typedef hrc::time_point t_point;
 t_point t1_bub, t2_bub;
@@ -309,13 +311,10 @@ void DutchFlagPartition(int pivot_index, vector<int> *A_ptr) {
 }
 
 int main() {
-	std::vector<int> nums = {0, 1, 1, 2};
-    int pivot_ind = 2;
-	LOG << "input: ";
-
-	display(nums);
-	DutchFlagPartition(pivot_ind, &nums);
-	display(nums);
-
+	unordered_map<string, int> mp;
+	mp["hello"];
+	mp["hola"];
+	LOG << mp.size() << END;
+	LOG << "{hello, " << mp["hello"] << "}" << END;
 	return 0;
 }
