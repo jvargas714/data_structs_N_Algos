@@ -1,13 +1,28 @@
 #include <cstdint>
 #include <iostream>
+#include <chrono>
 #include "hash_table.h"
 
-#define FUNCT_HEADER std::cout << "================================" << __FUNCTION__ << "==============================" << END
+#define FUNCT_HEADER std::cout << "\n\n================================" << __FUNCTION__ << "==============================" << END
 #define NEWLINE std::cout <<"\n" << END
 
 using std::cout;
 using std::endl;
 using std::string;
+using namespace std::chrono;
+
+typedef high_resolution_clock hrc;
+typedef hrc::time_point t_point;
+t_point t1_bub, t2_bub;
+
+static void showExeTime(const string& label) {
+	std::cout << "\n+-+-+-+-+-+-+-+-+-+-+" << END;
+	auto milli_sec = duration_cast<milliseconds>( t2_bub - t1_bub ).count();
+	auto micro_sec = duration_cast<microseconds>( t2_bub - t1_bub ).count();
+	std::cout << label << " time of execution -->\n" << milli_sec << "msec\n" << micro_sec << "usec" << END;
+	std::cout << "+-+-+-+-+-+-+-+-+-+-+" << END;
+}
+
 
 typedef struct _test_data {
 	int a;
@@ -46,7 +61,19 @@ void test_hashNode() {
     HashTableNode<string, int> nd7(std::move(nd6));
     cout << "val shall be 6969, val=" << nd7.data << "\n\n" << END;
 
-    cout << "\ntest linking ...linking 6969 to "
+    cout << "\ntest linking ...linking 6969 to " << END;
+    nd7.next = std::make_shared<HashTableNode<string, int>>(std::pair<string, int>("secondLink", 5588));
+    nd7.next->next = std::make_shared<HashTableNode<string, int>>(std::pair<string, int>("thirdLink", 6699));
+    HashTableNode<string, int> nd8;
+    nd8 = nd7;
+    cout << "RESULT ==> nd8.data: " << nd8.data << " nd8.next->data: " << nd8.next->data <<
+    " nd8.next->next->data:" << nd8.next->next->data << "\n\n" <<END;
+
+    HashTableNode<string, int> nd9;
+    cout << "\n\ntesting move operator on linked nodes" << END;
+    nd9 = std::move(nd8);
+	cout << "RESULT ==> nd9.data: " << nd9.data << " nd9.next->data: " << nd9.next->data <<
+	     " nd9.next->next->data:" << nd9.next->next->data << "\n\n" <<END;
 }
 
 void test_basicInitAndFill() {
@@ -74,11 +101,57 @@ void test_basicInitAndFill() {
 }
 
 void test_ctorsAndOps() {
+	FUNCT_HEADER;
+	using HTable = HashTable<string, double>;
+	HTable table;
+	HTable table2;
+	cout << "testing [] rval operator" << END;
+	table2["first"] = 1.234;
+	cout << "table2[\"first\"] = " << table2["first"] << "\n\n" << END;
+
+	cout << "testing [] lval operator" << END;
+	string second = "second";
+	table2[second] = 2.234;
+	cout << "table2[\"second\"] = " << table2["second"] << "\n\n" << END;
+
+	cout << "[] operator updating 2.234 to 2.345" << END;
+	table2[second] = 2.345;
+	cout << "table2[second] = " << table2[second] << "\n\n" << END;
+
+	cout << "testing [] by adding third element without assignment" << END;
+	table2["third"];
+
+	cout << "\n\ntesting cpy ctor " << END;
+	HTable table3(table2);
+
+	cout << "\n\ntesting cpy operator" << END;
+	table = table2;
+	cout << "first: " << table["first"] << END;
+	cout << "second: " << table["second"] << END;
+	cout << "third: " << table["third"] << END;
+
+	cout << "\n\ntesting mv ctor" << END;
+	HTable table4(std::move(table3));
+
+	cout << "\n\ntesting mv assignment operator" << END;
+	HTable table5;
+	table5 = std::move(table4);
+	cout << "first: " << table4["first"] << END;
+	cout << "second: " << table4["second"] << END;
+	cout << "third: " << table4["third"] << END;
+	cout << "\n\n" << END;
+}
+
+void test_timing() {
+	FUNCT_HEADER;
+	cout << "BATTLE AGAINST std::unordered_map\n\n" << END;
 
 }
 
 int main() {
     test_hashNode();
     test_basicInitAndFill();
+    test_ctorsAndOps();
+    test_timing();
 	return 0;
 }

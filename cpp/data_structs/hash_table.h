@@ -18,8 +18,7 @@ constexpr double MAX_LOAD_FACTOR = 0.75;
  * can create a specialization using this type of Key
  *
  */
-struct Key
-{
+struct Key {
 	std::string first;
 	std::string second;
 	int         third;
@@ -32,10 +31,8 @@ struct Key
 };
 
 // can define a Functor to be used as a hashing function in the unordered map or any unordered type
-struct KeyHasher
-{
-	std::size_t operator()(const Key& k) const
-	{
+struct KeyHasher {
+	std::size_t operator()(const Key& k) const {
 		using std::size_t;
 		using std::hash;
 		using std::string;
@@ -173,11 +170,15 @@ struct HashTableNode {
 };
 
 /*
- * todo:
+ * jdebug:
  *  - define iterator support *iter ==, ++, --, operators, begin(), end(), etc etc
  *  - implement to_string method
  *  - implement resize method
  *  - implement find method using iterators (like the std lib)
+ *  - implement copy constructor
+ *  - implement mv constructor
+ *  - implement cpy assignment operator
+ *  - implement mv assignment operator
  */
 template<typename KeyType, typename DataType>
 class HashTable {
@@ -188,16 +189,71 @@ class HashTable {
 
 public:
 	HashTable():
-	n(0),
-    k(DEFAULT_BUCKET_CNT),
-    bktSize(DEFAULT_BUCKET_CNT),
-    maxLoadFactor(MAX_LOAD_FACTOR),
-    buckets(std::vector<NodePtr>(bktSize)) { }
+		n(0),
+	    k(DEFAULT_BUCKET_CNT),
+	    bktSize(DEFAULT_BUCKET_CNT),
+	    maxLoadFactor(MAX_LOAD_FACTOR),
+	    buckets(std::vector<NodePtr>(bktSize))
+	    { }
 
-	explicit HashTable(size_t bktCnt)
-	: k(bktCnt),
-	  bktSize(DEFAULT_BUCKET_CNT),
-	  maxLoadFactor(MAX_LOAD_FACTOR) { }
+	explicit HashTable(size_t bktCnt):
+		n(0),
+		k(bktCnt),
+		bktSize(DEFAULT_BUCKET_CNT),
+		maxLoadFactor(MAX_LOAD_FACTOR)
+		{ }
+
+	// cpy ctor
+	HashTable(const HashTable& tbl):
+		n(tbl.n),
+		k(tbl.k),
+		bktSize(tbl.bktSize),
+		maxLoadFactor(tbl.maxLoadFactor),
+		buckets(tbl.buckets) {
+			#ifdef TESTING_HASHTABLE
+				LOG << "cpy ctor called" << END;
+			#endif
+	}
+
+	// mv ctor
+	HashTable(HashTable&& tbl):
+		n(tbl.n),
+	    k(tbl.k),
+	    bktSize(tbl.bktSize),
+	    maxLoadFactor(tbl.maxLoadFactor),
+	    buckets(std::move(tbl.buckets)) {
+		#ifdef TESTING_HASHTABLE
+				LOG << "mv ctor called" << END;
+		#endif
+	}
+
+	// cpy assignment operator
+	HashTable& operator = (const HashTable& tbl) {
+		#ifdef TESTING_HASHTABLE
+				LOG << "cpy assignment operator called" << END;
+		#endif
+		if (&tbl == this) return *this;
+		n = tbl.n;
+		k = tbl.k;
+		bktSize = tbl.bktSize;
+		maxLoadFactor = tbl.maxLoadFactor;
+		buckets = tbl.buckets;
+		return *this;
+	}
+
+	// mv assignment operator
+	HashTable& operator = (HashTable&& tbl) {
+		#ifdef TESTING_HASHTABLE
+				LOG << "mv assignment operator called" << END;
+		#endif
+		if (&tbl == this) return *this;
+		n = tbl.n;
+		k = tbl.k;
+		bktSize = tbl.bktSize;
+		maxLoadFactor = tbl.maxLoadFactor;
+		buckets = tbl.buckets; // std::move(tbl.buckets);
+		return *this;
+	}
 
 	~HashTable()=default;
 
@@ -286,8 +342,6 @@ public:
 
 	friend std::ostream& operator << (std::ostream& os, const HashTable<KeyType, DataType>& table);
 
-//	iterator begin() {  }
-//  iterator end() { }
 private:
 	// L-val
 	void handleCollision(uint64_t bktInd, std::pair<KeyType, DataType>&& keyval) {
@@ -380,9 +434,4 @@ std::ostream& operator << (std::ostream& os, const HashTable<KeyType, DataType>&
 	os << table.toString();
 	return os;
 }
-
-
-/*
- * Add custom specializations here
- */
 #endif //DATASTRUCTS_N_ALGOS_HASH_TABLE_H
