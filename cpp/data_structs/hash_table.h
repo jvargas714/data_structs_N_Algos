@@ -75,30 +75,37 @@ struct KeyHasher
 
 // KeyType must have a defined == and be hashable using std::hash
 // may need to create a specialization for std::hash for this
-// todo :: workout perfect forwarding ctor as well as move semantics
 template<class KeyType, class DataType>
 struct HashTableNode {
+    using NodePtr = HashTableNode<KeyType, DataType>;
 	KeyType key;
 	DataType data;
-	std::shared_ptr<DataType> next;
+	std::shared_ptr<NodePtr> next;
 
-	HashTableNode(): next(nullptr) {
+	HashTableNode()
+	: next(nullptr) {
 #ifdef TESTING_HASHTABLE
 		LOG << "def ctor called" << END;
 #endif
 	}
 
 	explicit HashTableNode(KeyType&& key)
-	: data(),
-	key(std::move(key))
-	{}
+    : key(std::move(key)),
+    data() {
+	    #ifdef TESTING_HASHTABLE
+            LOG << "r-val key ctor called" << END;
+        #endif
+    }
 
 	explicit HashTableNode(const KeyType& key)
-	: data(),
-	key(key)
-	{}
+	: key(key),
+	data() {
+        #ifdef TESTING_HASHTABLE
+                LOG << "l-val key ctor called" << END;
+        #endif
+	}
 
-	explicit HashTableNode(std::pair<KeyType, DataType>&& keyval)
+	HashTableNode(std::pair<KeyType, DataType>&& keyval)
 		: key(std::move(keyval.first)),
 		data(std::move(keyval.second)),
 		next(nullptr) {
@@ -112,12 +119,12 @@ struct HashTableNode {
 			  data(keyval.second),
 			  next(nullptr) {
 #ifdef TESTING_HASHTABLE
-		LOG << "&& pair ctor called" << END;
+		LOG << "& pair ctor called" << END;
 #endif
 	}
 
 	// cpy ctor
-	HashTableNode(const HashTableNode& nd): {
+	HashTableNode(const HashTableNode& nd) noexcept {
 #ifdef TESTING_HASHTABLE
 		LOG << "cpy ctor called, val: " << nd.data << END;
 #endif
@@ -138,15 +145,16 @@ struct HashTableNode {
 	// cpy operator
 	HashTableNode& operator = (const HashTableNode& nd) {
 #ifdef TESTING_HASHTABLE
-	LOG << "cpy operator called val: " << nd.val << END;
+	LOG << "cpy operator called, key=" << nd.key << END;
 #endif
 		this->key = nd.key;
 		this->data = nd.data;
 		// jdebug :: can this be recursive, will it recurse forever
 		if (nd.next)
-			this->next = nd.next;
+			this->next = nd.next;  // jdebug :: ensure that copying smart pointer just increments the ref counter
 		else
 			this->next = nullptr;
+		return *this;
 	}
 
 	// mv assignment operator
@@ -156,10 +164,11 @@ struct HashTableNode {
 #endif
 		this->key = std::move(nd.key);
 		this->data = std::move(nd.data);
-		if (nd.next)
-			this->next = std::move(nd.next);
+		if (nd.next) // jdebug :: ensure that copying smart pointer just increments the ref counter
+			this->next = std::make_shared<HashTableNode<KeyType, DataType>>(std::move(*nd.next));
 		else
 			this->next = nullptr;
+		return *this;
 	}
 };
 
@@ -173,64 +182,56 @@ struct HashTableNode {
 template<typename KeyType, typename DataType>
 class HashTable {
 	using NodePtr = std::shared_ptr<HashTableNode<KeyType, DataType>>;
-//	std::array<NodePtr, DEFAULT_BUCKET_CNT>* buckets;
-	std::vector<NodePtr> buckets;
-	size_t n, k, bktSize;
+    size_t n, k, bktSize;
 	double maxLoadFactor;
+    std::vector<NodePtr> buckets;
 
 public:
 	HashTable():
-	k(DEFAULT_BUCKET_CNT),
-	maxLoadFactor(MAX_LOAD_FACTOR),
-	bktSize(DEFAULT_BUCKET_CNT) {
-		buckets = std::vector<NodePtr>(bktSize);
-	}
+	n(0),
+    k(DEFAULT_BUCKET_CNT),
+    bktSize(DEFAULT_BUCKET_CNT),
+    maxLoadFactor(MAX_LOAD_FACTOR),
+    buckets(std::vector<NodePtr>(bktSize)) { }
 
 	explicit HashTable(size_t bktCnt)
 	: k(bktCnt),
 	  bktSize(DEFAULT_BUCKET_CNT),
 	  maxLoadFactor(MAX_LOAD_FACTOR) { }
 
-	~HashTable()= default;
+	~HashTable()=default;
 
-	inline uint64_t hashKey(KeyType&& key) const { return std::hash<KeyType>(std::move(key)) % k; }
+	inline uint64_t hashKey(KeyType&& key) const { return std::hash<KeyType>{}(std::move(key)) % k; }
 
-	inline uint64_t hashKey(const KeyType& key) const { return std::hash<KeyType>(key) % k; }
+	inline uint64_t hashKey(const KeyType& key) const { return std::hash<KeyType>{}(key) % k; }
 
-	// [{()->()->()}, {()->()}, {()}, {()->()}]  << each {} is an entry , each entry contains a linked list of elements
 	// l-value data overload
 	void put(const std::pair<KeyType, DataType>& keyval) {
-#ifdef TESTING_HASHTABLE
-		LOG << "l-value overload called" << END;
-#endif
-		const auto& key = keyval.first;
-		const auto& data = keyval.second;
-
-		uint64_t bktInd = hashKey(key);
+        #ifdef TESTING_HASHTABLE
+                LOG << "l-value overload called, putting key=" << keyval.first << END;
+        #endif
+		uint64_t bktInd = hashKey(keyval.first);
 		NodePtr& entry = buckets[bktInd];
 		if (!entry) {  // new entry
-			entry = std::make_shared<HashTableNode<KeyType, DataType>>(key, data);
+			entry = std::make_shared<HashTableNode<KeyType, DataType>>(keyval);
 			n++;
 		} else
-			handleCollision(bktInd, key, data);
+			handleCollision(bktInd, keyval);
 		resize();
 	}
 
 	// r-value overload
 	void put(std::pair<KeyType, DataType>&& keyval) {
-#ifdef TESTING_HASHTABLE
-		LOG << "r-value overload called" << END;
-#endif
+        #ifdef TESTING_HASHTABLE
+                LOG << "r-value overload called, putting key=" << keyval.first << END;
+        #endif
 		uint64_t bktInd = hashKey(keyval.first);
 		NodePtr& entry = buckets[bktInd];
 		if (!entry) {  // new entry
-			entry = std::make_shared<HashTableNode<KeyType, DataType>>(
-					keyval.first,
-					std::move(keyval.second)
-					);
+			entry = std::make_shared<HashTableNode<KeyType, DataType>>(std::move(keyval));
 			n++;
 		} else
-			handleCollision(bktInd, key, std::move(keyval.second));
+			handleCollision(bktInd, std::move(keyval));
 		resize();
 	}
 
@@ -246,7 +247,7 @@ public:
 
 		while (tmp->next) {
 			if (key == tmp->next->key) return tmp->next->data;
-			tmp = entry->next->next;
+			tmp = tmp->next->next;
 		}
 		// not found so create one
 		tmp->next = std::make_shared<HashTableNode<KeyType, DataType>>(std::move(key));
@@ -265,7 +266,7 @@ public:
 
 		while (tmp->next) {
 			if (key == tmp->next->key) return tmp->next->data;
-			tmp = entry->next->next;
+			tmp = tmp->next->next;
 		}
 		// not found so create one
 		tmp->next = std::make_shared<HashTableNode<KeyType, DataType>>(key);
@@ -283,71 +284,99 @@ public:
 		return ss.str();
 	}
 
-	friend std::ostream& operator << (std::ostream& os, HashTable<KeyType, DataType>& table);
+	friend std::ostream& operator << (std::ostream& os, const HashTable<KeyType, DataType>& table);
 
 //	iterator begin() {  }
 //  iterator end() { }
 private:
 	// L-val
-	void handleCollision(std::pair<KeyType, DataType>&& keyval) {
-		LOG << __FUNCTION__ << "(): calling l-value form" << END;
-		uint64_t bktInd = hashKey(keyval.first);
+	void handleCollision(uint64_t bktInd, std::pair<KeyType, DataType>&& keyval) {
+		LOG << __FUNCTION__ << "(): calling r-value ref form" << END;
 		NodePtr& entry = buckets[bktInd];
 		NodePtr& tmp = entry;
-		while (tmp->next) {
+		while (tmp && tmp->next) {
 			if (keyval.first == tmp->key) { // update existing entry
+                #ifdef TESTING_HASHTABLE
+                    LOG << "updating existing entry with new data, key=" << keyval.first << END;
+                #endif
 				tmp->data = std::move(keyval.second);  // if data is r-value then this move is constant time O(1)
 				return;
 			}
 			tmp->next = tmp->next->next;
 		}
-		// append to end of linkedlist
-		// tmp->next = std::make_shared<HashTableNode<KeyType, DataType>>(key, std::forward<DataType>(data));
-		tmp->next = std::make_shared<HashTableNode<KeyType, DataType>>(std::move(keyval));
-		n++;
+        if (tmp && tmp->key == keyval.first) {
+            #ifdef TESTING_HASHTABLE
+                LOG << "updating existing entry with new data, key=" << keyval.first << END;
+            #endif
+            // update existing entry with new data
+            tmp->data = std::move(keyval.second);
+        } else {
+            #ifdef TESTING_HASHTABLE
+                LOG << "appending entry to end of list, key=" << keyval.first << END;
+            #endif
+            // append to end of linkedlist
+            tmp->next = std::make_shared<HashTableNode<KeyType, DataType>>(std::move(keyval));
+            n++;
+        }
 	}
 
 	// R-val
-	void handleCollision(uint64_t bktInd, KeyType&& key, const DataType&& data) {
-		LOG << __FUNCTION__ << "(): calling r-value form" << END;
+	void handleCollision(uint64_t bktInd, const std::pair<KeyType, DataType>& keyval) {
+        #ifdef TESTING_HASHTABLE
+                LOG << __FUNCTION__ << "(): calling l-value ref form" << END;
+        #endif
 		NodePtr& entry = buckets[bktInd];
 		NodePtr& tmp = entry;
 		while (tmp->next) {
-			if (key == tmp->key) { // update existing entry
-				tmp->data = std::move(data);  // if data is r-value then this move is constant time O(1)
+			if (keyval.first == tmp->key) { // update existing entry
+                #ifdef TESTING_HASHTABLE
+                    LOG << "updating existing entry with new data, key=" << keyval.first << END;
+                #endif
+				tmp->data = keyval.second;  // if data is r-value then this move is constant time O(1)
 				return;
 			}
 			tmp->next = tmp->next->next;
 		}
-		// append to end of linkedlist
-		tmp->next = std::make_shared<HashTableNode<KeyType, DataType>>(key, std::move(data));
-		n++;
+        if (tmp && tmp->key == keyval.first) {
+            #ifdef TESTING_HASHTABLE
+                        LOG << "updating existing entry with new data, key=" << keyval.first << END;
+            #endif
+            // update existing entry with new data
+            tmp->data = keyval.second;
+        } else {
+            #ifdef TESTING_HASHTABLE
+                LOG << "appending entry to end of list, key=" << keyval.first << END;
+            #endif
+            // append to end of linkedlist
+            tmp->next = std::make_shared<HashTableNode<KeyType, DataType>>(std::move(keyval));
+            n++;
+        }
 	}
 
-	inline float getLoadFactor() const {
-#ifdef TESTING_HASHTABLE
-		LOG << "current load factor: " << n/k << END;
-#endif
-		return n/k;
+	inline double getLoadFactor() const {
+        #ifdef TESTING_HASHTABLE
+                LOG << "current load factor: " << n/static_cast<double>(k) << END;
+        #endif
+		return n/static_cast<double>(k);
 	}
 
 	// resizes map when load factor exceeds max allowed value
 	void resize() {
-#ifdef TESTING_HASHTABLE
-		LOG << "current load factor: " << getLoadFactor()
-		    << " maxLoadfactor: " << maxLoadFactor << END;
-#endif
+        #ifdef TESTING_HASHTABLE
+                LOG << "current load factor: " << getLoadFactor()
+                    << " maxLoadfactor: " << maxLoadFactor << END;
+        #endif
 		if (getLoadFactor() > maxLoadFactor) {
-#ifdef TESTING_HASHTABLE
-			LOG << "resizing hash table!!!" << END;
-#endif
+        #ifdef TESTING_HASHTABLE
+                    LOG << "resizing hash table!!!" << END;
+        #endif
 		}
 	}
 };
 
 // misc overloads
 template<class KeyType, class DataType>
-std::ostream& operator << (std::ostream& os, HashTable<KeyType, DataType>& table) {
+std::ostream& operator << (std::ostream& os, const HashTable<KeyType, DataType>& table) {
 	os << table.toString();
 	return os;
 }
