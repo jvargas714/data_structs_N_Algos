@@ -23,6 +23,8 @@ using std::unordered_map;
 typedef high_resolution_clock hrc;
 typedef hrc::time_point t_point;
 t_point t1_bub, t2_bub;
+static std::random_device rd;
+constexpr int NUMELEMENTS = 10;
 
 using std::vector;
 typedef enum {
@@ -310,11 +312,33 @@ void DutchFlagPartition(int pivot_index, vector<int> *A_ptr) {
     }
 }
 
+struct HashTableNode {
+    string key;
+    int data;
+    std::shared_ptr<HashTableNode> next;
+    HashTableNode(string key, int val) : key(key), data(val), next(nullptr) {}
+};
+
+using NodePtr = std::shared_ptr<HashTableNode>;
+
+void displayLL(NodePtr& nd) {
+    NodePtr ptr = nd;
+    while (ptr) {
+        cout << ptr->data << " " << endl;
+        ptr = ptr->next;
+    }
+}
+
+static void fillData(NodePtr& nd) {
+    NodePtr& tmp = nd->next;
+    for (int i = 0; i < NUMELEMENTS; i++) {
+        tmp = std::make_shared<HashTableNode>(std::to_string(rd()), rd());
+        tmp = tmp->next;
+    }
+}
+
 int main() {
-	unordered_map<string, int> mp;
-	mp["hello"];
-	mp["hola"];
-	LOG << mp.size() << END;
-	LOG << "{hello, " << mp["hello"] << "}" << END;
+    NodePtr nd = std::make_shared<HashTableNode>("hello", 55);
+    fillData(nd);
 	return 0;
 }

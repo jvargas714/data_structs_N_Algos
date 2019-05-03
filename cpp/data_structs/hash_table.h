@@ -183,7 +183,7 @@ struct HashTableNode {
 template<typename KeyType, typename DataType>
 class HashTable {
 	using NodePtr = std::shared_ptr<HashTableNode<KeyType, DataType>>;
-    size_t n, k, bktSize;
+    size_t n, k;
 	double maxLoadFactor;
     std::vector<NodePtr> buckets;
 
@@ -191,23 +191,21 @@ public:
 	HashTable():
 		n(0),
 	    k(DEFAULT_BUCKET_CNT),
-	    bktSize(DEFAULT_BUCKET_CNT),
 	    maxLoadFactor(MAX_LOAD_FACTOR),
-	    buckets(std::vector<NodePtr>(bktSize))
+	    buckets(std::vector<NodePtr>(k))
 	    { }
 
 	explicit HashTable(size_t bktCnt):
 		n(0),
 		k(bktCnt),
-		bktSize(DEFAULT_BUCKET_CNT),
-		maxLoadFactor(MAX_LOAD_FACTOR)
+		maxLoadFactor(MAX_LOAD_FACTOR),
+		buckets(std::vector<NodePtr>(k))
 		{ }
 
 	// cpy ctor
 	HashTable(const HashTable& tbl):
 		n(tbl.n),
 		k(tbl.k),
-		bktSize(tbl.bktSize),
 		maxLoadFactor(tbl.maxLoadFactor),
 		buckets(tbl.buckets) {
 			#ifdef TESTING_HASHTABLE
@@ -219,7 +217,6 @@ public:
 	HashTable(HashTable&& tbl):
 		n(tbl.n),
 	    k(tbl.k),
-	    bktSize(tbl.bktSize),
 	    maxLoadFactor(tbl.maxLoadFactor),
 	    buckets(std::move(tbl.buckets)) {
 		#ifdef TESTING_HASHTABLE
@@ -235,7 +232,6 @@ public:
 		if (&tbl == this) return *this;
 		n = tbl.n;
 		k = tbl.k;
-		bktSize = tbl.bktSize;
 		maxLoadFactor = tbl.maxLoadFactor;
 		buckets = tbl.buckets;
 		return *this;
@@ -249,7 +245,6 @@ public:
 		if (&tbl == this) return *this;
 		n = tbl.n;
 		k = tbl.k;
-		bktSize = tbl.bktSize;
 		maxLoadFactor = tbl.maxLoadFactor;
 		buckets = tbl.buckets; // std::move(tbl.buckets);
 		return *this;
@@ -267,6 +262,7 @@ public:
                 LOG << "l-value overload called, putting key=" << keyval.first << END;
         #endif
 		uint64_t bktInd = hashKey(keyval.first);
+		LOG << "bucket# " << bktInd << END;
 		NodePtr& entry = buckets[bktInd];
 		if (!entry) {  // new entry
 			entry = std::make_shared<HashTableNode<KeyType, DataType>>(keyval);
@@ -282,7 +278,8 @@ public:
                 LOG << "r-value overload called, putting key=" << keyval.first << END;
         #endif
 		uint64_t bktInd = hashKey(keyval.first);
-		NodePtr& entry = buckets[bktInd];
+        LOG << "bucket# " << bktInd << END;
+        NodePtr& entry = buckets[bktInd];
 		if (!entry) {  // new entry
 			entry = std::make_shared<HashTableNode<KeyType, DataType>>(std::move(keyval));
 			n++;
@@ -333,19 +330,34 @@ public:
 
 	inline void setMaxLoadFactor(double val) noexcept { maxLoadFactor = val; }
 
-	std::string toString() const noexcept {
+	std::string toString() const {
 		std::stringstream ss;
 		ss << "size: " << size() << "\n";
-		ss << "TODO :: IMPLEMENT ME PLEASE" << END;
+		size_t i = 0;
+		try {
+            for (const auto &entry : buckets)
+                ss << "[" << i++ << "] ==> " << displayLList(entry) << END;
+        } catch (const std::exception& e) {
+            #ifdef TESTING_HASHTABLE
+		        LOG << "caught error stringifying table, canceling operation.\n EXCEPT --> " << e.what() << END;
+            #endif
+		    return "";
+		} catch (...) {
+		    LOG << "unknown exception occurredm canceling operation :(" << END;
+		    return "";
+		}
 		return ss.str();
 	}
 
+	// calls toString
 	friend std::ostream& operator << (std::ostream& os, const HashTable<KeyType, DataType>& table);
 
 private:
-	// L-val
+	// R-val
 	void handleCollision(uint64_t bktInd, std::pair<KeyType, DataType>&& keyval) {
-		LOG << __FUNCTION__ << "(): calling r-value ref form" << END;
+        #ifdef TESTING_HASHTABLE
+	        LOG << __FUNCTION__ << "(): calling r-value ref form" << END;
+        #endif
 		NodePtr& entry = buckets[bktInd];
 		NodePtr& tmp = entry;
 		while (tmp && tmp->next) {
@@ -374,7 +386,7 @@ private:
         }
 	}
 
-	// R-val
+	// L-val
 	void handleCollision(uint64_t bktInd, const std::pair<KeyType, DataType>& keyval) {
         #ifdef TESTING_HASHTABLE
                 LOG << __FUNCTION__ << "(): calling l-value ref form" << END;
@@ -426,6 +438,17 @@ private:
         #endif
 		}
 	}
+
+	// helper for toString method to display linked list part of table form --> {key, val} --> {key, val}, like python
+    std::string displayLList(NodePtr ptr) const {
+        std::stringstream ss;
+        NodePtr tmp = ptr;
+        while (tmp) {
+            ss << "{" << tmp->key << ": " << tmp->data << "}" << (tmp->next ? "-->" : "");
+            tmp = tmp->next;
+        }
+        return ss.str();
+    }
 };
 
 // misc overloads
