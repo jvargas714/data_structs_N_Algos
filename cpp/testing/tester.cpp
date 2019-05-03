@@ -311,34 +311,48 @@ void DutchFlagPartition(int pivot_index, vector<int> *A_ptr) {
         }
     }
 }
-
+template<class KeyType, class DataType>
 struct HashTableNode {
-    string key;
-    int data;
-    std::shared_ptr<HashTableNode> next;
+    KeyType key;
+    DataType data;
+    HashTableNode* next;
+    HashTableNode() : key(), data(), next(nullptr) {}
     HashTableNode(string key, int val) : key(key), data(val), next(nullptr) {}
+    ~HashTableNode() { if (next) delete next; }
 };
 
-using NodePtr = std::shared_ptr<HashTableNode>;
+using Node = HashTableNode<string, int>;
 
-void displayLL(NodePtr& nd) {
-    NodePtr ptr = nd;
+void displayLL(const Node* nd) {
+    Node* ptr = nd;
     while (ptr) {
         cout << ptr->data << " " << endl;
         ptr = ptr->next;
     }
 }
 
-static void fillData(NodePtr& nd) {
-    NodePtr& tmp = nd->next;
+static void fillData(Node* nd) {
+    Node* tmp = nd->next;
     for (int i = 0; i < NUMELEMENTS; i++) {
-        tmp = std::make_shared<HashTableNode>(std::to_string(rd()), rd());
+        tmp = new Node(std::to_string(rd()), rd());
         tmp = tmp->next;
     }
 }
 
+void appendNode(Node* ptr, string str, int val) {
+	if (!ptr) {
+		ptr = new Node(str, val);
+		return;
+	}
+	Node* tmp = ptr;
+	while (tmp) {
+		;
+	}
+
+}
+
 int main() {
-    NodePtr nd = std::make_shared<HashTableNode>("hello", 55);
+    Node* nd = new Node("hello", 55);
     fillData(nd);
 	return 0;
 }

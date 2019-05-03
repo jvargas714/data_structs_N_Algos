@@ -1,7 +1,7 @@
 project(data_structs)
 include_directories(../utility)
 
-#add_compile_definitions(TESTING_HASHTABLE)
+add_compile_definitions(TESTING_HASHTABLE)
 
 add_library(datastructs STATIC
         binary_tree.h
