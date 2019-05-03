@@ -27,7 +27,8 @@ struct node
     T data;
     node* next;
     node(): next(nullptr){};
-    node(T t): data(t), next(nullptr){};
+    node(const T &t): data(t), next(nullptr){};
+    node(T&& t): data(std::move(t)), next(nullptr){};
     bool operator < ( const node& nd ) { return this->data < nd.data; }
     bool operator > ( const node& nd ) { return this->data > nd.data; }
     bool operator == ( const node& nd ) { return this->data == nd.data; }

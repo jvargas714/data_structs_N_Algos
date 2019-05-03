@@ -18,6 +18,7 @@ add_library(datastructs STATIC
         stack.h
         trie.cpp
         trie.h
-        hash_table.cpp hash_table.h test_hashtable.cpp)
+        hash_table.cpp
+        hash_table.h)
 target_link_libraries(datastructs utility)
 add_executable(test_hash_table test_hashtable.cpp)

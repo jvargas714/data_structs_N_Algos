@@ -318,28 +318,34 @@ struct HashTableNode {
     HashTableNode* next;
     HashTableNode() : key(), data(), next(nullptr) {}
     HashTableNode(string key, int val) : key(key), data(val), next(nullptr) {}
-    ~HashTableNode() { if (next) delete next; }
+    ~HashTableNode() {
+    	LOG << "dtor called" << END;
+    	if (next) delete next;
+    }
 };
 
 using Node = HashTableNode<string, int>;
 
-void displayLL(const Node* nd) {
+void displayLL(Node* nd) {
+	LOG << END;
     Node* ptr = nd;
     while (ptr) {
-        cout << ptr->data << " " << endl;
+        cout << ptr->data << " ";
         ptr = ptr->next;
-    }
+    }cout << END;
 }
 
-static void fillData(Node* nd) {
-    Node* tmp = nd->next;
+static void fillData(Node** nd) {
+    Node* tmp = (*nd)->next;
     for (int i = 0; i < NUMELEMENTS; i++) {
         tmp = new Node(std::to_string(rd()), rd());
         tmp = tmp->next;
     }
+    cout << END;
 }
 
 void appendNode(Node* ptr, string str, int val) {
+	LOG << END;
 	if (!ptr) {
 		ptr = new Node(str, val);
 		return;
@@ -353,6 +359,6 @@ void appendNode(Node* ptr, string str, int val) {
 
 int main() {
     Node* nd = new Node("hello", 55);
-    fillData(nd);
+    fillData(&nd);
 	return 0;
 }

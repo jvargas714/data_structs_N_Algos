@@ -177,20 +177,16 @@ std::string linked_list::to_string() const
 
 int &linked_list::operator[](const size_t& i) 
 {
-	if( i > size() )
-		throw std::out_of_range("Index out of range");
-	llnode* tmp = root;
-	for(size_t j = 0; j < i; ++j)
-		tmp = tmp->next;
-	return tmp->data;
+	return getElement(i);
 }
 
-llnode* linked_list::getElement(const size_t& index)
-{
+int linked_list::getElement(const size_t& index) {
+	if (index > size())
+		throw std::out_of_range("index out of range");
 	llnode* tmp = root;
 	for(size_t i = 0; i < index; ++i)
 		tmp = tmp->next;
-	return tmp;
+	return tmp->data;
 }
 
 
