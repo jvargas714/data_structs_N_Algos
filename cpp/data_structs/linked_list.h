@@ -6,19 +6,30 @@
 #include <iostream>	 			// std::cout, std::endl
 #include "node.h" 				// node<int> dl_node<int>
 #include <initializer_list> 	// std::initializer_list
+#include <sstream>
 
 // common interface for both types of linked lists
 template<class DataType>
 class linked_list_base 
 {
 public:
-	virtual std::string to_string() const{ return "Must Implement"; };
-	virtual void push_back( int )=0;
-	virtual void push_front( const int& data )=0;
-	virtual bool insert( const int&, const size_t& )=0;
-	virtual bool remove( const size_t& )=0;
+	virtual void push_back(DataType&&=0);
+	virtual void push_back(const DataType&)=0;
+
+	virtual void push_front(const DataType& data)=0;
+	virtual void push_front(DataType&&)=0;
+
+	virtual bool insert(const DataType&, size_t)=0;
+	virtual bool insert(DataType&&, size_t)=0;
+
+	virtual bool remove(const DataType&)=0;
+	virtual bool remove(DataType&&)=0;
+
 	virtual size_t size() const=0;
+
 	virtual void delete_list()=0;
+
+	virtual std::string to_string() const{ return "Must Implement"; };
 };
 
 template<class DataType>
@@ -26,72 +37,116 @@ class linked_list : public linked_list_base<DataType>
 {
 	using llnode = node<DataType>;
 	llnode* root;
+	llnode* tail;
 	size_t len;
 
 public:
-	linked_list(): root(nullptr) {}
+	linked_list()
+	: root(nullptr),
+	tail(nullptr),
+	len(0) {}
 
-	explicit linked_list(const DataType& data) : root(new node<DataType>(data)) {}
+	explicit linked_list(const DataType& data)
+	: root(new node<DataType>(data)),
+	tail(root),
+	len(1) {}
 
-	linked_list(const std::initializer_list<DataType>& data) {
+	linked_list(const std::initializer_list<DataType>& data)
+	: root(nullptr),
+	tail(nullptr),
+	len(0) {
 		if (data.size() == 0) {
 			root = nullptr;
 			return;
 		}
 		root = new llnode(data[0]);
+		++len;
 		llnode* nd = root;
-		for_each(data.begin()+1, data.end(), [nd](const auto& el){
+		tail = root;
+		for (const auto& el : data.begin()+1) {
 			nd->next = new llnode(el);
-			nd = nd->next->next;
-		});
+			tail = nd->next;
+			nd = nd->next;
+			++len;
+		}
 	}
 
-	linked_list(std::initializer_list<DataType>&& data) {
+	linked_list(std::initializer_list<DataType>&& data)
+	: root(nullptr),
+	tail(nullptr),
+		len(0) {
 		if (data.size() == 0) {
 			root = nullptr;
 			return;
 		}
 		root = new llnode(std::move(data[0]));
+		tail = root;
 		llnode* nd = root;
-		for_each(data.begin()+1, data.end(), [nd](const auto&& el){
+		for (auto&& el : data) {
 			nd->next = new llnode(std::move(el));
-			nd = nd->next->next;
-		});
+			tail = nd->next;
+			nd = nd->next;
+			++len;
+		}
 	}
 
 	// cpy ctor
-	linked_list( const linked_list& ll) {
+	linked_list( const linked_list& ll)
+	: root(nullptr),
+	tail(nullptr),
+	len(0) {
 		*this == ll;
 	}
 
 	// cpy assignment op
 	linked_list& operator = (const linked_list& ll) {
 		clear();
-		root = ll.root;
-		llnode* tmp = ll.root;
-		if (tmp) return *this;
-
-		while (tmp->next) {
-
+		if (!ll.root) return *this;
+		root = new llnode(ll.root);
+		tail = root;
+		llnode* tmp = root;
+		llnode* tmp_in = ll.root;
+		while (tmp_in) {
+			tmp->next = new llnode(tmp_in->data);
+			tmp = tmp->next;
+			tail = tmp;
+			tmp_in = tmp_in->next;
 		}
-
 	}
 
 	// mv ctor
-	linked_list(linked_list&& ll) noexcept {
+	linked_list(linked_list&& ll) noexcept
+	:root(nullptr),
+	tail(nullptr),
+	len(0) {
 		*this = std::move(ll);
 	}
 
 	linked_list& operator = (linked_list&& ll) {
 		clear();
+		if (!ll.root) return *this;
+		root = std::move(ll.root);
+		llnode* tmp = root;
+		while (tmp->next) {
+			tmp = tmp->next;
+		}
+		tail = tmp;
 	}
 
-	~linked_list();
+	~linked_list() {
+		llnode* nd = root;
+		llnode* tmp = root;
+		while (tmp) {
+			tmp = nd->next;
+			delete nd;
+			nd = tmp;
+		}
+	}
 
 	void clear() {
 		if (!root) return;
 		llnode* nxt = root->next;
-		while (tmp) {
+		while (nxt) {
 			delete root;
 			root = nxt;
 			nxt = nxt->next;
@@ -99,11 +154,46 @@ public:
 		len = 0;
 	}
 
-	std::string to_string() const;
+	std::string to_string() const noexcept {
+		llnode* tmp = root;
+		constexpr int LINE_LEN = 20;
+		std::stringstream ss;
+		int cnt = 0;
+		ss << "size: " << len << "\n";
+		while (tmp) {
+			if (cnt > 0 && (cnt % LINE_LEN) == 0) {
+				ss << "[" << tmp->data << "]\n";
+			} else {
+				ss << "[" << tmp->data << "]->";
+			}
+			++cnt;
+			tmp = tmp->next;
+		}
+		ss << std::endl;
+		return ss.str();
+	}
 
-	void push_back( int );
+	// appends node to the end of the list
+	void push_back(DataType&& data) {
+		tail->next = new llnode(std::move(data));
+		tail = tail->next;
+		len++;
+	}
 
-	void push_front( const int& data );
+	// appends node to the end of the list
+	void push_back(const DataType& data) {
+		tail->next = new llnode(data);
+		tail = tail->next;
+		len++;
+	}
+
+	// places a new element at the front of the list
+	void push_front( const int& data ) {
+		llnode* tmp = root;
+		root = new llnode(data);
+		root->next = tmp;
+		len++;
+	}
 
 	bool insert( const int&, const size_t& );
 

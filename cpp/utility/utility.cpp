@@ -119,7 +119,7 @@ int accum(std::vector<int>::iterator a, std::vector<int>::iterator b) {
     return sum;
 }
 
-ListNode* fillListNode(std::vector<int>&& vect) {
+ListNode*fillListNode(std::vector<int>&& vect) {
     size_t sz = vect.size();
     if(!sz)
         return nullptr;

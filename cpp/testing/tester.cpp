@@ -335,10 +335,14 @@ void displayLL(Node* nd) {
     }cout << END;
 }
 
-static void fillData(Node** nd) {
-    Node* tmp = (*nd)->next;
+// [curr]->[nxt]->[]->[]
+static void fillData(Node* rt) {
+	// Node* root = new Node("firstOne", 456);
+	Node* tmp = rt;
+
+    // [curr]->[nxt]->[]->[]
     for (int i = 0; i < NUMELEMENTS; i++) {
-        tmp = new Node(std::to_string(rd()), rd());
+        tmp->next = new Node(std::to_string(rd()), rd());
         tmp = tmp->next;
     }
     cout << END;
@@ -358,7 +362,8 @@ void appendNode(Node* ptr, string str, int val) {
 }
 
 int main() {
-    Node* nd = new Node("hello", 55);
-    fillData(&nd);
+    Node* nd = new Node("first one", 3456);
+    fillData(nd);
+    displayLL(nd);
 	return 0;
 }
