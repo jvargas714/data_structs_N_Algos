@@ -29,7 +29,7 @@ public:
 
 	virtual void delete_list()=0;
 
-	virtual std::string to_string() const{ return "Must Implement"; };
+	virtual std::string to_string() const noexcept { return "Must Implement"; };
 };
 
 template<class DataType>
@@ -154,7 +154,7 @@ public:
 		len = 0;
 	}
 
-	std::string to_string() const noexcept {
+	std::string to_string() const noexcept override {
 		llnode* tmp = root;
 		constexpr int LINE_LEN = 20;
 		std::stringstream ss;
@@ -174,28 +174,41 @@ public:
 	}
 
 	// appends node to the end of the list
-	void push_back(DataType&& data) {
+	void push_back(DataType&& data) override {
 		tail->next = new llnode(std::move(data));
 		tail = tail->next;
 		len++;
 	}
 
 	// appends node to the end of the list
-	void push_back(const DataType& data) {
+	void push_back(const DataType& data) override {
 		tail->next = new llnode(data);
 		tail = tail->next;
 		len++;
 	}
 
 	// places a new element at the front of the list
-	void push_front( const int& data ) {
+	void push_front(const DataType& data) noexcept override  {
 		llnode* tmp = root;
 		root = new llnode(data);
 		root->next = tmp;
 		len++;
 	}
 
-	bool insert( const int&, const size_t& );
+    void push_front(DataType&& data) noexcept override {
+	    llnode* tmp = root;
+	    root = new llnode(std::move(data));
+	    root->next = tmp;
+	    ++len;
+	}
+
+    bool insert(const DataType& data, const size_t pos) override {
+
+	}
+
+	bool insert (DataType&& data, const size_t pos) override {
+
+	}
 
 	bool remove( const size_t& );
 

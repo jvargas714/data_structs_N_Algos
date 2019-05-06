@@ -189,6 +189,8 @@ int linked_list::getElement(const size_t& index) {
 	return tmp->data;
 }
 
+template<class DataType>
+
 
 
 
