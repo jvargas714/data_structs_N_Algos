@@ -26,7 +26,7 @@ public:
 
 	virtual size_t size() const=0;
 
-	virtual size_t clear()=0;
+	virtual void clear()=0;
 
 	virtual std::string to_string() const noexcept { return "Must Implement"; };
 };
@@ -144,7 +144,7 @@ public:
 	}
 
 	// O(len)
-	void clear() {
+	void clear() override {
 		if (!root) return;
 		llnode* nxt = root->next;
 		while (nxt) {
@@ -273,7 +273,7 @@ public:
 	bool remove(size_t pos) override {
         if (len == 0 || pos >= len) return false;
 	    if (pos == 0) {
-            llnode newroot = root->next;
+            llnode* newroot = root->next;
             delete root;
             root = newroot;
             len--;
@@ -316,9 +316,18 @@ public:
         return tmp->data;
 	}
 
-	inline size_t size() const { return len; }
+	inline size_t size() const override { return len; }
 
-	llnode* getRoot(){ return root; }
+	llnode* getRoot() { return root; }
+
+	std::ostream& operator << (std::ostream& os) {
+		os << this->to_string();
+		return os;
+	}
 };
+
+// specializations for container dump
+template
+std::ostream& linked_list<int>::operator << (std::ostream&, linked_list);
 
 #endif 	// end LINKED_LIST_H

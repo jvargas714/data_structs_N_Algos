@@ -264,7 +264,7 @@ public:
 	inline uint64_t hashKey(const KeyType& key) const { return std::hash<KeyType>{}(key) % k; }
 
 	// l-value data overload
-	// jdebug :: investigate how a vector of pointers initializes when we allocate space for the vector 
+	// jdebug :: investigate how a vector of pointers initializes when we allocate space for the vector
 	void put(const std::pair<KeyType, DataType>& keyval) {
         #ifdef TESTING_HASHTABLE
                 LOG << "l-value overload called, putting key=" << keyval.first << END;
@@ -361,7 +361,7 @@ public:
 
 private:
 	// R-val
-	// jdebug :: finish implementation of the collision functions 
+	// jdebug :: finish implementation of the collision functions
 	void handleCollision(uint64_t bktInd, std::pair<KeyType, DataType>&& keyval) {
         #ifdef TESTING_HASHTABLE
 	        LOG << __FUNCTION__ << "(): calling r-value ref form" << END;
@@ -459,7 +459,7 @@ private:
     }
 };
 
-// misc overloads
+// misc overloads jdebug  :: this wont linke
 template<class KeyType, class DataType>
 std::ostream& operator << (std::ostream& os, const HashTable<KeyType, DataType>& table) {
 	os << table.toString();
