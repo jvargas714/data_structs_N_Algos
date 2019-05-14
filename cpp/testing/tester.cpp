@@ -361,9 +361,38 @@ void appendNode(Node* ptr, string str, int val) {
 
 }
 
+int DeleteDuplicates(vector<int>* A_ptr) {
+    if (!A_ptr) return 0;
+    vector<int>& nums = *A_ptr;
+    if (nums.empty()) return 0;
+    size_t i = 0, j = 1, len = nums.size();
+    while (i < len && j < len) {
+        if (nums[i] == nums[j]) {
+            j++;
+        } else if (j - i > 1) {
+            nums[++i] = nums[j];
+        } else {
+            ++i;
+            ++j;
+        }
+    }
+    return i+1;
+}
+
+
+/*
+ * [-8, -7, -6, -5, -5, -4, -3, -1, -1, 0, 0, 2, 2, 2, 4]
+
+Failure info
+	expected: [-8, -7, -6, -5, -4, -3, -1, 0, 2, 4]
+	result:   [-8, -7, -6, -5, -4, -3, -1, 0, 2]
+ */
 int main() {
-    Node* nd = new Node("first one", 3456);
-    fillData(nd);
-    displayLL(nd);
+    vector<int> nums = {1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 99};
+    int n = DeleteDuplicates(&nums);
+    display(nums);
+    for (int i = 0; i < n; i++) {
+        cout << nums[i] << " ";
+    }cout << endl;
 	return 0;
 }
