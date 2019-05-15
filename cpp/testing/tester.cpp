@@ -379,6 +379,31 @@ int DeleteDuplicates(vector<int>* A_ptr) {
     return i+1;
 }
 
+double BuyAndSellStockTwice(const vector<double>& prices) {
+    double bestProfit = 0.0, secondBest = 0.0;
+    size_t buy = 0, sell = 1, len = prices.size();
+    while (buy < len && sell < len) {
+        if (prices[sell] > prices[buy]) {
+            cout << "buying: " << prices[buy] << " and selling at " << prices[sell] << endl;
+            double tmp = prices[sell] - prices[buy];
+            if (tmp >= bestProfit) {
+                secondBest = bestProfit;
+                bestProfit = tmp;
+                buy++, sell++;
+            } else if (tmp > secondBest) {
+                secondBest = tmp;
+                buy++, sell++;
+            }
+            cout << "best: " << bestProfit << " second: " << secondBest << "\n" << endl;
+        } else if (prices[sell] < prices[buy]) {
+            buy = sell;
+        }
+        sell++;
+    }
+    return bestProfit + secondBest;
+}
+
+
 
 /*
  * [-8, -7, -6, -5, -5, -4, -3, -1, -1, 0, 0, 2, 2, 2, 4]
@@ -388,11 +413,21 @@ Failure info
 	result:   [-8, -7, -6, -5, -4, -3, -1, 0, 2]
  */
 int main() {
-    vector<int> nums = {1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 99};
-    int n = DeleteDuplicates(&nums);
-    display(nums);
-    for (int i = 0; i < n; i++) {
-        cout << nums[i] << " ";
-    }cout << endl;
+    // expected 25.6
+    /*
+     *  First transaction buy at 0.1 and sell first at 13.6, and second transaction buy at 0.4 and sell at 13.6
+     */
+    vector<double> nums = {10.6, 11.5, 9.2, 7.0, 2.1, 8.5, 5.2, 2.4, 5.3, 8.2, 4.2, 1.2, 2.3, 3.5,
+                           12.7, 2.3, 2.7, 5.5, 11.1, 13.0, 11.7, 9.1, 10.9, 1.7, 13.2, 5.5, 4.3, 6.6,
+                           2.4, 11.5, 11.1, 10.1, 3.3, 12.6, 7.4, 5.0, 3.3, 13.6, 10.3, 8.6, 4.3, 7.8,
+                           10.1, 8.2, 4.9, 5.4, 3.7, 8.0, 0.5, 4.0, 3.4, 12.6, 13.5, 3.1, 13.2, 9.7, 7.2,
+                           11.2, 6.1, 2.5, 10.6, 5.8, 5.0, 12.3, 1.6, 7.3, 6.9, 0.2, 4.9, 7.1, 1.6, 0.7,
+                           12.7, 0.4, 0.9, 8.7, 12.3, 1.4, 0.1, 0.8, 8.9, 13.6, 6.5, 9.6, 6.3, 11.7, 6.9,
+                           7.2, 11.9, 3.1, 0.4, 10.9, 2.8, 9.8, 13.6, 12.5, 6.9, 12.4, 7.0, 1.6, 1.5, 8.4,
+                           1.2, 9.1, 9.8, 5.2, 3.8, 1.3, 7.9, 8.1, 3.4, 2.3, 9.3, 4.5, 1.0, 11.9, 3.6, 4.9,
+                           10.5, 4.7, 10.6, 3.4, 6.4, 7.9, 8.3, 8.0, 10.0, 6.4, 11.6, 2.5, 4.1, 8.7, 5.0, 4.7,
+                           6.9, 6.1};
+    double res = BuyAndSellStockTwice(nums);
+    cout << "result: " << res << endl;
 	return 0;
 }

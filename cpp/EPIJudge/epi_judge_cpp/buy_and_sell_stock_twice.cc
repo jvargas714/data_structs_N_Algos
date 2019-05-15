@@ -2,8 +2,21 @@
 #include "test_framework/generic_test.h"
 using std::vector;
 double BuyAndSellStockTwice(const vector<double>& prices) {
-  // TODO - you fill in here.
-  return 0.0;
+    double bestProfit = 0.0, secondBest = 0.0;
+    size_t buy = 0, sell = 1, len = prices.size();
+    while (buy < len && sell < len) {
+        if (prices[sell] > prices[buy]) {
+            double tmp = prices[sell] - prices[buy];
+            if (tmp > bestProfit) {
+                secondBest = bestProfit;
+                bestProfit = tmp;
+            }
+        } else if (prices[sell] < prices[buy]) {
+            buy = sell;
+        }
+        sell++;
+    }
+      return bestProfit + secondBest;
 }
 
 int main(int argc, char* argv[]) {
