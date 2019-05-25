@@ -3,8 +3,9 @@
 using std::vector;
 // Given n, return all primes up to and including n.
 vector<int> GeneratePrimes(int n) {
-  // TODO - you fill in here.
-  return {};
+	std::vector<int> result;
+
+	return {};
 }
 
 int main(int argc, char* argv[]) {

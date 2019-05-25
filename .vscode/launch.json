@@ -72,7 +72,7 @@
             "name": "pyLaunch",
             "type":"python",
             "request": "launch",
-            "program": "${workspaceFolder}/python"
+            "program": "${file}"
         }
     ]
 }

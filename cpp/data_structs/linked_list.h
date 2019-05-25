@@ -158,17 +158,17 @@ public:
 	// O(len)
 	std::string to_string() const noexcept override {
 		llnode* tmp = root;
-		constexpr int LINE_LEN = 20;
+		constexpr int LINE_LEN = 10;
 		std::stringstream ss;
 		size_t cnt = 0;
 		ss << "size: " << len << "\n";
 		while (tmp) {
-			if (cnt > 0 && (cnt % LINE_LEN) == 0) {
+			if (tmp == tail) {
 				ss << "[" << tmp->data << "]\n";
-			} else {
-				ss << "[" << tmp->data << "]->";
+				break;
 			}
-			++cnt;
+			ss << "[" << tmp->data << "]->";
+			if (++cnt % LINE_LEN == 0) ss << "\n";
 			tmp = tmp->next;
 		}
 		ss << std::endl;
@@ -177,6 +177,12 @@ public:
 
 	// appends node to the end of the list O(1)
 	void push_back(DataType&& data) override {
+		if (!tail) {
+			root = new llnode(std::move(data));
+			tail = root;
+			len++;
+			return;
+		}
 		tail->next = new llnode(std::move(data));
 		tail = tail->next;
 		len++;
@@ -184,6 +190,11 @@ public:
 
 	// appends node to the end of the list O(1)
 	void push_back(const DataType& data) override {
+		if (!tail) {
+			root = new llnode(data);
+			tail = root;
+			return;
+		}
 		tail->next = new llnode(data);
 		tail = tail->next;
 		len++;
@@ -191,6 +202,12 @@ public:
 
 	// places a new element at the front of the list O(1)
 	void push_front(const DataType& data) noexcept override  {
+		if (!root) {
+			root = new llnode(data);
+			tail = root;
+			len++;
+			return;
+		}
 		llnode* tmp = root;
 		root = new llnode(data);
 		root->next = tmp;
@@ -199,6 +216,12 @@ public:
 
 	// O(1)
     void push_front(DataType&& data) noexcept override {
+		if (!root) {
+			root = new llnode(std::move(data));
+			tail = root;
+			len++;
+			return;
+		}
 	    llnode* tmp = root;
 	    root = new llnode(std::move(data));
 	    root->next = tmp;
@@ -216,6 +239,9 @@ public:
             push_back(data);
             return true;
         }
+        if (!root)
+        	return false;
+
 	    llnode* prev = root;
         llnode* curr = prev->next;
 	    size_t i = 0;
@@ -226,7 +252,7 @@ public:
             i++;
         }
         // [] -> [prev] -> [curr] -> [] -> []
-        llnode* tmp = new llnode(data);
+        auto* tmp = new llnode(data);
         // [] -> [prev] ->
         // [tmp] -> [curr] -> [] -> []
         tmp->next = curr;
@@ -237,7 +263,7 @@ public:
 	}
 
     // O(len)
-	bool insert (DataType&& data, const size_t pos) override {
+	bool insert(DataType&& data, const size_t pos) override {
         if (pos >= len) return false;
         else if (pos == 0) {
             push_front(std::move(data));
@@ -247,6 +273,9 @@ public:
             push_back(std::move(data));
             return true;
         }
+        if (!root)
+        	return false;
+
         llnode* prev = root;
         llnode* curr = prev->next;
         size_t i = 0;
@@ -257,7 +286,7 @@ public:
             i++;
         }
         // [] -> [prev] -> [curr] -> [] -> []
-        llnode* tmp = new llnode(std::move(data));
+        auto* tmp = new llnode(std::move(data));
 
         // [] -> [prev] ->
         // [tmp] -> [curr] -> [] -> []
@@ -280,19 +309,24 @@ public:
             return true;
         }
         size_t i = 0;
+
+	    if (!root)
+	    	return false;
+
         llnode* curr = root;
         while (curr->next && i != (pos-1)) {
             curr = curr->next;
             i++;
         }
-        if (curr->next) {
+		if (pos == len - 1) {
+			// delete tail and replace
+			delete curr->next;
+			curr->next = nullptr;
+			tail = curr;
+		} else if (curr->next) {
             llnode *tmp = curr->next->next;
             delete curr->next;
             curr->next = tmp;
-        } else if (pos == len - 1){
-            // delete tail and replace
-            delete curr->next;
-            tail = curr;
         } else {
             return false;
         }
@@ -305,7 +339,7 @@ public:
 	}
 
 	DataType& getElement(size_t pos) {
-        if (pos>= len)
+        if (pos>= len || !root)
             throw std::out_of_range("index " + std::to_string(pos) + " is out of range!!");
         size_t i = 0;
         llnode* tmp = root;
@@ -319,15 +353,6 @@ public:
 	inline size_t size() const override { return len; }
 
 	llnode* getRoot() { return root; }
-
-	std::ostream& operator << (std::ostream& os) {
-		os << this->to_string();
-		return os;
-	}
 };
-
-// specializations for container dump
-template
-std::ostream& linked_list<int>::operator << (std::ostream&, linked_list);
 
 #endif 	// end LINKED_LIST_H

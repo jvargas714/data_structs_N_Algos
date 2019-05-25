@@ -9,7 +9,7 @@
 #define LOG std::cout << __FUNCTION__ << "(): "
 #define END std::endl
 #define  FUNCT_HEADER std::cout << "\n\n=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << __FUNCTION__ << "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << std::endl
-#define FUNCT_END std::cout << "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << __FUNCTION__ << " END " << "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << std::endl
+#define FUNCT_END std::cout << "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << __FUNCTION__ << " END" << "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << std::endl
 #define END_PROBLEM std::cout << "\n\n\n\n" << std::endl
 #define SEPARATOR std::cout <<"----------------------------------------------------------------------" << std::endl;
 
