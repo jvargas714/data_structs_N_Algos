@@ -85,6 +85,8 @@ void DutchFlagPartition_space(int pivot_index, vector<Color> *A_ptr) {
  *      We keep track of last_swap pointer to fill in the array from the front.
  *      The same approach is used when filling the array with the group of
  *      larger than pivot elements. This solution is still done in two passes.
+ *      First pass we start from the front of the list and swap elements that are less than the pivot
+ *      Second pass we start from the end of the list and find elements that are greater than the pivot
  * Complexity:
  *      runtime: O(2n) --> O(n)
  *      space: O(1)
@@ -113,6 +115,16 @@ void DutchFlagPartition_2pass(int pivot_index, vector<Color> *A_ptr) {
  *      middle group: A[smaller, equal - 1]
  *      unclassified group: A[equal, larger-1]
  *      top group: A[larger, size(A)-1]
+ *
+ *      We start assuming all elements are in the group that is larger than the pivot.
+ *      For each element we check the equal index to see if its less than the pivot if so
+ *      we swap eq with the pointer on the smaller position, increment them both.
+ *
+ *      If eq is equal to the pivot we simply incr eq pointer.
+ *
+ *      If eq is larger than the pivot, at that point we swap eq and larger converging them together
+ *      Once eq < larger is not true we are done. Eq and Lg pointer converge on to each other
+ *
  * Complexity:
  *      Runtime: O(n) done in one pass
  *      Space:  O(1) no extra space allocated

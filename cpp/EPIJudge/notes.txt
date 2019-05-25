@@ -13,11 +13,11 @@ cwd:
             4.11 rectangle intersection
 
 		Arrays:
-		    5.0 Even Odd
-			5.1 dutch_national_flag Problem
-			5.2
-			5.5
-			5.6
+		    5.0 Even Odd << complete
+			5.1 dutch_national_flag Problem  << complete
+			5.2 Increment an arbitrary precision number << complete
+			5.5 sorted_array_remove_dups << complete
+			5.6 buy and sell stock once << complete
 			5.9
 			5.12
 			5.17
