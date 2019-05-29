@@ -389,7 +389,6 @@ std::vector<uint64_t> genPrimes(const uint64_t n) {
 }
 
 // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
-// O((n-2)log(n-2))
 std::vector<uint64_t> genPrimesV2(const uint64_t n) {
     std::vector<bool> notPrime(n, false);
     std::vector<uint64_t> primes;
