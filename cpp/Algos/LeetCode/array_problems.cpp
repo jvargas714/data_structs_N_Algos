@@ -139,6 +139,36 @@ static void traverseIslandDFS(CharMatrix& grid, int row, int col) {
     if (col < grid[0].size()-1) traverseIslandDFS(grid, row,  col+1);
     if (col > 0) traverseIslandDFS(grid, row, col-1);
 }
+
+/*
+ *  finds next point to jump
+ *  for odd even jump problem
+ */
+static int findNextJump(int i, const std::vector<int>& nums, bool evenJump) {
+	int prevJump = -1;
+	for (int j = i+1; j < nums.size(); j++) {
+		// even jump
+		if (evenJump) {
+			if ((prevJump < 0  && nums[i] >= nums[j]) ||
+					(nums[i] >= nums[j] && nums[j] > nums[prevJump])) {
+				prevJump = j;
+				if (j == nums.size()-1) {
+					return j;
+				}
+			}
+		} else {  // odd jump
+			if ((prevJump < 0 && nums[i] < nums[j]) ||
+					(nums[i] < nums[j] && nums[j] < nums[prevJump])) {
+				prevJump = j;
+				if (j == nums.size()-1) {
+					return j;
+				}
+			}
+		}
+	}
+	return prevJump;
+}
+
 // ===============================================END HELPER FUNCTIONS==================================================
 
 
@@ -1114,3 +1144,42 @@ std::vector<int> sortArrayByParityV2(std::vector<int>& A) {
     return A;
 }
 
+/*
+    - first jump is considered 1, so its an odd jump
+    - odd jump: A[i] < A[j] and A[j] is the smallest possible value from i, smallest such index
+    - even jump: A[i] >= A[j] and A[j] is the largest possible value, smallest such index
+    A = [10,13,12,14,15]
+*/
+int oddEvenJumps(std::vector<int>& A) {
+	int jmp = 1;
+	int prevJumpVal = 0;
+	int i = 0;
+	int st = 0;
+	int cnt = 0;
+	int pos = 0;
+	while (st < A.size()) {
+		prevJumpVal = jmp % 2 != 0 ? INT_MAX : INT_MIN;
+
+		// look for next jump
+		pos = findNextJump(i, A, jmp%2==0);
+		if (pos == A.size()-1) {  // reached end
+			st++;
+			i = st;
+			jmp = 1;
+			cnt++;
+		} else if (pos < 0) {  // no jump made
+
+		} else {  // continuing on!
+			i = pos;
+			jmp++;
+		}
+
+		i++;
+		if (i == A.size()) {
+			st++;
+			i = 0;
+			jmp = 1;
+		}
+	}
+	return cnt;
+}
