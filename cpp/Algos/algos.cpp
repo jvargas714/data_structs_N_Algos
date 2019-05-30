@@ -58,26 +58,36 @@ void bubble_sort( int* ar, size_t len )
 }
 
 /*
-    Descr: Select one element and place it in the correct spot in the list
-    O(n^2)
+    Visualization: 
+        https://visualgo.net/en/sorting
+    
+    Descr: 
+        - Select one element at index i (value to insert) (j will start one spot before i) (outer loop)
+        - inner loop: we keep swapping until val_to_insert is greater than or equal to j element (one to right)
+
+    Example:
+        say vect = 3 5 38 44 47 15 ......... i = 5 val_insert(15), and j = 4 (47) 
+        iterations:
+            1. val_insert < 47 so swap   i = 5, j = 4
+                3 5 38 44 15 47 
+            2. val_insert < 44 so swap   i = 4, j = 3
+                3 5 38 15 44 47 
+            3. val_insert < 38 so swap   i = 3, j = 2
+                3 5 15 38 44 47
+            4. now val_insert > 5 breaks out of loop i = 2 j = 1
+    
+    Complexity: 
+        space: O(1)
+        runtime: O(n^2)  <<-- worst case 
 */
-void insertion_sort( std::vector<int>& vect )
-{
-    uint j = 0;
-    for( uint i = 1; i < vect.size(); i++ )
-    {   
+void insertion_sort( std::vector<int>& vect ) {
+    int j = 0;
+    for( int i = 1; i < vect.size(); i++ ) {
         j = i - 1;
         int val_to_insert = vect[i];
         while( i > 0 && val_to_insert < vect[j] )
-        {
-            // swap to make room for entry
-            int tmp = vect[i];
-            vect[i] = vect[j];
-            vect[j] = tmp;
-            --i;
-            --j;
-        }
-        vect[i] = val_to_insert;
+            std::swap(vect[i--], vect[j--]);
+        vect[i] = val_to_insert;  // #jdebug: may not need this write op 
     }
 }
 
