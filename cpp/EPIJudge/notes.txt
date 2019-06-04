@@ -1,6 +1,6 @@
 cwd:
 	NIX: /home/jay/data_structs_N_Algos/cpp/EPIJudge
-	OX:
+	OX: /Users/jayvargas/data_structs_N_Algos/cpp/EPIJudge
 
 ============================================= Study Plan ===============================================================
 	Sections:
