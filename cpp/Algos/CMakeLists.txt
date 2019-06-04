@@ -1,12 +1,14 @@
 project(myAlgos)
 include_directories(./ ../utility)
 
+# look to divide algo types and have them move over to jstdlib (templated as well)
 add_library(myAlgos STATIC
         algos.cpp
         algos.h
         intzip.cpp
         intzip.h
-        ../utility/types.h generalAlgos/kmp.cpp)
+        ../utility/types.h 
+        generalAlgos/kmp.cpp)
 
 target_link_libraries(myAlgos utility)
 
