@@ -12,21 +12,28 @@ using std::vector;
 /*
  * implement an algorithm that takes as input an array of distinct elements and a size, and returns a subset
  * of the given size elements. All subsets should be equally likely. Return the subset in input array itself.
- *
- * Approach:
- *
+ *  Approach:
+ *  if we have an array of say [1, 2, 3, 4, 5] and k = 3 then we 
+ *      swap(nums[0], rand(nums[0, len]))
+ *      swap(nums[1], rand(nums[1, len])) 
+ *      swap(nums[2], rand(nums[2, len]))
+ *      
+ *  Time:
+ *      Average running time:  400 ms
+ *      Median running time:   403 ms
+ *  
+ *  complexity:
+ *      runtime: O(k)
+ *      space: O(1)
  */
 void RandomSampling(int k, vector<int>* A_ptr) {
   vector<int>& nums = *A_ptr;
   if (nums.empty()) return;
-  std::random_device rd;
+  std::default_random_engine seed( (std::random_device())() );
   size_t len = nums.size();
-  if (k < 2)
-    std::swap(nums[0], nums[rd()%len]);
-  for (int i = 0; i < nums.size(); i++) {
-      std::swap(nums[i], nums[rd()%n]);
+  for (int i = 0; i < k; i++) {
+      std::swap(nums[i], nums[std::uniform_int_distribution<int>{i, static_cast<int>(len - 1)}(seed)]);
   }
-
   return;
 }
 bool RandomSamplingRunner(TimedExecutor& executor, int k, vector<int> A) {

@@ -19,8 +19,8 @@ cwd:
 			5.5 sorted_array_remove_dups << complete
 			5.6 buy and sell stock once << complete
 			5.9 generate primes << complete
-			5.12 Sample offline data
-			5.17
+			5.12 Sample offline data  << complete
+			5.17 is valid sudoku
 			5.18
 
 	Pseudo Code (whiteboard):
