@@ -413,21 +413,36 @@ double BuyAndSellStockTwice(const vector<double>& prices) {
  *      space: O(2n) --> O(n)
  */
 vector<int> dumbBruteForce(int n) {
-    vector<int> result;
-    // we keep track of primes here by index being the number
-    vector<bool> notPrime(n, false);
-
-    // O(n)  --> go from 2 to n including n
-    for (int i = 2; i <= n; i++) {
-        if (!notPrime[i]) result.push_back(i); // if i is prime add to result
-        if (i * i < n) {
-            // set all multiples of i upto n to not prime
-            // O(sqrt(n) --> can go from 2 to sqrt(n)
-            for (int j = 2; j * i <= n; j++)
-                notPrime[i*j] = true;
+    vector<int> primes;
+    deque<bool> is_prime(n+1, true);
+    is_prime[0] = is_prime[1] = false;
+    for (int p = 2; p <= n; ++p) {
+        if (is_prime[p]) primes.emplace_back(p);
+        // eliminate multiples start at a multiple of 2
+        for (int i = p * 2; i <=n; i += p) {
+            is_prime[i] = false;
         }
     }
-    return result;
+    return primes;
+}
+
+// primes --> 2i+3
+vector<long long> primes_sieve(int n) {
+    vector<long long> primes;
+    // n-3 removes 0, 1, 2 considering formula 2i+3, and removing evens so we can mult by 1/2
+    long long size = static_cast<long long>(std::floor(.5 * (n-3))) + 1;
+    deque<int> is_prime(n, true);
+    for (int i = 0; i < size; i++) {
+        if (is_prime[i]) {
+            long long p = (2*i + 3);
+            primes.emplace_back(p);
+            // remove multiples
+            for (long long j = 4 * i * i + 12 * i + 9; j < size; j += p) {
+                is_prime[j] = false;
+            }
+        }
+    }
+    return primes;
 }
 
 /*
@@ -442,10 +457,9 @@ static bool testerIsPrime(size_t n) {
 }
 
 int main() {
-    vector<uint64_t> res = genPrimesV2(5);
+    vector<long long> res = primes_sieve(5000);
     display(res);
     cout << "\n=====================\n" << endl;
     cout << "isprime: " << testerIsPrime(205213) << endl;
-
 	return 0;
 }

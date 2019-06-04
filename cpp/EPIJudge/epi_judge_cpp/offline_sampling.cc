@@ -2,13 +2,31 @@
 #include <functional>
 #include <iterator>
 #include <vector>
+#include <random>
 #include "test_framework/generic_test.h"
 #include "test_framework/random_sequence_checker.h"
 #include "test_framework/timed_executor.h"
 using std::bind;
 using std::vector;
+
+/*
+ * implement an algorithm that takes as input an array of distinct elements and a size, and returns a subset
+ * of the given size elements. All subsets should be equally likely. Return the subset in input array itself.
+ *
+ * Approach:
+ *
+ */
 void RandomSampling(int k, vector<int>* A_ptr) {
-  // TODO - you fill in here.
+  vector<int>& nums = *A_ptr;
+  if (nums.empty()) return;
+  std::random_device rd;
+  size_t len = nums.size();
+  if (k < 2)
+    std::swap(nums[0], nums[rd()%len]);
+  for (int i = 0; i < nums.size(); i++) {
+      std::swap(nums[i], nums[rd()%n]);
+  }
+
   return;
 }
 bool RandomSamplingRunner(TimedExecutor& executor, int k, vector<int> A) {
