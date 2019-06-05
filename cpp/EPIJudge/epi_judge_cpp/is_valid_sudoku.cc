@@ -3,7 +3,15 @@
 using std::vector;
 /*
  * determine if sudoku board is valid or not
- * mxn rows x col
+ * mxn ==> rows x col
+ * Time:
+ *  Average running time:   21 us
+ *	Median running time:    18 us
+ *
+ * Complexity:
+ *  runtime: O(m*n)
+ *  space: O(9) --> O(1) contains 1 region, row, or column at a time
+ *
  */
 bool IsValidSudoku(const vector<vector<int>>& board) {
 	auto hasDups = [](const vector<int>& nums) -> bool {
@@ -29,14 +37,14 @@ bool IsValidSudoku(const vector<vector<int>>& board) {
 		return false;
 	};
 
-	// check for duplicates across all rows
+	// check for duplicates across all rows O(m * n)
 	for (int row = 0; row < board.size(); row++) {
 		if (hasDups(board[row])) return false;
 	}
 
-	vector<bool> dups(board.size(), false);
+	vector<bool> dups(10, false);
 
-	// check for dups across all columns
+	// check for dups across all columns O(m*n)
 	for (int col = 0; col < board[0].size(); col++) {
 		for (int row = 0; row < board.size(); row++) {
 			int val = board[row][col];  // i->row n -> col
@@ -48,7 +56,7 @@ bool IsValidSudoku(const vector<vector<int>>& board) {
 		std::fill(dups.begin(), dups.end(), false);
 	}
 
-	// check 3x3 regions for duplicates
+	// check 3x3 regions for duplicates O(m*n)
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
 			if (hasDupsInRegion(3*i, 3*j)) return false;

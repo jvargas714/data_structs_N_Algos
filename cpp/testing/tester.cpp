@@ -456,10 +456,82 @@ static bool testerIsPrime(size_t n) {
     return true;
 }
 
+bool IsValidSudoku(const vector<vector<int>>& board) {
+	auto hasDups = [](const vector<int>& nums) -> bool {
+		vector<bool> dups(nums.size()+1, false);
+		for (const auto& el : nums) {
+			if (el == 0) continue;
+			if (dups[el]) {
+				LOG << "failed in row testing, val: " << el << END;
+				return true;
+			}
+			else dups[el] = true;
+		}
+		return false;
+	};
+
+	auto hasDupsInRegion = [board](int rowStart, int colStart) -> bool {
+		vector<bool> dups(10, false);
+		for (int row = rowStart; row < rowStart + 3; row++) {
+			for (int col = colStart; col < colStart + 3; col++) {
+				int val = board[row][col];
+				if (val == 0) continue;
+				if (dups[val]) {
+					LOG << "failed in region testing, row: " << row << " col: " << col << " val: " << val << END;
+					return true;
+				}
+				else dups[val] = true;
+			}
+		}
+		return false;
+	};
+
+	// check for duplicates across all rows
+	for (int row = 0; row < board.size(); row++) {
+		if (hasDups(board[row])) return false;
+	}
+
+	vector<bool> dups(10, false);
+
+	// check for dups across all columns
+	for (int col = 0; col < board[0].size(); col++) {
+		for (int row = 0; row < board.size(); row++) {
+			int val = board[row][col];  // i->row n -> col
+			if (val == 0) continue;
+			LOG << "(" << row << "," << col << ") val: " << val << END;
+			if (dups[val]) {
+				LOG << "failed in column testing, row: " << row << " col: " << col << " val: " << val << END;
+				return false;
+			}
+			else
+				dups[val] = true;
+		}
+		cout << "======new col=====" << END;
+		std::fill(dups.begin(), dups.end(), false);
+	}
+
+	// check 3x3 regions for duplicates
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			if (hasDupsInRegion(3*i, 3*j)) return false;  // (0, 0), (0, 3), (0, 6)
+		}
+	}
+	return true;
+}
+
 int main() {
-    vector<long long> res = primes_sieve(5000);
-    display(res);
-    cout << "\n=====================\n" << endl;
-    cout << "isprime: " << testerIsPrime(205213) << endl;
+	vector<vector<int>> board = {
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{7, 0, 0, 5, 9, 8, 0, 2, 1},
+		{0, 1, 0, 4, 0, 0, 9, 0, 3},
+		{3, 0, 6, 7, 0, 0, 4, 0, 8},
+		{8, 2, 0, 1, 5, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 3, 0, 0, 0},
+		{0, 8, 4, 3, 0, 7, 0, 5, 0},
+		{6, 9, 0, 0, 0, 0, 2, 0, 0},
+		{1, 3, 0, 0, 0, 2, 8, 0, 7}
+	};
+	bool res = IsValidSudoku(board);
+	cout << "valid sudoku?? " << (res ? "YES":"NO") << endl;
 	return 0;
 }
