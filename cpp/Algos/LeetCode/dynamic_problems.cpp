@@ -328,3 +328,19 @@ std::vector<Interval> mergeIntervals(std::vector<Interval> &intervals) {
     return result;
 }
 
+static int calcChange(const std::vector<int>& coins, int amt, int currAmt) {
+	if (currAmt == amt) {
+		return 1;
+	}
+
+	int cnt = 0;
+	for (int i = 0; i < coins.size(); i++) {
+		cnt += calcChange(coins, amt, coins[i]+amt);
+	}
+	return cnt;
+}
+
+int change(int amount, std::vector<int> &coins) {
+	return calcChange(coins, amount, 0);
+}
+
