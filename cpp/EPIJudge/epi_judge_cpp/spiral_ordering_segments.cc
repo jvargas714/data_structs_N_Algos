@@ -21,16 +21,33 @@ using std::vector;
  *  space:
  */
 vector<int> MatrixInSpiralOrder(vector<vector<int>> square_matrix) {
-	auto coord = [square_matrix](size_t x, size_t y){
-		return
+	auto pt = [square_matrix](size_t row, size_t col) {
+		return square_matrix[row][col];
 	};
+
 	size_t n = square_matrix.size();
 	size_t numEls = n * n;
-	size_t x = 0, y = 0;
+	size_t lvl=0;
 	vector<int> res;
+	int numlvls = n % 2 == 0 ? n/2 : n/2 + 1;
+	// lock row with lvl
 
 	while (res.size() != numEls) {
+        // face 1
+        if (lvl == numlvls-1) {
+            res.push_back( pt(lvl, lvl) );
+            return res;
+        }
+        for (int col = lvl; col < n - lvl; col++)
+            res.push_back( pt(lvl, col) );
 
+        // face 2
+        for (int row = lvl; row < n-lvl; row++)
+            res.push_back( pt(row, n-lvl-1) );
+
+        // face 3
+        for (int col = n - lvl - 1; col > lvl; col --)
+            res.push_back( pt() );
 	}
 
 }
