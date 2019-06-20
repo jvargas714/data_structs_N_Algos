@@ -18,6 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\utility\utility.vcxproj">
+      <Project>{d9bd3c3f-7b37-44af-b0dd-429b20f43b17}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{6C5AF1A1-6E71-42EC-AB67-7AD243B84B9E}</ProjectGuid>
@@ -115,12 +120,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="leet_algos.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="leet_algos.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
