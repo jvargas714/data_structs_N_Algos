@@ -43,4 +43,5 @@
         "--show-column-numbers"
     ],
     "python.pythonPath": "/usr/local/bin/python",
+    "cmake.configureOnOpen": false,
 }

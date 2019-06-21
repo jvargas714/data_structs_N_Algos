@@ -3,6 +3,8 @@
 #include "dynamic_problems.h"
 #include "utility.h"
 
+using std::vector;
+
 int _climbStairs( int i, int n, std::vector<int>& memo ) {
     if (i > n) return 0;
     if (i == n) return 1;
@@ -326,5 +328,62 @@ std::vector<Interval> mergeIntervals(std::vector<Interval> &intervals) {
             (result.end()-1)->end = std::max((result.end()-1)->end, intv.end);
     }
     return result;
+}
+
+/*
+    Problem: 518 
+
+    Description:
+        You are given coins of different denominations and a total amount of money. Write a 
+        function to compute the number of combinations that make up that amount. 
+        You may assume that you have infinite number of each kind of coin.
+
+    Approach:
+        we create a dp table to keep track of our decision making. This problem is similar to the 0|1 Knapsack
+        problem. At each cell we have a choice whether we decide to include a new coin or not.
+        We start with no coins (empty set []), at each column we ask ourselves can I make change for 0, .. 1, ...2 etc etc 
+        If you can make change you add one to the previous value in that row.
+
+    Example:
+    coins = [1, 2, 5]
+    amount = 5
+    result: 5=5
+            5=2+2+1
+            5=2+1+1+1
+            5=1+1+1+1+1
+    =========================
+
+    rows: coins to consider top to bottom
+    cols: 0 to amount (amount of change holding at a given time)
+                 0 1 2 3 4 5   --> targetAmt
+                 -----------
+coinType --> []| 1 0 0 0 0 0   
+          [-1-]| 1 1 1 1 1 1
+       [1, -2-]| 1 1 2 2 3 3
+    [1, 2, -5-]| 1 1 2 2 3 4
+
+    complexity:
+        time:  O(numCoins * amount)
+        space: O(numCoins * amount)
+*/
+int change(int amount, vector<int>& coins) {
+        if (coins.empty()) return 0;
+        const int numCoins = coins.size()+1;
+        vector<vector<int>> dp(numCoins, vector<int>(amount+1, 0));
+        dp[0][0]=1;
+        int coinType = 1;
+        int targetAmt = 1;
+
+        while (targetAmt < (amount+1) || coinType < numCoins) {
+            int tmp = (targetAmt%(amount)) - coins[coinType-1];
+            // dp[coinType][targetAmt] = (numcombos where we do coin case) + (numcombos where we dont use coin case);
+            dp[coinType][targetAmt] = (tmp >= 0 ?  dp[coinType][tmp] : 0) + dp[coinType-1][targetAmt];
+
+            // increment cell in dp table 
+            if (coinType <= numCoins)
+                coinType++;
+            targetAmt++;
+        }
+        return dp[numCoins-1][amount];
 }
 

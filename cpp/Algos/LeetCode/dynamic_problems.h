@@ -47,4 +47,11 @@ int uniquePathsV4(int m, int n);
 // Given a collection of intervals, merge all overlapping intervals.
 std::vector<Interval> mergeIntervals(std::vector<Interval>& intervals);
 
+// problem:
+// result:
+// You are given coins of different denominations and a total amount of money. Write a function to
+// compute the number of combinations that make up that amount. You may assume that you have
+// infinite number of each kind of coin.
+int change(int amount, std::vector<int>& coins);
+
 #endif //DATASTRUCTS_N_ALGOS_DYNAMIC_PROBLEMS_H
