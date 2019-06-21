@@ -48,13 +48,28 @@ int uniquePathsV4(int m, int n);
 std::vector<Interval> mergeIntervals(std::vector<Interval>& intervals);
 
 // problem: 518
-// result:
 // You are given coins of different denominations and a total amount of money. Write a function to
 // compute the number of combinations that make up that amount. You may assume that you have
 // infinite number of each kind of coin.
-// Runtime: 20 ms, faster than 41.13%
-// Memory Usage: 20 MB, less than 20.77%
+// result:
+//      Runtime: 20 ms, faster than 41.13%
+//      Memory Usage: 20 MB, less than 20.77%
 int change(int amount, std::vector<int>& coins);
 int changeV2(int amount, std::vector<int>& coins);
+
+
+/* 
+problem: 322
+Description: 
+    You are given coins of different denominations and a total amount of money amount. Write a function to compute the 
+    fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any 
+    combination of the coins, return -1.
+
+Result:
+
+Complexity:
+*/
+int calcChange(int amount, std::vector<int>& coins);
+
 
 #endif //DATASTRUCTS_N_ALGOS_DYNAMIC_PROBLEMS_H

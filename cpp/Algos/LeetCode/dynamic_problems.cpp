@@ -4,6 +4,7 @@
 #include "utility.h"
 
 using std::vector;
+using std::cout;
 
 int _climbStairs( int i, int n, std::vector<int>& memo ) {
     if (i > n) return 0;
@@ -342,7 +343,9 @@ std::vector<Interval> mergeIntervals(std::vector<Interval> &intervals) {
         we create a dp table to keep track of our decision making. This problem is similar to the 0|1 Knapsack
         problem. At each cell we have a choice whether we decide to include a new coin or not.
         We start with no coins (empty set []), at each column we ask ourselves can I make change for 0, .. 1, ...2 etc etc 
-        If you can make change you add one to the previous value in that row.
+        The value of each cell is (numcombos where we do coin case) + (numcombos where we dont use coin case); which
+        represents the total number of combinations to achieve the target amount. Our final answer ends up in the 
+        bottom right most corner.
 
     Example:
     coins = [1, 2, 5]
@@ -381,8 +384,37 @@ int change(int amount, vector<int>& coins) {
     return dp[numCoins-1][amount];
 }
 
-// optimize for space and time
-int changeV2(int amount, std::vector<int> &coins) {
-
+int calcChange(int amount, vector<int>& coins) {
+    if (coins.empty() || amount==0) return -1;
+        vector<vector<int>> dp(coins.size()+1, vector<int>(amount, 0));
+        
+        for (int coinType = 1; coinType < dp.size(); coinType++) {
+            int coinDenomination = coins[coinType-1];
+            cout << "----------coin denom: " << coinDenomination << "---------" << endl;
+            if (coinDenomination==amount) return 1;
+            
+            for (int targetAmt = 1; targetAmt <= amount; targetAmt++) {
+                int remainder = targetAmt % coinDenomination;
+                cout << "targetAmt: " << targetAmt << " remainder: " << remainder << endl;
+                
+                if (remainder == targetAmt) {                   // case where coin is > targetAmt
+                    // cout << "inserting " << dp[coinType-1][targetAmt-1] << endl;
+                    dp[coinType][targetAmt-1] = dp[coinType-1][targetAmt-1] < 0 ? INT_MAX : dp[coinType-1][targetAmt-1];
+                } else if (remainder == 0) { 
+                    // chooose min between case where we use this coin and case where we dont, whatever uses the least amount of coins
+                    int beforeUsingCoin = dp[coinType-1][targetAmt-1];
+                    dp[coinType][targetAmt-1] = min((targetAmt / coinDenomination), (beforeUsingCoin<0 ? INT_MAX:beforeUsingCoin));
+                    cout << "no remainder inserting " << dp[coinType][targetAmt-1] << endl;
+                } else {                                        // use dp table to determine how many more coins we need to get target amount
+                    int numCurrCoins = targetAmt / coinDenomination;
+                    dp[coinType][targetAmt-1] = min(
+                        (numCurrCoins + dp[coinType][remainder-1]), 
+                        dp[coinType-1][targetAmt-1] < 0 ? INT_MAX : dp[coinType-1][targetAmt-1]);
+                    cout << "inserting " << dp[coinType][targetAmt-1] << endl;
+                }
+            }
+            cout << "\n" << endl;
+        }
+        return dp[coins.size()][amount-1];
 }
 
