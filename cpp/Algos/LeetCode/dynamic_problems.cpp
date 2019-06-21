@@ -367,23 +367,22 @@ coinType --> []| 1 0 0 0 0 0
         space: O(numCoins * amount)
 */
 int change(int amount, vector<int>& coins) {
-        if (coins.empty()) return 0;
-        const int numCoins = coins.size()+1;
-        vector<vector<int>> dp(numCoins, vector<int>(amount+1, 0));
-        dp[0][0]=1;
-        int coinType = 1;
-        int targetAmt = 1;
-
-        while (targetAmt < (amount+1) || coinType < numCoins) {
-            int tmp = (targetAmt%(amount)) - coins[coinType-1];
+    if (coins.empty() && amount == 0) return 1;
+    const int numCoins = coins.size()+1;
+    vector<vector<int>> dp(numCoins, vector<int>(amount+1, 0));
+    dp[0][0]=1;
+    for (int coinType = 1; coinType < dp.size(); coinType++) {
+        for (int targetAmt = 0; targetAmt <= amount; targetAmt++) {
             // dp[coinType][targetAmt] = (numcombos where we do coin case) + (numcombos where we dont use coin case);
+            int tmp = (targetAmt) - coins[coinType-1];
             dp[coinType][targetAmt] = (tmp >= 0 ?  dp[coinType][tmp] : 0) + dp[coinType-1][targetAmt];
-
-            // increment cell in dp table 
-            if (coinType <= numCoins)
-                coinType++;
-            targetAmt++;
         }
-        return dp[numCoins-1][amount];
+    }
+    return dp[numCoins-1][amount];
+}
+
+// optimize for space and time
+int changeV2(int amount, std::vector<int> &coins) {
+
 }
 

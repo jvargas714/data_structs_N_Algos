@@ -2,6 +2,7 @@
 #include <stack>
 #include <string>
 #include <unordered_map>
+#include <climits>
 #include "array_problems.h"
 #include "utility.h"
 

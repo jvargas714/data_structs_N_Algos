@@ -392,6 +392,8 @@ int kthSmallest(TreeNode* root, int k) {
 // attempt to optimize space usage
 int kthSmallestV2(TreeNode* root, int k) {
     return inorderTravel(root);
+}
+
 /*
 	Input:
 
