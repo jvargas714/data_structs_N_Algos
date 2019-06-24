@@ -28,7 +28,25 @@ void test_change() {
 	FUNCT_END;
 }
 
+void test_coinChange1() {
+    FUNCT_HEADER;
+    vector<int> coins{1};
+    int target = 0;
+    int res = calcChange(target, coins);
+    cout << "res: " << res << endl;
+    FUNCT_END;
+}
+
+void test_mincostTickets() {
+    FUNCT_HEADER;
+    vector<int> days = {1,4,6,7,8,20};
+    vector<int> costs = {2, 7, 15};
+    int res = mincostTickets(days, costs);
+    cout << "res: " << res << END;
+    FUNCT_END;
+}
+
 int main(int argc, char** argv) {
-	test_change();
+    test_mincostTickets();
 	return 0;
 }

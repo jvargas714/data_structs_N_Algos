@@ -1,22 +1,25 @@
 #include <algorithm>
 #include <cstdint>
+#include <climits>
 #include "dynamic_problems.h"
 #include "utility.h"
 
+using std::min;
+using std::endl;
 using std::vector;
 using std::cout;
 
-int _climbStairs( int i, int n, std::vector<int>& memo ) {
+int _climbStairs(int i, int n, std::vector<int> &memo) {
     if (i > n) return 0;
     if (i == n) return 1;
     if (memo[i] > 0) return memo[i];
-    memo[i] = _climbStairs(i+1, n, memo) + _climbStairs(i+2, n, memo);
+    memo[i] = _climbStairs(i + 1, n, memo) + _climbStairs(i + 2, n, memo);
     return memo[i];
 }
 
 // recursive solution using memoization
 int climbStairs(int n) {
-    std::vector<int> memo(n+1, 0);
+    std::vector<int> memo(n + 1, 0);
     return _climbStairs(0, n, memo);
 }
 
@@ -25,15 +28,15 @@ int climbStairsV2(int n) {
     std::vector<int> ways(n);
     ways[0] = 1;
     ways[1] = 2;
-    for(int i = 2; i < n; i++)
-        ways[i] = ways[i-1] + ways[i-2];
-    return ways[n-1];
+    for (int i = 2; i < n; i++)
+        ways[i] = ways[i - 1] + ways[i - 2];
+    return ways[n - 1];
 }
 
-int maxProfit(std::vector<int>& prices) {
+int maxProfit(std::vector<int> &prices) {
     int min = INT32_MAX;
     int profit = 0;
-    for (auto& price : prices) {
+    for (auto &price : prices) {
         if (price - min > profit) profit = price - min;
         else if (price < min) min = price;
     }
@@ -41,17 +44,17 @@ int maxProfit(std::vector<int>& prices) {
 }
 
 // brute force O(n^2)
-int maxSubArray(std::vector<int>& nums) {
-    if (nums.size()==0)
+int maxSubArray(std::vector<int> &nums) {
+    if (nums.size() == 0)
         return 0;
-    if (nums.size()==1)
+    if (nums.size() == 1)
         return nums[0];
     int sum = *max_element(nums.begin(), nums.end());
     int tmp = INT32_MIN;
     int cnt = 0;
-    for(unsigned int i = 0; i < nums.size(); ++i) {
-        for ( unsigned int j = i+1; j <= nums.size(); ++j) {
-            tmp = accum(nums.begin()+i, nums.begin()+j);
+    for (unsigned int i = 0; i < nums.size(); ++i) {
+        for (unsigned int j = i + 1; j <= nums.size(); ++j) {
+            tmp = accum(nums.begin() + i, nums.begin() + j);
             if (tmp > sum) {
                 sum = tmp;
             }
@@ -62,7 +65,7 @@ int maxSubArray(std::vector<int>& nums) {
 }
 
 // 0(n) solution
-int maxSubArray2(std::vector<int>& nums) {
+int maxSubArray2(std::vector<int> &nums) {
     if (nums.empty())
         return 0;
     if (nums.size() == 1)
@@ -71,10 +74,10 @@ int maxSubArray2(std::vector<int>& nums) {
     int result = nums[0];
     int sum = 0;
 
-    for (auto& el: nums) {
+    for (auto &el: nums) {
         sum += el;
         result = std::max(sum, result);
-        sum = std::max(sum, 0);	 // if sum drops below zero then reset sum
+        sum = std::max(sum, 0);     // if sum drops below zero then reset sum
     }
     return result;
 }
@@ -82,14 +85,14 @@ int maxSubArray2(std::vector<int>& nums) {
 /*
 	dynamic programming version 0(n) solution
 */
-int maxSubArray3(std::vector<int>& nums) {
+int maxSubArray3(std::vector<int> &nums) {
     size_t n = nums.size();
     std::vector<int> dp(n, 0);
     dp[0] = nums[0];
     int sum = dp[0];
 
     for (int i = 1; i < n; i++) {
-        dp[i] = nums[i] + ((dp[i-1] > 0) ? dp[i-1]:0);
+        dp[i] = nums[i] + ((dp[i - 1] > 0) ? dp[i - 1] : 0);
         sum = std::max(sum, dp[i]);
     }
     return sum;
@@ -98,7 +101,7 @@ int maxSubArray3(std::vector<int>& nums) {
 // max sum of a sub array that crosses the midpoint -->
 // [* l * * (* * m * * *) * r * ] << max sum between [mid, l] and [mid+1, r] then combine to
 // form the crossSum
-void _maxCrossingSubArray(std::vector<int>& nums, int l, int mid, int r, int& _max) {
+void _maxCrossingSubArray(std::vector<int> &nums, int l, int mid, int r, int &_max) {
     std::cout << "\n" << std::endl;
     LOG << "l: " << l << " mid: " << mid << " r: " << r << " max: " << _max << std::endl;
     int leftSum = INT32_MIN;
@@ -112,13 +115,13 @@ void _maxCrossingSubArray(std::vector<int>& nums, int l, int mid, int r, int& _m
     }
     int rightSum = INT32_MIN;
     sum = 0;
-    for (int i = mid+1; i <= r; i++) {
+    for (int i = mid + 1; i <= r; i++) {
         sum += nums[i];
         if (sum > rightSum) {
             rightSum = sum;
         }
     }
-    int crossSum = (leftSum+rightSum);
+    int crossSum = (leftSum + rightSum);
     LOG << "leftSum: " << leftSum << " rightSum: " << rightSum << " crossSum: " << crossSum << std::endl;
 
     // see if crossing sums are larger than current max value
@@ -128,18 +131,18 @@ void _maxCrossingSubArray(std::vector<int>& nums, int l, int mid, int r, int& _m
 }
 
 // recurse div and conq
-void _maxSubArray(std::vector<int>& nums, int l, int r, int& _max)  {
+void _maxSubArray(std::vector<int> &nums, int l, int r, int &_max) {
     using namespace std;
     LOG << "l: " << l << " r: " << r << " max: " << _max << endl;
 
     // base case one element
-    if (l==r) {
+    if (l == r) {
         if (nums[l] > _max) _max = nums[l];
         return;
     }
-    int mid = (l+r)/2;
+    int mid = (l + r) / 2;
     _maxSubArray(nums, l, mid, _max);
-    _maxSubArray(nums, mid+1, r, _max);
+    _maxSubArray(nums, mid + 1, r, _max);
     _maxCrossingSubArray(nums, l, mid, r, _max);
 }
 
@@ -147,18 +150,18 @@ void _maxSubArray(std::vector<int>& nums, int l, int r, int& _max)  {
 	Divide and conquer solution 0(n)
 	Recursive
 */
-int maxSubArray4(std::vector<int>& nums) {
-    if (nums.size()==1) return nums[0];
+int maxSubArray4(std::vector<int> &nums) {
+    if (nums.size() == 1) return nums[0];
     int max = INT32_MIN;
-    _maxSubArray(nums, 0, (int)nums.size()-1, max);
+    _maxSubArray(nums, 0, (int) nums.size() - 1, max);
     return max;
 }
 
-void _rob(std::vector<int>& nums, int start, int& robbed) {
+void _rob(std::vector<int> &nums, int start, int &robbed) {
     if (start >= nums.size())
         return;
     robbed += nums[start];
-    start+=2;
+    start += 2;
 
 
 }
@@ -186,19 +189,19 @@ int rob(std::vector<int> &nums) {
     dp[0] = nums[0];
     dp[1] = std::max(nums[0], nums[1]);
     for (int i = 2; i < len; i++) {
-        dp[i] = std::max(nums[i]+dp[i-2], dp[i-1]);
+        dp[i] = std::max(nums[i] + dp[i - 2], dp[i - 1]);
     }
-    return dp[len-1];
+    return dp[len - 1];
 }
 
 // faster version, O(1) mem usage
-int robV2(std::vector<int>& nums) {
+int robV2(std::vector<int> &nums) {
     int lastRob = 0, lastNotRob = 0;
-    int tmpRob  = 0, tmpNotRob  = 0;
+    int tmpRob = 0, tmpNotRob = 0;
     for (size_t i = 0; i < nums.size(); ++i) {
-        tmpRob    = lastNotRob + nums[i];
+        tmpRob = lastNotRob + nums[i];
         tmpNotRob = lastRob > lastNotRob ? lastRob : lastNotRob;
-        lastRob    = tmpRob;
+        lastRob = tmpRob;
         lastNotRob = tmpNotRob;
     }
     return lastRob > lastNotRob ? lastRob : lastNotRob;
@@ -206,12 +209,12 @@ int robV2(std::vector<int>& nums) {
 
 // each step we can either go right or down
 // TODO :: has issues
-void _uniquePaths(std::pair<int, int> currPos, const std::pair<int, int>& targetPos, int& numPaths) {
+void _uniquePaths(std::pair<int, int> currPos, const std::pair<int, int> &targetPos, int &numPaths) {
 
     // step right and check position
     if (currPos.first < targetPos.first) {
         currPos.first++;
-        if (currPos==targetPos) {
+        if (currPos == targetPos) {
             numPaths++;
         }
         _uniquePaths(currPos, targetPos, numPaths);
@@ -220,7 +223,7 @@ void _uniquePaths(std::pair<int, int> currPos, const std::pair<int, int>& target
     // step down and check position
     if (currPos.second < targetPos.second) {
         currPos.second++;
-        if (currPos==targetPos) {
+        if (currPos == targetPos) {
             numPaths++;
         }
         _uniquePaths(currPos, targetPos, numPaths);
@@ -237,7 +240,7 @@ void _uniquePaths(std::pair<int, int> currPos, const std::pair<int, int>& target
 int uniquePaths(int m, int n) {
     int numPaths = 0;
     std::pair<int, int> curPosition = {0, 0}; // (col, row)
-    _uniquePaths(curPosition, {n-1, m-1}, numPaths);
+    _uniquePaths(curPosition, {n - 1, m - 1}, numPaths);
     return numPaths;
 }
 
@@ -258,7 +261,7 @@ int uniquePaths(int m, int n) {
     Now we write the following unoptimized code ...
  */
 int uniquePathsV2(int m, int n) {
-    std::vector<std::vector<int> > path(m, std::vector<int> (n, 1));
+    std::vector<std::vector<int> > path(m, std::vector<int>(n, 1));
     for (int i = 1; i < m; i++) {
         for (int j = 1; j < n; j++) {
             path[i][j] = path[i - 1][j] + path[i][j - 1];
@@ -291,11 +294,11 @@ int uniquePathsV3(int m, int n) {
     std::vector<int> cur(m, 1);
     for (int j = 1; j < n; j++) {
         for (int i = 1; i < m; i++) {
-            cur[i] = cur[i-1] + pre[i];
+            cur[i] = cur[i - 1] + pre[i];
         }
         std::swap(pre, cur);
     }
-    return pre[m-1];
+    return pre[m - 1];
 }
 
 /*
@@ -303,13 +306,13 @@ int uniquePathsV3(int m, int n) {
  */
 int uniquePathsV4(int m, int n) {
     if (m > n) uniquePathsV4(n, m);
-    std::vector<int> cur(m,1);
-    for (int j =1; j < n; j++) {
+    std::vector<int> cur(m, 1);
+    for (int j = 1; j < n; j++) {
         for (int i = 0; i < m; i++) {
-            cur[i] += cur[i-1];
+            cur[i] += cur[i - 1];
         }
     }
-    return cur[m-1];
+    return cur[m - 1];
 }
 
 std::vector<Interval> mergeIntervals(std::vector<Interval> &intervals) {
@@ -317,16 +320,16 @@ std::vector<Interval> mergeIntervals(std::vector<Interval> &intervals) {
     // sort by starting point, neighboring intervals will be potential overlappers
     std::sort(intervals.begin(),
               intervals.end(),
-              [](auto& a, auto& b){ return a.start < b.start; });
-    for (auto& intv : intervals) {
+              [](auto &a, auto &b) { return a.start < b.start; });
+    for (auto &intv : intervals) {
         /*
          * if the list of the merged intervals is empty or if the current interval does not overlap
          * with the previous, simply append it
          */
-        if ( result.empty() || (result.end()-1)->end < intv.start )
+        if (result.empty() || (result.end() - 1)->end < intv.start)
             result.push_back(intv);
         else // otherwise there is overlap, so we merge the current and previous intervals
-            (result.end()-1)->end = std::max((result.end()-1)->end, intv.end);
+            (result.end() - 1)->end = std::max((result.end() - 1)->end, intv.end);
     }
     return result;
 }
@@ -369,52 +372,81 @@ coinType --> []| 1 0 0 0 0 0
         time:  O(numCoins * amount)
         space: O(numCoins * amount)
 */
-int change(int amount, vector<int>& coins) {
+int change(int amount, vector<int> &coins) {
     if (coins.empty() && amount == 0) return 1;
-    const int numCoins = coins.size()+1;
-    vector<vector<int>> dp(numCoins, vector<int>(amount+1, 0));
-    dp[0][0]=1;
+    const int numCoins = coins.size() + 1;
+    vector<vector<int>> dp(numCoins, vector<int>(amount + 1, 0));
+    dp[0][0] = 1;
     for (int coinType = 1; coinType < dp.size(); coinType++) {
         for (int targetAmt = 0; targetAmt <= amount; targetAmt++) {
             // dp[coinType][targetAmt] = (numcombos where we do coin case) + (numcombos where we dont use coin case);
-            int tmp = (targetAmt) - coins[coinType-1];
-            dp[coinType][targetAmt] = (tmp >= 0 ?  dp[coinType][tmp] : 0) + dp[coinType-1][targetAmt];
+            int tmp = (targetAmt) - coins[coinType - 1];
+            dp[coinType][targetAmt] = (tmp >= 0 ? dp[coinType][tmp] : 0) + dp[coinType - 1][targetAmt];
         }
     }
-    return dp[numCoins-1][amount];
+    return dp[numCoins - 1][amount];
 }
 
-int calcChange(int amount, vector<int>& coins) {
-    if (coins.empty() || amount==0) return -1;
-        vector<vector<int>> dp(coins.size()+1, vector<int>(amount, 0));
-        
-        for (int coinType = 1; coinType < dp.size(); coinType++) {
-            int coinDenomination = coins[coinType-1];
-            cout << "----------coin denom: " << coinDenomination << "---------" << endl;
-            if (coinDenomination==amount) return 1;
-            
-            for (int targetAmt = 1; targetAmt <= amount; targetAmt++) {
-                int remainder = targetAmt % coinDenomination;
-                cout << "targetAmt: " << targetAmt << " remainder: " << remainder << endl;
-                
-                if (remainder == targetAmt) {                   // case where coin is > targetAmt
-                    // cout << "inserting " << dp[coinType-1][targetAmt-1] << endl;
-                    dp[coinType][targetAmt-1] = dp[coinType-1][targetAmt-1] < 0 ? INT_MAX : dp[coinType-1][targetAmt-1];
-                } else if (remainder == 0) { 
-                    // chooose min between case where we use this coin and case where we dont, whatever uses the least amount of coins
-                    int beforeUsingCoin = dp[coinType-1][targetAmt-1];
-                    dp[coinType][targetAmt-1] = min((targetAmt / coinDenomination), (beforeUsingCoin<0 ? INT_MAX:beforeUsingCoin));
-                    cout << "no remainder inserting " << dp[coinType][targetAmt-1] << endl;
-                } else {                                        // use dp table to determine how many more coins we need to get target amount
-                    int numCurrCoins = targetAmt / coinDenomination;
-                    dp[coinType][targetAmt-1] = min(
-                        (numCurrCoins + dp[coinType][remainder-1]), 
-                        dp[coinType-1][targetAmt-1] < 0 ? INT_MAX : dp[coinType-1][targetAmt-1]);
-                    cout << "inserting " << dp[coinType][targetAmt-1] << endl;
-                }
+/*
+ * problem: 518
+ * Description:
+ *      You are given coins of different denominations and a total amount of money amount.
+ *      Write a function to compute the fewest number of coins that you need to make up that
+ *      amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+ *
+ * Approach:
+ *      break down this problem is smaller sub problems, we solve each sub problem for the amount using previous
+ *      sub problem solutions, eventually arriving at our solution.
+ *      [0, 1, 2, 3, 4, 5]
+ *
+ *
+ * Complexity:
+ *      runtime:
+ *      space:
+ *  todo :: figure out recursive solution for this as well
+ */
+int calcChange(int amount, vector<int> &coins) {
+    vector<int> dp(amount + 1, amount + 1);
+    int cnt = 0;
+    dp[0] = 0;
+    for (int amt = 1; amt <= amount; amt++) {
+        // solve each sub amount using previous solutions
+        for (auto coinVal : coins) {
+            int diff = amt - coinVal;
+            if (diff < 0) {
+                continue;
+            } else if (diff > 0) {
+                int tmp = dp[diff] + 1;
+                dp[amt] = tmp < dp[amt] ? tmp : dp[amt];
+            } else {  // we have a match
+                dp[amt] = 1;
             }
-            cout << "\n" << endl;
         }
-        return dp[coins.size()][amount-1];
+    }
+    return dp[amount] == (amount + 1) ? -1 : dp[amount];
 }
 
+/*
+ * Approach:
+ *  break problem in to sub problems, at each day we decide what tickets to buy to minimize cost
+ */
+static void calcCosts(const vector<int>& days, vector<int>& costs, int currentCosts, int currDay, int& currMin) {
+    cout << "day: " << currDay << " currentCosts: " << currentCosts << " currMin: " << currMin << endl;
+    if (currDay >= days[days.size()-1]) {
+        currMin = min(currMin, currentCosts);
+        cout << "found new min: " << currMin << endl;
+        return;
+    }
+    static const vector<int> txType = {1, 7, 30};
+    for (int i = 0; i < 3; i++) {
+        cout << "buying a " << txType[i] << " day ticket" << endl;
+        calcCosts(days, costs, currentCosts+costs[i], days[currDay]+txType[i], currMin);
+        cout << "currMin: " << currMin << "\n" << endl;
+    }
+}
+
+int mincostTickets(vector<int>& days, vector<int>& costs) {
+    int res = INT_MAX;
+    calcCosts(days, costs, 0, 1, res);
+    return res;
+}
