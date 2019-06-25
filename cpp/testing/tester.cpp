@@ -519,19 +519,48 @@ bool IsValidSudoku(const vector<vector<int>>& board) {
 	return true;
 }
 
-int main() {
-	vector<vector<int>> board = {
-		{0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{7, 0, 0, 5, 9, 8, 0, 2, 1},
-		{0, 1, 0, 4, 0, 0, 9, 0, 3},
-		{3, 0, 6, 7, 0, 0, 4, 0, 8},
-		{8, 2, 0, 1, 5, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 3, 0, 0, 0},
-		{0, 8, 4, 3, 0, 7, 0, 5, 0},
-		{6, 9, 0, 0, 0, 0, 2, 0, 0},
-		{1, 3, 0, 0, 0, 2, 8, 0, 7}
+vector<int> MatrixInSpiralOrder(vector<vector<int>> square_matrix) {
+	auto pt = [square_matrix](size_t row, size_t col) {
+		return square_matrix[row][col];
 	};
-	bool res = IsValidSudoku(board);
-	cout << "valid sudoku?? " << (res ? "YES":"NO") << endl;
+
+	size_t n = square_matrix.size();
+	size_t lvl=0;
+	vector<int> res;
+	int numlvls = n % 2 == 0 ? n/2 : n/2 + 1;
+	// lock row with lvl
+
+	while (lvl != numlvls) {
+		// face 1
+		for (int col = lvl; col < n - lvl; col++)
+			res.push_back( pt(lvl, col) );
+
+		// face 2
+		for (int row = lvl+1; row < n-lvl; row++)
+			res.push_back( pt(row, n-lvl-1) );
+
+		// face 3
+		for (int col = n - lvl - 2; col > lvl; col--)
+			res.push_back( pt(n-lvl-1, col) );
+
+		// face 4 up left vertical path
+		for (int row = n - lvl - 1; row > lvl; row--)
+			res.push_back( pt(row, lvl) );
+
+		lvl++;
+	}
+	return res;
+}
+
+int main() {
+vector<vector<int>> board = {{1, 2}, {3, 4}};// {
+//		{1,  2,  3,  4,  5,},
+//		{6,  7,  8,  9,  10},
+//		{11, 12, 13, 14, 15},
+//		{16, 17, 18, 19, 20},
+//		{21, 22, 23, 24, 25}
+//	};
+	vector<int> res = MatrixInSpiralOrder(board);
+	display(res, board.size());
 	return 0;
 }
