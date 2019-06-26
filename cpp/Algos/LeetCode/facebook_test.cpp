@@ -238,7 +238,7 @@ void test_reverseLinkedList() {
 	ListNode* lst = fillListNode({1, 2, 3, 4, 5, 6, 7});
 	ListNode* res = reverseListV3(lst);
 	LOG << "result: " << END;
-	displayListNodes(res);
+	display(res);
 	FUNCT_END;
 }
 
@@ -248,7 +248,7 @@ void test_addTwoNumbers() {
 	ListNode* l2 = fillListNode({5});
 	ListNode* res = addTwoNumbers(l1, l2);
 	LOG << "result: " << END;
-	displayListNodes(res);
+	display(res);
 	FUNCT_END;
 }
 
@@ -257,10 +257,10 @@ void test_removeNthFromEnd() {
 	ListNode* lst = fillListNode({1});
 	int n = 0;
 	LOG << "input: n=" << n << END;
-	displayListNodes(lst);
+	display(lst);
 	ListNode* res = removeNthFromEnd(lst, n);
 	LOG << "result: " << END;
-	displayListNodes(res);
+	display(res);
 	FUNCT_END;
 }
 

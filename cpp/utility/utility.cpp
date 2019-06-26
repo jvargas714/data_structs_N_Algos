@@ -235,7 +235,7 @@ void logicalShiftL(std::vector<int>& nums) {
     nums[nums.size()-1] = 0;
 }
 
-void displayListNodes(ListNode* root) {
+void display(ListNode *root) {
     if (!root)  return;
     const ListNode* tmp = root;
     while (tmp) {

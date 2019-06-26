@@ -1,5 +1,10 @@
 #include "list_node.h"
 #include "test_framework/generic_test.h"
+
+void swapNodes(shared_ptr<ListNode<int>>& l1, shared_ptr<ListNode<int>>& l2) {
+
+}
+
 shared_ptr<ListNode<int>> EvenOddMerge(const shared_ptr<ListNode<int>>& L) {
   // TODO - you fill in here.
   return nullptr;

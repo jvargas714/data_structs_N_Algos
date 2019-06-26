@@ -130,7 +130,7 @@ int accum(std::vector<int>::iterator a, std::vector<int>::iterator b);
 // put a linked list on the heap, takes values from vector 
 ListNode* fillListNode(std::vector<int>&&);
 
-void displayListNodes(ListNode* root);
+void display(ListNode *root);
 
 // if linked list is fully allocated on the heap this function deallocates those nodes 
 size_t deallocateLList(ListNode*);

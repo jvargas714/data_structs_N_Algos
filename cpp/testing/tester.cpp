@@ -552,15 +552,58 @@ vector<int> MatrixInSpiralOrder(vector<vector<int>> square_matrix) {
 	return res;
 }
 
+static string createNextEntry(const string& str) {
+	if (str.empty()) return "1";
+	map<char, int> cntMap;
+	char prev = str[0];
+	int cnt = 1;
+	string res;
+	char buff[256] = {0};
+	for (auto it = str.begin()+1; it != str.end(); it++) {
+		if (prev != *it) { // new char add to result str
+			sprintf(buff, "%i%c", cnt, prev);
+			res.append(buff);
+			memset(buff, '\0', sizeof(buff));
+			prev = *it;
+			cnt = 1;
+			continue;
+		}
+		cnt++;
+	}
+	if (cnt > 0) {
+		sprintf(buff, "%i%c", cnt, prev);
+		res.append(buff);
+	}
+	return res;
+}
+
+string LookAndSay(int n) {
+	string res;
+	int cnt = 1;
+	while (cnt <= n) {
+		res = createNextEntry(res);
+		std::cout << "n: " <<  cnt << "=" << res << std::endl;
+		cnt++;
+	}
+	return res;
+}
+
 int main() {
-vector<vector<int>> board = {{1, 2}, {3, 4}};// {
-//		{1,  2,  3,  4,  5,},
-//		{6,  7,  8,  9,  10},
-//		{11, 12, 13, 14, 15},
-//		{16, 17, 18, 19, 20},
-//		{21, 22, 23, 24, 25}
-//	};
-	vector<int> res = MatrixInSpiralOrder(board);
-	display(res, board.size());
+	ListNode* root = new ListNode(1);
+	root->next = new ListNode(2);
+	root->next->next = new ListNode(3);
+	root->next->next->next = new ListNode(4);
+	root->next->next->next->next = new ListNode(5);
+	root->next->next->next->next->next = new ListNode(6);
+	// p   a          b
+	// 1->[2]->3->4->[5]->6->null
+	display(root);
+	ListNode* prev = root;
+	ListNode* a = root->next;
+	ListNode* b = root->next->next->next->next;
+
+	prev->next = b;
+	b->next = a->next;
+
 	return 0;
 }
