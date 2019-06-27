@@ -587,6 +587,35 @@ string LookAndSay(int n) {
 	}
 	return res;
 }
+//  a         pb  b
+// [1]->2->3->4->[5]->6->null
+// [5]->2->3->4->[1]->6->null
+// 3 possible cases
+void swapNodes(ListNode* preva, ListNode* a, ListNode* prevb, ListNode* b) {
+	if (preva == nullptr) {  // a is head
+		ListNode* tmpb = b->next;
+		ListNode* tmpa = a->next;
+		ListNode* tmp = a;
+
+		a = b;
+		a->next = tmpa;
+
+		prevb->next = tmp;
+		prevb->next->next = tmpb;
+	}
+
+	if (prevb == nullptr) {  // b is head
+
+	}
+
+	if (preva != nullptr && prevb != nullptr) {  // internal node swap
+		preva->next = b;
+		ListNode* tmp = b->next;
+		b->next = a->next;
+		prevb->next = a;
+		a->next = tmp;
+	}
+}
 
 int main() {
 	ListNode* root = new ListNode(1);
@@ -595,15 +624,17 @@ int main() {
 	root->next->next->next = new ListNode(4);
 	root->next->next->next->next = new ListNode(5);
 	root->next->next->next->next->next = new ListNode(6);
-	// p   a          b
+	// pa   a     pb  b
 	// 1->[2]->3->4->[5]->6->null
 	display(root);
-	ListNode* prev = root;
-	ListNode* a = root->next;
+	ListNode* a = root;
+	ListNode* preva = nullptr;
+
 	ListNode* b = root->next->next->next->next;
+	ListNode* prevb = root->next->next->next;
 
-	prev->next = b;
-	b->next = a->next;
+	swapNodes(preva, a, prevb, b);
 
+	display(root);
 	return 0;
 }
