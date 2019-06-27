@@ -600,8 +600,13 @@ void swapNodes(ListNode* preva, ListNode* a, ListNode* prevb, ListNode* b) {
 		a = b;
 		a->next = tmpa;
 
+//		5>2>3>4>5>6>null
+
 		prevb->next = tmp;
 		prevb->next->next = tmpb;
+
+		cout << "root: " << a->val << " nxt val: " << a->next->val << " nxt nxt val : " << a->next->next->val << endl;
+
 	}
 
 	if (prevb == nullptr) {  // b is head
@@ -636,5 +641,6 @@ int main() {
 	swapNodes(preva, a, prevb, b);
 
 	display(root);
+	deallocateLList(root);
 	return 0;
 }
