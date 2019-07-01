@@ -1,21 +1,82 @@
 #include <stdexcept>
 #include <string>
+#include <stack>
 #include <vector>
 #include "test_framework/generic_test.h"
 #include "test_framework/serialization_traits.h"
 #include "test_framework/test_failure.h"
 using std::length_error;
+using std::stack;
+
+/*
+ * Build a queue from two stacks
+ *
+ * Complexity:
+ *  runtime:
+ *  space:
+ *
+ * Time:
+ *  Average running time:   29 us
+ *  Median running time:    10 us
+ */
 class Queue {
+	stack<int> stk1, stk2;
+	void transfer() {
+		if (!stk2.empty()) return;
+		while (!stk1.empty()) {
+			stk2.push(stk1.top());
+			stk1.pop();
+		}
+	}
+
  public:
   void Enqueue(int x) {
-    // TODO - you fill in here.
-    return;
+  	stk1.push(x);
   }
+
   int Dequeue() {
-    // TODO - you fill in here.
-    return 0;
+    if (!stk2.empty()) {
+    	int tmp = stk2.top();
+    	stk2.pop();
+    	return tmp;
+    }
+    transfer();
+    int tmp = stk2.top();
+    stk2.pop();
+    return tmp;
   }
 };
+
+/*
+ * SOLUTION FROM BOOK
+ * Average running time:   35 us
+ * Median running time:    10 us
+ */
+class __Queue {
+public:
+	void Enqueue(int x) { enqueue_.emplace(x); }
+
+	int Dequeue() {
+		if (empty(dequeue_)) {
+			// Transfers the elements in enqueue_ to dequeue_.
+			while (!empty(enqueue_)) {
+				dequeue_.emplace(enqueue_.top());
+				enqueue_.pop();
+			}
+		}
+
+		if (empty(dequeue_)) {  // dequeue_ is still empty!
+			throw length_error("empty queue");
+		}
+		int result = dequeue_.top();
+		dequeue_.pop();
+		return result;
+	}
+
+private:
+	stack<int> enqueue_, dequeue_;
+};
+
 struct QueueOp {
   enum { kConstruct, kDequeue, kEnqueue } op;
   int argument;

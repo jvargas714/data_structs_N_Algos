@@ -11,7 +11,7 @@ cwd:
 			4.7 compute pow(x,y)    << complete
 			4.8 reverse digits    << complete
             4.11 rectangle intersection
-x
+
 		Arrays:
 		    5.0 Even Odd << complete
 			5.1 dutch_national_flag Problem  << complete
@@ -27,11 +27,12 @@ x
 		6.7 look_and_say   << completed (used white board as well)
 
 		Linked Lists:
-		    7.10  even_odd_list_merge
+		    7.10  even_odd_list_merge  << completed
 
 		Stack and Queues:
-		    8.3
-		8.8
+		    8.3 is_valid_parenthezation  << completed
+		    8.8 queue_from_stacks
+
 		9.10
 		10.5
 		11.5
