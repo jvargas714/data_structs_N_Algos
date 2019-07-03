@@ -31,9 +31,10 @@ cwd:
 
 		Stack and Queues:
 		    8.3 is_valid_parenthezation  << completed
-		    8.8 queue_from_stacks
+		    8.8 queue_from_stacks   << completed
 
-		9.10
+
+		9.10 tree_with_parent_inorder  << had to refer to book ans
 		10.5
 		11.5
 		11.10
@@ -68,3 +69,31 @@ section 4.1:
     - std::string std::to_string(numerical_type) --> <string>
     - use std::swap(x,y) to exchange values, works with complex types like vector
         * defined in <utility> and <algorithm>
+
+
+    while (true) {
+    		// Left
+    		while (tmp->left.get()) tmp = tmp->left.get();
+
+    		// visit root
+    		result.push_back(tmp->data);
+
+    		// right
+    		if (tmp->right) {
+    			tmp = tmp->right.get();
+    		} else {
+    			if (tmp->parent != lastAddedParent) {
+    				result.push_back(tmp->parent->data);
+    				lastAddedParent = tmp->parent;
+    			}
+    			else {
+    				tmp = tmp->parent->parent;
+    				result.push_back(tmp->data);
+    				lastAddedParent = tmp;
+    			}
+    			tmp = tmp->right.get();
+    		}
+
+    		if (!tmp) break;
+
+    	}
